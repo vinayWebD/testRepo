@@ -1,6 +1,10 @@
 {
-    "editor.codeActionsOnSave": { "source.fixAll.eslint": true },
-    "editor.formatOnSave": true,
-    "eslint.alwaysShowStatus": true
-  }
-  
+  "editor.formatOnSave": true,
+  "[javascript]": {
+    "editor.formatOnSave": false // Disable default JavaScript formatting
+  },
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true // Run ESLint autofix on save
+  },
+  "prettier.requireConfig": true // Use project-level Prettier config
+}
