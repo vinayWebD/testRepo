@@ -1,18 +1,10 @@
 # Project Folder Structure and Architecture
 
-Welcome to the documentation for the folder structure and architecture of [Project Name]. This guide outlines how the project is organized and provides insights into the rationale behind our chosen structure.
-
-## Table of Contents
-
-- [Overview](#overview)
-- [High-Level Structure](#high-level-structure)
-- [Feature-Based Architecture](#feature-based-architecture)
-- [Key Directories](#key-directories)
-- [Guidelines](#guidelines)
+Welcome to the documentation for the folder structure and architecture of PurDriven. This guide outlines how the project is organized and provides insights into the rationale behind our chosen structure.
 
 ## Overview
 
-At [Project Name], we emphasize a clean and modular codebase through thoughtful organization. Our folder structure is designed to encourage maintainability, scalability, and a clear separation of concerns.
+At PurDriven, we emphasize a clean and modular codebase through thoughtful organization. Our folder structure is designed to encourage maintainability, scalability, and a clear separation of concerns.
 
 ## High-Level Structure
 
@@ -34,20 +26,20 @@ src/
 |-- index.js
 
 
-
 ## Key Directories
 
 - **`assets/`**: Contains static assets like images, fonts, and global styles.
 
-- **`hooks/`**: Holds custom hooks that encapsulate reusable functionality.
-
 - **`components/`**: Holds all kinds of components related to UI, the common ones as well.
+
+- **`hooks/`**: Holds custom hooks that encapsulate reusable functionality.
 
 - **`services/`**: Contains API services and utility functions for external interactions.
 
+- **`pages/`**: Holds pages that are displayed directly to the user.
+
 - **`utils/`**: Holds utility functions and helper modules.
 
-- **`pages/`**: Holds pages that are displayed directly to the user.
 
 ## Guidelines
 
