@@ -1,0 +1,5 @@
+# .prettierignore
+node_modules/
+build/
+dist/
+# Add other patterns from .gitignore here

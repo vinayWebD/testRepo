@@ -1,10 +1,7 @@
 {
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
-  "[javascript]": {
-    "editor.formatOnSave": false // Disable default JavaScript formatting
-  },
-  "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true // Run ESLint autofix on save
-  },
-  "prettier.requireConfig": true // Use project-level Prettier config
+  "editor.formatOnPaste": true,
+  "html.format.extraLiners": "",
+  "editor.tabSize": 2 // Use project-level Prettier config,
 }
