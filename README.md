@@ -25,13 +25,16 @@ Before you begin, ensure you have the following installed:
 
    ```sh
    git clone https://github.com/your-username/PurDriven.git
+   ```
+
 2. Navigate to project directory:
-  ```cd PurDriven```
+   `cd PurDriven`
 3. Install dependencies:
-  ```npm install```
+   `npm install`
 
 ## Scripts:
- - You can run the following scripts using npm:
+
+- You can run the following scripts using npm:
 
 - `start`: Start the development server.
 - `start:dev`: Start the development server for the development environment.
@@ -45,8 +48,11 @@ Before you begin, ensure you have the following installed:
 - `eject`: Eject from React Scripts (advanced).
 
 ## Usage
-```npm start```
+
+`npm start`
+
 - Visit http://localhost:3000 in your browser to view the application.
 
 ## Linting and Formatting
-```npm run lint:fix```
+
+`npm run lint:fix`
