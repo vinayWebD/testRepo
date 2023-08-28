@@ -28,7 +28,7 @@ Before you begin, ensure you have the following installed:
    ```
 
 2. Navigate to project directory:
-   `cd PurDriven`
+   `cd <FOLDER_NAME>`
 3. Install dependencies:
    `npm install`
 
