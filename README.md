@@ -24,7 +24,7 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
 
    ```sh
-   git clone https://github.com/your-username/PurDriven.git
+   git clone git@bitbucket.org:reachparaggupta/purdriven_reactjs.git
    ```
 
 2. Navigate to project directory:
