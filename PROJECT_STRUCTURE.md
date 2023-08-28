@@ -9,6 +9,7 @@ At PurDriven, we emphasize a clean and modular codebase through thoughtful organ
 ## High-Level Structure
 
 The project's root directory contains the following main folders:
+
 ```
 src/
 |-- assets/
