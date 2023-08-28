@@ -9,22 +9,23 @@ At PurDriven, we emphasize a clean and modular codebase through thoughtful organ
 ## High-Level Structure
 
 The project's root directory contains the following main folders:
+```
 src/
 |-- assets/
-|   |-- images/
-|   |-- styles/
+| |-- images/
+| |-- styles/
 |-- components/
-|   |-- common/
-|   |-- layout/
-|   |-- UIComponent1/
-|   |-- UIComponent2/
+| |-- common/
+| |-- layout/
+| |-- UIComponent1/
+| |-- UIComponent2/
 |-- hooks/
 |-- services/
 |-- pages/
 |-- utils/
 |-- App.js
 |-- index.js
-
+```
 
 ## Key Directories
 
@@ -40,7 +41,6 @@ src/
 
 - **`utils/`**: Holds utility functions and helper modules.
 
-
 ## Guidelines
 
 - Keep components focused: Each component should serve a specific purpose and ideally be reusable.
@@ -52,4 +52,3 @@ src/
 ---
 
 We hope this documentation helps you understand our project's architecture. If you have any questions or suggestions, feel free to reach out to the team!
-

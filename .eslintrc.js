@@ -13,8 +13,8 @@ module.exports = {
       version: 'detect', // or specify the version you are using, e.g., '16.14.0'
     },
   },
-  extends: ['plugin:react/recommended', 'prettier'],
-  plugins: ['prettier'],
+  extends: ['eslint:recommended', 'plugin:react/recommended', 'prettier'],
+  plugins: ['prettier', 'react'],
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }], // Allow JSX to be present in files with either a .js or .jsx extension
     'react/react-in-jsx-scope': 'off', // Allow jsx to be run even if there is no React imported
