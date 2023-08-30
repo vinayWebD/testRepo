@@ -22,10 +22,12 @@ src/
 | |-- UIComponent2/
 |-- hooks/
 |-- services/
+|-- slices/
 |-- pages/
 |-- utils/
 |-- App.js
 |-- index.js
+|-- store.js
 ```
 
 ## Key Directories
@@ -37,6 +39,8 @@ src/
 - **`hooks/`**: Holds custom hooks that encapsulate reusable functionality.
 
 - **`services/`**: Contains API services and utility functions for external interactions.
+
+- **`slices/`**: Contains the slices of redux exporting actions, reducers and dispatchers.
 
 - **`pages/`**: Holds pages that are displayed directly to the user.
 
