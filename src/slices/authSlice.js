@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { loginUser, logoutUser } from '../services/authentication';
 
 const authSlice = createSlice({
   name: 'auth',
@@ -22,26 +21,5 @@ const authSlice = createSlice({
   },
 });
 
-const { login, logout } = authSlice.actions;
-
-const loginDispatcher =
-  ({ username, password }) =>
-  async (dispatch) => {
-    const response = await loginUser({ username, password });
-    if (!response?.error) {
-      dispatch(login(response));
-    } else {
-      dispatch(logout());
-    }
-  };
-
-const logoutDispatcher = () => async (dispatch) => {
-  const response = await logoutUser();
-  if (!response?.error) {
-    localStorage.removeItem('token');
-    dispatch(logout());
-  }
-};
-
-export { loginDispatcher, logoutDispatcher };
+export const { login, logout } = authSlice.actions;
 export default authSlice.reducer;

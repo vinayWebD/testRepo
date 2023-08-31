@@ -1,7 +1,7 @@
 import './App.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { loginDispatcher, logoutDispatcher } from './slices/authSlice';
+import { loginDispatcher, logoutDispatcher } from './dispatchers/authDispatcher';
 
 function App() {
   const dispatch = useDispatch();

@@ -20,6 +20,7 @@ src/
 | |-- layout/
 | |-- UIComponent1/
 | |-- UIComponent2/
+|-- dispatchers/
 |-- hooks/
 |-- services/
 |-- slices/
@@ -35,6 +36,8 @@ src/
 - **`assets/`**: Contains static assets like images, fonts, and global styles.
 
 - **`components/`**: Holds all kinds of components related to UI, the common ones as well.
+
+- **`dispatchers/`**: Holds functions with Redux Action + API calls (from services folder).
 
 - **`hooks/`**: Holds custom hooks that encapsulate reusable functionality.
 
