@@ -22,15 +22,7 @@ pipelines:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 S3_BUCKET: $AWS_DEV_BUCKET_NAME
                 LOCAL_PATH: ./build/
-      - step:
-          name: Invalidate Cloudfront cache
-          script:
-            - pipe: atlassian/aws-cloudfront-invalidate:0.1.2
-              variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: $AWS_REGION
-                DISTRIBUTION_ID: $CLOUDFRONT_DEV_DIST_ID
+
     staging:
       - step:
           name: UAT Build
@@ -51,12 +43,3 @@ pipelines:
                 AWS_DEFAULT_REGION: $AWS_REGION
                 S3_BUCKET: $AWS_UAT_BUCKET_NAME
                 LOCAL_PATH: ./build/
-      - step:
-          name: Invalidate Cloudfront cache
-          script:
-            - pipe: atlassian/aws-cloudfront-invalidate:0.1.2
-              variables:
-                AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-                AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-                AWS_DEFAULT_REGION: $AWS_REGION
-                DISTRIBUTION_ID: $CLOUDFRONT_UAT_DIST_ID
