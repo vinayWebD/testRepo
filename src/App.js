@@ -30,7 +30,7 @@ function App() {
 
   return (
     <div className="App">
-      <header className="App-header">
+      <header className="bg-slate-500 text-center h-[100vh]">
         You are using: {process.env.REACT_APP_ENV}
         {token ? (
           <p>
