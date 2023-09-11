@@ -18,7 +18,11 @@ module.exports = {
       gradientfrom: '#04436e',
       gradientto: '#023456',
     },
-    extend: {},
+    extend: {
+      fontFamily: {
+        sans: ['Montserrat', 'sans'], // Use Montserrat as the default sans-serif font
+      },
+    },
   },
   plugins: [],
 };

@@ -12,7 +12,17 @@
   h4 {
     @apply text-[14px] font-medium;
   }
+  label {
+    @apply font-normal text-[12px];
+  }
+  input {
+    @apply rounded-[8px] px-[16px] py-[16px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
+  }
 }
 
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+* {
+  font-family: 'Montserrat';
+}
