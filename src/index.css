@@ -1,3 +1,18 @@
 @import 'tailwindcss/base';
+@layer base {
+  h1 {
+    @apply text-[30px] font-semibold;
+  }
+  h2 {
+    @apply text-[26px] font-bold;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-[14px] font-medium
+  }
+}
+
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';

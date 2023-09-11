@@ -1,9 +1,8 @@
-import React from 'react';
-import LoginBg from './assets/images/login-bg.svg';
-import LoginBottomBg from './assets/images/login-bottom-bg.svg';
-import Logo from './assets/images/logo.svg'
+import LoginBg from '../assets/images/login-bg.svg';
+import LoginBottomBg from '../assets/images/login-bottom-bg.svg';
+import Logo from '../assets/images/logo.svg'
 
-function App() {
+function LoginPage() {
   return (
     <div className="flex justify-start items-start h-[100vh] relative sm:flex-col sm:flex-wrap">
       <div className=" bg-darkblue md:h-[100vh] md:w-[50%] sm:w-[100%]">
@@ -24,4 +23,4 @@ function App() {
   );
 }
 
-export default App;
+export default LoginPage;
