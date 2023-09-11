@@ -14,8 +14,7 @@ function Input({
   label = '',
   isRequired = false,
   labelFontColor = '#ffffff',
-  Icon = <></>,
-  helperText= false
+  helperText = false,
 }) {
   const [value, setValue] = useState(initialValue);
 
@@ -43,7 +42,7 @@ function Input({
         disabled={disabled}
         autoComplete={'true'}
       />
-      {helperText && <p className={`text-sm mt-1 text-red`}>{helperText}</p>}
+      {helperText && <p className={'text-sm mt-1 text-red'}>{helperText}</p>}
     </div>
   );
 }
