@@ -3,6 +3,12 @@ import AuthPanelLayout from '../../components/AuthPanelLayout';
 import Divider from '../../components/common/Divider';
 import Input from '../../components/common/Input';
 import * as yup from 'yup';
+import { Button } from '../../components/common/Button';
+import { VALIDATION } from '../../constants/constants';
+import { MESSAGES } from '../../constants/messages';
+
+const { EMAIL_REGEX } = VALIDATION;
+const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
 
 const initialValues = {
   email: '',
@@ -20,16 +26,16 @@ function LoginPage() {
     validationSchema: yup.object().shape({
       email: yup
         .string()
-        .required('Email is required')
-        .test('isValidEmailFormat', 'Invalid email address', (value) =>
-          /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(value),
+        .required(IS_REQUIRED('Email'))
+        .test('isValidEmailFormat', EMAIL_INVALID, (value) =>
+          EMAIL_REGEX.test(value),
         ),
       password: yup
         .string()
-        .required('Password is required')
+        .required(IS_REQUIRED('Password'))
         .test(
           'isPasswordLengthValid',
-          'Password must be at least 6 characters',
+          PASSWORD_INVALID,
           (value) => value && value.length >= 6,
         ),
     }),
@@ -40,41 +46,50 @@ function LoginPage() {
     <AuthPanelLayout>
       <h1 className="text-white mt-14 pr-2">Welcome Back</h1>
       <h4 className="text-white mt-2 mb-4 pr-2">Let’s build something great together!</h4>
-      <Divider />
+      <Divider width="90%" />
 
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px]">
-        {/* <Input type="email" name="email" label='Email address' isRequired className='h-[50px] w-[400px]' placeholder={'Enter Email'}  />
-        <Input type="password" name="password" label='Password' isRequired className='h-[50px] w-[400px]' placeholder={'Enter Password'}  /> */}
+        <div className="mt-[15px]">
+          <Input
+            label="Email address"
+            placeholder="Enter Email"
+            name="email"
+            type="email"
+            value={formik?.values?.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            isRequired
+            className="w-full"
+          />
+        </div>
+        <div>
+          <Input
+            label="Password"
+            placeholder="Enter Password"
+            name="password"
+            type="password"
+            value={formik?.values?.password}
+            onChange={formik.handleChange}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+            isRequired
+            className="w-full"
+          />
+          <div className="text-right text-white text-[14px] font-semibold mt-1">
+            Forgot Password?
+          </div>
+        </div>
 
-        <Input
-          label="Email address"
-          placeholder="Enter Email"
-          name="email"
-          type="email"
-          value={formik?.values?.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-          isRequired
-        />
-        <Input
-          label="Password"
-          placeholder="Enter Password"
-          name="password"
-          type="password"
-          value={formik?.values?.password}
-          onChange={formik.handleChange}
-          error={formik.touched.password && Boolean(formik.errors.password)}
-          helperText={formik.touched.password && formik.errors.password}
-          isRequired
-        />
-        <button
+        <Button
+          label="Submit"
           type="submit"
-          disabled={false}
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Submit
-        </button>
+          isDisabled={!formik.values.email && !formik.values.password}
+        />
+
+        <p className="text-white text-center">
+          Don’t have an account?<strong> Sign Up</strong>
+        </p>
       </form>
     </AuthPanelLayout>
   );

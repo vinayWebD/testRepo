@@ -26,3 +26,7 @@
 * {
   font-family: 'Montserrat';
 }
+
+.bg-gradient-button {
+  background: linear-gradient(53deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
+}
