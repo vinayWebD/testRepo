@@ -36,7 +36,7 @@ pipelines:
           name: UAT Build
           script:
             - npm install
-            - npm run build-uat
+            - npm run build-staging
             - cd build
           artifacts:
             - build/**
