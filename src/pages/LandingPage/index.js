@@ -81,9 +81,6 @@ export default function LandingPage() {
         <div className="text-center mt-8">
           <NormalButton label={BTNLBL_JOIN_PUR} isIcon={true} />
         </div>
-        <div className="text-center mt-8">
-          <NormalButton label="Join PurDriven" />
-        </div>
       </section>
       <section className="ourview-section">
         <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
@@ -142,12 +139,6 @@ export default function LandingPage() {
         <div className="landing-footer">
           <div>
             <div className="purpose-text mb-10">{LANG_HOMEPAGE_AUTHENTIC}</div>
-            <div className="flex items-center gap-6 email pt-4">
-              <span>
-                <MailIcon />
-              </span>
-              <span className>purdriven@gmail.com</span>
-            </div>
             <div className="flex items-center gap-6 email pt-4">
               <span>
                 <MailIcon />
