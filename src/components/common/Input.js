@@ -53,13 +53,7 @@ function Input({
             className="pr-3 flex items-center cursor-pointer bg-white rounded-r-[8px]"
             onClick={() => setShowPassword((prev) => !prev)}
           >
-            {
-              showPassword ?
-              <PasswordOpenedIcon />
-              :
-              <PasswordClosedIcon />
-            }
-            
+            {showPassword ? <PasswordOpenedIcon /> : <PasswordClosedIcon />}
           </div>
         ) : (
           ''

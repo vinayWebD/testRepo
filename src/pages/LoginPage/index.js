@@ -27,17 +27,11 @@ function LoginPage() {
       email: yup
         .string()
         .required(IS_REQUIRED('Email'))
-        .test('isValidEmailFormat', EMAIL_INVALID, (value) =>
-          EMAIL_REGEX.test(value),
-        ),
+        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_REGEX.test(value)),
       password: yup
         .string()
         .required(IS_REQUIRED('Password'))
-        .test(
-          'isPasswordLengthValid',
-          PASSWORD_INVALID,
-          (value) => value && value.length >= 6,
-        ),
+        .test('isPasswordLengthValid', PASSWORD_INVALID, (value) => value && value.length >= 6),
     }),
     onSubmit,
   });
