@@ -1,0 +1,289 @@
+.landing-page {
+  background: linear-gradient(
+    180deg,
+    #1e1b38 0%,
+    rgba(42, 71, 115, 0.99) 22.51%,
+    #0071bc 50.02%,
+    #2e8bc9 71.3%,
+    #89c0e4 100%
+  );
+  min-height: 2400px;
+  position: relative;
+
+  .hero-section {
+    height: 700px;
+    width: 100%;
+    background-image: url('../../assets/images/hero.png');
+    .content-box {
+      padding-top: 196px;
+      padding-left: 100px;
+      max-width: 635px;
+      .title {
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 60px;
+        text-transform: capitalize;
+        .next-gen {
+          color: #fdc60b;
+        }
+      }
+      .sub-content {
+        margin: 32px 0px 0px 24px;
+        max-width: 490px;
+        display: flex;
+        .sub-title {
+          color: #fff;
+          font-family: Montserrat;
+          font-size: 16px;
+          font-style: normal;
+          font-weight: 500;
+          line-height: 24px;
+        }
+        .vertical-divider {
+          width: 2px;
+          height: 152px;
+          margin-right: 24px;
+          background: linear-gradient(180deg, #fff 1.24%, #1282c3 99.75%, #408ac6 106.12%);
+        }
+      }
+    }
+  }
+  .join-section {
+    padding: 70px 204px;
+    .join-para {
+      color: #fff;
+      text-align: center;
+      font-family: Montserrat;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 34px;
+    }
+  }
+  .ourview-section {
+    padding: 0 100px;
+    .heading {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 60px;
+    }
+    .content {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+    }
+    .sub-heading {
+      margin-top: 12px;
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 20px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 36px;
+    }
+  }
+  .work-section {
+    height: 716px;
+    margin-top: 50px;
+    padding: 0 100px;
+    background-image: url('../../assets/images/work.png');
+    background-size: contain;
+    .heading {
+      padding-top: 60px;
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 60px;
+    }
+    .content {
+      max-width: 676px;
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+      margin-bottom: 42px;
+    }
+  }
+  .weaim-section {
+    padding: 0 100px;
+    .heading {
+      padding-top: 60px;
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 60px;
+    }
+    .content {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 24px;
+      margin-bottom: 42px;
+    }
+    ul {
+      padding: 0;
+    }
+    li {
+      svg {
+        margin-right: 16px;
+        margin-top: 10px;
+      }
+      max-width: 690px;
+      list-style: none;
+      color: #fff;
+      margin-bottom: 20px;
+    }
+  }
+  .footer-logo {
+    margin-top: 130px;
+    padding: 0 100px;
+  }
+  .landing-footer {
+    position: relative;
+  }
+  .landing-footer {
+    padding: 32px 100px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    .purpose-text {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 33px;
+      max-width: 424px;
+    }
+    .footer-link-heading {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 30px;
+      text-transform: uppercase;
+    }
+    .footer-links {
+      li {
+        margin-top: 12px;
+        cursor: pointer;
+        a {
+          color: #fff;
+          font-family: Montserrat;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 30px;
+        }
+      }
+    }
+    .email {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 30px;
+    }
+  }
+  .landing-footer-img {
+    mix-blend-mode: luminosity;
+  }
+  .copyright {
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 30px;
+  }
+  .social-links {
+    cursor: pointer;
+  }
+  .underline {
+    width: 80px;
+    height: 2px;
+    background: #f2f2f2;
+  }
+  @media screen and (max-width: 600px) {
+    .join-section,
+    .ourview-section,
+    .work-section,
+    .weaim-section,
+    .landing-footer {
+      padding-left: 36px;
+      padding-right: 36px;
+    }
+    .hero-section {
+      height: 400px;
+      background-image: url('../../assets/images/herosmall.png');
+      .content-box {
+        padding-top: 53px;
+        padding-left: 36px;
+        padding-right: 36px;
+        .title {
+          font-size: 28px;
+          line-height: 34px;
+        }
+        .sub-content {
+          margin-left: 0;
+        }
+      }
+    }
+    .join-section {
+      .join-para {
+        font-size: 14px;
+        line-height: 21px;
+      }
+    }
+    .work-section {
+      height: auto;
+      height: auto;
+      background-size: cover;
+      background-repeat: round;
+      .heading {
+        font-size: 28px;
+        line-height: 34px;
+      }
+      .content,
+      .card-content {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+    .ourview-section {
+      .heading {
+        font-size: 28px;
+        line-height: 34px;
+      }
+      .content {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+    .landing-footer {
+      margin-top: 16px;
+      gap: 30px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+}
