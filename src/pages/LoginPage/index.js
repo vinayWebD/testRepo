@@ -38,7 +38,7 @@ function LoginPage() {
 
   return (
     <AuthPanelLayout>
-      <h1 className="text-white mt-14 pr-2">Welcome Back</h1>
+      <h1 className="text-white pr-2">Welcome Back</h1>
       <h4 className="text-white mt-2 mb-4 pr-2">Let’s build something great together!</h4>
       <Divider width="90%" />
 

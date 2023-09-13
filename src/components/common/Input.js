@@ -15,7 +15,7 @@ function Input({
   label = '',
   isRequired = false,
   labelFontColor = '#ffffff',
-  helperText = false,
+  helperText = false, // This indicates if there is an error
   maxLength = 100,
 }) {
   const [value, setValue] = useState(initialValue);
@@ -25,6 +25,21 @@ function Input({
   const handleInputChange = (event) => {
     setValue(event.target.value);
     if (onChange) onChange(event);
+  };
+
+  const showPasswordToggleIcon = () => {
+    if (type === 'password') {
+      return (
+        <div
+          className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] ${
+            helperText ? 'border-solid border-[1px] border-red border-l-0' : ''
+          }`}
+          onClick={() => setShowPassword((prev) => !prev)}
+        >
+          {showPassword ? <PasswordOpenedIcon /> : <PasswordClosedIcon />}
+        </div>
+      );
+    }
   };
 
   return (
@@ -39,7 +54,9 @@ function Input({
           name={name}
           value={value}
           placeholder={placeholder}
-          className={`${className} ${type === 'password' ? 'rounded-r-none' : ''}`}
+          className={`${className} ${type === 'password' ? 'border-r-0 rounded-r-none' : ''} ${
+            helperText ? 'haserror' : ''
+          }`}
           onChange={handleInputChange}
           onBlur={onBlur}
           onFocus={onFocus}
@@ -48,18 +65,9 @@ function Input({
           autoComplete={'true'}
           maxLength={maxLength}
         />
-        {type === 'password' ? (
-          <div
-            className="pr-3 flex items-center cursor-pointer bg-white rounded-r-[8px]"
-            onClick={() => setShowPassword((prev) => !prev)}
-          >
-            {showPassword ? <PasswordOpenedIcon /> : <PasswordClosedIcon />}
-          </div>
-        ) : (
-          ''
-        )}
+        {showPasswordToggleIcon()}
       </div>
-      {helperText && <p className={'text-sm mt-1 text-red'}>{helperText}</p>}
+      {helperText && <p className={'mt-1 error'}>{helperText}</p>}
     </div>
   );
 }

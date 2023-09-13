@@ -1,7 +1,7 @@
 @import 'tailwindcss/base';
 @layer base {
   h1 {
-    @apply text-[30px] font-semibold;
+    @apply text-[24px] md:text-[30px] font-semibold;
   }
   h2 {
     @apply text-[26px] font-bold;
@@ -16,7 +16,16 @@
     @apply font-normal text-[12px];
   }
   input {
-    @apply rounded-[8px] px-[16px] py-[16px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
+    @apply box-border	rounded-[8px] px-[16px] py-[13px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
+  }
+  .error {
+    @apply text-red text-[12px] font-medium;
+  }
+  input.haserror {
+    @apply border-solid border-[1px] border-red;
+  }
+  input[type='password'].haserror {
+    @apply border-r-0;
   }
 }
 
