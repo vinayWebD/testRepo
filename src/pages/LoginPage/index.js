@@ -19,10 +19,10 @@ const {
   LANG_LOGIN_PASSWORD_PLACEHOLDER,
   LANG_LOGIN_FORGOT_PWD,
   LANG_LOGIN_DONT_HAVE_ACC,
-  LANG_LOGIN_SIGN_UP
+  LANG_LOGIN_SIGN_UP,
 } = LANG.PAGES.LOGIN;
 
-const { BTNLBL_SUBMIT } = BUTTON_LABELS
+const { BTNLBL_LOGIN } = BUTTON_LABELS;
 
 const initialValues = {
   email: '',
@@ -90,13 +90,15 @@ function LoginPage() {
         </div>
 
         <Button
-          label={BTNLBL_SUBMIT}
+          label={BTNLBL_LOGIN}
           type="submit"
           isDisabled={!formik.values.email && !formik.values.password}
+          additionalClassNames="capitalize"
         />
 
         <p className="text-white text-center">
-          {LANG_LOGIN_DONT_HAVE_ACC}<strong> {LANG_LOGIN_SIGN_UP}</strong>
+          {LANG_LOGIN_DONT_HAVE_ACC}
+          <strong> {LANG_LOGIN_SIGN_UP}</strong>
         </p>
       </form>
     </AuthPanelLayout>

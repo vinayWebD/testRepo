@@ -72,8 +72,8 @@ const LANG = {
 const BUTTON_LABELS = {
   BTNLBL_SIGNUP: 'Sign Up',
   BTNLBL_JOIN_PUR: 'Join PurDriven',
-  BTNLBL_LOGIN: 'LOGIN',
-  BTNLBL_SUBMIT: 'Submit'
+  BTNLBL_LOGIN: 'Login',
+  BTNLBL_SUBMIT: 'Submit',
 };
 
 export { LANG, BUTTON_LABELS };
