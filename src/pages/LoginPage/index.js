@@ -6,9 +6,23 @@ import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
 import { VALIDATION } from '../../constants/constants';
 import { MESSAGES } from '../../constants/messages';
+import { BUTTON_LABELS, LANG } from '../../constants/lang';
 
 const { EMAIL_REGEX } = VALIDATION;
 const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
+const {
+  LANG_LOGIN_WELCOME_HEADING,
+  LANG_LOGIN_WELCOME_SUBHEADING,
+  LANG_LOGIN_EMAIL_LABEL,
+  LANG_LOGIN_EMAIL_PLACEHOLDER,
+  LANG_LOGIN_PASSWORD_LABEL,
+  LANG_LOGIN_PASSWORD_PLACEHOLDER,
+  LANG_LOGIN_FORGOT_PWD,
+  LANG_LOGIN_DONT_HAVE_ACC,
+  LANG_LOGIN_SIGN_UP
+} = LANG.PAGES.LOGIN;
+
+const { BTNLBL_SUBMIT } = BUTTON_LABELS
 
 const initialValues = {
   email: '',
@@ -38,15 +52,15 @@ function LoginPage() {
 
   return (
     <AuthPanelLayout>
-      <h1 className="text-white pr-2">Welcome Back</h1>
-      <h4 className="text-white mt-2 mb-4 pr-2">Let’s build something great together!</h4>
+      <h1 className="text-white pr-2">{LANG_LOGIN_WELCOME_HEADING}</h1>
+      <h4 className="text-white mt-2 mb-4 pr-2">{LANG_LOGIN_WELCOME_SUBHEADING}</h4>
       <Divider width="90%" />
 
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px]">
         <div className="mt-[15px]">
           <Input
-            label="Email address"
-            placeholder="Enter Email"
+            label={LANG_LOGIN_EMAIL_LABEL}
+            placeholder={LANG_LOGIN_EMAIL_PLACEHOLDER}
             name="email"
             type="email"
             value={formik?.values?.email}
@@ -59,8 +73,8 @@ function LoginPage() {
         </div>
         <div>
           <Input
-            label="Password"
-            placeholder="Enter Password"
+            label={LANG_LOGIN_PASSWORD_LABEL}
+            placeholder={LANG_LOGIN_PASSWORD_PLACEHOLDER}
             name="password"
             type="password"
             value={formik?.values?.password}
@@ -71,18 +85,18 @@ function LoginPage() {
             className="w-full"
           />
           <div className="text-right text-white text-[14px] font-semibold mt-1">
-            Forgot Password?
+            {LANG_LOGIN_FORGOT_PWD}
           </div>
         </div>
 
         <Button
-          label="Submit"
+          label={BTNLBL_SUBMIT}
           type="submit"
           isDisabled={!formik.values.email && !formik.values.password}
         />
 
         <p className="text-white text-center">
-          Don’t have an account?<strong> Sign Up</strong>
+          {LANG_LOGIN_DONT_HAVE_ACC}<strong> {LANG_LOGIN_SIGN_UP}</strong>
         </p>
       </form>
     </AuthPanelLayout>

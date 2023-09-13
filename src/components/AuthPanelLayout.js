@@ -1,15 +1,16 @@
 import AuthGradientBg from '../assets/images/auth-gradient-bg.svg';
 import HeroVector from '../assets/images/hero-vector.svg';
 import Logo from '../assets/images/logo.svg';
+import { LANG } from '../constants/lang';
+
+const { LANG_AUTH_PANEL_LAYOUT_HEADING } = LANG.PAGES.AUTH_COMMON;
 
 function AuthPanelLayout({ children }) {
   return (
     <div className="flex justify-start items-start h-[100vh] sm:flex-col sm:flex-wrap relative">
       <div className=" bg-darkblue h-[100vh] relative hidden lg:block lg:w-[50%] w-[100%]">
         <div className="pt-[30px] xl:pt-[60px] px-[60px]">
-          <h2 className="text-white">
-            Your authentic career platform that helps you find your true purpose.
-          </h2>
+          <h2 className="text-white">{LANG_AUTH_PANEL_LAYOUT_HEADING}</h2>
         </div>
         <img src={HeroVector} alt="Login" className="w-[73%] left-0 absolute bottom-[12%]" />
       </div>

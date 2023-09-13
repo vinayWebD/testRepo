@@ -52,12 +52,28 @@ const LANG = {
       LANG_HOMEPAGE_CONNECT: 'Connect with us',
       LANG_HOMEPAGE_RIGHTS: ' 2023, PurDriven. All Rights Reserved.',
     },
+    AUTH_COMMON: {
+      LANG_AUTH_PANEL_LAYOUT_HEADING:
+        'Your authentic career platform that helps you find your true purpose.',
+    },
+    LOGIN: {
+      LANG_LOGIN_WELCOME_HEADING: 'Welcome Back',
+      LANG_LOGIN_WELCOME_SUBHEADING: 'Let’s build something great together!',
+      LANG_LOGIN_EMAIL_LABEL: 'Email address',
+      LANG_LOGIN_EMAIL_PLACEHOLDER: 'Enter Email',
+      LANG_LOGIN_PASSWORD_LABEL: 'Password',
+      LANG_LOGIN_PASSWORD_PLACEHOLDER: 'Enter Password',
+      LANG_LOGIN_FORGOT_PWD: 'Forgot Password?',
+      LANG_LOGIN_DONT_HAVE_ACC: 'Don’t have an account?',
+      LANG_LOGIN_SIGN_UP: 'Sign Up',
+    },
   },
 };
 const BUTTON_LABELS = {
   BTNLBL_SIGNUP: 'Sign Up',
   BTNLBL_JOIN_PUR: 'Join PurDriven',
   BTNLBL_LOGIN: 'LOGIN',
+  BTNLBL_SUBMIT: 'Submit'
 };
 
 export { LANG, BUTTON_LABELS };
