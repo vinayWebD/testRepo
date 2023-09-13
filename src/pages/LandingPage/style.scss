@@ -17,7 +17,7 @@
     .content-box {
       padding-top: 196px;
       padding-left: 100px;
-      max-width: 630px;
+      max-width: 635px;
       .title {
         color: #fff;
         font-family: Montserrat;
@@ -116,29 +116,6 @@
       line-height: 24px;
       margin-bottom: 42px;
     }
-    .card-title {
-      font-family: Montserrat;
-      font-size: 24px;
-      font-weight: 700;
-      line-height: 29px;
-      letter-spacing: 0em;
-      text-align: center;
-      color: #fdc60b;
-    }
-    .card-divider {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 12px;
-    }
-    .card-content {
-      color: #fff;
-      text-align: center;
-      font-family: Montserrat;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 24px;
-    }
   }
   .weaim-section {
     padding: 0 100px;
@@ -174,9 +151,12 @@
       margin-bottom: 20px;
     }
   }
+  .footer-logo {
+    margin-top: 130px;
+    padding: 0 100px;
+  }
   .landing-footer {
     position: relative;
-    margin-top: 130px;
   }
   .landing-footer {
     padding: 32px 100px;
@@ -204,15 +184,25 @@
     }
     .footer-links {
       li {
-        color: #fff;
-        font-family: Montserrat;
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 30px;
         margin-top: 12px;
         cursor: pointer;
+        a {
+          color: #fff;
+          font-family: Montserrat;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 400;
+          line-height: 30px;
+        }
       }
+    }
+    .email {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 18px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 30px;
     }
   }
   .landing-footer-img {
@@ -225,6 +215,14 @@
     font-style: normal;
     font-weight: 400;
     line-height: 30px;
+  }
+  .social-links {
+    cursor: pointer;
+  }
+  .underline {
+    width: 80px;
+    height: 2px;
+    background: #f2f2f2;
   }
   @media screen and (max-width: 600px) {
     .join-section,
@@ -287,20 +285,5 @@
       gap: 30px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
-  }
-}
-.primary-btn {
-  border-radius: 40px;
-  background: linear-gradient(53deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
-  box-shadow: 0px 0px 8px 0px rgba(255, 255, 255, 0.05);
-  padding: 12px 48px;
-  color: #fff;
-  font-family: Montserrat;
-  font-size: 14px;
-  font-weight: 600;
-  &:hover,
-  :focus,
-  :active {
-    opacity: 0.8;
   }
 }

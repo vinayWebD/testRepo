@@ -1,0 +1,16 @@
+.navbar-wrap {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  opacity: 0.9;
+  background: linear-gradient(
+    90deg,
+    #fff -4.59%,
+    #fff 9.44%,
+    rgba(108, 173, 216, 0.8) 27.9%,
+    rgba(0, 113, 188, 0.46) 47.13%,
+    rgba(108, 173, 216, 0.8) 73.85%,
+    #eff6fb 91.3%
+  );
+  backdrop-filter: blur(38.5px);
+}
