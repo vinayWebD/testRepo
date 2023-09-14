@@ -4,18 +4,19 @@
  * @returns
  */
 
-const loginUser = async ({ username, password }) => {
-  try {
-    if (username === 'purdriven' && password === 'dianapps') {
-      // Simulate login logic and get user data and token
-      let newToken = `02384-fdgdf-23423-${Math.random(10000)}`;
-      localStorage.setItem('token', newToken);
+import { LOGIN } from '../constants/networkConstants';
+import apiUtility from '../utils/network/apiUtility';
 
-      return { user: { name: 'PurDriven DianApps' }, token: newToken };
-    } else {
-      throw new Error('Failed');
+const loginUser = async ({ email, password }) => {
+  try {
+    const { status, data } = await apiUtility(LOGIN, 'POST', { email, password });
+
+    if (status === 201) {
+      localStorage.setItem('token', data?.token);
     }
+    return data;
   } catch (error) {
+    console.log('---error', error);
     // Handle authentication error
     return { error };
   }

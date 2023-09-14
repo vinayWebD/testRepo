@@ -18,7 +18,7 @@ export const Button = ({
       <span className="">{label}</span>
 
       {!isDisabled && showArrowIcon && (
-        <span className="ml-2 arrow-icon transform -translate-x-2 w-0 opacity-0 group-hover:translate-x-0 group-hover:block group-hover:opacity-100 transition-transform transition-opacity duration-300">
+        <span className="ml-2 arrow-icon transform -translate-x-2 w-0 opacity-0 group-hover:translate-x-0 group-hover:block group-hover:opacity-100 transition-transform duration-300">
           <ArrowIcon />
         </span>
       )}

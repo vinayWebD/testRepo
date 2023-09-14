@@ -1,12 +1,13 @@
-import { loginUser, logoutUser } from '../services/auth';
+import { loginUser, logoutUser } from '../../services/auth';
 import { login, logout } from '../slices/authSlice';
 
 const loginDispatcher =
-  ({ username, password }) =>
+  ({ email, password }) =>
   async (dispatch) => {
-    const response = await loginUser({ username, password });
-    if (!response?.error) {
-      dispatch(login(response));
+    const data = await loginUser({ email, password });
+
+    if (!data?.error) {
+      dispatch(login(data));
     } else {
       dispatch(logout());
     }

@@ -7,6 +7,8 @@ import { Button } from '../../components/common/Button';
 import { VALIDATION } from '../../constants/constants';
 import { MESSAGES } from '../../constants/messages';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
+import { loginDispatcher } from '../../redux/dispatchers/authDispatcher';
+import { useDispatch } from 'react-redux';
 
 const { EMAIL_REGEX } = VALIDATION;
 const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
@@ -30,9 +32,10 @@ const initialValues = {
 };
 
 function LoginPage() {
+  const dispatch = useDispatch();
+
   const onSubmit = (values) => {
-    // Here, you'd typically make an API call to login
-    console.log('Login data:', values);
+    dispatch(loginDispatcher(values));
   };
 
   const formik = useFormik({
