@@ -4,8 +4,9 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     token: null,
-    isAuthenticated: false,
+    isAuthenticated: null,
     user: null,
+    isLoading: false,
   },
   reducers: {
     login: (state, action) => {
@@ -17,14 +18,25 @@ const authSlice = createSlice({
         username,
       };
       state.token = token; // Store the token
+      state.isLoading = false;
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      state.user = null;
+      state.user = {};
       state.token = null; // Clear the token
+      state.isLoading = false;
+    },
+    profile: (state, action) => {
+      state.isAuthenticated = true;
+      state.user = action?.payload;
+      state.token = state.token || localStorage.getItem('token');
+      state.isLoading = false;
+    },
+    isLoading: (state, action) => {
+      state.isLoading = action?.payload?.isLoading;
     },
   },
 });
 
-export const { login, logout } = authSlice.actions;
+export const { login, logout, profile, isLoading } = authSlice.actions;
 export default authSlice.reducer;
