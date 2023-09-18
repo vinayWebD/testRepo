@@ -13,6 +13,8 @@ const loginDispatcher =
     if (status === 201) {
       localStorage.setItem('token', data?.token);
       dispatch(login(data));
+      // We are calling profile dispatcher so that the profile gets updated - API + Redux
+      dispatch(profileDispatcher());
     }
   };
 
