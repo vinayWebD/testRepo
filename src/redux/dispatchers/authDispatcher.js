@@ -1,5 +1,5 @@
 import { loginUser, logoutUser, userProfile } from '../../services/auth';
-import { isLoading, login, logout, profile } from '../slices/authSlice';
+import { globalLoading, login, logout, profile } from '../slices/authSlice';
 
 /**
  * The dispatcher method to call the login API and do the necessary React related functionalities
@@ -7,7 +7,6 @@ import { isLoading, login, logout, profile } from '../slices/authSlice';
 const loginDispatcher =
   ({ email, password }) =>
   async (dispatch) => {
-    dispatch(isLoading(true));
     const { status, data } = await loginUser({ email, password, dispatch });
 
     if (status === 201) {
@@ -16,13 +15,15 @@ const loginDispatcher =
       // We are calling profile dispatcher so that the profile gets updated - API + Redux
       dispatch(profileDispatcher());
     }
+
+    return { status, data };
   };
 
 /**
  * Logout dispatcher will call logout user API and
  */
 const logoutDispatcher = () => async (dispatch) => {
-  dispatch(isLoading(true));
+  dispatch(globalLoading(true));
 
   if (localStorage.getItem('token')) {
     await logoutUser(dispatch);
@@ -35,7 +36,7 @@ const logoutDispatcher = () => async (dispatch) => {
  * Profile Dispatcher will call the user profile API so that we can keep the user data up to date
  */
 const profileDispatcher = () => async (dispatch) => {
-  dispatch(isLoading(true));
+  dispatch(globalLoading(true));
   const { status, data } = await userProfile(dispatch);
 
   if (status === 200) {

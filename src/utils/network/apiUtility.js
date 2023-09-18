@@ -1,5 +1,5 @@
 import { logoutDispatcher } from '../../redux/dispatchers/authDispatcher';
-import { isLoading } from '../../redux/slices/authSlice';
+import { globalLoading } from '../../redux/slices/authSlice';
 import api from './axiosConfig';
 
 /**
@@ -26,8 +26,7 @@ const apiUtility = async (endpoint, method = 'GET', data, dispatch = () => {}) =
       dispatch(logoutDispatcher());
     } else {
       // @todo: we can probably call a dispatcher for toast
-      dispatch(isLoading(false));
-      alert(Object.values(error.response.data)?.[0]);
+      dispatch(globalLoading(false));
       return { data: error.response.data, status: error.response.status };
     }
   }

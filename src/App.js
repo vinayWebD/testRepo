@@ -7,7 +7,7 @@ import { privateRoutes, publicRoutes } from './routes';
 const App = () => {
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const isLoading = useSelector((state) => state.auth.isLoading);
+  const globalLoading = useSelector((state) => state.auth.globalLoading);
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -17,7 +17,7 @@ const App = () => {
     }
   }, []);
 
-  if (isLoading) {
+  if (globalLoading) {
     return <div>Loading...</div>; // Or a loading spinner component
   }
 
