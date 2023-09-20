@@ -7,8 +7,8 @@ import { privateRoutes, publicRoutes } from './routes';
 
 const App = () => {
   const dispatch = useDispatch();
-  const isAuthenticated = useSelector((state) => state.auth.isAuthenticated);
-  const globalLoading = useSelector((state) => state.auth.globalLoading);
+  const { isAuthenticated = false } = useSelector((state) => state.auth || {});
+  const { globalLoading = false } = useSelector((state) => state.auth || {});
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
