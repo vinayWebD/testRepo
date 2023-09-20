@@ -1,5 +1,5 @@
 import { ArrowIcon } from '../Icons/ArrowIcon';
-import SpinningLoader from '../SpinningLoader';
+import SpinningLoader from './SpinningLoader';
 
 export const Button = ({
   type = 'button',

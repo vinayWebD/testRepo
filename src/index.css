@@ -39,3 +39,19 @@
 .bg-gradient-button {
   background: linear-gradient(53deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
 }
+
+.loader-circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
