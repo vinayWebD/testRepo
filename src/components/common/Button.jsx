@@ -1,4 +1,5 @@
 import { ArrowIcon } from '../Icons/ArrowIcon';
+import SpinningLoader from '../SpinningLoader';
 
 export const Button = ({
   type = 'button',
@@ -6,6 +7,7 @@ export const Button = ({
   isDisabled = false,
   showArrowIcon = true,
   additionalClassNames = '',
+  isLoading = false,
 }) => {
   return (
     <button
@@ -15,10 +17,11 @@ export const Button = ({
         isDisabled ? 'bg-greymedium' : 'bg-gradient-button'
       }`}
     >
+      {isLoading && <SpinningLoader />}
       <span className="">{label}</span>
 
       {!isDisabled && showArrowIcon && (
-        <span className="ml-2 arrow-icon transform -translate-x-2 w-0 opacity-0 group-hover:translate-x-0 group-hover:block group-hover:opacity-100 transition-transform transition-opacity duration-300">
+        <span className="ml-2 arrow-icon transform -translate-x-2 w-0 opacity-0 group-hover:translate-x-0 group-hover:block group-hover:opacity-100 transition-transform duration-300">
           <ArrowIcon />
         </span>
       )}

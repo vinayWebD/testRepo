@@ -7,6 +7,9 @@ import { Button } from '../../components/common/Button';
 import { VALIDATION } from '../../constants/constants';
 import { MESSAGES } from '../../constants/messages';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
+import { loginDispatcher } from '../../redux/dispatchers/authDispatcher';
+import { useDispatch } from 'react-redux';
+import { useState } from 'react';
 
 const { EMAIL_REGEX } = VALIDATION;
 const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
@@ -30,9 +33,21 @@ const initialValues = {
 };
 
 function LoginPage() {
-  const onSubmit = (values) => {
-    // Here, you'd typically make an API call to login
-    console.log('Login data:', values);
+  const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onSubmit = async (values) => {
+    if (!isLoading) {
+      setIsLoading(true);
+      const loginResponse = await dispatch(loginDispatcher(values));
+
+      setIsLoading(false);
+      // Setting the error below the input fields in the form itself
+      if (loginResponse?.status !== 200 && Object.keys(loginResponse?.data).length) {
+        const errorData = Object.entries(loginResponse?.data)?.[0];
+        formik.setErrors({ [errorData?.[0]]: errorData?.[1] });
+      }
+    }
   };
 
   const formik = useFormik({
@@ -94,6 +109,7 @@ function LoginPage() {
           type="submit"
           isDisabled={!formik.values.email && !formik.values.password}
           additionalClassNames="capitalize"
+          isLoading={isLoading}
         />
 
         <p className="text-white text-center">

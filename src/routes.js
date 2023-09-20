@@ -1,11 +1,12 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { PATHS } from './constants/urlPaths';
+import HomePage from './pages/HomePage';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 
-const { LANDING, LOGIN } = PATHS;
+const { LANDING, LOGIN, HOME } = PATHS;
 
-const routes = createBrowserRouter([
+const publicRoutes = createBrowserRouter([
   {
     path: LANDING,
     element: <LandingPage />,
@@ -14,6 +15,21 @@ const routes = createBrowserRouter([
     path: LOGIN,
     element: <LoginPage />,
   },
+  {
+    path: '*',
+    element: <Navigate to={LOGIN} replace />,
+  },
 ]);
 
-export default routes;
+const privateRoutes = createBrowserRouter([
+  {
+    path: HOME,
+    element: <HomePage />,
+  },
+  {
+    path: '*',
+    element: <Navigate to={HOME} replace />,
+  },
+]);
+
+export { publicRoutes, privateRoutes };
