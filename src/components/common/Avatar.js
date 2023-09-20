@@ -1,4 +1,4 @@
-const Avatar = ({ image, name = '', size = 32, bgColor = 'white' }) => {
+const Avatar = ({ image, name = '', bgColor = 'white' }) => {
   // Function to extract initials from the name.
   const getInitials = (name) => {
     if (!name) return '';
@@ -12,7 +12,7 @@ const Avatar = ({ image, name = '', size = 32, bgColor = 'white' }) => {
 
   return (
     <div
-      className={`bg-${bgColor} rounded-full p-[10px] w-[${size}px] h-[${size}px] text-center flex items-center bg-contain bg-center`}
+      className={`bg-${bgColor} rounded-full p-[10px] w-[32px] h-[32px] text-center flex items-center bg-contain bg-center`}
       style={{ backgroundImage: `url(${image})` || undefined }}
     >
       {!image ? getInitials(name) : ''}

@@ -43,7 +43,7 @@ function Input({
   };
 
   return (
-    <div className="flex flex-col relative">
+    <div className="flex flex-col relative w-full">
       <div className="flex gap-[2px]">
         <label style={{ color: labelFontColor }}>{label}</label>
         {isRequired ? <span className="text-red relative top-[-4px]">*</span> : ''}
