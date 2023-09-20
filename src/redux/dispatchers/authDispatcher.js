@@ -44,6 +44,11 @@ const profileDispatcher = () => async (dispatch) => {
   }
 };
 
+/**
+ * To send the Forgot Password Otp
+ * @param {*} param0
+ * @returns
+ */
 const forgotPasswordOtpDispatcher =
   ({ email }) =>
   async (dispatch) => {

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router-dom';
+import { createSearchParams, useNavigate } from 'react-router-dom';
 import AuthPanelLayout from '../../components/AuthPanelLayout';
 import { BackArrowIcon } from '../../components/Icons/BackArrowIcon';
 import { PATHS } from '../../constants/urlPaths';
@@ -50,7 +50,9 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (isSuccessModalOpen) {
       setTimeout(() => {
-        navigate(PATH_VERIFY_EMAIL);
+        navigate(`${PATH_VERIFY_EMAIL}?${createSearchParams({ type: '1fp' })}`, {
+          state: { email: formik?.values?.email },
+        });
       }, 2500);
     }
   }, [isSuccessModalOpen]);

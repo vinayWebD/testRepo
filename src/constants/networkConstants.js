@@ -3,6 +3,7 @@ const NETWORK_CONSTANTS = {
   LOGOUT: '/v1/accounts/logout/',
   PROFILE: '/v1/accounts/',
   FORGOT_PASSWORD_OTP: '/v1/accounts/forgot-password/',
+  FORGOT_PASSWORD_OTP_VALIDATION: '/v1/accounts/verify-sign-up/',
 };
 
 export default NETWORK_CONSTANTS;
