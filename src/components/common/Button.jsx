@@ -6,9 +6,11 @@ export const Button = ({
   isDisabled = false,
   showArrowIcon = true,
   additionalClassNames = '',
+  onClick,
 }) => {
   return (
     <button
+      onClick={onClick}
       type={type}
       disabled={isDisabled}
       className={`${additionalClassNames} group flex justify-center items-center rounded-[40px] h-[50px] px-[50px] py-[16px] text-white ${

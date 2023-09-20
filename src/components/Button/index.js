@@ -19,8 +19,8 @@ NormalButton.propTypes = {
   label: PropTypes.string,
   isIcon: PropTypes.bool,
 };
-export const TransparentButton = ({ label }) => {
-  return <button className="trans-btn">{label}</button>;
+export const TransparentButton = ({ label, className }) => {
+  return <button className={`trans-btn ${className}`}>{label}</button>;
 };
 
 TransparentButton.propTypes = {

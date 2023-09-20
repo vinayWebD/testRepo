@@ -5,6 +5,9 @@ const LANG = {
   LANG_CONTACT: 'CONTACT',
   LANG_SIGNUP: 'Signup',
   LANG_Login: 'Login',
+  LANG_UPLOAD: 'Upload',
+  LANG_CROP: 'Crop',
+  LANG_BACK: 'Back',
 
   PAGES: {
     HOMEPAGE: {
@@ -67,6 +70,39 @@ const LANG = {
       LANG_LOGIN_DONT_HAVE_ACC: 'Don’t have an account?',
       LANG_LOGIN_SIGN_UP: 'Sign Up',
     },
+    SIGNUP: {
+      LANG_SIGNUP_WELCOME_HEADING: 'Create Account',
+      LANG_SIGNUP_WELCOME_SUBHEADING: 'Share your thoughts with world from today.',
+      LANG_SIGNUP_FIRST_NAME_LABEL: 'First Name',
+      LANG_SIGNUP_FIRST_NAME_PLACEHOLDER: 'Enter First name',
+      LANG_SIGNUP_LAST_NAME_LABEL: 'Last Name',
+      LANG_SIGNUP_LAST_NAME_PLACEHOLDER: 'Enter Last name',
+      LANG_SIGNUP_EMAIL_LABEL: 'Email address',
+      LANG_SIGNUP_EMAIL_PLACEHOLDER: 'Enter Email',
+      LANG_SIGNUP_PASSWORD_LABEL: 'Enter Password',
+      LANG_SIGNUP_PASSWORD_PLACEHOLDER: 'Enter Password',
+      LANG_SIGNUP_FORGOT_PWD: 'Forgot Password?',
+      LANG_SIGNUP_REGISTER: 'By registering I agree to all',
+      LANG_SIGNUP_PRIVACY: 'Privacy Policy',
+      LANG_SIGNUP_TERMS: 'Terms & Conditions',
+      LANG_SIGNUP_SAVE_NEXT: 'Save & Next',
+      LANG_SIGNUP_HAVE_ACC: 'Already have an account? ',
+      LANG_SIGNUP_SIGN_IN: 'LogIn',
+    },
+    VERIFY_EMAIL: {
+      LANG_VERIFY_EMAIL: 'Verify Email',
+      LANG_CODE_EMAIL: 'Enter the code sent to',
+      LANG_VER_CODE: 'Verification Code ',
+      LANG_RESEND: 'Resend',
+    },
+    GEN_INFO: {
+      LANG_GEN_INFO: 'General Information',
+      LANG_PROVIDE_INFO: 'Please provide your general information.',
+      LANG_LOCATION: 'Location',
+      LANG_LOCATION_PLACEHOLDER: 'Enter Location',
+      LANG_SKIP: 'Skip for Now',
+      LANG_PROCEED: 'Proceed',
+    },
   },
 };
 const BUTTON_LABELS = {
@@ -74,6 +110,7 @@ const BUTTON_LABELS = {
   BTNLBL_JOIN_PUR: 'Join PurDriven',
   BTNLBL_LOGIN: 'Login',
   BTNLBL_SUBMIT: 'Submit',
+  BTNLBL_VERIFY: 'Verify',
 };
 
 export { LANG, BUTTON_LABELS };
