@@ -103,6 +103,14 @@ const LANG = {
       LANG_SKIP: 'Skip for Now',
       LANG_PROCEED: 'Proceed',
     },
+    FORGOT_PASSWORD: {
+      LANG_GEN_WELCOME_HEADING: 'Forgot Password',
+      LANG_GEN_WELCOME_SUBHEADING: 'Enter your registered email below to receive code',
+      LANG_EMAIL_LABEL: 'Email address',
+      LANG_EMAIL_PLACEHOLDER: 'Enter Email',
+      LANG_OTP_SENT_SUCCESS: 'OTP sent successfully',
+      LANG_OTP_SENT_TO_MAIL: 'OTP have been sent to your email',
+    },
   },
 };
 const BUTTON_LABELS = {
@@ -111,6 +119,7 @@ const BUTTON_LABELS = {
   BTNLBL_LOGIN: 'Login',
   BTNLBL_SUBMIT: 'Submit',
   BTNLBL_VERIFY: 'Verify',
+  BTNLBL_CONTINUE: 'Continue',
 };
 
 export { LANG, BUTTON_LABELS };

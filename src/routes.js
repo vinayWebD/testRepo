@@ -6,10 +6,16 @@ import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
 import Singup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
+import ForgotPassword from './pages/ForgotPassword';
 
-const { LANDING, LOGIN, HOME, PATH_SIGNUP, PATH_VERIFY_EMAIL, PATH_GENERAL_INFO } = PATHS;
+const { LANDING, LOGIN, HOME, PATH_SIGNUP, PATH_VERIFY_EMAIL, PATH_GENERAL_INFO, FORGOT_PASSWORD } =
+  PATHS;
 
 const publicRoutes = createBrowserRouter([
+  {
+    path: '*',
+    element: <Navigate to={LOGIN} replace />,
+  },
   {
     path: LANDING,
     element: <LandingPage />,
@@ -17,10 +23,6 @@ const publicRoutes = createBrowserRouter([
   {
     path: LOGIN,
     element: <LoginPage />,
-  },
-  {
-    path: '*',
-    element: <Navigate to={LOGIN} replace />,
   },
   {
     path: PATH_SIGNUP,
@@ -34,16 +36,20 @@ const publicRoutes = createBrowserRouter([
     path: PATH_GENERAL_INFO,
     element: <GeneraInfo />,
   },
+  {
+    path: FORGOT_PASSWORD,
+    element: <ForgotPassword />,
+  },
 ]);
 
 const privateRoutes = createBrowserRouter([
   {
-    path: HOME,
-    element: <HomePage />,
-  },
-  {
     path: '*',
     element: <Navigate to={HOME} replace />,
+  },
+  {
+    path: HOME,
+    element: <HomePage />,
   },
 ]);
 
