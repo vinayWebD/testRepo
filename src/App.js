@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouterProvider } from 'react-router-dom';
+import MultiColorLoader from './components/common/MultiColorLoader';
 import { logoutDispatcher, profileDispatcher } from './redux/dispatchers/authDispatcher';
 import { privateRoutes, publicRoutes } from './routes';
 
@@ -18,7 +19,7 @@ const App = () => {
   }, []);
 
   if (globalLoading) {
-    return <div>Loading...</div>; // Or a loading spinner component
+    return <MultiColorLoader />; // Or a loading spinner component
   }
 
   if (isAuthenticated) {
@@ -26,7 +27,7 @@ const App = () => {
   } else if (isAuthenticated === false) {
     return <RouterProvider router={publicRoutes} />;
   } else {
-    return <div>Loading...</div>;
+    return <MultiColorLoader />;
   }
 };
 
