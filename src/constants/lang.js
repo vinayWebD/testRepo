@@ -133,4 +133,8 @@ const BUTTON_LABELS = {
   BTNLBL_SAVE: 'Save',
 };
 
-export { LANG, BUTTON_LABELS };
+const DROPDOWN_OPTION_LABELS = {
+  DDLBL_LOGOUT: 'Log out',
+};
+
+export { LANG, BUTTON_LABELS, DROPDOWN_OPTION_LABELS };
