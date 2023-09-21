@@ -4,7 +4,7 @@ import Divider from '../../components/common/Divider';
 import Input from '../../components/common/Input';
 import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
-import { VALIDATION } from '../../constants/constants';
+import { REGEX } from '../../constants/constants';
 import { MESSAGES } from '../../constants/messages';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { loginDispatcher } from '../../redux/dispatchers/authDispatcher';
@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 
-const { EMAIL_REGEX } = VALIDATION;
+const { EMAIL_PATTERN } = REGEX;
 const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
 const {
   LANG_LOGIN_WELCOME_HEADING,
@@ -60,7 +60,7 @@ function LoginPage() {
       email: yup
         .string()
         .required(IS_REQUIRED('Email'))
-        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_REGEX.test(value)),
+        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_PATTERN.test(value)),
       password: yup
         .string()
         .required(IS_REQUIRED('Password'))

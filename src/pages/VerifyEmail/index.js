@@ -14,14 +14,17 @@ import { getErrorMessage, successStatus } from '../../common';
 import { signupUser, verifyEmail } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import { TOASTMESSAGES } from '../../constants/messages';
+import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 
-const { PATH_GENERAL_INFO } = PATHS;
+const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD } = PATHS;
 const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_VER_CODE, LANG_RESEND } = LANG.PAGES.VERIFY_EMAIL;
 const { BTNLBL_VERIFY } = BUTTON_LABELS;
+const { FORGOT_PWD } = VERIFY_EMAIL_ORIGIN;
+const { EMAIL_PATTERN } = REGEX;
 
 const {
   successToast: { TST_SIGNUP_SUCCESSFULLY = '', TST_CODESENT_SUCCESSFULLY = '' },
-  errorToast: { TST_OTP_VRIFY_FAILED = '', TST_OTP_RESNED_ID = '' },
+  errorToast: { TST_OTP_VRIFY_FAILED = '', TST_OTP_RESNED_ID = '', TST_OTP_GENRATE_FAILED = '' },
   toastid: { TST_SIGNUP_SUCCESS_ID, TST_CODERESEND_SUCCESS_ID },
 } = TOASTMESSAGES;
 
@@ -30,12 +33,12 @@ function VerifyEmail() {
   const width = useScreenWidth();
   const [otp, setOtp] = useState(null);
   const [counter, setCounter] = useState(59);
+  const [email, setEmail] = useState('');
   const [searchParams] = useSearchParams();
-  const historyType = searchParams.get('type'); // 1fp means it is coming from forgot password
+  const historyType = searchParams.get('type');
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const { dataToSend: userData } = secureLocalStorage.getItem('object');
-  const { email } = userData;
+  const { dataToSend: userData = {} } = secureLocalStorage.getItem('object') || {};
 
   const otpInputStyle = {
     fontSize: '16px',
@@ -52,6 +55,19 @@ function VerifyEmail() {
     const timer = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
     return () => clearInterval(timer);
   }, [counter]);
+
+  useEffect(() => {
+    // If the user has come from forgot password, then a correct email should exist
+    if (historyType === FORGOT_PWD && !EMAIL_PATTERN.test(location?.state?.email)) {
+      navigate(LOGIN);
+    }
+
+    if (historyType === FORGOT_PWD) {
+      setEmail(location?.state?.email);
+    } else {
+      setEmail(userData?.email);
+    }
+  }, [historyType]);
 
   const resendHandler = async () => {
     setCounter(59);
@@ -70,13 +86,21 @@ function VerifyEmail() {
   const onSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    if (historyType === '1fp') {
+    if (historyType === FORGOT_PWD) {
       const { email = '' } = location?.state || {};
-      await forgotPasswordOtpValidation({ email });
+      const { is_valid } = await forgotPasswordOtpValidation({ email, code: otp });
+      if (is_valid) {
+        navigate(RESET_PASSWORD, {
+          state: { email, code: otp },
+        });
+      } else {
+        ToastNotifyError(TST_OTP_GENRATE_FAILED, TST_OTP_VRIFY_FAILED);
+        setIsLoading(false);
+      }
     } else {
       const dataToSend = {
         code: otp,
-        email: email,
+        email,
       };
       const response = await verifyEmail(dataToSend);
       const {

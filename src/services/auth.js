@@ -1,6 +1,6 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
-const { LOGIN, LOGOUT, PROFILE, FORGOT_PASSWORD_OTP, FORGOT_PASSWORD_OTP_VALIDATION } =
+const { LOGIN, LOGOUT, PROFILE, FORGOT_PASSWORD_OTP, FORGOT_PASSWORD_VERIFY_OTP } =
   NETWORK_CONSTANTS;
 
 /**
@@ -14,7 +14,7 @@ const loginUser = async ({ email, password, dispatch }) => {
 
     return { status, data };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
@@ -31,7 +31,7 @@ const logoutUser = async (dispatch) => {
 
     return 204;
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
@@ -46,7 +46,7 @@ const userProfile = async (dispatch) => {
 
     return { data, status };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
@@ -67,16 +67,16 @@ const sendForgotPasswordOtp = async ({ email, dispatch }) => {
     );
     return { data, status };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
-const forgotPasswordOtpValidation = async ({ email }) => {
+const forgotPasswordOtpValidation = async ({ email, code }) => {
   try {
-    const response = await apiUtility(FORGOT_PASSWORD_OTP_VALIDATION, 'POST', { email });
-    return response;
+    const { data } = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', { email, code });
+    return data;
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 

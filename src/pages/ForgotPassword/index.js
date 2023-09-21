@@ -6,7 +6,7 @@ import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { MESSAGES } from '../../constants/messages';
-import { VALIDATION } from '../../constants/constants';
+import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { useEffect, useState } from 'react';
@@ -25,7 +25,8 @@ const {
   LANG_OTP_SENT_TO_MAIL,
 } = LANG.PAGES.FORGOT_PASSWORD;
 const { IS_REQUIRED, EMAIL_INVALID } = MESSAGES;
-const { EMAIL_REGEX } = VALIDATION;
+const { EMAIL_PATTERN } = REGEX;
+const { FORGOT_PWD } = VERIFY_EMAIL_ORIGIN;
 const { BTNLBL_CONTINUE } = BUTTON_LABELS;
 
 const initialValues = {
@@ -50,7 +51,7 @@ const ForgotPassword = () => {
   useEffect(() => {
     if (isSuccessModalOpen) {
       setTimeout(() => {
-        navigate(`${PATH_VERIFY_EMAIL}?${createSearchParams({ type: '1fp' })}`, {
+        navigate(`${PATH_VERIFY_EMAIL}?${createSearchParams({ type: FORGOT_PWD })}`, {
           state: { email: formik?.values?.email },
         });
       }, 2500);
@@ -63,7 +64,7 @@ const ForgotPassword = () => {
       email: yup
         .string()
         .required(IS_REQUIRED('Email'))
-        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_REGEX.test(value)),
+        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_PATTERN.test(value)),
     }),
     onSubmit,
   });
@@ -79,6 +80,7 @@ const ForgotPassword = () => {
         </div>
         <h4 className="text-white mt-2 mb-4 pr-2">{LANG_GEN_WELCOME_SUBHEADING}</h4>
       </div>
+
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px]">
         <div className="mt-[15px]">
           <Input

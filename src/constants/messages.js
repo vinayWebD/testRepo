@@ -45,4 +45,5 @@ export const TOASTMESSAGES = {
     TST_OTP_VRIFY_FAILED: 'verify-otp-failed',
     TST_OTP_RESNED_ID: 'resend-otp-failed',
   },
+  CONFIRM_PASSWORD_MISMATCH: 'Passwords must match',
 };
