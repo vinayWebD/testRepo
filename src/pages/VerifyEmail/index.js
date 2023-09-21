@@ -9,7 +9,7 @@ import { PATHS } from '../../constants/urlPaths';
 import { useScreenWidth } from '../../hooks';
 import { LANG, BUTTON_LABELS } from '../../constants/lang';
 import { useSearchParams, useLocation } from 'react-router-dom';
-import { forgotPasswordOtpValidation } from '../../services/auth';
+import { forgotPasswordOtpValidation, sendForgotPasswordOtp } from '../../services/auth';
 import { getErrorMessage, successStatus } from '../../common';
 import { signupUser, verifyEmail } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
@@ -57,11 +57,6 @@ function VerifyEmail() {
   }, [counter]);
 
   useEffect(() => {
-    // If the user has come from forgot password, then a correct email should exist
-    if (historyType === FORGOT_PWD && !EMAIL_PATTERN.test(location?.state?.email)) {
-      navigate(LOGIN);
-    }
-
     if (historyType === FORGOT_PWD) {
       setEmail(location?.state?.email);
     } else {
@@ -69,9 +64,25 @@ function VerifyEmail() {
     }
   }, [historyType]);
 
+  useEffect(() => {
+    // Navigating the user back to login if the email is invalid
+    if (
+      ![undefined, null].includes(email) &&
+      historyType === FORGOT_PWD &&
+      !EMAIL_PATTERN.test(email)
+    ) {
+      navigate(LOGIN);
+    }
+  }, [email]);
+
   const resendHandler = async () => {
     setCounter(59);
-    const response = await signupUser(userData);
+    let response;
+    if (historyType === FORGOT_PWD) {
+      response = await sendForgotPasswordOtp({ email });
+    } else {
+      response = await signupUser(userData);
+    }
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
     if (successStatus(status)) {

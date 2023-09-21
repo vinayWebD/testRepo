@@ -5,15 +5,16 @@ import { PATHS } from '../../constants/urlPaths';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
-import { MESSAGES } from '../../constants/messages';
+import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
 import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { forgotPasswordOtpDispatcher } from '../../redux/dispatchers/authDispatcher';
 import Modal from '../../components/Modal';
 import CheckIcon from '../../components/Icons/CheckIcon';
+import { sendForgotPasswordOtp } from '../../services/auth';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { getErrorMessage, successStatus } from '../../common';
 
 const { LOGIN, PATH_VERIFY_EMAIL } = PATHS;
 const {
@@ -28,6 +29,7 @@ const { IS_REQUIRED, EMAIL_INVALID } = MESSAGES;
 const { EMAIL_PATTERN } = REGEX;
 const { FORGOT_PWD } = VERIFY_EMAIL_ORIGIN;
 const { BTNLBL_CONTINUE } = BUTTON_LABELS;
+const { TST_OTP_GENRATE_FAILED_ID } = TOASTMESSAGES.toastid;
 
 const initialValues = {
   email: '',
@@ -37,14 +39,22 @@ const ForgotPassword = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
-  const dispatch = useDispatch();
 
   const onSubmit = async (values) => {
     if (!isLoading) {
       setIsLoading(true);
-      const { status } = await dispatch(forgotPasswordOtpDispatcher(values));
-      setIsLoading(false);
-      setIsSuccessModalOpen(status === 201);
+      let response = await sendForgotPasswordOtp(values);
+      const { status, data } = response;
+
+      if (successStatus(status)) {
+        setIsSuccessModalOpen(true);
+      } else {
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg, TST_OTP_GENRATE_FAILED_ID);
+          setIsLoading(false);
+        }
+      }
     }
   };
 
