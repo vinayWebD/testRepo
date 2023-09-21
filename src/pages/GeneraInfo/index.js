@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
+import secureLocalStorage from 'react-secure-storage';
 import AuthPanelLayout from '../../components/AuthPanelLayout';
 import { Button } from '../../components/common/Button';
 import { PATHS } from '../../constants/urlPaths';
@@ -9,9 +10,17 @@ import Input from '../../components/common/Input';
 import Modal from '../../components/Modal';
 import InputProfilePicture from '../../components/InputProfilePicture';
 import { LANG } from '../../constants/lang';
-import { MESSAGES } from '../../constants/messages';
+import { login } from '../../redux/slices/authSlice';
+import { getErrorMessage, successStatus } from '../../common';
+import { validationSchemaLocation } from '../../validations';
+import {
+  fetchFileUPloadAWS,
+  fetchGenratePreSignedUrl,
+  fetchProfileEdit,
+} from '../../services/signup';
+import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 
-const { PATH_GENERAL_INFO } = PATHS;
+const { HOME } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
@@ -21,27 +30,74 @@ const {
   LANG_SKIP,
 } = LANG.PAGES.GEN_INFO;
 
-function GeneraInfo() {
+function GeneralInfo() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [cropImageFile, setCropImageFile] = useState(null);
+  const [profilePicture, setProfilePicture] = useState('');
   const [open, setOpen] = useState(false);
-  const { IS_REQUIRED } = MESSAGES;
+  const { data: userData } = secureLocalStorage.getItem('object');
+
+  const getPreSignedUrl = async () => {
+    const uploadData = new FormData();
+    if (cropImageFile) {
+      const response = await fetchGenratePreSignedUrl();
+      const { status = 0, data = {} } = response;
+      if (successStatus(status)) {
+        const { fields: { key, AWSAccessKeyId, policy, signature } = {}, url } = data;
+        setProfilePicture(key);
+        uploadData.append('key', key);
+        uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
+        uploadData.append('policy', policy);
+        uploadData.append('signature', signature);
+        uploadData.append('file', cropImageFile);
+        console.log(uploadData, 'uploadData');
+        await fetchFileUPloadAWS({ url: url, dataTosend: uploadData });
+      }
+    }
+  };
+
+  const handleSkip = () => {
+    dispatch(login(userData));
+    secureLocalStorage.clear();
+    navigate(HOME, { replace: true });
+  };
+
+  useEffect(() => {
+    getPreSignedUrl();
+  }, [cropImageFile]);
 
   const initialValues = {
     location: '',
+    profile_picture: profilePicture,
   };
 
-  const onSubmit = (values) => {
-    // Here, you'd typically make an API call to login
-    navigate(PATH_GENERAL_INFO);
-    console.log('Login data:', values);
+  const onSubmit = async (values) => {
+    const { location, profile_picture = '' } = values;
+    const dataToSend = {
+      location: location,
+    };
+    if (profile_picture) {
+      dataToSend['profile_picture'] = profile_picture;
+    }
+    const response = await fetchProfileEdit(dataToSend);
+    const { status, data } = response;
+    const errormsg = getErrorMessage(data);
+    if (successStatus(status)) {
+      ToastNotifySuccess('Location Added Successfully', 'location-success');
+      dispatch(login(userData));
+      secureLocalStorage.clear();
+      navigate(HOME, { replace: true });
+    } else {
+      if (errormsg) {
+        ToastNotifyError(errormsg, 'location-failed');
+      }
+    }
   };
 
   const formik = useFormik({
     initialValues,
-    validationSchema: yup.object().shape({
-      location: yup.string().required(IS_REQUIRED('Location')),
-    }),
+    validationSchema: validationSchemaLocation,
     onSubmit,
   });
 
@@ -69,7 +125,6 @@ function GeneraInfo() {
             onChange={formik.handleChange}
             error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
-            isRequired
           />
         </div>
         <Button
@@ -78,7 +133,7 @@ function GeneraInfo() {
           isDisabled={!formik.values.location}
           additionalClassNames="capitalize"
         />
-        <div className={'text-center para-normal cursor-pointer'} onClick={() => {}}>
+        <div className={'text-center para-normal cursor-pointer'} onClick={handleSkip}>
           {LANG_SKIP}
         </div>
       </form>
@@ -87,4 +142,4 @@ function GeneraInfo() {
   );
 }
 
-export default GeneraInfo;
+export default GeneralInfo;

@@ -71,7 +71,7 @@ const LANG = {
       LANG_LOGIN_SIGN_UP: 'Sign Up',
     },
     SIGNUP: {
-      LANG_SIGNUP_WELCOME_HEADING: 'Create Account',
+      LANG_SIGNUP_WELCOME_HEADING: 'Create An Account',
       LANG_SIGNUP_WELCOME_SUBHEADING: 'Share your thoughts with world from today.',
       LANG_SIGNUP_FIRST_NAME_LABEL: 'First Name',
       LANG_SIGNUP_FIRST_NAME_PLACEHOLDER: 'Enter First name',
@@ -88,6 +88,8 @@ const LANG = {
       LANG_SIGNUP_SAVE_NEXT: 'Save & Next',
       LANG_SIGNUP_HAVE_ACC: 'Already have an account? ',
       LANG_SIGNUP_SIGN_IN: 'LogIn',
+      LANG_SIGNUP_CODE_SENT: 'Code sent successfully',
+      LANG_SIGNUP_CODE_SENT_MAIL: '4 digit verification code have been sent to your email ',
     },
     VERIFY_EMAIL: {
       LANG_VERIFY_EMAIL: 'Verify Email',

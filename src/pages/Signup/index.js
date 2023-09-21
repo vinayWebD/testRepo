@@ -1,18 +1,23 @@
+import { useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import secureLocalStorage from 'react-secure-storage';
+import { useNavigate } from 'react-router';
 import AuthPanelLayout from '../../components/AuthPanelLayout';
 import Input from '../../components/common/Input';
-import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
-import { VALIDATION } from '../../constants/constants';
-import { MESSAGES } from '../../constants/messages';
 import { LANG } from '../../constants/lang';
-import { useNavigate } from 'react-router';
 import { PATHS } from '../../constants/urlPaths';
 import Checkbox from '../../components/Checkbox';
+import { signupUser } from '../../services/signup';
+import { getErrorMessage, successStatus } from '../../common';
+import { validationSchemaSignup } from '../../validations';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { TOASTMESSAGES } from '../../constants/messages';
+import Modal from '../../components/Modal';
+import CheckIcon from '../../components/Icons/CheckIcon';
 
-const { EMAIL_REGEX } = VALIDATION;
 const { LOGIN, PATH_VERIFY_EMAIL } = PATHS;
-const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
+
 const {
   LANG_SIGNUP_WELCOME_HEADING,
   LANG_SIGNUP_WELCOME_SUBHEADING,
@@ -30,7 +35,13 @@ const {
   LANG_SIGNUP_HAVE_ACC,
   LANG_SIGNUP_SIGN_IN,
   LANG_SIGNUP_SAVE_NEXT,
+  LANG_SIGNUP_CODE_SENT,
+  LANG_SIGNUP_CODE_SENT_MAIL,
 } = LANG.PAGES.SIGNUP;
+
+const {
+  errorToast: { TST_OTP_GENRATE_FAILED = '' },
+} = TOASTMESSAGES;
 
 const initialValues = {
   firstname: '',
@@ -39,27 +50,45 @@ const initialValues = {
   password: '',
 };
 
-function Singup() {
+function Signup() {
   const navigate = useNavigate();
-  const onSubmit = () => {
-    // Here, you'd typically make an API call to login
-    navigate(PATH_VERIFY_EMAIL);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+
+  const onSubmit = async (values) => {
+    setIsLoading(true);
+    const { firstname = '', lastname = '', email = '', password = '' } = values;
+    const dataToSend = {
+      first_name: firstname.trim(),
+      last_name: lastname.trim(),
+      password: password.trim().toLowerCase(),
+      email: email.trim(),
+    };
+    const response = await signupUser(dataToSend);
+    const { status, data } = response;
+    setIsLoading(false);
+    const errormsg = getErrorMessage(data);
+    if (successStatus(status)) {
+      secureLocalStorage.setItem('object', { dataToSend });
+      setIsSuccessModalOpen(true);
+    } else {
+      if (errormsg) {
+        ToastNotifyError(errormsg, TST_OTP_GENRATE_FAILED);
+      }
+    }
   };
+
+  useEffect(() => {
+    if (isSuccessModalOpen) {
+      setTimeout(() => {
+        navigate(PATH_VERIFY_EMAIL);
+      }, 3000);
+    }
+  }, [isSuccessModalOpen]);
 
   const formik = useFormik({
     initialValues,
-    validationSchema: yup.object().shape({
-      firstname: yup.string().required(IS_REQUIRED('First Name')),
-      lastname: yup.string().required(IS_REQUIRED('Last Name')),
-      email: yup
-        .string()
-        .required(IS_REQUIRED('Email'))
-        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_REGEX.test(value)),
-      password: yup
-        .string()
-        .required(IS_REQUIRED('Password'))
-        .test('isPasswordLengthValid', PASSWORD_INVALID, (value) => value && value.length >= 6),
-    }),
+    validationSchema: validationSchemaSignup,
     onSubmit,
   });
 
@@ -139,9 +168,15 @@ function Singup() {
           </div>
         </div>
         <Button
+          isLoading={isLoading}
           label={LANG_SIGNUP_SAVE_NEXT}
           type="submit"
-          isDisabled={!formik.values.email && !formik.values.password}
+          isDisabled={
+            formik.values.firstname &&
+            formik.values.lastname &&
+            !formik.values.email &&
+            !formik.values.password
+          }
           additionalClassNames="capitalize"
         />
         <div className="text-white text-center cursor-pointer mb-9" onClick={() => navigate(LOGIN)}>
@@ -151,8 +186,21 @@ function Singup() {
           </span>
         </div>
       </form>
+      <Modal
+        isOpen={isSuccessModalOpen}
+        onClose={() => setIsSuccessModalOpen(false)}
+        isTitle={false}
+      >
+        <div className="flex items-center flex-col text-center py-8">
+          <CheckIcon />
+          <div className="text-[28px] font-medium text-greydark">{LANG_SIGNUP_CODE_SENT}</div>
+          <h4 className="text-greydark font-medium">
+            {LANG_SIGNUP_CODE_SENT_MAIL} {formik?.values?.email}
+          </h4>
+        </div>
+      </Modal>
     </AuthPanelLayout>
   );
 }
 
-export default Singup;
+export default Signup;

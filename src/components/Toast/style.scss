@@ -1,0 +1,26 @@
+.Toastify {
+  .Toastify__close-button {
+    display: block;
+    svg {
+      fill: #ffffff;
+    }
+  }
+  .Toastify__toast-container {
+    text-align: center;
+  }
+
+  .Toastify__toast-icon {
+    svg {
+      fill: #ffffff;
+    }
+  }
+
+  .Toastify__toast--info,
+  .Toastify__toast--success,
+  .Toastify__toast--error {
+    border-radius: 4px;
+    font-weight: 500;
+    color: #ffffff;
+    font-size: 15px;
+  }
+}
