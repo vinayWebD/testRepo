@@ -1,10 +1,10 @@
 import { createBrowserRouter, Navigate } from 'react-router-dom';
 import { PATHS } from './constants/urlPaths';
 import HomePage from './pages/HomePage';
-import GeneraInfo from './pages/GeneraInfo';
+import GeneralInfo from './pages/GeneraInfo';
 import LandingPage from './pages/LandingPage';
 import LoginPage from './pages/LoginPage';
-import Singup from './pages/Signup';
+import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
 
 const { LANDING, LOGIN, HOME, PATH_SIGNUP, PATH_VERIFY_EMAIL, PATH_GENERAL_INFO } = PATHS;
@@ -24,7 +24,7 @@ const publicRoutes = createBrowserRouter([
   },
   {
     path: PATH_SIGNUP,
-    element: <Singup />,
+    element: <Signup />,
   },
   {
     path: PATH_VERIFY_EMAIL,
@@ -32,7 +32,7 @@ const publicRoutes = createBrowserRouter([
   },
   {
     path: PATH_GENERAL_INFO,
-    element: <GeneraInfo />,
+    element: <GeneralInfo />,
   },
 ]);
 

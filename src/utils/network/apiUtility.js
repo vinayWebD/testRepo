@@ -13,12 +13,13 @@ import api from './axiosConfig';
  * @returns {Object} Returns an object with the response data and status.
  *                   In case of a 401 error, it dispatches the logout action, else returns the error.
  */
-const apiUtility = async (endpoint, method = 'GET', data, dispatch = () => {}) => {
+const apiUtility = async (url, method = 'GET', data, useAuthToken = true, dispatch = () => {}) => {
   try {
     const response = await api({
       method,
-      url: `${process.env.REACT_APP_API_BASE_URL}${endpoint}`,
+      url,
       data,
+      useAuthToken,
     });
     return { data: response.data, status: response.status };
   } catch (error) {
