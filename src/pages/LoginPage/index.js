@@ -10,6 +10,8 @@ import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { loginDispatcher } from '../../redux/dispatchers/authDispatcher';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 const { EMAIL_REGEX } = VALIDATION;
 const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
@@ -26,6 +28,7 @@ const {
 } = LANG.PAGES.LOGIN;
 
 const { BTNLBL_LOGIN } = BUTTON_LABELS;
+const { FORGOT_PASSWORD, PATH_SIGNUP } = PATHS;
 
 const initialValues = {
   email: '',
@@ -35,6 +38,7 @@ const initialValues = {
 function LoginPage() {
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
   const onSubmit = async (values) => {
     if (!isLoading) {
@@ -99,7 +103,10 @@ function LoginPage() {
             isRequired
             className="w-full"
           />
-          <div className="text-right text-white text-[14px] font-semibold mt-1">
+          <div
+            className="text-right text-white text-[14px] font-semibold mt-1 cursor-pointer"
+            onClick={() => navigate(FORGOT_PASSWORD)}
+          >
             {LANG_LOGIN_FORGOT_PWD}
           </div>
         </div>
@@ -114,7 +121,10 @@ function LoginPage() {
 
         <p className="text-white text-center">
           {LANG_LOGIN_DONT_HAVE_ACC}
-          <strong> {LANG_LOGIN_SIGN_UP}</strong>
+          <strong className="cursor-pointer" onClick={() => navigate(PATH_SIGNUP)}>
+            {' '}
+            {LANG_LOGIN_SIGN_UP}
+          </strong>
         </p>
       </form>
     </AuthPanelLayout>

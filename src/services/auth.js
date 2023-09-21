@@ -1,6 +1,6 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
-const { LOGIN, LOGOUT, PROFILE } = NETWORK_CONSTANTS;
+const { LOGIN, LOGOUT, PROFILE, FORGOT_PASSWORD_OTP } = NETWORK_CONSTANTS;
 
 /**
  * Function for API calling of login
@@ -49,4 +49,25 @@ const userProfile = async (dispatch) => {
   }
 };
 
-export { loginUser, logoutUser, userProfile };
+/**
+ * The API for sending OTP for forgot password
+ * @param {*} dispatch
+ * @returns
+ */
+const sendForgotPasswordOtp = async ({ email, dispatch }) => {
+  try {
+    const { data, status } = await apiUtility(
+      FORGOT_PASSWORD_OTP,
+      'POST',
+      {
+        email,
+      },
+      dispatch,
+    );
+    return { data, status };
+  } catch (error) {
+    return { error };
+  }
+};
+
+export { loginUser, logoutUser, userProfile, sendForgotPasswordOtp };
