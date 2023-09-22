@@ -14,9 +14,14 @@ const {
  * @param {*} param0
  * @returns
  */
-const loginUser = async ({ email, password, dispatch }) => {
+const loginUser = async ({ email = '', password = '', dispatch }) => {
   try {
-    const { status, data } = await apiUtility(LOGIN, 'POST', { email, password }, dispatch);
+    const { status, data } = await apiUtility(
+      LOGIN,
+      'POST',
+      { email: email.trim(), password: password.trim() },
+      dispatch,
+    );
 
     return { status, data };
   } catch (error) {
@@ -61,13 +66,13 @@ const userProfile = async (dispatch) => {
  * @param {*} dispatch
  * @returns
  */
-const sendForgotPasswordOtp = async ({ email, dispatch }) => {
+const sendForgotPasswordOtp = async ({ email = '', dispatch }) => {
   try {
     const { data, status } = await apiUtility(
       FORGOT_PASSWORD_OTP,
       'POST',
       {
-        email,
+        email: email.trim(),
       },
       dispatch,
     );
@@ -82,9 +87,12 @@ const sendForgotPasswordOtp = async ({ email, dispatch }) => {
  * @param {*} param0
  * @returns
  */
-const forgotPasswordOtpValidation = async ({ email, code }) => {
+const forgotPasswordOtpValidation = async ({ email = '', code }) => {
   try {
-    const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', { email, code });
+    const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', {
+      email: email.trim(),
+      code,
+    });
     return response;
   } catch (error) {
     return error;
@@ -96,9 +104,13 @@ const forgotPasswordOtpValidation = async ({ email, code }) => {
  * @param {*} param0
  * @returns
  */
-const resetPassword = async ({ email, code, password }) => {
+const resetPassword = async ({ email = '', code, password = '' }) => {
   try {
-    const response = await apiUtility(FORGOT_PASSWORD_RESET_PWD, 'PUT', { email, code, password });
+    const response = await apiUtility(FORGOT_PASSWORD_RESET_PWD, 'PUT', {
+      email: email.trim(),
+      code,
+      password: password.trim(),
+    });
     return response;
   } catch (error) {
     return error;
