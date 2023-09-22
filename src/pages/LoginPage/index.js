@@ -1,6 +1,5 @@
 import { useFormik } from 'formik';
 import AuthPanelLayout from '../../components/AuthPanelLayout';
-import Divider from '../../components/common/Divider';
 import Input from '../../components/common/Input';
 import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
@@ -77,11 +76,12 @@ function LoginPage() {
   return (
     <AuthPanelLayout>
       <h1 className="text-white pr-2">{LANG_LOGIN_WELCOME_HEADING}</h1>
-      <h4 className="text-white mt-2 mb-4 pr-2">{LANG_LOGIN_WELCOME_SUBHEADING}</h4>
-      <Divider width="90%" />
+      <div className="border-b border-[#F2F2F233] max-w-fit">
+        <h4 className="text-white mt-2 mb-4 pr-2">{LANG_LOGIN_WELCOME_SUBHEADING}</h4>
+      </div>
 
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px]">
-        <div className="mt-[15px]">
+        <div className="mt-6 md:mt-[15px]">
           <Input
             label={LANG_LOGIN_EMAIL_LABEL}
             placeholder={LANG_LOGIN_EMAIL_PLACEHOLDER}
