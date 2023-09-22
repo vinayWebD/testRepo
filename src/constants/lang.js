@@ -18,20 +18,22 @@ const LANG = {
       LANG_HOMEPAGE_WE_ARE:
         'We are passionate about linking human capital with satisfaction. It is more than merely producing output. It is about attaining fulfillment, discovering purpose, and providing to society while remaining genuine to oneself.',
       LANG_HOMEPAGE_OUR_VIEW: 'Our View',
-      LANG_HOMEPAGE_OUR_VIEW_LONG: `Our view of the workforce is that it comprises people with different abilities, ambitions, and motivations. We trust that everyone reaps the benefits when we encourage people to express themselves fully, locate chances aligned with their values, interests, and skills, and connect with entities and individuals who share their purpose.
-      We are not only a platform; we are a revolution. Our movement fosters genuineness, inclusivity, and development, empowering people and companies to locate their compass and build meaningful relationships.`,
+      LANG_HOMEPAGE_OUR_VIEW_LONG1:
+        'Our view of the workforce is that it comprises people with different abilities, ambitions, and motivations. We trust that everyone reaps the benefits when we encourage people to express themselves fully, locate chances aligned with their values, interests, and skills, and connect with entities and individuals who share their purpose.',
+      LANG_HOMEPAGE_OUR_VIEW_LONG2:
+        'We are not only a platform; we are a revolution. Our movement fosters genuineness, inclusivity, and development, empowering people and companies to locate their compass and build meaningful relationships.',
       LANG_HOMEPAGE_JOIN_US:
         'Join us, and let us shift work from merely being a source of pay to becoming a well of satisfaction.',
       LANG_HOMEPAGE_HOW_WORK: 'How does PurDriven work?',
       LANG_HOMEPAGE_WONDERING:
         'Wondering how our platform works? We depend on fundamentals not limited to expansion, depth, and potential.',
-      LANG_HOMEPAGE_EXPANSION: 'Expansion',
+      LANG_HOMEPAGE_EXPANSION: 'Work - Expansion',
       LANG_HOMEPAGE_EXPANSION_PARA:
         'Purdriven allows you to showcase all your talents in one place, offering you an increased chance of discovering a job or exploring exciting opportunities by combining your skills. Research indicates that employees who utilize strengths at work are more engaged, satisfied, and motivated to invest in their roles. At PurDriven, we highly value individuals with potential. Having carefully designed our platform to cater to this significant segment of the workforce that often requires more than one platform to exhibit their work and abilities.',
-      LANG_HOMEPAGE_DEPTH: 'Depth',
+      LANG_HOMEPAGE_DEPTH: 'Myself - Depth',
       LANG_HOMEPAGE_DEPTH_PARA:
         'Understanding oneself is crucial when it comes to finding a fulfilling career. Our search filters go beyond skills by encompassing elements empowering individuals to find the perfect match for their growth and fulfillment. You alone know what brings you a sense of purpose and meaning. We encourage you to find how to leverage your unique talents to make meaningful contributions.',
-      LANG_HOMEPAGE_POTENTIAL: 'Potential',
+      LANG_HOMEPAGE_POTENTIAL: 'Interests - Potential',
       LANG_HOMEPAGE_POTENTIAL_PARA:
         'Creativity has become a valued attribute of job candidates today. Many entrepreneurs and founders created successful businesses from their interests and passions. At PurDriven, we actively encourage people to share their interests igniting the potential for business ventures or opportunities.',
       LANG_HOMEPAGE_WE_AIM: 'We Aim to',

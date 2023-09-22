@@ -15,7 +15,7 @@ export const Button = ({
       onClick={onClick}
       type={type}
       disabled={isDisabled}
-      className={`${additionalClassNames} group flex justify-center items-center rounded-[40px] h-[50px] px-[50px] py-[16px] text-white ${
+      className={`${additionalClassNames} group flex justify-center items-center rounded-[40px] h-[40px] md:h-[50px] px-[50px] py-[16px] text-white ${
         isDisabled ? 'bg-greymedium' : 'bg-gradient-button'
       }`}
     >

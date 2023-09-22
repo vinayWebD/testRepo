@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './style.scss';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { Carousel } from 'react-responsive-carousel';
@@ -9,12 +9,24 @@ import linkdinicon from '../../components/Icons/linkdinicon.svg';
 import facebook from '../../components/Icons/facebook.svg';
 import footerIcon from '../../components/Icons/footerIcon.png';
 import WorkCard from '../../components/Workcard';
-import { NormalButton } from '../../components/Button';
 import { MailIcon } from '../../components/Icons/MailIcon';
 import Navbar from '../../components/Navbar.js';
 import { LANG, BUTTON_LABELS } from '../../constants/lang';
+import { Button } from '../../components/common/Button';
+import { useNavigate } from 'react-router';
+import { PATHS } from '../../constants/urlPaths';
+import userimg from '../../assets/images/ludgi.svg';
+import { ReadMore } from './ReadMore';
+
+const { PATH_SIGNUP = '' } = PATHS;
 
 export default function LandingPage() {
+  const navigate = useNavigate();
+
+  useState(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const {
     PAGES: {
       HOMEPAGE: {
@@ -23,7 +35,8 @@ export default function LandingPage() {
         LANG_HOMEPAGE_OUR_PERPOSE,
         LANG_HOMEPAGE_WE_ARE,
         LANG_HOMEPAGE_OUR_VIEW,
-        LANG_HOMEPAGE_OUR_VIEW_LONG,
+        LANG_HOMEPAGE_OUR_VIEW_LONG1,
+        LANG_HOMEPAGE_OUR_VIEW_LONG2,
         LANG_HOMEPAGE_JOIN_US,
         LANG_HOMEPAGE_HOW_WORK,
         LANG_HOMEPAGE_WONDERING,
@@ -69,8 +82,8 @@ export default function LandingPage() {
             <div className="vertical-divider" />
             <div className="flex flex-col">
               <div className="sub-title">{LANG_HOMEPAGE_OUR_PERPOSE}</div>
-              <div className="lg:mt-8 mt-4">
-                <NormalButton label={BTNLBL_SIGNUP} isIcon={true} />
+              <div className="lg:mt-7 mt-4">
+                <Button label={BTNLBL_SIGNUP} isIcon={true} onClick={() => navigate(PATH_SIGNUP)} />
               </div>
             </div>
           </div>
@@ -78,26 +91,27 @@ export default function LandingPage() {
       </section>
       <section className="join-section">
         <div className="join-para">{LANG_HOMEPAGE_WE_ARE}</div>
-        <div className="text-center mt-8">
-          <NormalButton label={BTNLBL_JOIN_PUR} isIcon={true} />
+        <div className="mt-8 flex justify-center">
+          <Button label={BTNLBL_JOIN_PUR} isIcon={true} onClick={() => navigate(PATH_SIGNUP)} />
         </div>
       </section>
       <section className="ourview-section">
         <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
         <div className="underline" />
-        <div className="content mt-2">{LANG_HOMEPAGE_OUR_VIEW_LONG}</div>
+        <div className="content mt-2">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
+        <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
         <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
       </section>
-      <section className="work-section">
+      <section className="work-section pb-8">
         <div className="heading">{LANG_HOMEPAGE_HOW_WORK}</div>
         <div className="underline" />
         <div className="content mt-2">{LANG_HOMEPAGE_WONDERING}</div>
+
         <Carousel
           showArrows={false}
           autoFocus={true}
           showThumbs={false}
           showStatus={false}
-          useKeyboardArrows
           className="presentation-mode"
         >
           <WorkCard title={LANG_HOMEPAGE_EXPANSION} content={LANG_HOMEPAGE_EXPANSION_PARA} />
@@ -105,7 +119,37 @@ export default function LandingPage() {
           <WorkCard title={LANG_HOMEPAGE_POTENTIAL} content={LANG_HOMEPAGE_POTENTIAL_PARA} />
         </Carousel>
       </section>
-      <section className="weaim-section">
+      <section className="about-section">
+        <div className="flex gap-[32px]">
+          <div className="hidden md:block">
+            <img src={userimg} alt="" />
+          </div>
+          <div className="flex flex-col">
+            <div className="heading">
+              About the founder
+              <div className="underline" />
+            </div>
+            <div className="md:hidden pt-4 block">
+              <img src={userimg} alt="" />
+            </div>
+            <div className="name p-0 lg:pt-4">- Ludgi Windrich</div>
+          </div>
+        </div>
+        <div className="mt-4">
+          <ReadMore>
+            {`My vision for PurDriven is to be a place where people feel comfortable being authentic.
+            People are accepted, respected, embraced, inspired, and empowered to be themselves and
+            use their uniqueness to contribute.Reaching my potential and making this life worth
+            living have been at the top of my life’s goals list for a while. And I see a strong
+            connection between potential, authenticity, and purpose. I see myself being aligned with
+            my purpose only if I am authentic to my core beliefs and who I am and then naturally
+            navigate towards my potential. I am grateful for creating a platform and a business that
+            fully aligns with who I am. And I wish that to everybody. I share the same sentiment
+            everyone has when doing something they love: fulfillment and gratitude.`}
+          </ReadMore>
+        </div>
+      </section>
+      <section className="weaim-section hidden">
         <div className="heading">{LANG_HOMEPAGE_WE_AIM}</div>
         <div className="underline" />
         <div className="content mt-2">{LANG_HOMEPAGE_WE_HIGHLIGHT}</div>
@@ -133,7 +177,7 @@ export default function LandingPage() {
         </ul>
       </section>
       <footer>
-        <div className="footer-logo">
+        <div className="footer-logo mb-6">
           <FooterLogoIcon />
         </div>
         <div className="landing-footer">
@@ -180,7 +224,7 @@ export default function LandingPage() {
           <div>
             <div>
               <div className="footer-link-heading">{LANG_HOMEPAGE_CONNECT}</div>
-              <div className="flex gap-6 items-center mt-5 ">
+              <div className="flex gap-6 items-center mt-5 pb-8">
                 <div className="social-links">
                   <a href="#">
                     <img src={linkdinicon} alt="" />

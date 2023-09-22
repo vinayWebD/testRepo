@@ -2,7 +2,6 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  opacity: 0.9;
   background: linear-gradient(
     90deg,
     #fff -4.59%,
@@ -13,4 +12,32 @@
     #eff6fb 91.3%
   );
   backdrop-filter: blur(38.5px);
+  .menu-items {
+    color: #fff;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+    @media screen and (max-width: 900px) {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 700;
+    }
+  }
+}
+.navbar-wrap-mobile {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  opacity: 0.9;
+  background: linear-gradient(
+    90deg,
+    #fff 9.44%,
+    rgba(108, 173, 216, 0.8) 27.9%,
+    rgba(0, 113, 188, 0.46) 47.13%,
+    rgba(108, 173, 216, 0.8) 73.85%,
+    #eff6fb 91.3%
+  );
+  // backdrop-filter: blur(38.5px);
 }

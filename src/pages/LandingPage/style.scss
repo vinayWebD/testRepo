@@ -7,13 +7,14 @@
     #2e8bc9 71.3%,
     #89c0e4 100%
   );
-  min-height: 2400px;
   position: relative;
+  z-index: -1;
 
   .hero-section {
     height: 700px;
     width: 100%;
     background-image: url('../../assets/images/hero.png');
+    background-size: 100% 100%;
     .content-box {
       padding-top: 196px;
       padding-left: 100px;
@@ -92,13 +93,11 @@
     }
   }
   .work-section {
-    height: 716px;
-    margin-top: 50px;
-    padding: 0 100px;
-    background-image: url('../../assets/images/work.png');
-    background-size: contain;
+    margin-top: 75px;
+    padding: 0 100px 32px 100px;
+    background-image: url('../../assets/images/work.svg');
     .heading {
-      padding-top: 60px;
+      padding-top: 64px;
       color: #fff;
       font-family: Montserrat;
       font-size: 48px;
@@ -114,9 +113,30 @@
       font-style: normal;
       font-weight: 500;
       line-height: 24px;
-      margin-bottom: 42px;
     }
   }
+  .about-section {
+    padding: 54px 100px;
+    background-color: #197fc3;
+    min-height: 417px;
+    .heading {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 48px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 60px; /* 125% */
+    }
+    .name {
+      color: #fff;
+      font-family: Montserrat;
+      font-size: 24px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: normal;
+    }
+  }
+
   .weaim-section {
     padding: 0 100px;
     .heading {
@@ -152,14 +172,14 @@
     }
   }
   .footer-logo {
-    margin-top: 130px;
+    margin-top: 32px;
     padding: 0 100px;
   }
   .landing-footer {
     position: relative;
   }
   .landing-footer {
-    padding: 32px 100px;
+    padding: 0 100px;
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -224,12 +244,27 @@
     height: 2px;
     background: #f2f2f2;
   }
+  .carousel-slider {
+    padding-bottom: 18px !important;
+  }
+  .yellow-text {
+    color: #fdc60b;
+  }
+  .about-para {
+    color: #fff;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 24px;
+  }
   @media screen and (max-width: 600px) {
     .join-section,
     .ourview-section,
     .work-section,
     .weaim-section,
-    .landing-footer {
+    .landing-footer,
+    .about-section {
       padding-left: 36px;
       padding-right: 36px;
     }
@@ -270,7 +305,8 @@
         font-weight: 500;
       }
     }
-    .ourview-section {
+    .ourview-section,
+    .about-section {
       .heading {
         font-size: 28px;
         line-height: 34px;
@@ -284,6 +320,39 @@
       margin-top: 16px;
       gap: 30px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+  }
+  @media only screen and (min-width: 600px) and (max-width: 1024px) {
+    .join-section,
+    .ourview-section,
+    .work-section,
+    .weaim-section,
+    .landing-footer,
+    .about-section {
+      padding-left: 36px;
+      padding-right: 36px;
+    }
+    .hero-section {
+      height: 420px;
+      .content-box {
+        padding-top: 96px;
+        padding-left: 36px;
+        .title {
+          font-size: 28px;
+          line-height: 34px;
+          .next-gen {
+            color: #fdc60b;
+          }
+        }
+        .sub-content {
+          .sub-title {
+            font-size: 12px;
+            font-weight: 500;
+            line-height: 18px;
+            max-width: 250px;
+          }
+        }
+      }
     }
   }
 }
