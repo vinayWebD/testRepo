@@ -1,10 +1,8 @@
 import { useFormik } from 'formik';
 import AuthPanelLayout from '../../components/AuthPanelLayout';
 import Input from '../../components/common/Input';
-import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
-import { REGEX } from '../../constants/constants';
-import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
+import { TOASTMESSAGES } from '../../constants/messages';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { loginDispatcher } from '../../redux/dispatchers/authDispatcher';
 import { useDispatch } from 'react-redux';
@@ -13,9 +11,8 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { validationLoginSchema } from '../../validations/auth';
 
-const { EMAIL_PATTERN } = REGEX;
-const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
 const {
   LANG_LOGIN_WELCOME_HEADING,
   LANG_LOGIN_WELCOME_SUBHEADING,
@@ -60,16 +57,7 @@ function LoginPage() {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: yup.object().shape({
-      email: yup
-        .string()
-        .required(IS_REQUIRED('Email'))
-        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_PATTERN.test(value)),
-      password: yup
-        .string()
-        .required(IS_REQUIRED('Password'))
-        .test('isPasswordLengthValid', PASSWORD_INVALID, (value) => value && value.length >= 6),
-    }),
+    validationSchema: validationLoginSchema,
     onSubmit,
   });
 
@@ -80,7 +68,7 @@ function LoginPage() {
         <h4 className="text-white mt-2 mb-4 pr-2">{LANG_LOGIN_WELCOME_SUBHEADING}</h4>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px]">
+      <form onSubmit={formik.handleSubmit} noValidate className="flex flex-col gap-[24px]">
         <div className="mt-6 md:mt-[15px]">
           <Input
             label={LANG_LOGIN_EMAIL_LABEL}
@@ -119,7 +107,6 @@ function LoginPage() {
         <Button
           label={BTNLBL_LOGIN}
           type="submit"
-          isDisabled={!formik.values.email && !formik.values.password}
           additionalClassNames="capitalize"
           isLoading={isLoading}
         />

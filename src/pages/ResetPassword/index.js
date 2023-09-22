@@ -1,9 +1,8 @@
 import { useFormik } from 'formik';
 import AuthPanelLayout from '../../components/AuthPanelLayout';
 import Input from '../../components/common/Input';
-import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
-import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
+import { TOASTMESSAGES } from '../../constants/messages';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { useEffect, useState } from 'react';
 import { BackArrowIcon } from '../../components/Icons/BackArrowIcon';
@@ -13,8 +12,8 @@ import { PATHS } from '../../constants/urlPaths';
 import { resetPassword } from '../../services/auth';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
+import { validationResetPwdSchema } from '../../validations/auth';
 
-const { IS_REQUIRED, PASSWORD_INVALID, CONFIRM_PASSWORD_MISMATCH } = MESSAGES;
 const {
   LANG_GEN_WELCOME_HEADING,
   LANG_GEN_WELCOME_SUBHEADING,
@@ -78,16 +77,7 @@ function ResetPassword() {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: yup.object().shape({
-      password: yup
-        .string()
-        .required(IS_REQUIRED('Password'))
-        .test('isPasswordLengthValid', PASSWORD_INVALID, (value) => value && value.length >= 6),
-      confirmPassword: yup
-        .string()
-        .required(IS_REQUIRED('Confirm Password'))
-        .oneOf([yup.ref('password'), null], CONFIRM_PASSWORD_MISMATCH),
-    }),
+    validationSchema: validationResetPwdSchema,
     onSubmit,
   });
 
@@ -104,7 +94,7 @@ function ResetPassword() {
       </div>
 
       <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px] mt-4">
-        <div>
+        <div className="mt-6 md:mt-[15px]">
           <Input
             label={LANG_PWD_LABEL}
             placeholder={LANG_PWD_PLACEHOLDER}
