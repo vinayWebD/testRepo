@@ -1,6 +1,13 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
-const { LOGIN, LOGOUT, PROFILE } = NETWORK_CONSTANTS;
+const {
+  LOGIN,
+  LOGOUT,
+  PROFILE,
+  FORGOT_PASSWORD_OTP,
+  FORGOT_PASSWORD_VERIFY_OTP,
+  FORGOT_PASSWORD_RESET_PWD,
+} = NETWORK_CONSTANTS;
 
 /**
  * Function for API calling of login
@@ -13,7 +20,7 @@ const loginUser = async ({ email, password, dispatch }) => {
 
     return { status, data };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
@@ -30,7 +37,7 @@ const logoutUser = async (dispatch) => {
 
     return 204;
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
@@ -45,8 +52,64 @@ const userProfile = async (dispatch) => {
 
     return { data, status };
   } catch (error) {
-    return { error };
+    return error;
   }
 };
 
-export { loginUser, logoutUser, userProfile };
+/**
+ * The API for sending OTP for forgot password
+ * @param {*} dispatch
+ * @returns
+ */
+const sendForgotPasswordOtp = async ({ email, dispatch }) => {
+  try {
+    const { data, status } = await apiUtility(
+      FORGOT_PASSWORD_OTP,
+      'POST',
+      {
+        email,
+      },
+      dispatch,
+    );
+    return { data, status };
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * API for validating OTP from forgot password
+ * @param {*} param0
+ * @returns
+ */
+const forgotPasswordOtpValidation = async ({ email, code }) => {
+  try {
+    const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', { email, code });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+/**
+ * API for resetting the password from forgot password
+ * @param {*} param0
+ * @returns
+ */
+const resetPassword = async ({ email, code, password }) => {
+  try {
+    const response = await apiUtility(FORGOT_PASSWORD_RESET_PWD, 'PUT', { email, code, password });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {
+  loginUser,
+  logoutUser,
+  userProfile,
+  sendForgotPasswordOtp,
+  forgotPasswordOtpValidation,
+  resetPassword,
+};

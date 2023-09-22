@@ -15,12 +15,21 @@ import api from './axiosConfig';
  */
 const apiUtility = async (url, method = 'GET', data, useAuthToken = true, dispatch = () => {}) => {
   try {
-    const response = await api({
+    const config = {
       method,
       url,
-      data,
       useAuthToken,
-    });
+    };
+
+    // If it's a GET request and data is provided, treat data as query params
+    if (method === 'GET' && data) {
+      config.params = data;
+    } else {
+      config.data = data;
+    }
+
+    const response = await api(config);
+
     return { data: response.data, status: response.status };
   } catch (error) {
     if (error?.response?.status === 401) {

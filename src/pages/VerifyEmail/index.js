@@ -8,18 +8,23 @@ import { BackArrowIcon } from '../../components/Icons/BackArrowIcon';
 import { PATHS } from '../../constants/urlPaths';
 import { useScreenWidth } from '../../hooks';
 import { LANG, BUTTON_LABELS } from '../../constants/lang';
+import { useSearchParams, useLocation } from 'react-router-dom';
+import { forgotPasswordOtpValidation, sendForgotPasswordOtp } from '../../services/auth';
 import { getErrorMessage, successStatus } from '../../common';
 import { signupUser, verifyEmail } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import { TOASTMESSAGES } from '../../constants/messages';
+import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 
-const { PATH_GENERAL_INFO } = PATHS;
+const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD } = PATHS;
 const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_VER_CODE, LANG_RESEND } = LANG.PAGES.VERIFY_EMAIL;
 const { BTNLBL_VERIFY } = BUTTON_LABELS;
+const { FORGOT_PWD } = VERIFY_EMAIL_ORIGIN;
+const { EMAIL_PATTERN } = REGEX;
 
 const {
   successToast: { TST_SIGNUP_SUCCESSFULLY = '', TST_CODESENT_SUCCESSFULLY = '' },
-  errorToast: { TST_OTP_VRIFY_FAILED = '', TST_OTP_RESNED_ID = '' },
+  errorToast: { TST_OTP_VRIFY_FAILED = '', TST_OTP_RESNED_ID = '', TST_OTP_GENRATE_FAILED = '' },
   toastid: { TST_SIGNUP_SUCCESS_ID, TST_CODERESEND_SUCCESS_ID },
 } = TOASTMESSAGES;
 
@@ -28,9 +33,12 @@ function VerifyEmail() {
   const width = useScreenWidth();
   const [otp, setOtp] = useState(null);
   const [counter, setCounter] = useState(59);
+  const [email, setEmail] = useState(null);
+  const [searchParams] = useSearchParams();
+  const historyType = searchParams.get('type');
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const { dataToSend: userData } = secureLocalStorage.getItem('object');
-  const { email } = userData;
+  const { dataToSend: userData = {} } = secureLocalStorage.getItem('object') || {};
 
   const otpInputStyle = {
     fontSize: '16px',
@@ -48,9 +56,34 @@ function VerifyEmail() {
     return () => clearInterval(timer);
   }, [counter]);
 
+  useEffect(() => {
+    if (historyType === FORGOT_PWD) {
+      setEmail(location?.state?.email);
+    } else {
+      setEmail(userData?.email);
+    }
+  }, [historyType]);
+
+  useEffect(() => {
+    // Navigating the user back to login if the email is invalid
+    if (
+      historyType === FORGOT_PWD &&
+      ![undefined, null].includes(email) &&
+      !EMAIL_PATTERN.test(email)
+    ) {
+      console.log('dgbsfsybfuahs', historyType, email, !EMAIL_PATTERN.test(email));
+      navigate(LOGIN);
+    }
+  }, [email]);
+
   const resendHandler = async () => {
     setCounter(59);
-    const response = await signupUser(userData);
+    let response;
+    if (historyType === FORGOT_PWD) {
+      response = await sendForgotPasswordOtp({ email });
+    } else {
+      response = await signupUser(userData);
+    }
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
     if (successStatus(status)) {
@@ -65,27 +98,53 @@ function VerifyEmail() {
   const onSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
-    const dataToSend = {
-      code: otp,
-      email: email,
-    };
-    const response = await verifyEmail(dataToSend);
-    const {
-      status,
-      data: { token = null },
-      data = {},
-    } = response;
-    setIsLoading(false);
-    const errormsg = getErrorMessage(data);
-    if (successStatus(status)) {
-      ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
-      secureLocalStorage.clear();
-      localStorage.setItem('token', token);
-      secureLocalStorage.setItem('object', { data });
-      navigate(PATH_GENERAL_INFO);
+
+    // If the origin is Forgot Password
+    if (historyType === FORGOT_PWD) {
+      const { email = '' } = location?.state || {};
+      const response = await forgotPasswordOtpValidation({ email, code: otp });
+      setIsLoading(false);
+
+      const { status, data } = response;
+
+      if (!successStatus(status)) {
+        const errormsg = getErrorMessage(data);
+
+        if (errormsg) {
+          ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+        }
+      } else {
+        if (data?.is_valid) {
+          navigate(RESET_PASSWORD, {
+            state: { email, code: otp },
+          });
+        } else {
+          ToastNotifyError(TST_OTP_GENRATE_FAILED, TST_OTP_VRIFY_FAILED);
+        }
+      }
     } else {
-      if (errormsg) {
-        ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+      const dataToSend = {
+        code: otp,
+        email,
+      };
+      const response = await verifyEmail(dataToSend);
+      const {
+        status,
+        data: { token = null },
+        data = {},
+      } = response;
+      setIsLoading(false);
+      const errormsg = getErrorMessage(data);
+      if (successStatus(status)) {
+        ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
+        secureLocalStorage.clear();
+        localStorage.setItem('token', token);
+        secureLocalStorage.setItem('object', { data });
+        navigate(PATH_GENERAL_INFO);
+      } else {
+        if (errormsg) {
+          ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+        }
       }
     }
   };
@@ -94,7 +153,7 @@ function VerifyEmail() {
     <AuthPanelLayout>
       <div className="mb-2 border-b border-[#F2F2F233] max-w-fit">
         <div className="flex items-center gap-2">
-          <span className="cursor-pointer" onClick={() => navigate('/login')}>
+          <span className="cursor-pointer" onClick={() => navigate(-1)}>
             <BackArrowIcon />
           </span>
           <h1 className="text-white pr-2">{LANG_VERIFY_EMAIL}</h1>

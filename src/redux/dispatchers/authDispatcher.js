@@ -1,4 +1,4 @@
-import { loginUser, logoutUser, userProfile } from '../../services/auth';
+import { loginUser, logoutUser, sendForgotPasswordOtp, userProfile } from '../../services/auth';
 import { globalLoading, login, logout, profile } from '../slices/authSlice';
 
 /**
@@ -44,4 +44,17 @@ const profileDispatcher = () => async (dispatch) => {
   }
 };
 
-export { loginDispatcher, logoutDispatcher, profileDispatcher };
+/**
+ * To send the Forgot Password Otp
+ * @param {*} param0
+ * @returns
+ */
+const forgotPasswordOtpDispatcher =
+  ({ email }) =>
+  async (dispatch) => {
+    const { status, data } = await sendForgotPasswordOtp({ email, dispatch });
+
+    return { status, data };
+  };
+
+export { loginDispatcher, logoutDispatcher, profileDispatcher, forgotPasswordOtpDispatcher };
