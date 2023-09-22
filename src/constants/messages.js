@@ -1,11 +1,11 @@
 export const MESSAGES = {
   IS_REQUIRED: (label) => `${label} is required`,
   EMAIL_INVALID: 'Invalid email address',
-  PASSWORD_INVALID: 'Password must be at least 6 characters',
   MSG_VALID_EMAIL: 'Enter a valid email',
   MSG_FIELD_LENGTH: (field) => `${field} should not be of more than 50 characters`,
   MSG_PASSWORD_TYPE:
     'Password must contain between 4 and 16 characters with one upper case, lower case and numeric',
+  CONFIRM_PASSWORD_MISMATCH: 'Passwords must match',
 };
 
 export const TOASTMESSAGES = {
@@ -46,5 +46,4 @@ export const TOASTMESSAGES = {
     TST_OTP_VRIFY_FAILED: 'verify-otp-failed',
     TST_OTP_RESNED_ID: 'resend-otp-failed',
   },
-  CONFIRM_PASSWORD_MISMATCH: 'Passwords must match',
 };
