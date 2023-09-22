@@ -96,16 +96,16 @@ export default function LandingPage() {
         </div>
       </section>
       <section className="ourview-section">
-        <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
+        <div className="heading mb-4">{LANG_HOMEPAGE_OUR_VIEW}</div>
         <div className="underline" />
-        <div className="content mt-2">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
+        <div className="content mt-6 md:mt-2">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
         <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
         <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
       </section>
       <section className="work-section pb-8">
         <div className="heading">{LANG_HOMEPAGE_HOW_WORK}</div>
         <div className="underline" />
-        <div className="content mt-2">{LANG_HOMEPAGE_WONDERING}</div>
+        <div className="content mt-2 mb-6 md:mb-0">{LANG_HOMEPAGE_WONDERING}</div>
 
         <Carousel
           showArrows={false}
@@ -136,17 +136,57 @@ export default function LandingPage() {
           </div>
         </div>
         <div className="mt-4">
-          <ReadMore>
-            {`My vision for PurDriven is to be a place where people feel comfortable being authentic.
-            People are accepted, respected, embraced, inspired, and empowered to be themselves and
-            use their uniqueness to contribute.Reaching my potential and making this life worth
-            living have been at the top of my life’s goals list for a while. And I see a strong
-            connection between potential, authenticity, and purpose. I see myself being aligned with
-            my purpose only if I am authentic to my core beliefs and who I am and then naturally
-            navigate towards my potential. I am grateful for creating a platform and a business that
-            fully aligns with who I am. And I wish that to everybody. I share the same sentiment
-            everyone has when doing something they love: fulfillment and gratitude.`}
-          </ReadMore>
+          <ReadMore
+            text={
+              <>
+                My vision for PurDriven is to be a place where people feel comfortable being
+                authentic. People are accepted, respected, embraced, inspired, and empowered to be
+                themselves and use their uniqueness to contribute.
+                <br /> Reaching my potential and making this life worth living have been at the top
+                of my life’s goals list for a while. And I see a strong connection between
+                potential, authenticity, and purpose. I see myself being aligned with my purpose
+                only if I am authentic to my core beliefs and who I am and then naturally navigate
+                towards my potential. I am grateful for creating a platform and a business that
+                fully aligns with who I am. And I wish that to everybody. I share the same sentiment
+                everyone has when doing something they love: fulfillment and gratitude
+              </>
+            }
+            moreText={
+              <>
+                My vision for PurDriven is to be a place where people feel comfortable being
+                authentic. People are accepted, respected, embraced, inspired, and empowered to be
+                themselves and use their uniqueness to contribute.
+                <br /> Reaching my potential and making this life worth living have been at the top
+                of my life’s goals list for a while. And I see a strong connection between
+                potential, authenticity, and purpose. I see myself being aligned with my purpose
+                only if I am authentic to my core beliefs and who I am and then naturally navigate
+                towards my potential. I am grateful for creating a platform and a business that
+                fully aligns with who I am. And I wish that to everybody. I share the same sentiment
+                everyone has when doing something they love: fulfillment and gratitude.
+                <br />
+                PurDriven was born out of the need to find an opportunity that matched who I truly
+                am. What I didn’t know was that quest would lead me to create PurDriven.
+                <br /> One of the first things I did when going through a pivotal time, seeking a
+                more meaningful life, was to update my resume. At that moment, I realized how
+                ineffective it was. It did not help me in any way with my goal of changing careers
+                and finding a purposeful line of work. It was superficial and focused on experience
+                past, not potential forward. We are way more than what we show on our resume. We
+                need a platform to showcase people’s talents, abilities, personalities, interests,
+                and anything else that would portray a truer version of who we are. It needs to be
+                forward-thinking and focused on potential and expansion.
+                <br /> Self-awareness needs to be part of the process. We need to know more about
+                who we are to find and live purposeful lives. PurDriven strives to be a place where
+                people can explore their multipotentialities and better understand who they are and
+                how they can best help others. Authenticity is key. Whether personal or
+                professional, the right match always brings out the best in us. And our best is our
+                authentic self. The ultimate goal is to find it and use it to benefit others. I
+                suspect, for some, PurDriven will be a personal journey. People will evolve along
+                the way, and hopefully, there will be a shift toward a more effective, engaged, and
+                fulfilled workforce. <br />I couldn’t be more excited and thankful to be here,
+                giving life to PurDriven. It is an honor to be part of it.{' '}
+              </>
+            }
+          />
         </div>
       </section>
       <section className="weaim-section hidden">
@@ -183,7 +223,7 @@ export default function LandingPage() {
         <div className="landing-footer">
           <div>
             <div className="purpose-text mb-10">{LANG_HOMEPAGE_AUTHENTIC}</div>
-            <div className="flex items-center gap-6 email pt-4">
+            <div className="flex items-center gap-6 email pt-4 md:pb-4 pb-0">
               <span>
                 <MailIcon />
               </span>

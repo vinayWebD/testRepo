@@ -14,7 +14,6 @@ import { validationSchemaSignup } from '../../validations';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { TOASTMESSAGES } from '../../constants/messages';
 import Modal from '../../components/Modal';
-import CheckIcon from '../../components/Icons/CheckIcon';
 
 const { LOGIN, PATH_VERIFY_EMAIL } = PATHS;
 
@@ -99,7 +98,10 @@ function Signup() {
         <h4 className="text-white mt-2 mb-4 pr-2">{LANG_SIGNUP_WELCOME_SUBHEADING}</h4>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-2">
+      <form
+        onSubmit={formik.handleSubmit}
+        className="flex flex-col gap-[24px] lg:max-w-[400px] mt-2"
+      >
         <div className="mt-[15px] flex items-center gap-8 md:flex-row flex-col ">
           <Input
             label={LANG_SIGNUP_FIRST_NAME_LABEL}
@@ -171,12 +173,6 @@ function Signup() {
           isLoading={isLoading}
           label={LANG_SIGNUP_SAVE_NEXT}
           type="submit"
-          isDisabled={
-            formik.values.firstname &&
-            formik.values.lastname &&
-            !formik.values.email &&
-            !formik.values.password
-          }
           additionalClassNames="capitalize"
         />
         <div className="text-white text-center cursor-pointer mb-9" onClick={() => navigate(LOGIN)}>
@@ -192,7 +188,6 @@ function Signup() {
         isTitle={false}
       >
         <div className="flex items-center flex-col text-center py-8">
-          <CheckIcon />
           <div className="text-[28px] font-medium text-greydark">{LANG_SIGNUP_CODE_SENT}</div>
           <h4 className="text-greydark font-medium">
             {LANG_SIGNUP_CODE_SENT_MAIL} {formik?.values?.email}

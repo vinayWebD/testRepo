@@ -1,4 +1,5 @@
 .landing-page {
+  position: relative;
   background: linear-gradient(
     180deg,
     #1e1b38 0%,
@@ -7,9 +8,6 @@
     #2e8bc9 71.3%,
     #89c0e4 100%
   );
-  position: relative;
-  z-index: -1;
-
   .hero-section {
     height: 700px;
     width: 100%;
@@ -33,7 +31,7 @@
       }
       .sub-content {
         margin: 32px 0px 0px 24px;
-        max-width: 490px;
+        max-width: 75%;
         display: flex;
         .sub-title {
           color: #fff;
