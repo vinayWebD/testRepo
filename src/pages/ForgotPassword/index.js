@@ -4,9 +4,8 @@ import { BackArrowIcon } from '../../components/Icons/BackArrowIcon';
 import { PATHS } from '../../constants/urlPaths';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { useFormik } from 'formik';
-import * as yup from 'yup';
-import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
-import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
+import { TOASTMESSAGES } from '../../constants/messages';
+import { VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { useEffect, useState } from 'react';
@@ -15,6 +14,7 @@ import CheckIcon from '../../components/Icons/CheckIcon';
 import { sendForgotPasswordOtp } from '../../services/auth';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { getErrorMessage, successStatus } from '../../common';
+import { validationForgotPwdSchema } from '../../validations/auth';
 
 const { LOGIN, PATH_VERIFY_EMAIL } = PATHS;
 const {
@@ -25,8 +25,7 @@ const {
   LANG_OTP_SENT_SUCCESS,
   LANG_OTP_SENT_TO_MAIL,
 } = LANG.PAGES.FORGOT_PASSWORD;
-const { IS_REQUIRED, EMAIL_INVALID } = MESSAGES;
-const { EMAIL_PATTERN } = REGEX;
+
 const { FORGOT_PWD } = VERIFY_EMAIL_ORIGIN;
 const { BTNLBL_CONTINUE } = BUTTON_LABELS;
 const { TST_OTP_GENRATE_FAILED_ID } = TOASTMESSAGES.toastid;
@@ -70,12 +69,7 @@ const ForgotPassword = () => {
 
   const formik = useFormik({
     initialValues,
-    validationSchema: yup.object().shape({
-      email: yup
-        .string()
-        .required(IS_REQUIRED('Email'))
-        .test('isValidEmailFormat', EMAIL_INVALID, (value) => EMAIL_PATTERN.test(value)),
-    }),
+    validationSchema: validationForgotPwdSchema,
     onSubmit,
   });
 
@@ -91,8 +85,8 @@ const ForgotPassword = () => {
         <h4 className="text-white mt-2 mb-4 pr-2">{LANG_GEN_WELCOME_SUBHEADING}</h4>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="flex flex-col gap-[24px]">
-        <div className="mt-[15px]">
+      <form onSubmit={formik.handleSubmit} noValidate className="flex flex-col gap-[24px]">
+        <div className="mt-6 md:mt-[15px]">
           <Input
             label={LANG_EMAIL_LABEL}
             placeholder={LANG_EMAIL_PLACEHOLDER}
@@ -110,7 +104,6 @@ const ForgotPassword = () => {
         <Button
           label={BTNLBL_CONTINUE}
           type="submit"
-          isDisabled={!formik.values.email}
           additionalClassNames="capitalize"
           isLoading={isLoading}
         />
