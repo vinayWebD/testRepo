@@ -36,7 +36,7 @@ function AuthPanelLayout({ children }) {
         <img src={HeroVector} alt="Login" className="w-[80%] left-0 mb-[12%]" />
       </div>
 
-      <div className="flex flex-col justify-normal md:pb-20 md:justify-center lg:justify-normal items-center min-h-[100vh] lg:w-[50%] w-[100%] bg-gradient-to-b from-gradientfrom to-gradientto">
+      <div className="flex flex-col justify-normal pb-10 md:pb-20 md:justify-center lg:justify-normal items-center min-h-[100vh] lg:w-[50%] w-[100%] bg-gradient-to-b from-gradientfrom to-gradientto">
         <div className="pt-[30px] md:pt-0 lg:pt-[60px] px-[60px]">
           <img src={Logo} alt="logo" />
         </div>
