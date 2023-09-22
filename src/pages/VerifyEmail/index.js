@@ -33,7 +33,7 @@ function VerifyEmail() {
   const width = useScreenWidth();
   const [otp, setOtp] = useState(null);
   const [counter, setCounter] = useState(59);
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(null);
   const [searchParams] = useSearchParams();
   const historyType = searchParams.get('type');
   const location = useLocation();
@@ -67,10 +67,11 @@ function VerifyEmail() {
   useEffect(() => {
     // Navigating the user back to login if the email is invalid
     if (
-      ![undefined, null].includes(email) &&
       historyType === FORGOT_PWD &&
+      ![undefined, null].includes(email) &&
       !EMAIL_PATTERN.test(email)
     ) {
+      console.log('dgbsfsybfuahs', historyType, email, !EMAIL_PATTERN.test(email));
       navigate(LOGIN);
     }
   }, [email]);
@@ -97,16 +98,29 @@ function VerifyEmail() {
   const onSubmit = async (e) => {
     setIsLoading(true);
     e.preventDefault();
+
+    // If the origin is Forgot Password
     if (historyType === FORGOT_PWD) {
       const { email = '' } = location?.state || {};
-      const { is_valid } = await forgotPasswordOtpValidation({ email, code: otp });
-      if (is_valid) {
-        navigate(RESET_PASSWORD, {
-          state: { email, code: otp },
-        });
+      const response = await forgotPasswordOtpValidation({ email, code: otp });
+      setIsLoading(false);
+
+      const { status, data } = response;
+
+      if (!successStatus(status)) {
+        const errormsg = getErrorMessage(data);
+
+        if (errormsg) {
+          ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+        }
       } else {
-        ToastNotifyError(TST_OTP_GENRATE_FAILED, TST_OTP_VRIFY_FAILED);
-        setIsLoading(false);
+        if (data?.is_valid) {
+          navigate(RESET_PASSWORD, {
+            state: { email, code: otp },
+          });
+        } else {
+          ToastNotifyError(TST_OTP_GENRATE_FAILED, TST_OTP_VRIFY_FAILED);
+        }
       }
     } else {
       const dataToSend = {

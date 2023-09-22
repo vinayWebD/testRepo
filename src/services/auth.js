@@ -84,8 +84,8 @@ const sendForgotPasswordOtp = async ({ email, dispatch }) => {
  */
 const forgotPasswordOtpValidation = async ({ email, code }) => {
   try {
-    const { data } = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', { email, code });
-    return data;
+    const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', { email, code });
+    return response;
   } catch (error) {
     return error;
   }

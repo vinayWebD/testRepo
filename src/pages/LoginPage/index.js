@@ -5,13 +5,15 @@ import Input from '../../components/common/Input';
 import * as yup from 'yup';
 import { Button } from '../../components/common/Button';
 import { REGEX } from '../../constants/constants';
-import { MESSAGES } from '../../constants/messages';
+import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { loginDispatcher } from '../../redux/dispatchers/authDispatcher';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 
 const { EMAIL_PATTERN } = REGEX;
 const { IS_REQUIRED, EMAIL_INVALID, PASSWORD_INVALID } = MESSAGES;
@@ -29,6 +31,7 @@ const {
 
 const { BTNLBL_LOGIN } = BUTTON_LABELS;
 const { FORGOT_PASSWORD, PATH_SIGNUP } = PATHS;
+const { TST_LOGIN_ERROR_ID } = TOASTMESSAGES.toastid;
 
 const initialValues = {
   email: '',
@@ -43,13 +46,15 @@ function LoginPage() {
   const onSubmit = async (values) => {
     if (!isLoading) {
       setIsLoading(true);
-      const loginResponse = await dispatch(loginDispatcher(values));
+      const response = await dispatch(loginDispatcher(values));
 
-      setIsLoading(false);
-      // Setting the error below the input fields in the form itself
-      if (loginResponse?.status !== 200 && Object.keys(loginResponse?.data).length) {
-        const errorData = Object.entries(loginResponse?.data)?.[0];
-        formik.setErrors({ [errorData?.[0]]: errorData?.[1] });
+      const { status, data } = response;
+      if (!successStatus(status)) {
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg, TST_LOGIN_ERROR_ID);
+          setIsLoading(false);
+        }
       }
     }
   };
