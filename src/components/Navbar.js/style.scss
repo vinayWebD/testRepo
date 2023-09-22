@@ -2,6 +2,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
+  opacity: 1;
   background: linear-gradient(
     90deg,
     #fff -4.59%,
@@ -30,7 +31,7 @@
   position: sticky;
   top: 0;
   z-index: 10;
-  opacity: 0.9;
+  opacity: 1;
   background: linear-gradient(
     90deg,
     #fff 9.44%,
@@ -39,5 +40,17 @@
     rgba(108, 173, 216, 0.8) 73.85%,
     #eff6fb 91.3%
   );
+  @media screen and (width: 768px) {
+    display: none;
+  }
   // backdrop-filter: blur(38.5px);
+
+  .mobile-menu-items {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    text-transform: uppercase;
+    cursor: pointer;
+  }
 }

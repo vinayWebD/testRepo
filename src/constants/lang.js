@@ -14,7 +14,7 @@ const LANG = {
       LANG_HOMEPAGE_NEXT_GEN: 'next-generation',
       LANG_HOMEPAGE_HEADING: 'professional platform',
       LANG_HOMEPAGE_OUR_PERPOSE:
-        'Our purpose is to help people find the best opportunities based on the truest and most authentic version of themselves.',
+        'Helping people find the best opportunities based on the truest and most authentic version of themselves.',
       LANG_HOMEPAGE_WE_ARE:
         'We are passionate about linking human capital with satisfaction. It is more than merely producing output. It is about attaining fulfillment, discovering purpose, and providing to society while remaining genuine to oneself.',
       LANG_HOMEPAGE_OUR_VIEW: 'Our View',
@@ -50,7 +50,7 @@ const LANG = {
       LANG_HOMEPAGE_AUTHENTIC:
         'Your authentic career platform that helps you find your true purpose.',
       LANG_HOMEPAGE_QUICK_LINKS: 'Quick Links',
-      LANG_HOMEPAGE_HOME: 'Quick Links',
+      LANG_HOMEPAGE_HOME: 'Home',
       LANG_HOMEPAGE_CONTACT: 'Contact Us',
       LANG_HOMEPAGE_TERMS: 'Terms & Conditions',
       LANG_HOMEPAGE_PRIVACY: 'Privacy Policy',
