@@ -71,7 +71,6 @@ function VerifyEmail() {
       ![undefined, null].includes(email) &&
       !EMAIL_PATTERN.test(email)
     ) {
-      console.log('dgbsfsybfuahs', historyType, email, !EMAIL_PATTERN.test(email));
       navigate(LOGIN);
     }
   }, [email]);
