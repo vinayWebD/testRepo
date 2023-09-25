@@ -12,7 +12,7 @@ const Avatar = ({ image, name = '', bgColor = 'white' }) => {
 
   return (
     <div
-      className={`bg-${bgColor} rounded-full p-[10px] w-[32px] h-[32px] text-center flex items-center bg-contain bg-center`}
+      className={`bg-${bgColor} rounded-full p-[10px] w-[32px] h-[32px] justify-center text-center flex items-center bg-contain bg-center`}
       style={{ backgroundImage: `url(${image})` || undefined }}
     >
       {!image ? getInitials(name) : ''}
