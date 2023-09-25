@@ -26,9 +26,10 @@ const {
 function VerifyEmail() {
   const navigate = useNavigate();
   const width = useScreenWidth();
-  const [otp, setOtp] = useState(null);
+  const [otp, setOtp] = useState([]);
   const [counter, setCounter] = useState(59);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(false);
   const { dataToSend: userData } = secureLocalStorage.getItem('object');
   const { email } = userData;
 
@@ -48,6 +49,12 @@ function VerifyEmail() {
     return () => clearInterval(timer);
   }, [counter]);
 
+  useEffect(() => {
+    if (otp.length === 4) {
+      setError(false);
+    }
+  }, [otp]);
+
   const resendHandler = async () => {
     setCounter(59);
     const response = await signupUser(userData);
@@ -63,29 +70,34 @@ function VerifyEmail() {
   };
 
   const onSubmit = async (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    const dataToSend = {
-      code: otp,
-      email: email,
-    };
-    const response = await verifyEmail(dataToSend);
-    const {
-      status,
-      data: { token = null },
-      data = {},
-    } = response;
-    setIsLoading(false);
-    const errormsg = getErrorMessage(data);
-    if (successStatus(status)) {
-      ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
-      secureLocalStorage.clear();
-      localStorage.setItem('token', token);
-      secureLocalStorage.setItem('object', { data });
-      navigate(PATH_GENERAL_INFO);
+    if (otp.length < 4) {
+      e.preventDefault();
+      setError(true);
     } else {
-      if (errormsg) {
-        ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+      setIsLoading(true);
+      e.preventDefault();
+      const dataToSend = {
+        code: otp,
+        email: email,
+      };
+      const response = await verifyEmail(dataToSend);
+      const {
+        status,
+        data: { token = null },
+        data = {},
+      } = response;
+      setIsLoading(false);
+      const errormsg = getErrorMessage(data);
+      if (successStatus(status)) {
+        ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
+        secureLocalStorage.clear();
+        localStorage.setItem('token', token);
+        secureLocalStorage.setItem('object', { data });
+        navigate(PATH_GENERAL_INFO);
+      } else {
+        if (errormsg) {
+          ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+        }
       }
     }
   };
@@ -117,12 +129,12 @@ function VerifyEmail() {
             renderInput={(props) => <input {...props} />}
             inputStyle={otpInputStyle}
           />
+          <span className="mt-1 error">{error && 'Verification Code is required'}</span>
         </div>
         <Button
           isLoading={isLoading}
           label={BTNLBL_VERIFY}
           type="submit"
-          isDisabled={!otp}
           additionalClassNames="capitalize"
         />
         <div
