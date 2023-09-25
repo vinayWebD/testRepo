@@ -31,7 +31,7 @@ const {
 function VerifyEmail() {
   const navigate = useNavigate();
   const width = useScreenWidth();
-  const [otp, setOtp] = useState(null);
+  const [otp, setOtp] = useState([]);
   const [counter, setCounter] = useState(59);
   const [email, setEmail] = useState(null);
   const [searchParams] = useSearchParams();
@@ -39,6 +39,7 @@ function VerifyEmail() {
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
   const { dataToSend: userData = {} } = secureLocalStorage.getItem('object') || {};
+  const [error, setError] = useState(false);
 
   const otpInputStyle = {
     fontSize: '16px',
@@ -75,6 +76,12 @@ function VerifyEmail() {
     }
   }, [email]);
 
+  useEffect(() => {
+    if (otp.length === 4) {
+      setError(false);
+    }
+  }, [otp]);
+
   const resendHandler = async () => {
     setCounter(59);
     let response;
@@ -95,54 +102,58 @@ function VerifyEmail() {
   };
 
   const onSubmit = async (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-
-    // If the origin is Forgot Password
-    if (historyType === FORGOT_PWD) {
-      const { email = '' } = location?.state || {};
-      const response = await forgotPasswordOtpValidation({ email, code: otp });
-      setIsLoading(false);
-
-      const { status, data } = response;
-
-      if (!successStatus(status)) {
-        const errormsg = getErrorMessage(data);
-
-        if (errormsg) {
-          ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
-        }
-      } else {
-        if (data?.is_valid) {
-          navigate(RESET_PASSWORD, {
-            state: { email, code: otp },
-          });
-        } else {
-          ToastNotifyError(TST_OTP_GENRATE_FAILED, TST_OTP_VRIFY_FAILED);
-        }
-      }
+    if (otp.length < 4) {
+      e.preventDefault();
+      setError(true);
     } else {
-      const dataToSend = {
-        code: otp,
-        email,
-      };
-      const response = await verifyEmail(dataToSend);
-      const {
-        status,
-        data: { token = null },
-        data = {},
-      } = response;
-      setIsLoading(false);
-      const errormsg = getErrorMessage(data);
-      if (successStatus(status)) {
-        ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
-        secureLocalStorage.clear();
-        localStorage.setItem('token', token);
-        secureLocalStorage.setItem('object', { data });
-        navigate(PATH_GENERAL_INFO);
+      setIsLoading(true);
+      e.preventDefault();
+      // If the origin is Forgot Password
+      if (historyType === FORGOT_PWD) {
+        const { email = '' } = location?.state || {};
+        const response = await forgotPasswordOtpValidation({ email, code: otp });
+        setIsLoading(false);
+
+        const { status, data } = response;
+
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
+
+          if (errormsg) {
+            ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+          }
+        } else {
+          if (data?.is_valid) {
+            navigate(RESET_PASSWORD, {
+              state: { email, code: otp },
+            });
+          } else {
+            ToastNotifyError(TST_OTP_GENRATE_FAILED, TST_OTP_VRIFY_FAILED);
+          }
+        }
       } else {
-        if (errormsg) {
-          ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+        const dataToSend = {
+          code: otp,
+          email: email,
+        };
+        const response = await verifyEmail(dataToSend);
+        const {
+          status,
+          data: { token = null },
+          data = {},
+        } = response;
+        setIsLoading(false);
+        const errormsg = getErrorMessage(data);
+        if (successStatus(status)) {
+          ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
+          secureLocalStorage.clear();
+          localStorage.setItem('token', token);
+          secureLocalStorage.setItem('object', { data });
+          navigate(PATH_GENERAL_INFO);
+        } else {
+          if (errormsg) {
+            ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
+          }
         }
       }
     }
@@ -175,12 +186,12 @@ function VerifyEmail() {
             renderInput={(props) => <input {...props} />}
             inputStyle={otpInputStyle}
           />
+          <span className="mt-1 error">{error && 'Verification Code is required'}</span>
         </div>
         <Button
           isLoading={isLoading}
           label={BTNLBL_VERIFY}
           type="submit"
-          isDisabled={!otp}
           additionalClassNames="capitalize"
         />
         <div

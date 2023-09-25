@@ -5,8 +5,11 @@ import Logo from '../assets/images/logo.svg';
 import { LANG } from '../constants/lang';
 import useDeviceType from '../hooks/useDeviceType';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
+import { PATHS } from '../constants/urlPaths';
 
 const { LANG_AUTH_PANEL_LAYOUT_HEADING } = LANG.PAGES.AUTH_COMMON;
+const { LANDING } = PATHS;
 
 function AuthPanelLayout({ children }) {
   const deviceType = useDeviceType();
@@ -37,8 +40,10 @@ function AuthPanelLayout({ children }) {
       </div>
 
       <div className="flex flex-col justify-normal pb-10 md:pb-20 md:justify-center lg:justify-normal items-center min-h-[100vh] lg:w-[50%] w-[100%] bg-gradient-to-b from-gradientfrom to-gradientto">
-        <div className="pt-[30px] md:pt-0 lg:pt-[60px] px-[60px]">
-          <img src={Logo} alt="logo" />
+        <div className="pt-[30px] md:pt-5 lg:pt-[60px] px-[60px]">
+          <Link to={LANDING}>
+            <img src={Logo} alt="logo" className="cursor-pointer" />
+          </Link>
         </div>
         <div className="md:w-[60%] w-[90%] mt-9 md:mt-14">{children}</div>
       </div>

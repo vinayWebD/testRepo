@@ -18,6 +18,7 @@ api.interceptors.request.use(
     if (token && config.useAuthToken !== false) {
       config.headers.Authorization = token;
     }
+
     // Check if request data is FormData (i.e., for file uploads)
     if (config.data instanceof FormData) {
       config.headers['Content-Type'] = 'multipart/form-data';

@@ -7,7 +7,6 @@ import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { LANG } from '../../constants/lang';
 import { PATHS } from '../../constants/urlPaths';
-import Checkbox from '../../components/Checkbox';
 import { signupUser } from '../../services/signup';
 import { getErrorMessage, successStatus } from '../../common';
 import { validationSchemaSignup } from '../../validations';
@@ -157,7 +156,6 @@ function Signup() {
           />
         </div>
         <div className="flex gap-2 items-start max-w-[400px]">
-          <Checkbox />
           <div className="para-sm">
             {LANG_SIGNUP_REGISTER}{' '}
             <a href="#" className="link-sm">
