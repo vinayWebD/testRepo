@@ -77,7 +77,7 @@ function VerifyEmail() {
   }, [email]);
 
   useEffect(() => {
-    if (otp.length === 4) {
+    if (otp.length === 4 || !otp) {
       setError(false);
     }
   }, [otp]);

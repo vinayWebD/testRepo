@@ -96,16 +96,16 @@ export default function LandingPage() {
         </div>
       </section>
       <section className="ourview-section">
-        <div className="heading mb-4">{LANG_HOMEPAGE_OUR_VIEW}</div>
+        <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
         <div className="underline" />
-        <div className="content mt-6 md:mt-2">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
+        <div className="content mt-5">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
         <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
         <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
       </section>
       <section className="work-section pb-8">
         <div className="heading">{LANG_HOMEPAGE_HOW_WORK}</div>
         <div className="underline" />
-        <div className="content mt-2 mb-6 md:mb-0">{LANG_HOMEPAGE_WONDERING}</div>
+        <div className="content mt-6">{LANG_HOMEPAGE_WONDERING}</div>
 
         <Carousel
           showArrows={false}

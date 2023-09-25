@@ -74,7 +74,8 @@ const LANG = {
     },
     SIGNUP: {
       LANG_SIGNUP_WELCOME_HEADING: 'Create An Account',
-      LANG_SIGNUP_WELCOME_SUBHEADING: 'Share your thoughts with world from today.',
+      LANG_SIGNUP_WELCOME_SUBHEADING:
+        'Share your talents, interests and personality and find the right opportunities for you.',
       LANG_SIGNUP_FIRST_NAME_LABEL: 'First Name',
       LANG_SIGNUP_FIRST_NAME_PLACEHOLDER: 'Enter First name',
       LANG_SIGNUP_LAST_NAME_LABEL: 'Last Name',

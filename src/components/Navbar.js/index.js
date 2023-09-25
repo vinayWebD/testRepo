@@ -7,24 +7,23 @@ import { useNavigate } from 'react-router';
 import { MobileLogo } from '../Icons/MobileLogo';
 import { PurdrivenText } from '../Icons/PurdrivenText';
 import { HamburgerIcon } from '../Icons/HamburgerIcon';
-import { CloseIcon } from '../Icons/CloseIcon';
 import { TabLogo } from '../Icons/TabLogo';
 const { PATH_SIGNUP = '', LOGIN = '' } = PATHS;
 
 function Navbar() {
   const navigate = useNavigate();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(true);
 
   return (
     <>
-      <div className="max-[768px]:hidden min-[770px]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-2 navbar-wrap">
+      <div className="max-[769px]:hidden max-[769]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-4 navbar-wrap">
         <div className="container mx-auto">
           <div className="flex justify-between">
             <div>
-              <a href="/" className="text-white text-lg font-bold hidden md:block">
+              <a href="/" className="text-white text-lg font-bold hidden lg:block">
                 <NavbarLogoIcon />
               </a>
-              <a href="/" className="text-white text-lg font-bold mi-[769]:block hidden">
+              <a href="/" className="text-white text-lg font-bold min-[769]:block hidden">
                 <TabLogo />
               </a>
             </div>
@@ -53,7 +52,7 @@ function Navbar() {
           </div>
         </div>
       </div>
-      <div className="navbar-wrap-mobile max-[768px]:block hidden relative">
+      <div className="navbar-wrap-mobile max-[768px]:block hidden">
         <div className="flex items-center justify-between px-[48px] py-2">
           <div>
             <MobileLogo />
@@ -61,33 +60,26 @@ function Navbar() {
           <div>
             <PurdrivenText />
           </div>
-          <div className="w-[30px] h-[30px]">
+          <div>
             <span onClick={() => setIsMenuOpen(!isMenuOpen)}>
-              {isMenuOpen ? <CloseIcon /> : <HamburgerIcon />}
+              <HamburgerIcon />
             </span>
           </div>
         </div>
         {isMenuOpen && (
-          <div
-            className={`absolute right-0 w-64 h-1/3 min-h-[300px] p-4 bg-white ${
-              isMenuOpen ? 'translate-y-0 ' : 'translate-y-full'
-            }`}
-          >
-            <div className="px-5 py-3 mobile-menu-items">
-              <a href="#">Feature</a>
-            </div>
-            <div className="px-5 py-3 mobile-menu-items">
-              <a href="#">About Us</a>
-            </div>
-            <div className="px-5 py-3 mobile-menu-items">
-              <a href="#">Contact</a>
-            </div>
-            <div className="px-4 pt-3">
-              <NormalButton label="Login" onClick={() => navigate(LOGIN)} />
-            </div>
-            <div className="px-4 pt-4 pb-6">
-              <NormalButton label="Signup" onClick={() => navigate(PATH_SIGNUP)} />
-            </div>
+          <div className="block mt-4 text-center pb-2">
+            <a href="#" className="text-white px-2">
+              Feature
+            </a>
+            {/* <a href="#" className="text-white px-2">
+              Promotions
+            </a> */}
+            <a href="#" className="text-white px-2">
+              About Us
+            </a>
+            <a href="#" className="text-white px-2">
+              Contact
+            </a>
           </div>
         )}
       </div>
