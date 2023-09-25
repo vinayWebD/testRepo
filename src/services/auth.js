@@ -19,7 +19,7 @@ const loginUser = async ({ email = '', password = '', dispatch }) => {
     const { status, data } = await apiUtility(
       LOGIN,
       'POST',
-      { email: email.trim(), password: password.trim() },
+      { email: email.trim()?.toLowerCase(), password: password.trim() },
       dispatch,
     );
 
@@ -72,7 +72,7 @@ const sendForgotPasswordOtp = async ({ email = '', dispatch }) => {
       FORGOT_PASSWORD_OTP,
       'POST',
       {
-        email: email.trim(),
+        email: email.trim().toLowerCase(),
       },
       dispatch,
     );
@@ -90,7 +90,7 @@ const sendForgotPasswordOtp = async ({ email = '', dispatch }) => {
 const forgotPasswordOtpValidation = async ({ email = '', code }) => {
   try {
     const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', {
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
       code,
     });
     return response;
@@ -107,7 +107,7 @@ const forgotPasswordOtpValidation = async ({ email = '', code }) => {
 const resetPassword = async ({ email = '', code, password = '' }) => {
   try {
     const response = await apiUtility(FORGOT_PASSWORD_RESET_PWD, 'PUT', {
-      email: email.trim(),
+      email: email.trim().toLowerCase(),
       code,
       password: password.trim(),
     });
