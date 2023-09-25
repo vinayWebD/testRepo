@@ -16,6 +16,7 @@ const PrivateHeader = () => {
   const deviceType = useDeviceType();
   const dispatch = useDispatch();
   const { searchValue = '' } = useSelector((state) => state?.appSearch || {});
+  const userData = useSelector((state) => state?.auth?.user) || {};
 
   const searchInputChangeHandler = (val) => {
     dispatch(updateSearch({ searchValue: val }));
@@ -47,7 +48,7 @@ const PrivateHeader = () => {
 
         <AddFriendIcon />
 
-        <Dropdown options={OPTIONS} IconComponent={() => <DropDownParent />} />
+        <Dropdown options={OPTIONS} IconComponent={() => <DropDownParent userData={userData} />} />
       </div>
     </div>
   );
@@ -55,13 +56,12 @@ const PrivateHeader = () => {
 
 export default PrivateHeader;
 
-const DropDownParent = () => {
+const DropDownParent = ({ userData = {} }) => {
+  const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
+
   return (
     <div className="flex items-center gap-1 cursor-pointer">
-      <Avatar
-        name="Purdriven"
-        image="https://images.unsplash.com/photo-1580483046931-aaba29b81601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cnVzc2lhbiUyMGdpcmx8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
-      />
+      <Avatar name={`${first_name} ${last_name}`} image={profile_picture_url} />
       <DownCaret />
     </div>
   );
