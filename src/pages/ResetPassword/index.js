@@ -126,7 +126,6 @@ function ResetPassword() {
         <Button
           label={BTNLBL_SAVE}
           type="submit"
-          isDisabled={!formik.values.confirmPassword && !formik.values.password}
           additionalClassNames="capitalize"
           isLoading={isLoading}
         />
