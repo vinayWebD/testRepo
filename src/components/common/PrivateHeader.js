@@ -29,7 +29,7 @@ const PrivateHeader = () => {
   ];
 
   return (
-    <div className="bg-darkblue py-[14px] h-[61px] flex px-[5%] justify-between items-center ">
+    <div className="bg-darkblue py-[14px] h-[61px] flex px-[5%] justify-between items-center">
       <HeaderLogoIcon />
       <div className="flex gap-7 items-center">
         {
