@@ -9,18 +9,18 @@ const SearchInput = ({
 }) => {
   return (
     <div className="flex flex-col">
-      <div className="flex relative items-stretch">
+      <div className="flex relative items-stretch gap-0 border-white border-b-[1px] border-0">
+        <div className="flex items-center px-[5px]">
+          <SearchIcon />
+        </div>
         <input
           type="text"
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={`placeholder:text-white pr-0 search bg-[transparent] border-white border-[1px] border-r-0 rounded-r-none text-white text-[12px] ${className}`}
+          className={`placeholder:text-white pl-2 search bg-[transparent] border-0 text-white text-[12px] ${className}`}
           disabled={disabled}
         />
-        <div className="border-white border-[1px] border-l-0 flex items-center px-[10px] rounded-r-[8px]">
-          <SearchIcon />
-        </div>
       </div>
     </div>
   );
