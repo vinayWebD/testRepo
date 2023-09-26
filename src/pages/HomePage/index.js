@@ -6,6 +6,7 @@ import PhotoIcon from '../../components/Icons/PhotoIcon';
 import VideoIcon from '../../components/Icons/VideoIcon';
 import LinkIcon from '../../components/Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
+import Post from '../../components/Post';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -42,6 +43,10 @@ const HomePage = () => {
               </div>
             </div>
           </Card>
+
+          <div className="mt-3">
+            <Post />
+          </div>
         </div>
 
         <div className="col-span-3">
