@@ -18,7 +18,7 @@ function Navbar() {
 
   return (
     <>
-      <div className="max-[768px]:hidden min-[770px]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-2 navbar-wrap">
+      <div className="max-[769px]:hidden min-[769px]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-2 navbar-wrap">
         <div className="container mx-auto">
           <div className="flex justify-between cursor-pointer">
             <div>
