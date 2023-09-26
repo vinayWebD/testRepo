@@ -2,19 +2,22 @@ import React from 'react';
 import Card from '../common/Card';
 import Avatar from '../common/Avatar';
 import { Button } from '../common/Button';
+import { useSelector } from 'react-redux';
 
 const ProfileContainer = () => {
+  const userData = useSelector((state) => state.auth.user || {});
+
   return (
-    <Card classNames="py-8 px-4">
-      <div className="flex gap-3">
+    <Card classNames="hidden lg:block py-8 px-4">
+      <div className="flex gap-3 justify-center lg:justify-normal">
         <Avatar
-          classNames="w-[72px] h-[72px]"
-          image="https://images.unsplash.com/photo-1580483046931-aaba29b81601?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cnVzc2lhbiUyMGdpcmx8ZW58MHx8MHx8fDA%3D&w=1000&q=80"
+          classNames="w-[40%] h-[40%] max-w-[72px] max-h-[72px]"
+          image={userData?.profile_picture_url}
         />
 
         <div className="flex flex-col gap-1 overflow-hidden">
           <p className="text-greydark text-[14px] md:text-[20px] font-medium overflow-hidden truncate">
-            Toshi Medatwal
+            {userData?.first_name} {userData?.last_name}
           </p>
           <h4 className="font-normal text-greylight text-[12px] md:text-[14px]">
             UI/UX Designer | Influencer at Masco{' '}

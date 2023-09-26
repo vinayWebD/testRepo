@@ -39,7 +39,7 @@ const navbarItems = [
 
 const LeftNavigation = () => {
   return (
-    <div className="flex flex-col py-4">
+    <div className="flex flex-col py-4 gap-4 lg:gap-0">
       {navbarItems.map(({ label, action, icon }, _i) => {
         return (
           <NavBarItem
@@ -64,12 +64,12 @@ const NavBarItem = ({
   Icon = () => <></>,
 }) => (
   <div
-    className={`p-4 border-l-[6px] border-white cursor-pointer flex items-center gap-2 ${
+    className={`md:p-1 lg:p-4 pr-[6px] border-l-4 lg:border-l-[6px] box-border border-white cursor-pointer flex items-center gap-4 ${
       isActive ? 'active-nav-left-side-bar bg-whitelight' : ''
     }`}
     onClick={onClickHandler}
   >
     <Icon isActive={isActive} />
-    <p className="text-sm font-semibold">{label}</p>
+    <p className="text-sm font-semibold hidden lg:block">{label}</p>
   </div>
 );
