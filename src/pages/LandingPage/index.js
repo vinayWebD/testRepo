@@ -72,7 +72,7 @@ export default function LandingPage() {
       <navbar>
         <Navbar />
       </navbar>
-      <section className="hero-section">
+      <section id="home" className="hero-section">
         <div className="content-box">
           <div className="title">
             The <span className="next-gen">{LANG_HOMEPAGE_NEXT_GEN}</span>
@@ -95,14 +95,14 @@ export default function LandingPage() {
           <Button label={BTNLBL_JOIN_PUR} isIcon={true} onClick={() => navigate(PATH_SIGNUP)} />
         </div>
       </section>
-      <section className="ourview-section">
+      <section id="ourview" className="ourview-section">
         <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
         <div className="underline" />
         <div className="content mt-5">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
         <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
         <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
       </section>
-      <section className="work-section pb-8">
+      <section id="about-work" className="work-section pb-8">
         <div className="heading">{LANG_HOMEPAGE_HOW_WORK}</div>
         <div className="underline" />
         <div className="content mt-6">{LANG_HOMEPAGE_WONDERING}</div>
@@ -216,7 +216,7 @@ export default function LandingPage() {
           </li>
         </ul>
       </section>
-      <footer>
+      <footer id="contact-us">
         <div className="footer-logo mb-6">
           <FooterLogoIcon />
         </div>
@@ -266,17 +266,17 @@ export default function LandingPage() {
               <div className="footer-link-heading">{LANG_HOMEPAGE_CONNECT}</div>
               <div className="flex gap-6 items-center mt-5 pb-8">
                 <div className="social-links">
-                  <a href="#">
+                  <a href="">
                     <img src={linkdinicon} alt="" />
                   </a>
                 </div>
                 <div className="social-links">
-                  <a href="#">
+                  <a href="">
                     <img src={instagramIcon} alt="" />
                   </a>
                 </div>
                 <div className="social-links">
-                  <a href="#">
+                  <a href="">
                     <img src={facebook} alt="" />
                   </a>
                 </div>
