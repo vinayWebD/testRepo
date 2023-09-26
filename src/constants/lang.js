@@ -126,6 +126,9 @@ const LANG = {
       LANG_PWD_PLACEHOLDER: 'Enter Password',
       LANG_C_PWD_PLACEHOLDER: 'Re-Enter Password',
     },
+    FEED: {
+      LANG_WRITE_SOMETHING: 'Write something ...',
+    },
   },
 };
 const BUTTON_LABELS = {
@@ -136,6 +139,9 @@ const BUTTON_LABELS = {
   BTNLBL_VERIFY: 'Verify',
   BTNLBL_CONTINUE: 'Continue',
   BTNLBL_SAVE: 'Save',
+  BTNLBL_PHOTO: 'Photo',
+  BTNLBL_VIDEO: 'Video',
+  BTNLBL_LINK: 'Link',
 };
 
 const DROPDOWN_OPTION_LABELS = {
