@@ -16,7 +16,7 @@ const App = () => {
     } else {
       dispatch(logoutDispatcher());
     }
-  }, []);
+  }, [localStorage.getItem('token')]);
 
   if (globalLoading) {
     return <MultiColorLoader />; // Or a loading spinner component
