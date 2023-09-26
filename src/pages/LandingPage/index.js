@@ -133,6 +133,12 @@ export default function LandingPage() {
               <img src={userimg} alt="" />
             </div>
             <div className="name p-0 lg:pt-4">- Ludgi Windrich</div>
+            <div className="yellow-text pt-1">
+              {
+                // eslint-disable-next-line quotes
+                `"The vision and the why"`
+              }
+            </div>
           </div>
         </div>
         <div className="mt-4">
