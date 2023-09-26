@@ -116,7 +116,7 @@ const ForgotPassword = () => {
         <div className="flex items-center flex-col text-center py-8">
           <CheckIcon />
           <div className="text-[28px] font-medium text-greydark">{LANG_OTP_SENT_SUCCESS}</div>
-          <h4 className="text-greydark font-medium">
+          <h4 className="text-greydark font-medium break-words">
             {LANG_OTP_SENT_TO_MAIL} {formik?.values?.email}
           </h4>
         </div>

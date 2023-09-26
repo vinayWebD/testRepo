@@ -6,6 +6,7 @@ export const MESSAGES = {
   MSG_PASSWORD_TYPE:
     'Password must contain between 4 and 16 characters with one upper case, lower case and numeric',
   CONFIRM_PASSWORD_MISMATCH: 'Passwords must match',
+  OTP_REQUIRED: 'OTP is required',
 };
 
 export const TOASTMESSAGES = {

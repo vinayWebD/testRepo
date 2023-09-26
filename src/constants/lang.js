@@ -97,7 +97,9 @@ const LANG = {
     VERIFY_EMAIL: {
       LANG_VERIFY_EMAIL: 'Verify Email',
       LANG_CODE_EMAIL: 'Enter the code sent to',
+      LANG_OTP_EMAIL: 'Enter OTP sent to',
       LANG_VER_CODE: 'Verification Code ',
+      LANG_OTP: 'OTP',
       LANG_RESEND: 'Resend',
     },
     GEN_INFO: {
