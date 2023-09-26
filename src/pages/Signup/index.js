@@ -58,10 +58,10 @@ function Signup() {
     setIsLoading(true);
     const { firstname = null, lastname = null, email = null, password = null } = values;
     const dataToSend = {
-      first_name: firstname.trim(),
-      last_name: lastname.trim(),
-      password: password.trim().toLowerCase(),
-      email: email.trim(),
+      first_name: firstname,
+      last_name: lastname,
+      password: password.trim(),
+      email: email.trim().toLowerCase(),
     };
     const response = await signupUser(dataToSend);
     const { status, data } = response;
@@ -125,7 +125,7 @@ function Signup() {
             name="firstname"
             type="text"
             value={firstname}
-            onChange={handleChange}
+            onChange={(e) => formik.setFieldValue('firstname', e.target.value.trim())}
             onBlur={handleBlur('firstname')}
             error={tuc_firstname && err_firstname}
             helperText={tuc_firstname && err_firstname}
@@ -138,7 +138,7 @@ function Signup() {
             name="lastname"
             type="text"
             value={lastname}
-            onChange={handleChange}
+            onChange={(e) => formik.setFieldValue('lastname', e.target.value.trim())}
             onBlur={handleBlur('lastname')}
             error={tuc_lastname && err_lastname}
             helperText={tuc_lastname && err_lastname}

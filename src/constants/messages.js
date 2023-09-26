@@ -4,7 +4,7 @@ export const MESSAGES = {
   MSG_VALID_EMAIL: 'Enter a valid email',
   MSG_FIELD_LENGTH: (field) => `${field} should not be of more than 50 characters`,
   MSG_PASSWORD_TYPE:
-    'Password must contain between 4 and 16 characters with one upper case, lower case and numeric',
+    'Password must contain between 4 to 16 characters with one upper case, lower case and numeric',
   CONFIRM_PASSWORD_MISMATCH: 'Passwords must match',
   OTP_REQUIRED: 'OTP is required',
 };

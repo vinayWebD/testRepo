@@ -71,20 +71,30 @@ function GeneralInfo() {
   };
 
   const onSubmit = async (values) => {
-    const { location, profile_picture = '' } = values;
-    const dataToSend = {
-      location: location,
-    };
-    if (profile_picture) {
-      dataToSend['profile_picture'] = profile_picture;
+    const { location = '', profile_picture = '' } = values;
+    let dataToSend = {};
+
+    if (location && profile_picture) {
+      dataToSend = {
+        location,
+        profile_picture,
+      };
+    } else if (profile_picture) {
+      dataToSend = {
+        profile_picture,
+      };
+    } else {
+      dataToSend = {
+        location,
+      };
     }
     const response = await fetchProfileEdit(dataToSend);
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
     if (successStatus(status)) {
-      ToastNotifySuccess('Location Added Successfully', 'location-success');
+      ToastNotifySuccess('General Info added Successfully', 'location-success');
       dispatch(login(userData));
-      secureLocalStorage.clear();
+      secureLocalStorage.removeItem('object');
       navigate(HOME, { replace: true });
     } else {
       if (errormsg) {
@@ -98,6 +108,14 @@ function GeneralInfo() {
     onSubmit,
   });
 
+  const {
+    values: { location = '', profile_picture } = {},
+    touched: { location: tuc_location },
+    errors: { location: err_location },
+    handleSubmit,
+    handleChange,
+  } = formik;
+
   return (
     <AuthPanelLayout>
       <div className="flex items-center gap-2">
@@ -106,10 +124,7 @@ function GeneralInfo() {
       <div className="border-b border-[#F2F2F233] max-w-fit">
         <h4 className="text-white mb-2 pr-2">{LANG_PROVIDE_INFO}</h4>
       </div>
-      <form
-        onSubmit={formik.handleSubmit}
-        className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]"
-      >
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <InputProfilePicture setCropImageFile={setCropImageFile} cropImageFile={cropImageFile} />
         <div className="mb-4">
           <Input
@@ -118,16 +133,16 @@ function GeneralInfo() {
             label={LANG_LOCATION}
             placeholder={LANG_LOCATION_PLACEHOLDER}
             className="w-full"
-            value={formik?.values?.location}
-            onChange={formik.handleChange}
-            error={formik.touched.location && Boolean(formik.errors.location)}
-            helperText={formik.touched.location && formik.errors.location}
+            value={location}
+            onChange={handleChange}
+            error={tuc_location && err_location}
+            helperText={tuc_location && err_location}
           />
         </div>
         <Button
           type="submit"
           label={LANG_PROCEED}
-          isDisabled={!formik.values.location}
+          isDisabled={!location && !profile_picture}
           additionalClassNames="capitalize"
         />
         <div className={'text-center para-normal cursor-pointer'} onClick={handleSkip}>

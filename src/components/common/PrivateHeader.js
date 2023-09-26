@@ -12,6 +12,17 @@ import AddFriendIcon from '../Icons/AddFriendIcon';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 
+const DropDownParent = ({ userData = {} }) => {
+  const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
+
+  return (
+    <div className="flex items-center gap-1 cursor-pointer">
+      <Avatar name={`${first_name} ${last_name}`} image={profile_picture_url} />
+      <DownCaret />
+    </div>
+  );
+};
+
 const PrivateHeader = () => {
   const deviceType = useDeviceType();
   const dispatch = useDispatch();
@@ -55,14 +66,3 @@ const PrivateHeader = () => {
 };
 
 export default PrivateHeader;
-
-const DropDownParent = ({ userData = {} }) => {
-  const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
-
-  return (
-    <div className="flex items-center gap-1 cursor-pointer">
-      <Avatar name={`${first_name} ${last_name}`} image={profile_picture_url} />
-      <DownCaret />
-    </div>
-  );
-};
