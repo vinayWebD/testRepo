@@ -113,9 +113,7 @@ function VerifyEmail() {
         const { email = '' } = location?.state || {};
         const response = await forgotPasswordOtpValidation({ email, code: otp });
         setIsLoading(false);
-
         const { status, data } = response;
-
         if (!successStatus(status)) {
           const errormsg = getErrorMessage(data);
 
@@ -146,7 +144,6 @@ function VerifyEmail() {
         const errormsg = getErrorMessage(data);
         if (successStatus(status)) {
           ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
-          secureLocalStorage.clear();
           localStorage.setItem('token', token);
           secureLocalStorage.setItem('object', { data });
           navigate(PATH_GENERAL_INFO);
