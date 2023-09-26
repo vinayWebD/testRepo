@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './style.scss';
+import { Link } from 'react-scroll';
 import { NavbarLogoIcon } from '../Icons/NavbarLogoIcon';
 import { NormalButton, TransparentButton } from '../Button';
 import { PATHS } from '../../constants/urlPaths';
@@ -10,6 +10,7 @@ import { HamburgerIcon } from '../Icons/HamburgerIcon';
 import { CloseIcon } from '../Icons/CloseIcon';
 import { TabLogo } from '../Icons/TabLogo';
 const { PATH_SIGNUP = '', LOGIN = '' } = PATHS;
+import './style.scss';
 
 function Navbar() {
   const navigate = useNavigate();
@@ -17,32 +18,59 @@ function Navbar() {
 
   return (
     <>
-      <div className="max-[768px]:hidden min-[770px]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-2 navbar-wrap">
+      <div className="max-[769px]:hidden min-[769px]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-2 navbar-wrap">
         <div className="container mx-auto">
-          <div className="flex justify-between">
+          <div className="flex justify-between cursor-pointer">
             <div>
-              <a href="/" className="text-white text-lg font-bold hidden md:block">
+              <Link
+                to="home"
+                spy={true}
+                smooth={true}
+                offset={-100}
+                className="text-white text-lg font-bold hidden md:block"
+              >
                 <NavbarLogoIcon />
-              </a>
-              <a href="/" className="text-white text-lg font-bold mi-[769]:block hidden">
+              </Link>
+              <Link
+                to="home"
+                spy={true}
+                smooth={true}
+                offset={-100}
+                className="text-white text-lg font-bold mi-[769]:block hidden cursor-pointer"
+              >
                 <TabLogo />
-              </a>
+              </Link>
             </div>
             <div className="hidden md:block">
               <div className="flex items-center lg:gap-[50px] md:gap-4">
                 <div className="flex items-center lg:gap-[50px] md:gap-4 uppercase">
-                  <a href="#" className="text-white menu-items">
+                  <Link
+                    to="ourview"
+                    spy={true}
+                    smooth={true}
+                    offset={-100}
+                    className="text-white menu-items cursor-pointer"
+                  >
                     Feature
-                  </a>
-                  {/* <a href="#" className="text-white menu-items">
-                    Promotions
-                  </a> */}
-                  <a href="#" className="text-white menu-items">
+                  </Link>
+                  <Link
+                    to="about-work"
+                    spy={true}
+                    smooth={true}
+                    offset={-100}
+                    className="text-white menu-items cursor-pointer"
+                  >
                     About Us
-                  </a>
-                  <a href="#" className="text-white menu-items">
+                  </Link>
+                  <Link
+                    to="contact-us"
+                    spy={true}
+                    smooth={true}
+                    offset={-100}
+                    className="text-white menu-items cursor-pointer"
+                  >
                     Contact
-                  </a>
+                  </Link>
                 </div>
                 <div className="flex  items-center gap-6">
                   <TransparentButton label="Signup" onClick={() => navigate(PATH_SIGNUP)} />
@@ -74,13 +102,19 @@ function Navbar() {
             }`}
           >
             <div className="px-5 py-3 mobile-menu-items">
-              <a href="#">Feature</a>
+              <Link to="ourview" spy={true} smooth={true} offset={-80}>
+                Feature
+              </Link>
             </div>
             <div className="px-5 py-3 mobile-menu-items">
-              <a href="#">About Us</a>
+              <Link to="about-work" spy={true} smooth={true} offset={-20}>
+                About Us
+              </Link>
             </div>
             <div className="px-5 py-3 mobile-menu-items">
-              <a href="#">Contact</a>
+              <Link to="contact-us" spy={true} smooth={true} offset={-50}>
+                Contact
+              </Link>
             </div>
             <div className="px-4 pt-3">
               <NormalButton label="Login" onClick={() => navigate(LOGIN)} />

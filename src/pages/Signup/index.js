@@ -7,6 +7,7 @@ import Input from '../../components/common/Input';
 import { Button } from '../../components/common/Button';
 import { LANG } from '../../constants/lang';
 import { PATHS } from '../../constants/urlPaths';
+
 import { signupUser } from '../../services/signup';
 import { getErrorMessage, successStatus } from '../../common';
 import { validationSchemaSignup } from '../../validations';
@@ -55,7 +56,7 @@ function Signup() {
 
   const onSubmit = async (values) => {
     setIsLoading(true);
-    const { firstname = '', lastname = '', email = '', password = '' } = values;
+    const { firstname = null, lastname = null, email = null, password = null } = values;
     const dataToSend = {
       first_name: firstname.trim(),
       last_name: lastname.trim(),
@@ -90,27 +91,44 @@ function Signup() {
     onSubmit,
   });
 
+  const {
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    initialValues: { firstname, lastname, email, password } = {},
+    touched: {
+      firstname: tuc_firstname,
+      lastname: tuc_lastname,
+      email: tuc_email,
+      password: tuc_password,
+    },
+    errors: {
+      firstname: err_firstname,
+      lastname: err_lastname,
+      email: err_email,
+      password: err_password,
+    },
+  } = formik;
+
   return (
     <AuthPanelLayout>
       <h1 className="text-white pr-2">{LANG_SIGNUP_WELCOME_HEADING}</h1>
-      <div className="border-b border-[#F2F2F233] max-w-fit">
-        <h4 className="text-white mt-2 mb-4 pr-2">{LANG_SIGNUP_WELCOME_SUBHEADING}</h4>
+      <div className="max-w-fit">
+        <h4 className="text-white mt-2 pr-2">{LANG_SIGNUP_WELCOME_SUBHEADING}</h4>
+        <div className="border-b border-[#F2F2F233] w-[55%] mt-2 mb-2" />
       </div>
-
-      <form
-        onSubmit={formik.handleSubmit}
-        className="flex flex-col gap-[24px] lg:max-w-[400px] mt-2"
-      >
-        <div className="mt-[15px] flex items-center gap-8 md:flex-row flex-col ">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-[24px] lg:max-w-[400px] mt-2">
+        <div className="mt-[15px] flex items-baseline gap-8 md:flex-row flex-col ">
           <Input
             label={LANG_SIGNUP_FIRST_NAME_LABEL}
             placeholder={LANG_SIGNUP_FIRST_NAME_PLACEHOLDER}
             name="firstname"
             type="text"
-            value={formik?.values?.firstname}
-            onChange={formik.handleChange}
-            error={formik.touched.firstname && Boolean(formik.errors.firstname)}
-            helperText={formik.touched.firstname && formik.errors.firstname}
+            value={firstname}
+            onChange={handleChange}
+            onBlur={handleBlur('firstname')}
+            error={tuc_firstname && err_firstname}
+            helperText={tuc_firstname && err_firstname}
             isRequired
             className="w-full"
           />
@@ -119,10 +137,11 @@ function Signup() {
             placeholder={LANG_SIGNUP_LAST_NAME_PLACEHOLDER}
             name="lastname"
             type="text"
-            value={formik?.values?.lastname}
-            onChange={formik.handleChange}
-            error={formik.touched.lastname && Boolean(formik.errors.lastname)}
-            helperText={formik.touched.lastname && formik.errors.lastname}
+            value={lastname}
+            onChange={handleChange}
+            onBlur={handleBlur('lastname')}
+            error={tuc_lastname && err_lastname}
+            helperText={tuc_lastname && err_lastname}
             isRequired
             className="w-full"
           />
@@ -133,10 +152,11 @@ function Signup() {
             placeholder={LANG_SIGNUP_EMAIL_PLACEHOLDER}
             name="email"
             type="email"
-            value={formik?.values?.email}
-            onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.email && formik.errors.email}
+            value={email}
+            onChange={handleChange}
+            onBlur={handleBlur('email')}
+            error={tuc_email && err_email}
+            helperText={tuc_email && err_email}
             isRequired
             className="w-full"
           />
@@ -147,10 +167,11 @@ function Signup() {
             placeholder={LANG_SIGNUP_PASSWORD_PLACEHOLDER}
             name="password"
             type="password"
-            value={formik?.values?.password}
-            onChange={formik.handleChange}
-            error={formik.touched.password && Boolean(formik.errors.password)}
-            helperText={formik.touched.password && formik.errors.password}
+            value={password}
+            onChange={handleChange}
+            onBlur={handleBlur('password')}
+            error={tuc_password && err_password}
+            helperText={tuc_password && err_password}
             isRequired
             className="w-full"
           />
@@ -188,7 +209,7 @@ function Signup() {
         <div className="flex items-center flex-col text-center py-8">
           <div className="text-[28px] font-medium text-greydark">{LANG_SIGNUP_CODE_SENT}</div>
           <h4 className="text-greydark font-medium">
-            {LANG_SIGNUP_CODE_SENT_MAIL} {formik?.values?.email}
+            {LANG_SIGNUP_CODE_SENT_MAIL} {email}
           </h4>
         </div>
       </Modal>

@@ -13,14 +13,17 @@ import { forgotPasswordOtpValidation, sendForgotPasswordOtp } from '../../servic
 import { getErrorMessage, successStatus } from '../../common';
 import { signupUser, verifyEmail } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
-import { TOASTMESSAGES } from '../../constants/messages';
+import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
 import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 
 const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD } = PATHS;
-const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_VER_CODE, LANG_RESEND } = LANG.PAGES.VERIFY_EMAIL;
+const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_OTP_EMAIL, LANG_VER_CODE, LANG_RESEND, LANG_OTP } =
+  LANG.PAGES.VERIFY_EMAIL;
 const { BTNLBL_VERIFY } = BUTTON_LABELS;
 const { FORGOT_PWD } = VERIFY_EMAIL_ORIGIN;
 const { EMAIL_PATTERN } = REGEX;
+
+const { OTP_REQUIRED } = MESSAGES;
 
 const {
   successToast: { TST_SIGNUP_SUCCESSFULLY = '', TST_CODESENT_SUCCESSFULLY = '' },
@@ -77,7 +80,7 @@ function VerifyEmail() {
   }, [email]);
 
   useEffect(() => {
-    if (otp.length === 4) {
+    if (otp.length === 4 || !otp) {
       setError(false);
     }
   }, [otp]);
@@ -168,13 +171,16 @@ function VerifyEmail() {
           </span>
           <h1 className="text-white pr-2">{LANG_VERIFY_EMAIL}</h1>
         </div>
-        <h4 className="text-white mt-2 mb-4 pr-2">{`${LANG_CODE_EMAIL} ${email}`}</h4>
+        <h4 className="text-white mt-2 mb-4 pr-2">{`${
+          historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
+        } ${email}`}</h4>
       </div>
       <form onSubmit={onSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <div className="mb-4">
           <div className="flex gap-[2px] mb-1">
             <label className="text-white">
-              {LANG_VER_CODE} <span className="text-red relative">*</span>
+              {historyType === FORGOT_PWD ? LANG_OTP : LANG_VER_CODE}{' '}
+              <span className="text-red relative">*</span>
             </label>
           </div>
           <OtpInput
@@ -186,7 +192,9 @@ function VerifyEmail() {
             renderInput={(props) => <input {...props} />}
             inputStyle={otpInputStyle}
           />
-          <span className="mt-1 error">{error && 'Verification Code is required'}</span>
+          <span className="mt-1 error">
+            {error && (historyType === FORGOT_PWD ? OTP_REQUIRED : 'Verification Code is required')}
+          </span>
         </div>
         <Button
           isLoading={isLoading}

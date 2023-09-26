@@ -13,9 +13,14 @@ const validationSchemaSignup = yup.object({
     .required(IS_REQUIRED('Password')),
   firstname: yup
     .string()
+    .nonNullable()
     .required(IS_REQUIRED('First Name'))
     .max(50, MSG_FIELD_LENGTH('First Name')),
-  lastname: yup.string().required(IS_REQUIRED('Last Name')).max(50, MSG_FIELD_LENGTH('First Name')),
+  lastname: yup
+    .string()
+    .nonNullable()
+    .required(IS_REQUIRED('Last Name'))
+    .max(50, MSG_FIELD_LENGTH('First Name')),
 });
 
 const validationSchemaLocation = yup.object().shape({

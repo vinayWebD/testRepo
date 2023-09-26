@@ -34,7 +34,6 @@ function GeneralInfo() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [cropImageFile, setCropImageFile] = useState(null);
-  const [profilePicture, setProfilePicture] = useState('');
   const [open, setOpen] = useState(false);
   const { data: userData } = secureLocalStorage.getItem('object');
 
@@ -45,13 +44,12 @@ function GeneralInfo() {
       const { status = 0, data = {} } = response;
       if (successStatus(status)) {
         const { fields: { key, AWSAccessKeyId, policy, signature } = {}, url } = data;
-        setProfilePicture(key);
+        formik.setFieldValue('profile_picture', key);
         uploadData.append('key', key);
         uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
         uploadData.append('policy', policy);
         uploadData.append('signature', signature);
         uploadData.append('file', cropImageFile);
-        console.log(uploadData, 'uploadData');
         await fetchFileUPloadAWS({ url: url, dataTosend: uploadData });
       }
     }
@@ -59,7 +57,7 @@ function GeneralInfo() {
 
   const handleSkip = () => {
     dispatch(login(userData));
-    secureLocalStorage.clear();
+    secureLocalStorage.removeItem('object');
     navigate(HOME, { replace: true });
   };
 
@@ -69,7 +67,7 @@ function GeneralInfo() {
 
   const initialValues = {
     location: '',
-    profile_picture: profilePicture,
+    profile_picture: '',
   };
 
   const onSubmit = async (values) => {
@@ -94,7 +92,6 @@ function GeneralInfo() {
       }
     }
   };
-
   const formik = useFormik({
     initialValues,
     validationSchema: validationSchemaLocation,
