@@ -20,7 +20,7 @@ function Navbar() {
     <>
       <div className="max-[768px]:hidden min-[770px]:block lg:xl-[128px] lg:px-[48px] md:px-[36px] md:py-2 navbar-wrap">
         <div className="container mx-auto">
-          <div className="flex justify-between">
+          <div className="flex justify-between cursor-pointer">
             <div>
               <Link
                 to="home"
@@ -36,7 +36,7 @@ function Navbar() {
                 spy={true}
                 smooth={true}
                 offset={-100}
-                className="text-white text-lg font-bold mi-[769]:block hidden"
+                className="text-white text-lg font-bold mi-[769]:block hidden cursor-pointer"
               >
                 <TabLogo />
               </Link>
@@ -49,7 +49,7 @@ function Navbar() {
                     spy={true}
                     smooth={true}
                     offset={-100}
-                    className="text-white menu-items"
+                    className="text-white menu-items cursor-pointer"
                   >
                     Feature
                   </Link>
@@ -58,7 +58,7 @@ function Navbar() {
                     spy={true}
                     smooth={true}
                     offset={-100}
-                    className="text-white menu-items"
+                    className="text-white menu-items cursor-pointer"
                   >
                     About Us
                   </Link>
@@ -67,7 +67,7 @@ function Navbar() {
                     spy={true}
                     smooth={true}
                     offset={-100}
-                    className="text-white menu-items"
+                    className="text-white menu-items cursor-pointer"
                   >
                     Contact
                   </Link>
