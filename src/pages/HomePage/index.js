@@ -9,7 +9,7 @@ import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import Post from '../../components/Post';
 import { useState } from 'react';
 import Modal from '../../components/Modal';
-import EmojiTextarea from '../../components/common/EmojieTextarea';
+import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -63,23 +63,9 @@ const HomePage = () => {
         onClose={() => setIsSuccessModalOpen(false)}
         isTitle={true}
         title={'Create a Post'}
+        additionalClassNames="py-4 px-0"
       >
-        <div className="relative">
-          <EmojiTextarea />
-        </div>
-        <div className="flex gap-14 mt-3 pt-3 pb-2">
-          <div className="flex gap-2">
-            <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
-          </div>
-
-          <div className="flex gap-2">
-            <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
-          </div>
-
-          <div className="flex gap-2">
-            <LinkIcon /> <p>{BTNLBL_LINK}</p>
-          </div>
-        </div>
+        <CreatePostLayout />
       </Modal>
     </PrivateLayout>
   );

@@ -28,7 +28,7 @@
     @apply border-r-0;
   }
   textarea {
-    @apply border border-greymedium p-4 rounded-lg;
+    @apply border border-greymedium p-4 rounded-lg resize-none;
   }
 }
 

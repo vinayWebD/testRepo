@@ -129,6 +129,9 @@ const LANG = {
     FEED: {
       LANG_WRITE_SOMETHING: 'Write something ...',
     },
+    CREATE_POST: {
+      LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',
+    },
   },
 };
 const BUTTON_LABELS = {

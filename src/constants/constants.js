@@ -3,6 +3,7 @@ export const REGEX = {
   PASSWORD_PATTERN: /^(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9]).{4,16}$/,
   INTEGER_PATTERN: /^-?\d+(\.\d+)?$/,
   STRING_PATTERN: /^(\S+$)/g,
+  POST_PATTERN: /^(?!\s*$).+/,
 };
 
 export const VERIFY_EMAIL_ORIGIN = {
