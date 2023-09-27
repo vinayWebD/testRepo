@@ -10,7 +10,7 @@ function Modal({ isOpen, onClose, children, title, isTitle = true }) {
       onClick={onClose}
     >
       <div
-        className="bg-white w-11/12 md:max-w-[540px] mx-auto rounded-md shadow-lg z-50 overflow-y-auto"
+        className="overflow-y-visible bg-white w-11/12 md:max-w-[540px] mx-auto rounded-md shadow-lg z-50"
         onClick={(e) => e.stopPropagation()}
       >
         {isTitle && (

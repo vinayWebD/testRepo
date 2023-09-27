@@ -27,6 +27,9 @@
   input[type='password'].haserror {
     @apply border-r-0;
   }
+  textarea {
+    @apply border border-greymedium p-4 rounded-lg;
+  }
 }
 
 @import 'tailwindcss/components';
@@ -96,4 +99,8 @@
   background: linear-gradient(5deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.EmojiPickerReact {
+  --epr-emoji-size: 25px !important;
 }
