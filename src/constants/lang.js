@@ -27,13 +27,16 @@ const LANG = {
       LANG_HOMEPAGE_HOW_WORK: 'How does PurDriven work?',
       LANG_HOMEPAGE_WONDERING:
         'Wondering how our platform works? We depend on fundamentals not limited to expansion, depth, and potential.',
-      LANG_HOMEPAGE_EXPANSION: 'Work - Expansion',
+      LANG_HOMEPAGE_EXPANSION_LEFT: 'Work ',
+      LANG_HOMEPAGE_EXPANSION_RIGHT: 'Expansion',
       LANG_HOMEPAGE_EXPANSION_PARA:
         'Purdriven allows you to showcase all your talents in one place, offering you an increased chance of discovering a job or exploring exciting opportunities by combining your skills. Research indicates that employees who utilize strengths at work are more engaged, satisfied, and motivated to invest in their roles. At PurDriven, we highly value individuals with potential. Having carefully designed our platform to cater to this significant segment of the workforce that often requires more than one platform to exhibit their work and abilities.',
-      LANG_HOMEPAGE_DEPTH: 'Myself - Depth',
+      LANG_HOMEPAGE_DEPTH_LEFT: 'Myself ',
+      LANG_HOMEPAGE_DEPTH_RIGHT: 'Depth',
       LANG_HOMEPAGE_DEPTH_PARA:
         'Understanding oneself is crucial when it comes to finding a fulfilling career. Our search filters go beyond skills by encompassing elements empowering individuals to find the perfect match for their growth and fulfillment. You alone know what brings you a sense of purpose and meaning. We encourage you to find how to leverage your unique talents to make meaningful contributions.',
-      LANG_HOMEPAGE_POTENTIAL: 'Interests - Potential',
+      LANG_HOMEPAGE_POTENTIAL_LEFT: 'Interests ',
+      LANG_HOMEPAGE_POTENTIAL_RIGHT: 'Potential',
       LANG_HOMEPAGE_POTENTIAL_PARA:
         'Creativity has become a valued attribute of job candidates today. Many entrepreneurs and founders created successful businesses from their interests and passions. At PurDriven, we actively encourage people to share their interests igniting the potential for business ventures or opportunities.',
       LANG_HOMEPAGE_WE_AIM: 'We Aim to',

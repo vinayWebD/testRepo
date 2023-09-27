@@ -40,11 +40,14 @@ export default function LandingPage() {
         LANG_HOMEPAGE_JOIN_US,
         LANG_HOMEPAGE_HOW_WORK,
         LANG_HOMEPAGE_WONDERING,
-        LANG_HOMEPAGE_EXPANSION,
+        LANG_HOMEPAGE_EXPANSION_LEFT,
+        LANG_HOMEPAGE_EXPANSION_RIGHT,
         LANG_HOMEPAGE_EXPANSION_PARA,
-        LANG_HOMEPAGE_DEPTH,
+        LANG_HOMEPAGE_DEPTH_LEFT,
+        LANG_HOMEPAGE_DEPTH_RIGHT,
         LANG_HOMEPAGE_DEPTH_PARA,
-        LANG_HOMEPAGE_POTENTIAL,
+        LANG_HOMEPAGE_POTENTIAL_LEFT,
+        LANG_HOMEPAGE_POTENTIAL_RIGHT,
         LANG_HOMEPAGE_POTENTIAL_PARA,
         LANG_HOMEPAGE_WE_AIM,
         LANG_HOMEPAGE_WE_HIGHLIGHT,
@@ -89,23 +92,23 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="join-section">
+      <section className="join-section" id="ourview">
         <div className="join-para">{LANG_HOMEPAGE_WE_ARE}</div>
         <div className="mt-8 flex justify-center">
           <Button label={BTNLBL_JOIN_PUR} isIcon={true} onClick={() => navigate(PATH_SIGNUP)} />
         </div>
-      </section>
-      <section id="ourview" className="ourview-section">
-        <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
-        <div className="underline" />
-        <div className="content mt-5">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
-        <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
-        <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
+        <div className="ourview-box">
+          <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
+          <div className="underline" />
+          <div className="content mt-5">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
+          <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
+          <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
+        </div>
       </section>
       <section id="about-work" className="work-section pb-8">
         <div className="heading">{LANG_HOMEPAGE_HOW_WORK}</div>
         <div className="underline" />
-        <div className="content mt-6">{LANG_HOMEPAGE_WONDERING}</div>
+        <div className="content mt-5">{LANG_HOMEPAGE_WONDERING}</div>
 
         <Carousel
           showArrows={false}
@@ -114,11 +117,24 @@ export default function LandingPage() {
           showStatus={false}
           className="presentation-mode"
         >
-          <WorkCard title={LANG_HOMEPAGE_EXPANSION} content={LANG_HOMEPAGE_EXPANSION_PARA} />
-          <WorkCard title={LANG_HOMEPAGE_DEPTH} content={LANG_HOMEPAGE_DEPTH_PARA} />
-          <WorkCard title={LANG_HOMEPAGE_POTENTIAL} content={LANG_HOMEPAGE_POTENTIAL_PARA} />
+          <WorkCard
+            titleLeft={LANG_HOMEPAGE_EXPANSION_LEFT}
+            titleRight={LANG_HOMEPAGE_EXPANSION_RIGHT}
+            content={LANG_HOMEPAGE_EXPANSION_PARA}
+          />
+          <WorkCard
+            titleLeft={LANG_HOMEPAGE_DEPTH_LEFT}
+            titleRight={LANG_HOMEPAGE_DEPTH_RIGHT}
+            content={LANG_HOMEPAGE_DEPTH_PARA}
+          />
+          <WorkCard
+            titleLeft={LANG_HOMEPAGE_POTENTIAL_LEFT}
+            titleRight={LANG_HOMEPAGE_POTENTIAL_RIGHT}
+            content={LANG_HOMEPAGE_POTENTIAL_PARA}
+          />
         </Carousel>
       </section>
+      {/* About Section */}
       <section className="about-section">
         <div className="flex gap-[32px]">
           <div className="hidden md:block">
@@ -133,7 +149,7 @@ export default function LandingPage() {
               <img src={userimg} alt="" />
             </div>
             <div className="name p-0 lg:pt-4">- Ludgi Windrich</div>
-            <div className="yellow-text pt-1">The vision and the why</div>
+            <div className="yellow-text ml-4">The vision and the why</div>
           </div>
         </div>
         <div className="mt-4">
@@ -217,7 +233,8 @@ export default function LandingPage() {
           </li>
         </ul>
       </section>
-      <footer id="contact-us">
+      {/* Footer Section */}
+      <footer className="footer-section" id="contact-us">
         <div className="footer-logo mb-6">
           <FooterLogoIcon />
         </div>
@@ -285,11 +302,11 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+        <div className="absolute bottom-0 right-0 ">
+          <img src={footerIcon} alt="" className="landing-footer-img" />
+        </div>
+        <div className="py-5 text-center copyright">&#169; {LANG_HOMEPAGE_RIGHTS}</div>
       </footer>
-      <div className="absolute bottom-0 right-0 ">
-        <img src={footerIcon} alt="" className="landing-footer-img" />
-      </div>
-      <div className="py-5 text-center copyright">&#169; {LANG_HOMEPAGE_RIGHTS}</div>
     </div>
   );
 }

@@ -86,3 +86,12 @@
   height: 86px;
   position: relative;
 }
+
+/* Global CSS override for carosul */
+.carousel .control-dots .dot {
+  opacity: 1;
+  background: #fff;
+}
+.carousel .control-dots .dot.selected {
+  background: #d91c5c;
+}
