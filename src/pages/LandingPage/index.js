@@ -279,22 +279,30 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <div>
+          <div style={{ zIndex: 60 }}>
             <div>
               <div className="footer-link-heading">{LANG_HOMEPAGE_CONNECT}</div>
               <div className="flex gap-6 items-center mt-5 pb-8">
                 <div className="social-links">
-                  <a href="">
+                  <a
+                    href="https://www.linkedin.com/company/purdriven/"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     <img src={linkdinicon} alt="" />
                   </a>
                 </div>
                 <div className="social-links">
-                  <a href="">
+                  <a href="https://www.instagram.com/purdriven/" rel="noreferrer" target="_blank">
                     <img src={instagramIcon} alt="" />
                   </a>
                 </div>
                 <div className="social-links">
-                  <a href="">
+                  <a
+                    href="https://www.facebook.com/meintelifestyle"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     <img src={facebook} alt="" />
                   </a>
                 </div>
