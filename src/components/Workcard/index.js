@@ -1,15 +1,12 @@
-import { CardGradientDivider } from '../Icons/CardGradientDivider';
 import './style.scss';
 import PropTypes from 'prop-types';
 
-const WorkCard = ({ title, content }) => {
+const WorkCard = ({ titleLeft, titleRight, content }) => {
   return (
     <div className="work-card-wrap">
-      <div className="card-title">{title}</div>
-      <div className="card-divider">
-        <span>
-          <CardGradientDivider />
-        </span>
+      <div className="card-title mb-[35px]">
+        <span className="left mr-1">{titleLeft}</span>
+        <span className="right">{titleRight}</span>
       </div>
       <div className="card-content">{content}</div>
     </div>

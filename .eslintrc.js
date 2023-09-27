@@ -22,6 +22,7 @@ module.exports = {
     'no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: true }], // Disallow unused variables,
     'key-spacing': ['error', { beforeColon: false, afterColon: true }], // Enforce spacing around colon in object literals,
     quotes: ['error', 'single'], // or "double"
+    'react/prop-types': 0,
   },
   parserOptions: {
     allowImportExportEverywhere: true,

@@ -1,0 +1,30 @@
+.croper-wrap {
+  max-width: 450px;
+  width: 100%;
+  .crop-box {
+    padding: 24px;
+  }
+  .crop-button {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    padding: 24px;
+  }
+  .result-image {
+    display: flex;
+    justify-content: center;
+    .preview-image {
+      width: 300px;
+      height: 284px;
+    }
+  }
+  .image-cropper {
+    display: flex;
+    justify-content: center;
+  }
+  .action-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+}

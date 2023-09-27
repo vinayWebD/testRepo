@@ -1,3 +1,98 @@
 @import 'tailwindcss/base';
+@layer base {
+  h1 {
+    @apply text-[24px] md:text-[30px] font-semibold;
+  }
+  h2 {
+    @apply text-[26px] font-bold;
+  }
+  h3 {
+    @apply text-lg;
+  }
+  h4 {
+    @apply text-[14px] font-medium;
+  }
+  label {
+    @apply text-[12px] font-semibold;
+  }
+  input {
+    @apply box-border	rounded-[8px] px-[16px] py-[13px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
+  }
+  .error {
+    @apply text-red text-[12px] font-medium;
+  }
+  input.haserror {
+    @apply border-solid border-[1px] border-red;
+  }
+  input[type='password'].haserror {
+    @apply border-r-0;
+  }
+}
+
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
+
+* {
+  font-family: 'Montserrat';
+}
+
+.bg-gradient-button {
+  background: linear-gradient(53deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
+}
+.para-normal {
+  color: #fff;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.para-sm {
+  color: #f2f2f2;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+}
+.link-sm {
+  color: #70baff;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 18px;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+.modal-title {
+  color: #0071bc;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.image_preview {
+  position: absolute;
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  cursor: auto;
+}
+.profile-image {
+  width: 86px;
+  height: 86px;
+  position: relative;
+}
+
+/* Global CSS override for carosul */
+
+.carousel .control-dots .dot {
+  opacity: 1 !important;
+  background: #fff;
+}
+.carousel .control-dots .dot.selected {
+  background: #d91c5c;
+}
