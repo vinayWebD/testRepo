@@ -3,13 +3,16 @@ import PhotoIcon from '../Icons/PhotoIcon';
 import VideoIcon from '../Icons/VideoIcon';
 import LinkIcon from '../Icons/LinkIcon';
 import { Button } from '../common/Button';
-import { BUTTON_LABELS } from '../../constants/lang';
+import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import CreatePostTextInput from './CreatePostTextInput';
 import { REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
+import Modal from '../Modal';
+import CreatePostLinkInput from './CreatePostLinkInput';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 const { POST_PATTERN } = REGEX;
+const { LANG_ADD_NEW } = LANG.PAGES.CREATE_POST;
 
 const CreatePostLayout = () => {
   const [text, setText] = useState('');
@@ -39,6 +42,7 @@ const CreatePostLayout = () => {
       src: 'https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     },
   ]);
+  const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
 
   const isPostButtonDisabled = () => {
     return !POST_PATTERN.test(text);
@@ -60,7 +64,10 @@ const CreatePostLayout = () => {
             <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
           </div>
 
-          <div className="flex gap-2 cursor-pointer hover:opacity-70" onClick={() => {}}>
+          <div
+            className="flex gap-2 cursor-pointer hover:opacity-70"
+            onClick={() => setIsLinkSectionOpen(true)}
+          >
             <LinkIcon /> <p>{BTNLBL_LINK}</p>
           </div>
         </div>
@@ -73,6 +80,31 @@ const CreatePostLayout = () => {
           isDisabled={isPostButtonDisabled()}
         />
       </div>
+
+      <Modal
+        isOpen={isLinkSectionOpen}
+        onClose={() => setIsLinkSectionOpen(false)}
+        isTitle={true}
+        title={'Add Links'}
+        additionalClassNames="py-4 px-0"
+      >
+        <div className="overflow-auto mb-3 px-6">
+          <CreatePostLinkInput />
+          <div className="mt-5">
+            <p className="text-blueprimary font-semibold text-sm text-right cursor-pointer">
+              {LANG_ADD_NEW}
+            </p>
+          </div>
+        </div>
+        <div className="flex justify-end px-6 border-greymedium border-t pt-3">
+          <Button
+            label="Save"
+            additionalClassNames="text-sm"
+            showArrowIcon={false}
+            isDisabled={isPostButtonDisabled()}
+          />
+        </div>
+      </Modal>
     </>
   );
 };
