@@ -113,6 +113,7 @@ const LANG = {
       LANG_LOCATION_PLACEHOLDER: 'Enter Location',
       LANG_SKIP: 'Skip for Now',
       LANG_PROCEED: 'Proceed',
+      LANG_NEXT: 'Next',
     },
     FORGOT_PASSWORD: {
       LANG_GEN_WELCOME_HEADING: 'Forgot Password',

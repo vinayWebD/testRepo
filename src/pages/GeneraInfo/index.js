@@ -26,7 +26,7 @@ const {
   LANG_PROVIDE_INFO,
   LANG_LOCATION,
   LANG_LOCATION_PLACEHOLDER,
-  LANG_PROCEED,
+  LANG_NEXT,
   LANG_SKIP,
 } = LANG.PAGES.GEN_INFO;
 
@@ -144,7 +144,7 @@ function GeneralInfo() {
         </div>
         <Button
           type="submit"
-          label={LANG_PROCEED}
+          label={LANG_NEXT}
           isDisabled={!location && !profile_picture}
           additionalClassNames="capitalize"
         />
