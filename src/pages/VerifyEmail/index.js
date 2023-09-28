@@ -44,12 +44,6 @@ function VerifyEmail() {
   const { dataToSend: userData = {} } = secureLocalStorage.getItem('object');
   const [error, setError] = useState(false);
 
-  console.log(userData, 'userData');
-
-  if (!userData.email) {
-    navigate(LOGIN);
-  }
-
   const otpInputStyle = {
     fontSize: '16px',
     lineHeight: '20px',
