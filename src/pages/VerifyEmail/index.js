@@ -41,8 +41,14 @@ function VerifyEmail() {
   const historyType = searchParams.get('type');
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const { dataToSend: userData = {} } = secureLocalStorage.getItem('object') || {};
+  const { dataToSend: userData = {} } = secureLocalStorage.getItem('object');
   const [error, setError] = useState(false);
+
+  console.log(userData, 'userData');
+
+  if (!userData.email) {
+    navigate(LOGIN);
+  }
 
   const otpInputStyle = {
     fontSize: '16px',
@@ -170,7 +176,7 @@ function VerifyEmail() {
         </div>
         <h4 className="text-white mt-2 mb-4 pr-2">{`${
           historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
-        } ${email}`}</h4>
+        } ${email || ''}`}</h4>
       </div>
       <form onSubmit={onSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <div className="mb-4">
