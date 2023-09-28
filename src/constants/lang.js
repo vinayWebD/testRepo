@@ -107,7 +107,8 @@ const LANG = {
     },
     GEN_INFO: {
       LANG_GEN_INFO: 'General Information',
-      LANG_PROVIDE_INFO: 'Please provide your general information.',
+      LANG_PROVIDE_INFO:
+        'Please provide your location. It helps us match you with the right opportunities.',
       LANG_LOCATION: 'Location',
       LANG_LOCATION_PLACEHOLDER: 'Enter Location',
       LANG_SKIP: 'Skip for Now',
