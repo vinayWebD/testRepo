@@ -28,9 +28,7 @@ function Modal({
             </div>
           </div>
         )}
-        <div className={`text-left md:max-h-5/6 max-h-[500px] ${additionalClassNames}`}>
-          {children}
-        </div>
+        <div className={`text-left md:max-h-5/6 ${additionalClassNames}`}>{children}</div>
       </div>
     </div>
   );

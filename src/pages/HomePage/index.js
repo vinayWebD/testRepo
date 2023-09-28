@@ -8,8 +8,8 @@ import LinkIcon from '../../components/Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import Post from '../../components/Post';
 import { useState } from 'react';
-import Modal from '../../components/Modal';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
+import Modal from '../../components/Modal';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;

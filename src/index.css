@@ -104,3 +104,16 @@
 .EmojiPickerReact {
   --epr-emoji-size: 25px !important;
 }
+
+.media-layout {
+  flex: 1;
+  overflow-y: hidden;
+  align-items: stretch;
+  overflow-y: auto;
+}
+
+.media-layout img {
+  object-fit: cover;
+  border-radius: 8px;
+  height: 100%;
+}
