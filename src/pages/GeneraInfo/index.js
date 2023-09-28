@@ -20,7 +20,7 @@ import {
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 
-const { HOME, LOGIN } = PATHS;
+const { HOME } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
@@ -37,9 +37,6 @@ function GeneralInfo() {
   const [open, setOpen] = useState(false);
   const { dataToSend: userData } = secureLocalStorage.getItem('object');
 
-  if (!userData?.email) {
-    navigate(LOGIN);
-  }
   const getPreSignedUrl = async () => {
     const uploadData = new FormData();
     if (cropImageFile) {
