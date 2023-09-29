@@ -18,12 +18,16 @@ const CreatePostLayout = () => {
   const [text, setText] = useState('');
   const [media] = useState([
     {
+      type: 'video',
+      src: 'https://vod-progressive.akamaized.net/exp=1696004024~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4363%2F14%2F371817283%2F1544168342.mp4~hmac=cf9d2e416dd1fdf00149218c7c68a6f4f7a20f073a9f1eea0a55b3110995a1d8/vimeo-prod-skyfire-std-us/01/4363/14/371817283/1544168342.mp4',
+    },
+    {
       type: 'photo',
       src: 'https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     },
     {
       type: 'photo',
-      src: 'https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+      src: 'https://images.unsplash.com/photo-1472457897821-70d3819a0e24?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8c21hbGx8ZW58MHx8MHx8fDA%3D&w=1000&q=80',
     },
     {
       type: 'photo',
