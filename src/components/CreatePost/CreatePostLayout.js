@@ -10,7 +10,7 @@ import MediaLayout from '../MediaLayout';
 import Modal from '../Modal';
 import CreatePostLinkInput from './CreatePostLinkInput';
 
-const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
+const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO, BTNLBL_SAVE } = BUTTON_LABELS;
 const { POST_PATTERN } = REGEX;
 const { LANG_ADD_NEW } = LANG.PAGES.CREATE_POST;
 
@@ -18,8 +18,12 @@ const CreatePostLayout = () => {
   const [text, setText] = useState('');
   const [media] = useState([
     {
-      type: 'video',
-      src: 'https://vod-progressive.akamaized.net/exp=1695899167~acl=%2Fvimeo-prod-skyfire-std-us%2F01%2F4363%2F14%2F371817283%2F1544168342.mp4~hmac=63d4e1f3c0f20957f0b7264c9ec8aa5cbcbb8b239e4224b18d3462f473dfe115/vimeo-prod-skyfire-std-us/01/4363/14/371817283/1544168342.mp4',
+      type: 'photo',
+      src: 'https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    },
+    {
+      type: 'photo',
+      src: 'https://images.pexels.com/photos/2245436/pexels-photo-2245436.png?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
     },
     {
       type: 'photo',
@@ -43,15 +47,25 @@ const CreatePostLayout = () => {
     },
   ]);
   const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
+  const [links, setLinks] = useState(['']);
 
   const isPostButtonDisabled = () => {
     return !POST_PATTERN.test(text);
   };
 
+  const isLinkButtonDisabled = () => {
+    return !links.length;
+  };
+
+  const addLink = () => {
+    if (links.length === 5) return;
+    setLinks([...links, '']);
+  };
+
   return (
     <>
       <div className="max-h-[515px] overflow-auto">
-        <div className="relative px-6">
+        <div className="relative px-6 flex flex-col gap-2">
           <CreatePostTextInput updateTextValue={(val) => setText(val)} />
           {media.length ? <MediaLayout media={media} /> : ''}
         </div>
@@ -88,20 +102,27 @@ const CreatePostLayout = () => {
         title={'Add Links'}
         additionalClassNames="py-4 px-0"
       >
-        <div className="overflow-auto mb-3 px-6">
-          <CreatePostLinkInput />
+        <div className="overflow-auto mb-3 px-6 flex flex-col gap-2">
+          <CreatePostLinkInput links={links} setLinks={setLinks} />
           <div className="mt-5">
-            <p className="text-blueprimary font-semibold text-sm text-right cursor-pointer">
+            <p
+              className={`${
+                links.length === 5
+                  ? 'text-greylight cursor-not-allowed'
+                  : 'text-blueprimary cursor-pointer'
+              }  font-semibold text-sm text-right `}
+              onClick={addLink}
+            >
               {LANG_ADD_NEW}
             </p>
           </div>
         </div>
         <div className="flex justify-end px-6 border-greymedium border-t pt-3">
           <Button
-            label="Save"
+            label={BTNLBL_SAVE}
             additionalClassNames="text-sm"
             showArrowIcon={false}
-            isDisabled={isPostButtonDisabled()}
+            isDisabled={isLinkButtonDisabled()}
           />
         </div>
       </Modal>

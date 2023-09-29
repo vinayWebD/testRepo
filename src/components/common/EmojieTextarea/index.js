@@ -1,8 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import EmojieIcon from '../../Icons/EmojieIcon';
+import { LIMITS } from '../../../constants/constants';
 
-const EmojiTextarea = ({ placeholder = '', maxLength = 100, updateTextValue = () => {} }) => {
+const { POST_CAPTION_MAX_LIMIT } = LIMITS;
+
+const EmojiTextarea = ({
+  placeholder = '',
+  maxLength = POST_CAPTION_MAX_LIMIT,
+  updateTextValue = () => {},
+}) => {
   const [text, setText] = useState('');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojieContainerRef = useRef(null);

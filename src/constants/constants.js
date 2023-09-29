@@ -9,3 +9,7 @@ export const REGEX = {
 export const VERIFY_EMAIL_ORIGIN = {
   FORGOT_PWD: '1fp',
 };
+
+export const LIMITS = {
+  POST_CAPTION_MAX_LIMIT: 100,
+};
