@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import VerifyEmail from './pages/VerifyEmail';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
+import Work from './pages/Work';
 
 const {
   LANDING,
@@ -18,6 +19,7 @@ const {
   PATH_GENERAL_INFO,
   FORGOT_PASSWORD,
   RESET_PASSWORD,
+  PATH_WORK,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -52,6 +54,10 @@ const publicRoutes = createBrowserRouter([
   {
     path: RESET_PASSWORD,
     element: <ResetPassword />,
+  },
+  {
+    path: PATH_WORK,
+    element: <Work />,
   },
 ]);
 
