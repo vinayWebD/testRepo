@@ -27,6 +27,9 @@
   input[type='password'].haserror {
     @apply border-r-0;
   }
+  textarea {
+    @apply border border-greymedium p-4 rounded-lg resize-none;
+  }
 }
 
 @import 'tailwindcss/components';
@@ -85,4 +88,32 @@
   width: 86px;
   height: 86px;
   position: relative;
+}
+
+.active-nav-left-side-bar {
+  border-image: linear-gradient(5deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
+  border-image-slice: 1;
+}
+
+.active-nav-left-side-bar p {
+  background: linear-gradient(5deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.EmojiPickerReact {
+  --epr-emoji-size: 25px !important;
+}
+
+.media-layout {
+  flex: 1;
+  overflow-y: hidden;
+  align-items: stretch;
+  overflow-y: auto;
+}
+
+.media-layout img {
+  object-fit: cover;
+  border-radius: 8px;
+  height: 100%;
 }

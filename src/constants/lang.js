@@ -126,6 +126,12 @@ const LANG = {
       LANG_PWD_PLACEHOLDER: 'Enter Password',
       LANG_C_PWD_PLACEHOLDER: 'Re-Enter Password',
     },
+    FEED: {
+      LANG_WRITE_SOMETHING: 'Write something ...',
+    },
+    CREATE_POST: {
+      LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',
+    },
   },
 };
 const BUTTON_LABELS = {
@@ -136,10 +142,21 @@ const BUTTON_LABELS = {
   BTNLBL_VERIFY: 'Verify',
   BTNLBL_CONTINUE: 'Continue',
   BTNLBL_SAVE: 'Save',
+  BTNLBL_PHOTO: 'Photo',
+  BTNLBL_VIDEO: 'Video',
+  BTNLBL_LINK: 'Link',
 };
 
 const DROPDOWN_OPTION_LABELS = {
   DDLBL_LOGOUT: 'Log out',
 };
 
-export { LANG, BUTTON_LABELS, DROPDOWN_OPTION_LABELS };
+const PRIVATE_NAVIGATION_LABELS = {
+  NAVLBL_FEED: 'Feed',
+  NAVLBL_MY_NETWORK: 'My Network',
+  NAVLBL_MESSAGES: 'Messages',
+  NAVLBL_NOTIFICATIONS: 'Notifications',
+  NAVLBL_SETTINGS: 'Settings',
+};
+
+export { LANG, BUTTON_LABELS, DROPDOWN_OPTION_LABELS, PRIVATE_NAVIGATION_LABELS };
