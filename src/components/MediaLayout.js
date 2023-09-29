@@ -39,7 +39,7 @@ const MediaLayout = ({ media = [] }) => {
   const getMedia = () => {
     if (media.length === 1) {
       return <MediaItem src={media[0].src} type={media[0].type} />;
-    } else if ([2, 4].includes(media.length)) {
+    } else if (media.length === 2 || media.length === 4) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
           {media.map(({ src, type }, index) => (
@@ -59,7 +59,7 @@ const MediaLayout = ({ media = [] }) => {
           </div>
         </div>
       );
-    } else if (media.length > 5) {
+    } else if (media.length >= 5) {
       return (
         <div className="flex-col flex gap-1 ">
           <div className="w-full flex gap-1 ">
