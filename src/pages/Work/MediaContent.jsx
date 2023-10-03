@@ -7,7 +7,7 @@ export function MediaContent({ handleFileEvent, mediaRef }) {
         Please upload media only related to work. You can add combination of images and videos.You
         can upload up to 15 media.
       </div>
-      <div className="mt-4">
+      <div className="mt-4 pb-6">
         <div
           className="py-[16px] w-[240px] border-dashed border border-blueprimary rounded-lg cursor-pointer text-center"
           onClick={() => mediaRef.current.click()}

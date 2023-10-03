@@ -18,6 +18,7 @@ module.exports = {
       gradientfrom: '#04436e',
       gradientto: '#023456',
       lightbluebg: '#E9F6FF',
+      deleteRed: '#E83E39',
     },
     extend: {
       fontFamily: {

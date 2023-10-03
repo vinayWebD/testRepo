@@ -6,7 +6,7 @@ const AccordionItem = ({ title, children, icon }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="bg-white mb-4">
+    <div className={`bg-white mb-4 ${isOpen ? 'accordion-open' : ''}`}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left py-[17px] px-[24px] focus:outline-none focus:bg-gray-200 flex items-center justify-between"
