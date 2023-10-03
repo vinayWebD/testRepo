@@ -5,18 +5,19 @@ import 'slick-carousel/slick/slick-theme.css';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
 
-const CreatePostMediaPreview = ({ media = [], customActiveIndex = 3 }) => {
+const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
+  const [sliderRef, setSliderRef] = useState(null);
+  const [activeSlideIndex, setActiveSlideIndex] = useState(customActiveIndex || 0);
+
   var settings = {
     dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
+    initialSlide: activeSlideIndex,
     afterChange: (current) => setActiveSlideIndex(current),
   };
-
-  const [sliderRef, setSliderRef] = useState(null);
-  const [activeSlideIndex, setActiveSlideIndex] = useState(customActiveIndex || 0);
 
   return (
     <>

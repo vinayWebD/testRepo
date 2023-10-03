@@ -57,7 +57,6 @@ const HomePage = () => {
           <Card classNames="p-3"></Card>
         </div>
       </div>
-
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}

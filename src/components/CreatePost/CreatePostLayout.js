@@ -4,15 +4,15 @@ import VideoIcon from '../Icons/VideoIcon';
 import LinkIcon from '../Icons/LinkIcon';
 import { Button } from '../common/Button';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
-import CreatePostTextInput from './CreatePostTextInput';
 import { REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
 import Modal from '../Modal';
 import CreatePostLinkInput from './CreatePostLinkInput';
+import EmojiTextarea from '../common/EmojieTextarea';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO, BTNLBL_SAVE } = BUTTON_LABELS;
 const { POST_PATTERN } = REGEX;
-const { LANG_ADD_NEW } = LANG.PAGES.CREATE_POST;
+const { LANG_ADD_NEW, LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
 
 const CreatePostLayout = () => {
   const [text, setText] = useState('');
@@ -70,7 +70,11 @@ const CreatePostLayout = () => {
     <>
       <div className="max-h-[515px] overflow-auto">
         <div className="relative px-6 flex flex-col gap-2">
-          <CreatePostTextInput updateTextValue={(val) => setText(val)} />
+          <EmojiTextarea
+            placeholder={LANG_TEXT_AREA_PLACEHOLDER}
+            value={text}
+            handleChange={(val) => setText(val)}
+          />
           {media.length ? <MediaLayout media={media} /> : ''}
         </div>
         <div className="flex gap-14 mt-3 py-3 justify-between px-6">
