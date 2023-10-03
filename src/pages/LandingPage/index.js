@@ -164,9 +164,10 @@ export default function LandingPage() {
                 who I am and then naturally navigate towards my potential. I am grateful for
                 creating a platform and a business that fully aligns with who I am. And I wish that
                 to everybody. I feel the same way people feel when doing something they love:
-                fulfillment and gratitude. PurDriven was born out of the need to find an opportunity
-                that matched who I truly am. What I didn’t know was that quest would lead me to
-                create PurDriven
+                fulfillment and gratitude. <br />
+                PurDriven was born out of the need to find an opportunity that matched who I truly
+                am. What I didn’t know was that quest would lead me to create PurDriven
+                {'\uD83D\uDE0A'}{' '}
               </>
             }
             moreText={
@@ -187,16 +188,18 @@ export default function LandingPage() {
                 priority. My focal point was having a more meaningful life. I was considering a
                 career change; therefore, I needed to revise and update my resume. I realized how
                 ineffective it was. It did not help me in any way with my goal of finding a new and
-                purposeful line of work. It was superficial and focused on experience - past. We are
-                way more than what we show on our resume. We need a forward-thinking and
-                potential-driven professional platform. It needs to showcase people’s talents,
+                purposeful line of work. It was superficial and focused on experience - past.
+                <br /> We are way more than what we show on our resume. We need a forward-thinking
+                and potential-driven professional platform. It needs to showcase people’s talents,
                 abilities, personalities, interests, and anything else that would portray a truer
-                version of who we are. Self-awareness is part of the process. We need to know more
-                about who we are to find and live purposeful lives. PurDriven strives to be a place
-                where people can explore their multipotentialities and better understand who they
-                are and how they can best help others. Authenticity is key. Whether personal or
-                professional, the right match always brings out the best in us. And our best is our
-                authentic self. The ultimate goal is to find it and use it to benefit others.
+                version of who we are.
+                <br /> Self-awareness is part of the process. We need to know more about who we are
+                to find and live purposeful lives. PurDriven strives to be a place where people can
+                explore their multipotentialities and better understand who they are and how they
+                can best help others. <br />
+                Authenticity is key. Whether personal or professional, the right match always brings
+                out the best in us. And our best is our authentic self. The ultimate goal is to find
+                it and use it to benefit others.
                 <br /> I suspect, for some, PurDriven will be a personal journey. People will evolve
                 along the way, and hopefully, there will be a shift toward a more engaged,
                 effective, and fulfilled workforce. <br />I couldn’t be more excited and thankful to
