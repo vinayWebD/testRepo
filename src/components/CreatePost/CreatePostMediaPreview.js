@@ -22,7 +22,7 @@ const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
 
   return (
     <>
-      <div>
+      <div className="max-h-[70vh] overflow-auto">
         <Slider {...settings} ref={setSliderRef}>
           {media.map(({ url, type }, _i) => {
             return (

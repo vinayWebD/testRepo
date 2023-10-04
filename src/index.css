@@ -123,7 +123,7 @@
 }
 
 .slick-slide.slick-active {
-  height: 65vh;
+  height: 70vh;
   display: flex !important;
   align-items: center;
   justify-content: center;
