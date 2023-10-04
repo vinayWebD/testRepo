@@ -31,9 +31,9 @@ const verifyEmail = async (dataToSend) => {
   }
 };
 
-const fetchGenratePreSignedUrl = async () => {
+const fetchGenratePreSignedUrl = async (extension = 'jpeg') => {
   try {
-    const response = await apiUtility(PRE_SIGNED_URL);
+    const response = await apiUtility(PRE_SIGNED_URL, 'GET', { extension });
     return response;
   } catch (err) {
     return err;
