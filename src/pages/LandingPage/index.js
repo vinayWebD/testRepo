@@ -167,7 +167,6 @@ export default function LandingPage() {
                 fulfillment and gratitude. <br />
                 PurDriven was born out of the need to find an opportunity that matched who I truly
                 am. What I didn’t know was that quest would lead me to create PurDriven
-                {'\uD83D\uDE0A'}{' '}
               </>
             }
             moreText={
