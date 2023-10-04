@@ -127,3 +127,12 @@
   display: flex;
   align-items: center;
 }
+/* Global CSS override for carosul */
+
+.carousel .control-dots .dot {
+  opacity: 1 !important;
+  background: #fff;
+}
+.carousel .control-dots .dot.selected {
+  background: #d91c5c;
+}

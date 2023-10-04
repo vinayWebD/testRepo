@@ -20,13 +20,13 @@ import {
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 
-const { HOME } = PATHS;
+const { HOME, PATH_SIGNUP } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
   LANG_LOCATION,
   LANG_LOCATION_PLACEHOLDER,
-  LANG_PROCEED,
+  LANG_NEXT,
   LANG_SKIP,
 } = LANG.PAGES.GEN_INFO;
 
@@ -35,7 +35,12 @@ function GeneralInfo() {
   const dispatch = useDispatch();
   const [cropImageFile, setCropImageFile] = useState(null);
   const [open, setOpen] = useState(false);
-  const { data: userData } = secureLocalStorage.getItem('object');
+  const data = secureLocalStorage.getItem('object');
+  const userData = data?.data;
+
+  if (!userData) {
+    window.location.replace(PATH_SIGNUP);
+  }
 
   const getPreSignedUrl = async () => {
     const uploadData = new FormData();
@@ -94,7 +99,6 @@ function GeneralInfo() {
     if (successStatus(status)) {
       ToastNotifySuccess('General Info added Successfully', 'location-success');
       dispatch(login(userData));
-      secureLocalStorage.removeItem('object');
       navigate(HOME, { replace: true });
     } else {
       if (errormsg) {
@@ -121,8 +125,9 @@ function GeneralInfo() {
       <div className="flex items-center gap-2">
         <h1 className="text-white pr-2">{LANG_GEN_INFO}</h1>
       </div>
-      <div className="border-b border-[#F2F2F233] max-w-fit">
+      <div className="max-w-[392px]">
         <h4 className="text-white mb-2 pr-2">{LANG_PROVIDE_INFO}</h4>
+        <div className="border-b border-[#F2F2F233] w-3/4" />
       </div>
       <form onSubmit={handleSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <InputProfilePicture setCropImageFile={setCropImageFile} cropImageFile={cropImageFile} />
@@ -141,7 +146,7 @@ function GeneralInfo() {
         </div>
         <Button
           type="submit"
-          label={LANG_PROCEED}
+          label={LANG_NEXT}
           isDisabled={!location && !profile_picture}
           additionalClassNames="capitalize"
         />

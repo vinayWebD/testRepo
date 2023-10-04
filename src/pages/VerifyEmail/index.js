@@ -16,7 +16,7 @@ import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/Toa
 import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
 import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 
-const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD } = PATHS;
+const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD, PATH_SIGNUP } = PATHS;
 const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_OTP_EMAIL, LANG_VER_CODE, LANG_RESEND, LANG_OTP } =
   LANG.PAGES.VERIFY_EMAIL;
 const { BTNLBL_VERIFY } = BUTTON_LABELS;
@@ -70,12 +70,14 @@ function VerifyEmail() {
 
   useEffect(() => {
     // Navigating the user back to login if the email is invalid
-    if (
-      historyType === FORGOT_PWD &&
-      ![undefined, null].includes(email) &&
+    if (historyType === FORGOT_PWD && ![null].includes(email) && !EMAIL_PATTERN.test(email)) {
+      navigate(LOGIN);
+    } else if (
+      historyType !== FORGOT_PWD &&
+      ![null].includes(email) &&
       !EMAIL_PATTERN.test(email)
     ) {
-      navigate(LOGIN);
+      navigate(PATH_SIGNUP);
     }
   }, [email]);
 
@@ -170,7 +172,7 @@ function VerifyEmail() {
         </div>
         <h4 className="text-white mt-2 mb-4 pr-2">{`${
           historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
-        } ${email}`}</h4>
+        } ${email || ''}`}</h4>
       </div>
       <form onSubmit={onSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <div className="mb-4">
