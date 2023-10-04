@@ -16,7 +16,7 @@ import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/Toa
 import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
 import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 
-const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD } = PATHS;
+const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD, PATH_SIGNUP } = PATHS;
 const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_OTP_EMAIL, LANG_VER_CODE, LANG_RESEND, LANG_OTP } =
   LANG.PAGES.VERIFY_EMAIL;
 const { BTNLBL_VERIFY } = BUTTON_LABELS;
@@ -41,7 +41,7 @@ function VerifyEmail() {
   const historyType = searchParams.get('type');
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-  const { dataToSend: userData = {} } = secureLocalStorage.getItem('object');
+  const { dataToSend: userData = {} } = secureLocalStorage.getItem('object') || {};
   const [error, setError] = useState(false);
 
   const otpInputStyle = {
@@ -70,12 +70,14 @@ function VerifyEmail() {
 
   useEffect(() => {
     // Navigating the user back to login if the email is invalid
-    if (
-      historyType === FORGOT_PWD &&
-      ![undefined, null].includes(email) &&
+    if (historyType === FORGOT_PWD && ![null].includes(email) && !EMAIL_PATTERN.test(email)) {
+      navigate(LOGIN);
+    } else if (
+      historyType !== FORGOT_PWD &&
+      ![null].includes(email) &&
       !EMAIL_PATTERN.test(email)
     ) {
-      navigate(LOGIN);
+      navigate(PATH_SIGNUP);
     }
   }, [email]);
 
