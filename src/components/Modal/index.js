@@ -7,7 +7,8 @@ function Modal({
   children,
   title,
   isTitle = true,
-  additionalClassNames = 'py-4 px-6',
+  width = 'max-w-[540px]',
+  padding = 'px-6',
 }) {
   if (!isOpen) return null;
 
@@ -17,7 +18,7 @@ function Modal({
       onClick={onClose}
     >
       <div
-        className="overflow-y-visible bg-white w-11/12 md:max-w-[540px] mx-auto rounded-md shadow-lg z-50"
+        className={`bg-white md:w-11/12 ${width} rounded-md shadow-lg z-50 overflow-y-auto m-3`}
         onClick={(e) => e.stopPropagation()}
       >
         {isTitle && (
@@ -28,7 +29,7 @@ function Modal({
             </div>
           </div>
         )}
-        <div className={`text-left md:max-h-5/6 ${additionalClassNames}`}>{children}</div>
+        <div className={`py-4 text-left ${padding}  md:max-h-5/6 max-h-[500px]`}>{children}</div>
       </div>
     </div>
   );
