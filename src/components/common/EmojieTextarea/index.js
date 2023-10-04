@@ -1,19 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import EmojiPicker from 'emoji-picker-react';
 import EmojieIcon from '../../Icons/EmojieIcon';
+import { LIMITS } from '../../../constants/constants';
 
-const EmojiTextarea = ({ placeholder = '', maxLength = 100, updateTextValue = () => {} }) => {
-  const [text, setText] = useState('');
+const { POST_CAPTION_MAX_LIMIT } = LIMITS;
+
+const EmojiTextarea = ({
+  placeholder = '',
+  maxLength = POST_CAPTION_MAX_LIMIT,
+  value = '',
+  handleChange = () => {},
+}) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojieContainerRef = useRef(null);
 
   const onEmojiClick = (emojiObject) => {
-    setText((prevText) => prevText + emojiObject.emoji);
+    handleChange((prevText) => prevText + emojiObject.emoji);
   };
-
-  useEffect(() => {
-    updateTextValue(text);
-  }, [text]);
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -31,10 +34,10 @@ const EmojiTextarea = ({ placeholder = '', maxLength = 100, updateTextValue = ()
   return (
     <div className="relative">
       <textarea
-        value={text}
+        value={value}
         className="min-h-[120px] w-full pr-6"
         placeholder={placeholder}
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => handleChange(e.target.value)}
         maxLength={maxLength}
       />
 
@@ -45,7 +48,7 @@ const EmojiTextarea = ({ placeholder = '', maxLength = 100, updateTextValue = ()
         <EmojieIcon />
       </span>
 
-      <div className="absolute right-3 bottom-3 text-xs text-greylight">{text.length}/100</div>
+      <div className="absolute right-3 bottom-3 text-xs text-greylight">{value.length}/100</div>
 
       {showEmojiPicker && (
         <div className="absolute top-11 right-2 z-[1000] max-h-[320px]" ref={emojieContainerRef}>

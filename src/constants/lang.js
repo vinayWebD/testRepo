@@ -131,6 +131,9 @@ const LANG = {
     },
     CREATE_POST: {
       LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',
+      LANG_URL: 'URL',
+      LANG_HTTPS: 'https://',
+      LANG_ADD_NEW: '+ Add New',
     },
   },
 };
