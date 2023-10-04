@@ -14,7 +14,7 @@ const {
   toastid: { TST_LINK_VALIDATION_FAILED_ID },
 } = TOASTMESSAGES;
 
-const CreatePostLinkLayout = ({ links = [], setLinks, closeModal = () => {} }) => {
+const CreatePostLinkLayout = ({ links = [], setLinks, closePopupHandler = () => {} }) => {
   const [_links, _setLinks] = useState(links);
 
   useEffect(() => {
@@ -51,7 +51,7 @@ const CreatePostLinkLayout = ({ links = [], setLinks, closeModal = () => {} }) =
 
     if (!hasError) {
       setLinks(modifiedLinks); // Set modified links with "https://" prefixed
-      closeModal(false);
+      closePopupHandler();
     }
   };
 

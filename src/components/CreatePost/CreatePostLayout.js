@@ -22,7 +22,7 @@ const {
   toastid: { TST_POST_CREATED_SUCCESS_ID, TST_POST_CREATED_FAILED_ID },
 } = TOASTMESSAGES;
 
-const CreatePostLayout = () => {
+const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
   const [text, setText] = useState('');
   const [media] = useState([]);
   const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
@@ -39,6 +39,7 @@ const CreatePostLayout = () => {
     const errormsg = getErrorMessage(data);
     if (successStatus(status)) {
       ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
+      closePopupHandler();
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, TST_POST_CREATED_FAILED_ID);
@@ -91,7 +92,11 @@ const CreatePostLayout = () => {
         title={'Add Links'}
         additionalClassNames="py-4 px-0"
       >
-        <CreatePostLinkLayout links={links} setLinks={setLinks} closeModal={setIsLinkSectionOpen} />
+        <CreatePostLinkLayout
+          links={links}
+          setLinks={setLinks}
+          closePopupHandler={() => setIsLinkSectionOpen(false)}
+        />
       </Modal>
     </>
   );
