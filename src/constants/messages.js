@@ -18,6 +18,7 @@ export const TOASTMESSAGES = {
     TST_CODESENT_SUCCESSFULLY: 'Please enter the one time passcode recieved in your email',
     TST_PROFILE_SUCCESSFULLY: 'Profile Updated Successfully',
     TST_PWD_RESET_SUCCESSFULLY: 'Password Reset Successfully',
+    TST_POST_CREATED_SUCCESSFULLY: 'Post Created Successfully',
   },
   errorToast: {
     TST_PERMISSION_DENIED: 'Authentication Permission Denied',
@@ -30,6 +31,7 @@ export const TOASTMESSAGES = {
     TST_OTP_GENRATE_FAILED: 'Invalid OTP',
     TST_INVALID_IMAGE: 'Invalid image file',
     TST_INVALID_FILE: 'Invalid file type',
+    TST_INVALID_LINKS: 'One or multiple invalid links added',
   },
   toastid: {
     TST_LOGIN_SUCCESS_ID: 'login-success',
@@ -46,5 +48,8 @@ export const TOASTMESSAGES = {
     TST_LOGIN_FAILED_ID: 'login-failed',
     TST_OTP_VRIFY_FAILED: 'verify-otp-failed',
     TST_OTP_RESNED_ID: 'resend-otp-failed',
+    TST_POST_CREATED_SUCCESS_ID: 'post-created-success',
+    TST_POST_CREATED_FAILED_ID: 'post-created-failed',
+    TST_LINK_VALIDATION_FAILED_ID: 'link-validation-failed',
   },
 };
