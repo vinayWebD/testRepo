@@ -72,7 +72,11 @@ function VerifyEmail() {
     // Navigating the user back to login if the email is invalid
     if (historyType === FORGOT_PWD && ![null].includes(email) && !EMAIL_PATTERN.test(email)) {
       navigate(LOGIN);
-    } else if (historyType !== FORGOT_PWD && !EMAIL_PATTERN.test(email)) {
+    } else if (
+      historyType !== FORGOT_PWD &&
+      ![null].includes(email) &&
+      !EMAIL_PATTERN.test(email)
+    ) {
       navigate(PATH_SIGNUP);
     }
   }, [email]);
