@@ -4,7 +4,7 @@ import VideoIcon from '../Icons/VideoIcon';
 import LinkIcon from '../Icons/LinkIcon';
 import { Button } from '../common/Button';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
-import { REGEX } from '../../constants/constants';
+import { LIMITS, POST_IMAGE_TYPES, REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
 import Modal from '../Modal';
 import EmojiTextarea from '../common/EmojieTextarea';
@@ -25,17 +25,15 @@ const {
   toastid: { TST_POST_CREATED_SUCCESS_ID, TST_POST_CREATED_FAILED_ID },
 } = TOASTMESSAGES;
 
+const { POST_MAX_IMAGE_SIZE_IN_BYTES } = LIMITS;
+
 const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
   const [text, setText] = useState('');
-  const [media, setMedia] = useState([
-    {
-      path: 'https://purdriven-dev-media.s3.amazonaws.com/temp/ayushidangay05.2/2023-10-04/file-9774a559-658d-4fc6-82da-2600da91ca90.jpg?AWSAccessKeyId=AKIAY6JWCPDSWD6T3C5V&Signature=Vmoe%2FYEIhrTrltTMFjODvGB%2FYEg%3D&Expires=1696409162',
-      type: 'photo',
-    },
-  ]);
+  const [media, setMedia] = useState([]);
   const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
-  const [links, setLinks] = useState(['']);
+  const [links, setLinks] = useState([]);
   const [openFileBrowser, setOpenFileBrowser] = useState(0);
+  const [openForcedPreview, setOpenForcedPreview] = useState(false);
   const mediaInput = useRef(null);
 
   useEffect(() => {
@@ -48,15 +46,25 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
     return !POST_PATTERN.test(text);
   };
 
+  /**
+   * This function will validate the media, check if they can be uploaded
+   * and then call the function that will upload the valid files to AWS
+   */
   const uploadMedia = async () => {
     const filesToUpload = [],
       failedFiles = [];
     for (let i = 0; i < mediaInput?.current?.files?.length; i++) {
       const currentFile = mediaInput?.current?.files[i];
-      console.log('---->>> first', currentFile.size);
-      if (currentFile?.type?.includes('image/') && currentFile?.size > 1e7) {
+
+      if (
+        currentFile?.type?.includes('image/') &&
+        currentFile?.size > POST_MAX_IMAGE_SIZE_IN_BYTES
+      ) {
         failedFiles.push(mediaInput?.current?.files[i]);
-      } else if (currentFile?.type?.includes('image/') && currentFile?.size <= 1e7) {
+      } else if (
+        currentFile?.type?.includes('image/') &&
+        currentFile?.size <= POST_MAX_IMAGE_SIZE_IN_BYTES
+      ) {
         const compressedImage = await compressImage({
           file: mediaInput?.current?.files[i],
         });
@@ -71,13 +79,19 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
     }
 
     // Upload the files on AWS
-    await getPreSignedUrl(filesToUpload);
+    await uploadFilesOnAWS(filesToUpload);
   };
 
-  const getPreSignedUrl = async (filesToUpload) => {
-    const uploadData = new FormData();
+  /**
+   * This function shall upload all the files to AWS
+   * @param {*} filesToUpload
+   */
+  const uploadFilesOnAWS = async (filesToUpload) => {
+    const uploadedMedia = [...media];
+
     if (filesToUpload?.length) {
       for (let i = 0; i < filesToUpload.length; i++) {
+        const uploadData = new FormData();
         const file = filesToUpload[i];
         const response = await fetchGenratePreSignedUrl(getFileExtension(file?.name));
         const { status = 0, data = {} } = response;
@@ -88,19 +102,28 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
           uploadData.append('policy', policy);
           uploadData.append('signature', signature);
           uploadData.append('file', file);
-          await fetchFileUPloadAWS({ url: url, dataTosend: uploadData });
-          setMedia([...media, { path: key }]);
+          await fetchFileUPloadAWS({ url, dataTosend: uploadData });
+          uploadedMedia.push({ path: key, url: URL.createObjectURL(file) });
         }
       }
+      setMedia([...uploadedMedia]);
+      setOpenForcedPreview(true);
     }
   };
 
+  /**
+   * This function opens the file browser so that user can choose images and videos to upload
+   * @param {*} type
+   */
   const handleFileBrowser = (type) => {
     if (type === 'photo') {
       setOpenFileBrowser((prev) => prev + 1);
     }
   };
 
+  /**
+   * Function that calls the create post API
+   */
   const savePostHandler = async () => {
     const response = await createPost({ caption: text, links, media });
 
@@ -118,14 +141,14 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
 
   return (
     <>
-      <div className="max-h-[515px] overflow-y-visible">
-        <div className="relative px-6 flex flex-col gap-2">
+      <div className="max-h-[70vh] overflow-y-auto">
+        <div className="relative px-[18px] flex flex-col gap-2">
           <EmojiTextarea
             placeholder={LANG_TEXT_AREA_PLACEHOLDER}
             value={text}
             handleChange={(val) => setText(val)}
           />
-          {media.length ? <MediaLayout media={media} /> : ''}
+          {media.length ? <MediaLayout media={media} forcedPreview={openForcedPreview} /> : ''}
         </div>
         <div className="flex gap-14 mt-3 py-3 justify-between px-6">
           <div
@@ -174,16 +197,14 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
       {/* The below input field is for opening the Media Files Browser in the user's system */}
       <input
         ref={mediaInput}
-        // disabled={maxNumberOfFiles !== undefined && numberOfUploads >= maxNumberOfFiles}
         type="file"
         multiple={true}
         onInput={() => uploadMedia()}
         onClick={(e) => {
           e.target.value = null;
         }} // We are setting this to null because we want to be able to select the same file simultaneously
-        // style={{ visibility: 'hidden', width: 0, height: 0 }}
         className="contents w-0 h-0 "
-        accept={['image/heif', 'image/heic', 'image/png', 'image/jpeg', 'image/png', 'image/gif']}
+        accept={POST_IMAGE_TYPES}
       />
     </>
   );

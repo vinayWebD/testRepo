@@ -122,8 +122,14 @@
   display: none !important;
 }
 
-.slick-slide.slick-active.slick-current {
-  height: 78vh;
-  display: flex;
+.slick-slide.slick-active {
+  height: 65vh;
+  display: flex !important;
   align-items: center;
+  justify-content: center;
+}
+
+.slick-slide img,
+.slick-slide video {
+  border-radius: 6px;
 }

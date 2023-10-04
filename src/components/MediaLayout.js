@@ -3,9 +3,9 @@ import RemoveIcon from './Icons/RemoveIcon';
 import Modal from './Modal';
 import CreatePostMediaPreview from './CreatePost/CreatePostMediaPreview';
 
-const MediaLayout = ({ media = [] }) => {
-  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
-  const [customActiveIndex, setCustomActiveIndex] = useState(null);
+const MediaLayout = ({ media = [], forcedPreview = false }) => {
+  const [isPreviewOpen, setIsPreviewOpen] = useState(forcedPreview || false);
+  const [customActiveIndex, setCustomActiveIndex] = useState(forcedPreview ? 0 : null);
 
   const handleClick = (currentIndex) => {
     setIsPreviewOpen(true);
@@ -22,7 +22,7 @@ const MediaLayout = ({ media = [] }) => {
         isTitle={true}
         title={'Create Post'}
       >
-        <div className="max-w-[400px] m-auto">
+        <div className="m-auto">
           <CreatePostMediaPreview media={media} customActiveIndex={customActiveIndex} />
         </div>
       </Modal>
@@ -31,14 +31,12 @@ const MediaLayout = ({ media = [] }) => {
 
   const getMedia = () => {
     if (media.length === 1) {
-      return (
-        <MediaItem path={media[0].path} type={media[0].type} index={0} onClick={handleClick} />
-      );
+      return <MediaItem url={media[0].url} type={media[0].type} index={0} onClick={handleClick} />;
     } else if (media.length === 2 || media.length === 4) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
-          {media.map(({ path, type }, index) => (
-            <MediaItem path={path} type={type} key={index} index={index} onClick={handleClick} />
+          {media.map(({ url, type }, index) => (
+            <MediaItem url={url} type={type} key={index} index={index} onClick={handleClick} />
           ))}
         </div>
       );
@@ -46,11 +44,11 @@ const MediaLayout = ({ media = [] }) => {
       return (
         <div className="flex gap-1 w-full">
           <div className="w-[50%]">
-            <MediaItem path={media[0].path} type={media[0].type} index={0} onClick={handleClick} />
+            <MediaItem url={media[0].url} type={media[0].type} index={0} onClick={handleClick} />
           </div>
           <div className="flex gap-1 w-[50%] flex-col">
-            <MediaItem path={media[1].path} type={media[1].type} index={1} onClick={handleClick} />
-            <MediaItem path={media[2].path} type={media[2].type} index={2} onClick={handleClick} />
+            <MediaItem url={media[1].url} type={media[1].type} index={1} onClick={handleClick} />
+            <MediaItem url={media[2].url} type={media[2].type} index={2} onClick={handleClick} />
           </div>
         </div>
       );
@@ -58,14 +56,14 @@ const MediaLayout = ({ media = [] }) => {
       return (
         <div className="flex-col flex gap-1 ">
           <div className="w-full flex gap-1 ">
-            <MediaItem path={media[0].path} type={media[0].type} index={0} onClick={handleClick} />
-            <MediaItem path={media[1].path} type={media[1].type} index={1} onClick={handleClick} />
+            <MediaItem url={media[0].url} type={media[0].type} index={0} onClick={handleClick} />
+            <MediaItem url={media[1].url} type={media[1].type} index={1} onClick={handleClick} />
           </div>
           <div className="w-full flex gap-1">
-            <MediaItem path={media[2].path} type={media[2].type} index={2} onClick={handleClick} />
-            <MediaItem path={media[3].path} type={media[3].type} index={3} onClick={handleClick} />
+            <MediaItem url={media[2].url} type={media[2].type} index={2} onClick={handleClick} />
+            <MediaItem url={media[3].url} type={media[3].type} index={3} onClick={handleClick} />
             <MediaItem
-              path={media[4].path}
+              url={media[4].url}
               type={media[4].type}
               showMoreOverlay={media.length - 5}
               index={4}
@@ -90,12 +88,12 @@ const MediaLayout = ({ media = [] }) => {
 
 export default MediaLayout;
 
-const MediaItem = ({ type, path = '', showMoreOverlay = 0, index = 0, onClick = () => {} }) => {
+const MediaItem = ({ type, url = '', showMoreOverlay = 0, index = 0, onClick = () => {} }) => {
   if (type === 'video') {
     return (
-      <div className="h-auto relative">
+      <div className="h-auto relative w-full">
         <video
-          src={path}
+          src={url}
           className="w-full min-h-full min-w-full"
           controls={true}
           height={'100%'}
@@ -112,8 +110,8 @@ const MediaItem = ({ type, path = '', showMoreOverlay = 0, index = 0, onClick = 
     );
   } else {
     return (
-      <div className="h-full relative">
-        <img src={path} alt="media" className="w-full" onClick={() => onClick(index)} />
+      <div className="h-full relative max-h-[300px] w-full">
+        <img src={url} alt="media" className="w-full" onClick={() => onClick(index)} />
         {showMoreOverlay ? (
           <div className="absolute top-0 left-0 text-white text-lg w-full h-full bg-[#0000008a] rounded-lg font-medium flex justify-center text-center items-center">
             + {showMoreOverlay}

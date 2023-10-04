@@ -15,10 +15,10 @@ const {
 } = TOASTMESSAGES;
 
 const CreatePostLinkLayout = ({ links = [], setLinks, closePopupHandler = () => {} }) => {
-  const [_links, _setLinks] = useState(links);
+  const [_links, _setLinks] = useState(!links?.length ? [''] : [...links]);
 
   useEffect(() => {
-    _setLinks([...links]);
+    _setLinks(!links?.length ? [''] : [...links]);
   }, [links]);
 
   const addLink = () => {
