@@ -64,7 +64,7 @@ const HomePage = () => {
         title={'Create a Post'}
         additionalClassNames="py-4 px-0"
       >
-        <CreatePostLayout />
+        <CreatePostLayout closePopupHandler={() => setIsSuccessModalOpen(false)} />
       </Modal>
     </PrivateLayout>
   );

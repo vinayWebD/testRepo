@@ -8,7 +8,7 @@ export const Button = ({
   showArrowIcon = true,
   additionalClassNames = '',
   isLoading = false,
-  onClick,
+  onClick = () => {},
 }) => {
   return (
     <button

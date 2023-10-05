@@ -11,6 +11,20 @@ const CreatePostLinkInput = ({ links = [], setLinks = [] }) => {
     setLinks(newLinks);
   };
 
+  /**
+   * In the UI, we dont have to show https:// as it is in the UI of input box
+   * @param {*} link
+   * @returns
+   */
+  const linkValueViewFormat = (link) => {
+    if (link.startsWith('https://')) {
+      // Remove "https://"
+      link = link.slice(8);
+    }
+
+    return link;
+  };
+
   return links.map((link, _i) => {
     return (
       <React.Fragment key={_i}>
@@ -26,7 +40,7 @@ const CreatePostLinkInput = ({ links = [], setLinks = [] }) => {
                 id="hs-inline-add-on"
                 name="hs-inline-add-on"
                 className="py-3 px-4 pl-[68px] block w-full border-gray-200 rounded-md text-sm"
-                value={link}
+                value={linkValueViewFormat(link)}
                 onChange={(e) => handleInputChange(e, _i)}
               />
               <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
