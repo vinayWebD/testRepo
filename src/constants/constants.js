@@ -4,6 +4,7 @@ export const REGEX = {
   INTEGER_PATTERN: /^-?\d+(\.\d+)?$/,
   STRING_PATTERN: /^(\S+$)/g,
   POST_PATTERN: /^(?!\s*$).+/,
+  LINK_PATTERN: /^https:\/\/[a-zA-Z0-9\-\\.]+\.[a-zA-Z]{2,}(\/\S*)?$/,
 };
 
 export const VERIFY_EMAIL_ORIGIN = {
