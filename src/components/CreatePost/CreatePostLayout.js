@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import PhotoIcon from '../Icons/PhotoIcon';
 import VideoIcon from '../Icons/VideoIcon';
 import LinkIcon from '../Icons/LinkIcon';
-import { Button } from '../common/Button';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { LIMITS, POST_IMAGE_TYPES, REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
@@ -16,6 +15,7 @@ import CreatePostLinkLayout from './CreatePostLinkLayout';
 import compressImage from '../../utils/compressImage';
 import { fetchFileUPloadAWS, fetchGenratePreSignedUrl } from '../../services/signup';
 import { getFileExtension } from '../../utils/helper';
+import OutlinedButton from '../common/OutlinedButton';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 const { POST_PATTERN } = REGEX;
@@ -174,12 +174,10 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
           </div>
         </div>
       </div>
-      <div className="flex justify-end px-6 border-greymedium border-t pt-3">
-        <Button
-          label="Post"
-          additionalClassNames="text-sm"
-          showArrowIcon={false}
-          isDisabled={isPostButtonDisabled()}
+      <div className="flex justify-end px-6 border-greymedium border-t pt-5">
+        <OutlinedButton
+          label={'Post'}
+          disabled={isPostButtonDisabled()}
           onClick={savePostHandler}
         />
       </div>

@@ -62,7 +62,7 @@ const HomePage = () => {
         onClose={() => setIsSuccessModalOpen(false)}
         isTitle={true}
         title={'Create a Post'}
-        additionalClassNames="py-4 px-0"
+        childrenClassNames="overflow-y-auto"
       >
         <CreatePostLayout closePopupHandler={() => setIsSuccessModalOpen(false)} />
       </Modal>

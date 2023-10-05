@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import CreatePostLinkInput from './CreatePostLinkInput';
-import { Button } from '../common/Button';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { REGEX } from '../../constants/constants';
 import { ToastNotifyError } from '../Toast/ToastNotify';
 import { TOASTMESSAGES } from '../../constants/messages';
+import OutlinedButton from '../common/OutlinedButton';
 
 const { BTNLBL_SAVE } = BUTTON_LABELS;
 const { LANG_ADD_NEW } = LANG.PAGES.CREATE_POST;
@@ -59,7 +59,7 @@ const CreatePostLinkLayout = ({ links = [], setLinks, closePopupHandler = () => 
     <>
       <div className="overflow-auto mb-3 px-6 flex flex-col gap-2">
         <CreatePostLinkInput links={_links} setLinks={_setLinks} />
-        <div className="mt-5">
+        <div className="mt-6 mb-2">
           <p
             className={`${
               _links.length === 5
@@ -72,12 +72,10 @@ const CreatePostLinkLayout = ({ links = [], setLinks, closePopupHandler = () => 
           </p>
         </div>
       </div>
-      <div className="flex justify-end px-6 border-greymedium border-t pt-3">
-        <Button
+      <div className="flex justify-end px-6 border-greymedium border-t pt-5">
+        <OutlinedButton
           label={BTNLBL_SAVE}
-          additionalClassNames="text-sm"
-          showArrowIcon={false}
-          isDisabled={isLinkButtonDisabled()}
+          disabled={isLinkButtonDisabled()}
           onClick={handleSave}
         />
       </div>

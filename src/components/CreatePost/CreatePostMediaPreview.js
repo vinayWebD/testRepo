@@ -4,9 +4,15 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
-import { Button } from '../common/Button';
+import OutlinedButton from '../common/OutlinedButton';
+import BinIcon from '../Icons/BinIcon';
 
-const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
+const CreatePostMediaPreview = ({
+  media = [],
+  customActiveIndex = 0,
+  removeMedia = () => {},
+  closeModal = () => {},
+}) => {
   const [sliderRef, setSliderRef] = useState(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(customActiveIndex || 0);
 
@@ -22,7 +28,7 @@ const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
 
   return (
     <>
-      <div className="max-h-[70vh] overflow-auto">
+      <div className="overflow-hidden">
         <Slider {...settings} ref={setSliderRef}>
           {media.map(({ url, type }, _i) => {
             return (
@@ -37,13 +43,19 @@ const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
                 ) : (
                   <img src={url} />
                 )}
+                <div
+                  className="absolute right-2 top-2"
+                  onClick={() => removeMedia(customActiveIndex)}
+                >
+                  <BinIcon />
+                </div>
               </div>
             );
           })}
         </Slider>
       </div>
 
-      <div className="flex gap-2 w-full justify-center mt-2 relative h-[50px]">
+      <div className="flex gap-2 w-full justify-center mt-2 relative h-[50px] items-center">
         <div className="flex justify-center gap-3 items-center">
           <button onClick={sliderRef?.slickPrev}>
             <LeftChevron />
@@ -53,7 +65,9 @@ const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
             <RightChevron />
           </button>
         </div>
-        <Button label={'Next'} additionalClassNames="absolute right-0" showArrowIcon={false} />
+        <div className="absolute right-0">
+          <OutlinedButton label={'Next'} onClick={closeModal} />
+        </div>
       </div>
     </>
   );
