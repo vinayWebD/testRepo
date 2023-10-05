@@ -2,7 +2,7 @@ image: node:16
 # Workflow  Configuration
 pipelines:
   branches:
-    dev:
+    sprint-2:
       - step:
           name: Dev Build
           script:

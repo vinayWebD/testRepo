@@ -17,10 +17,19 @@ module.exports = {
       blueprimary: '#0071BC',
       gradientfrom: '#04436e',
       gradientto: '#023456',
+      lightblue: '#DEF2FF',
+      lightbluebg: '#E9F6FF',
+      deleteRed: '#E83E39',
     },
     extend: {
       fontFamily: {
         sans: ['Montserrat', 'sans'], // Use Montserrat as the default sans-serif font
+      },
+      boxShadow: {
+        card: '0px 0px 2px 0px rgba(40, 41, 61, 0.14)',
+      },
+      borderColor: {
+        customGray: 'rgba(161, 160, 160, 0.50)',
       },
     },
   },

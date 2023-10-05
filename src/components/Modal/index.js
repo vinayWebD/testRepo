@@ -1,7 +1,15 @@
 import React from 'react';
 import { CloseIcon } from '../Icons/CloseIcon';
 
-function Modal({ isOpen, onClose, children, title, isTitle = true }) {
+function Modal({
+  isOpen,
+  onClose,
+  children,
+  title,
+  isTitle = true,
+  width = 'max-w-[540px]',
+  padding = 'px-6',
+}) {
   if (!isOpen) return null;
 
   return (
@@ -10,7 +18,7 @@ function Modal({ isOpen, onClose, children, title, isTitle = true }) {
       onClick={onClose}
     >
       <div
-        className="bg-white w-11/12 md:max-w-[540px] mx-auto rounded-md shadow-lg z-50 overflow-y-auto"
+        className={`bg-white md:w-11/12 ${width} rounded-md shadow-lg z-50 overflow-y-auto m-3`}
         onClick={(e) => e.stopPropagation()}
       >
         {isTitle && (
@@ -21,7 +29,7 @@ function Modal({ isOpen, onClose, children, title, isTitle = true }) {
             </div>
           </div>
         )}
-        <div className="py-4 text-left px-6 md:max-h-5/6 max-h-[500px]">{children}</div>
+        <div className={`py-4 text-left ${padding}  md:max-h-5/6 max-h-[500px]`}>{children}</div>
       </div>
     </div>
   );

@@ -7,4 +7,5 @@ export const PATHS = {
   PATH_GENERAL_INFO: '/general-info',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
+  PATH_WORK: '/work',
 };

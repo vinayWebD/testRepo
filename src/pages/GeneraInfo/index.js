@@ -20,7 +20,7 @@ import {
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 
-const { HOME } = PATHS;
+const { HOME, PATH_SIGNUP } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
@@ -35,7 +35,12 @@ function GeneralInfo() {
   const dispatch = useDispatch();
   const [cropImageFile, setCropImageFile] = useState(null);
   const [open, setOpen] = useState(false);
-  const { dataToSend: userData } = secureLocalStorage.getItem('object');
+  const data = secureLocalStorage.getItem('object');
+  const userData = data?.data;
+
+  if (!userData) {
+    window.location.replace(PATH_SIGNUP);
+  }
 
   const getPreSignedUrl = async () => {
     const uploadData = new FormData();

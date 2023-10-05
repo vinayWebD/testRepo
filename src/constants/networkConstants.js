@@ -9,6 +9,7 @@ const NETWORK_CONSTANTS = {
   FORGOT_PASSWORD_OTP_VALIDATION: '/v1/accounts/verify-sign-up/',
   FORGOT_PASSWORD_VERIFY_OTP: '/v1/accounts/forgot-password/',
   FORGOT_PASSWORD_RESET_PWD: '/v1/accounts/reset-password/',
+  CREATE_POST: '/v1/feeds/posts/',
 };
 
 export default NETWORK_CONSTANTS;
