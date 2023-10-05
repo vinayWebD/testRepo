@@ -103,7 +103,9 @@ const MediaItem = ({ type, url = '', showMoreOverlay = 0, index = 0, onClick = (
           <div className="absolute">+ {showMoreOverlay}</div>
         ) : (
           <div className="absolute top-2 right-2">
-            <RemoveIcon />
+            <span>
+              <RemoveIcon />
+            </span>
           </div>
         )}
       </div>

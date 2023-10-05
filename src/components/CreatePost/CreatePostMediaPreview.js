@@ -53,7 +53,7 @@ const CreatePostMediaPreview = ({ media = [], customActiveIndex = 0 }) => {
             <RightChevron />
           </button>
         </div>
-        <Button label={'Next'} additionalClassNames="absolute right-0" />
+        <Button label={'Next'} additionalClassNames="absolute right-0" showArrowIcon={false} />
       </div>
     </>
   );

@@ -148,7 +148,11 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
             value={text}
             handleChange={(val) => setText(val)}
           />
-          {media.length ? <MediaLayout media={media} forcedPreview={openForcedPreview} /> : ''}
+          {media.length ? (
+            <MediaLayout media={media} forcedPreview={openForcedPreview} updateMedia={setMedia} />
+          ) : (
+            ''
+          )}
         </div>
         <div className="flex gap-14 mt-3 py-3 justify-between px-6">
           <div
