@@ -95,7 +95,7 @@ function Signup() {
     handleSubmit,
     handleChange,
     handleBlur,
-    initialValues: { firstname, lastname, email, password } = {},
+    initialValues: { firstname = '', lastname = '', email = '', password = '' } = {},
     touched: {
       firstname: tuc_firstname,
       lastname: tuc_lastname,
@@ -201,6 +201,7 @@ function Signup() {
           </span>
         </div>
       </form>
+      {email}
       <Modal
         isOpen={isSuccessModalOpen}
         onClose={() => setIsSuccessModalOpen(false)}
@@ -209,7 +210,8 @@ function Signup() {
         <div className="flex items-center flex-col text-center py-8">
           <div className="text-[28px] font-medium text-greydark">{LANG_SIGNUP_CODE_SENT}</div>
           <h4 className="text-greydark font-medium">
-            {LANG_SIGNUP_CODE_SENT_MAIL} {email}
+            {LANG_SIGNUP_CODE_SENT_MAIL} <br />
+            <span className="font-semibold">{formik?.values?.email}</span>
           </h4>
         </div>
       </Modal>

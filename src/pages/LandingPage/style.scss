@@ -51,8 +51,11 @@
     }
   }
   .join-section {
-    padding: 70px 204px;
+    background: linear-gradient(180deg, #191335 0%, #00508b 55.14%);
+    padding: 70px 100px;
     .join-para {
+      max-width: 1032px;
+      margin: 0 auto;
       color: #fff;
       text-align: center;
       font-family: Montserrat;
@@ -61,43 +64,42 @@
       font-weight: 700;
       line-height: 34px;
     }
-  }
-  .ourview-section {
-    padding: 0 100px;
-    .heading {
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 48px;
-      font-style: normal;
-      font-weight: 600;
-      line-height: 60px;
-    }
-    .content {
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 16px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 24px;
-    }
-    .sub-heading {
-      margin-top: 12px;
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 20px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 36px;
+    .ourview-box {
+      margin-top: 70px;
+      .heading {
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 48px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 60px;
+      }
+      .content {
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 24px;
+      }
+      .sub-heading {
+        margin-top: 12px;
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 36px;
+      }
     }
   }
   .work-section {
-    margin-top: 75px;
-    padding: 0 100px 32px 100px;
-    background-image: url('../../assets/images/work.svg');
+    padding: 0 100px;
+    min-height: 506px;
+    background-image: url('../../assets/images/expansion_depth_potential 1.svg');
     .heading {
-      padding-top: 64px;
+      padding-top: 70px;
       color: #fff;
-      font-family: Montserrat;
       font-size: 48px;
       font-style: normal;
       font-weight: 600;
@@ -106,7 +108,6 @@
     .content {
       max-width: 676px;
       color: #fff;
-      font-family: Montserrat;
       font-size: 16px;
       font-style: normal;
       font-weight: 500;
@@ -114,9 +115,9 @@
     }
   }
   .about-section {
-    padding: 54px 100px;
-    background-color: #197fc3;
+    padding: 57px 100px 50px 100px;
     min-height: 417px;
+    background: linear-gradient(180deg, #005a98 8.63%, rgba(0, 80, 139, 0) 100%);
     .heading {
       color: #fff;
       font-family: Montserrat;
@@ -169,60 +170,64 @@
       margin-bottom: 20px;
     }
   }
-  .footer-logo {
-    margin-top: 32px;
-    padding: 0 100px;
-  }
-  .landing-footer {
-    position: relative;
-  }
-  .landing-footer {
-    padding: 0 100px;
-    display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    .purpose-text {
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 24px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 33px;
-      max-width: 424px;
+  .footer-section {
+    background: linear-gradient(110deg, #60a8d8 0%, rgba(96, 168, 216, 0) 89.53%);
+    .footer-logo {
+      margin-top: 32px;
+      padding: 0 100px;
     }
-    .footer-link-heading {
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 700;
-      line-height: 30px;
-      text-transform: uppercase;
+    .landing-footer {
+      position: relative;
     }
-    .footer-links {
-      li {
-        margin-top: 12px;
-        cursor: pointer;
-        a {
-          color: #fff;
-          font-family: Montserrat;
-          font-size: 18px;
-          font-style: normal;
-          font-weight: 400;
-          line-height: 30px;
+    .landing-footer {
+      margin: 0 100px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+      .purpose-text {
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 33px;
+        max-width: 424px;
+      }
+      .footer-link-heading {
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: 30px;
+        text-transform: uppercase;
+      }
+      .footer-links {
+        li {
+          margin-top: 12px;
+          cursor: pointer;
+          a {
+            color: #fff;
+            font-family: Montserrat;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 30px;
+          }
         }
       }
-    }
-    .email {
-      color: #fff;
-      font-family: Montserrat;
-      font-size: 18px;
-      font-style: normal;
-      font-weight: 500;
-      line-height: 30px;
+      .email {
+        color: #fff;
+        font-family: Montserrat;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 30px;
+      }
     }
   }
+
   .landing-footer-img {
     mix-blend-mode: luminosity;
   }
@@ -266,6 +271,15 @@
       padding-left: 36px;
       padding-right: 36px;
     }
+    .landing-footer {
+      margin: 0 !important;
+    }
+    .footer-section {
+      .footer-logo {
+        padding: 0 36px;
+      }
+    }
+
     .hero-section {
       height: 400px;
       background-image: url('../../assets/images/herosmall.png');
@@ -286,6 +300,15 @@
       .join-para {
         font-size: 14px;
         line-height: 21px;
+      }
+      .heading {
+        font-size: 28px;
+        line-height: 34px;
+      }
+      .content,
+      .card-content {
+        font-size: 14px;
+        font-weight: 500;
       }
     }
     .work-section {
@@ -314,11 +337,6 @@
         font-weight: 500;
       }
     }
-    .landing-footer {
-      margin-top: 16px;
-      gap: 30px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    }
   }
   @media only screen and (min-width: 600px) and (max-width: 1024px) {
     .join-section,
@@ -329,6 +347,14 @@
     .about-section {
       padding-left: 36px;
       padding-right: 36px;
+    }
+    .landing-footer {
+      margin: 0 !important;
+    }
+    .footer-section {
+      .footer-logo {
+        padding: 0 36px;
+      }
     }
     .hero-section {
       height: 420px;

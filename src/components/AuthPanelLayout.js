@@ -32,11 +32,11 @@ function AuthPanelLayout({ children }) {
 
   return (
     <div className="flex justify-start min-h-[100vh] w-full sm:flex-wrap relative items-stretch">
-      <div className=" bg-darkblue min-h-[100vh] hidden md:pb-4 lg:flex lg:w-[50%] w-[100%] flex-col justify-between pt-2">
+      <div className=" bg-darkblue min-h-[100vh] hidden md:pb-4 lg:flex gap-6 lg:w-[50%] w-[100%] flex-col pt-2">
         <div className="pt-[30px] xl:pt-[60px] px-[60px] max-w-[620px]">
           <h2 className="text-white">{LANG_AUTH_PANEL_LAYOUT_HEADING}</h2>
         </div>
-        <img src={HeroVector} alt="Login" className="w-[80%] left-0 mb-[12%]" />
+        <img src={HeroVector} alt="Login" className="w-[80%] mb-[12%]" />
       </div>
 
       <div className="flex flex-col justify-normal pb-10 md:pb-20 md:justify-center lg:justify-normal items-center min-h-[100vh] lg:w-[50%] w-[100%] bg-gradient-to-b from-gradientfrom to-gradientto">

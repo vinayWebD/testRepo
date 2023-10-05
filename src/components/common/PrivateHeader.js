@@ -48,7 +48,7 @@ const PrivateHeader = () => {
           // Hide the search input bar on mobile
           deviceType !== 'mobile' ? (
             <SearchInput
-              className="h-[32px]"
+              className="h-[32px] w-[290px]"
               onChange={searchInputChangeHandler}
               value={searchValue}
             />

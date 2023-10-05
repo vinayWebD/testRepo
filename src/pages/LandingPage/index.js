@@ -15,7 +15,7 @@ import { LANG, BUTTON_LABELS } from '../../constants/lang';
 import { Button } from '../../components/common/Button';
 import { useNavigate } from 'react-router';
 import { PATHS } from '../../constants/urlPaths';
-import userimg from '../../assets/images/ludgi.svg';
+import userimg from '../../assets/images/aboutImg.png';
 import { ReadMore } from './ReadMore';
 
 const { PATH_SIGNUP = '' } = PATHS;
@@ -40,11 +40,14 @@ export default function LandingPage() {
         LANG_HOMEPAGE_JOIN_US,
         LANG_HOMEPAGE_HOW_WORK,
         LANG_HOMEPAGE_WONDERING,
-        LANG_HOMEPAGE_EXPANSION,
+        LANG_HOMEPAGE_EXPANSION_LEFT,
+        LANG_HOMEPAGE_EXPANSION_RIGHT,
         LANG_HOMEPAGE_EXPANSION_PARA,
-        LANG_HOMEPAGE_DEPTH,
+        LANG_HOMEPAGE_DEPTH_LEFT,
+        LANG_HOMEPAGE_DEPTH_RIGHT,
         LANG_HOMEPAGE_DEPTH_PARA,
-        LANG_HOMEPAGE_POTENTIAL,
+        LANG_HOMEPAGE_POTENTIAL_LEFT,
+        LANG_HOMEPAGE_POTENTIAL_RIGHT,
         LANG_HOMEPAGE_POTENTIAL_PARA,
         LANG_HOMEPAGE_WE_AIM,
         LANG_HOMEPAGE_WE_HIGHLIGHT,
@@ -89,23 +92,23 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
-      <section className="join-section">
+      <section className="join-section" id="ourview">
         <div className="join-para">{LANG_HOMEPAGE_WE_ARE}</div>
         <div className="mt-8 flex justify-center">
           <Button label={BTNLBL_JOIN_PUR} isIcon={true} onClick={() => navigate(PATH_SIGNUP)} />
         </div>
-      </section>
-      <section id="ourview" className="ourview-section">
-        <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
-        <div className="underline" />
-        <div className="content mt-5">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
-        <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
-        <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
+        <div className="ourview-box">
+          <div className="heading">{LANG_HOMEPAGE_OUR_VIEW}</div>
+          <div className="underline" />
+          <div className="content mt-5">{LANG_HOMEPAGE_OUR_VIEW_LONG1}</div>
+          <div className="content">{LANG_HOMEPAGE_OUR_VIEW_LONG2}</div>
+          <div className="sub-heading">{LANG_HOMEPAGE_JOIN_US}</div>
+        </div>
       </section>
       <section id="about-work" className="work-section pb-8">
         <div className="heading">{LANG_HOMEPAGE_HOW_WORK}</div>
         <div className="underline" />
-        <div className="content mt-6">{LANG_HOMEPAGE_WONDERING}</div>
+        <div className="content mt-5">{LANG_HOMEPAGE_WONDERING}</div>
 
         <Carousel
           showArrows={false}
@@ -114,11 +117,24 @@ export default function LandingPage() {
           showStatus={false}
           className="presentation-mode"
         >
-          <WorkCard title={LANG_HOMEPAGE_EXPANSION} content={LANG_HOMEPAGE_EXPANSION_PARA} />
-          <WorkCard title={LANG_HOMEPAGE_DEPTH} content={LANG_HOMEPAGE_DEPTH_PARA} />
-          <WorkCard title={LANG_HOMEPAGE_POTENTIAL} content={LANG_HOMEPAGE_POTENTIAL_PARA} />
+          <WorkCard
+            titleLeft={LANG_HOMEPAGE_EXPANSION_LEFT}
+            titleRight={LANG_HOMEPAGE_EXPANSION_RIGHT}
+            content={LANG_HOMEPAGE_EXPANSION_PARA}
+          />
+          <WorkCard
+            titleLeft={LANG_HOMEPAGE_DEPTH_LEFT}
+            titleRight={LANG_HOMEPAGE_DEPTH_RIGHT}
+            content={LANG_HOMEPAGE_DEPTH_PARA}
+          />
+          <WorkCard
+            titleLeft={LANG_HOMEPAGE_POTENTIAL_LEFT}
+            titleRight={LANG_HOMEPAGE_POTENTIAL_RIGHT}
+            content={LANG_HOMEPAGE_POTENTIAL_PARA}
+          />
         </Carousel>
       </section>
+      {/* About Section */}
       <section className="about-section">
         <div className="flex gap-[32px]">
           <div className="hidden md:block">
@@ -133,7 +149,7 @@ export default function LandingPage() {
               <img src={userimg} alt="" />
             </div>
             <div className="name p-0 lg:pt-4">- Ludgi Windrich</div>
-            <div className="yellow-text pt-1">The vision and the why</div>
+            <div className="yellow-text ml-4">The vision and the why</div>
           </div>
         </div>
         <div className="mt-4">
@@ -143,13 +159,14 @@ export default function LandingPage() {
                 My vision for PurDriven is to be a place where people feel comfortable being
                 authentic. People are accepted, respected, embraced, inspired, and empowered to be
                 themselves and use their uniqueness to contribute.
-                <br /> Reaching my potential and making this life worth living have been at the top
-                of my life’s goals list for a while. And I see a strong connection between
-                potential, authenticity, and purpose. I see myself being aligned with my purpose
-                only if I am authentic to my core beliefs and who I am and then naturally navigate
-                towards my potential. I am grateful for creating a platform and a business that
-                fully aligns with who I am. And I wish that to everybody. I share the same sentiment
-                everyone has when doing something they love: fulfillment and gratitude
+                <br /> There is a connection between potential, authenticity, and purpose. I see
+                myself being aligned with my purpose only if I am authentic to my core beliefs and
+                who I am and then naturally navigate towards my potential. I am grateful for
+                creating a platform and a business that fully aligns with who I am. And I wish that
+                to everybody. I feel the same way people feel when doing something they love:
+                fulfillment and gratitude. <br />
+                PurDriven was born out of the need to find an opportunity that matched who I truly
+                am. What I didn’t know was that quest would lead me to create PurDriven
               </>
             }
             moreText={
@@ -157,34 +174,35 @@ export default function LandingPage() {
                 My vision for PurDriven is to be a place where people feel comfortable being
                 authentic. People are accepted, respected, embraced, inspired, and empowered to be
                 themselves and use their uniqueness to contribute.
-                <br /> Reaching my potential and making this life worth living have been at the top
-                of my life’s goals list for a while. And I see a strong connection between
-                potential, authenticity, and purpose. I see myself being aligned with my purpose
-                only if I am authentic to my core beliefs and who I am and then naturally navigate
-                towards my potential. I am grateful for creating a platform and a business that
-                fully aligns with who I am. And I wish that to everybody. I share the same sentiment
-                everyone has when doing something they love: fulfillment and gratitude.
+                <br /> There is a connection between potential, authenticity, and purpose. I see
+                myself being aligned with my purpose only if I am authentic to my core beliefs and
+                who I am and then naturally navigate towards my potential. I am grateful for
+                creating a platform and a business that fully aligns with who I am. And I wish that
+                to everybody. I feel the same way people feel when doing something they love:
+                fulfillment and gratitude. PurDriven was born out of the need to find an opportunity
+                that matched who I truly am. What I didn’t know was that quest would lead me to
+                create PurDriven.
                 <br />
-                PurDriven was born out of the need to find an opportunity that matched who I truly
-                am. What I didn’t know was that quest would lead me to create PurDriven.
-                <br /> One of the first things I did when going through a pivotal time, seeking a
-                more meaningful life, was to update my resume. At that moment, I realized how
-                ineffective it was. It did not help me in any way with my goal of changing careers
-                and finding a purposeful line of work. It was superficial and focused on experience
-                past, not potential forward. We are way more than what we show on our resume. We
-                need a platform to showcase people’s talents, abilities, personalities, interests,
-                and anything else that would portray a truer version of who we are. It needs to be
-                forward-thinking and focused on potential and expansion.
-                <br /> Self-awareness needs to be part of the process. We need to know more about
-                who we are to find and live purposeful lives. PurDriven strives to be a place where
-                people can explore their multipotentialities and better understand who they are and
-                how they can best help others. Authenticity is key. Whether personal or
-                professional, the right match always brings out the best in us. And our best is our
-                authentic self. The ultimate goal is to find it and use it to benefit others. I
-                suspect, for some, PurDriven will be a personal journey. People will evolve along
-                the way, and hopefully, there will be a shift toward a more effective, engaged, and
-                fulfilled workforce. <br />I couldn’t be more excited and thankful to be here,
-                giving life to PurDriven. It is an honor to be part of it.{' '}
+                At a pivotal time, reaching my potential and making this life worth living became a
+                priority. My focal point was having a more meaningful life. I was considering a
+                career change; therefore, I needed to revise and update my resume. I realized how
+                ineffective it was. It did not help me in any way with my goal of finding a new and
+                purposeful line of work. It was superficial and focused on experience - past.
+                <br /> We are way more than what we show on our resume. We need a forward-thinking
+                and potential-driven professional platform. It needs to showcase people’s talents,
+                abilities, personalities, interests, and anything else that would portray a truer
+                version of who we are.
+                <br /> Self-awareness is part of the process. We need to know more about who we are
+                to find and live purposeful lives. PurDriven strives to be a place where people can
+                explore their multipotentialities and better understand who they are and how they
+                can best help others. <br />
+                Authenticity is key. Whether personal or professional, the right match always brings
+                out the best in us. And our best is our authentic self. The ultimate goal is to find
+                it and use it to benefit others.
+                <br /> I suspect, for some, PurDriven will be a personal journey. People will evolve
+                along the way, and hopefully, there will be a shift toward a more engaged,
+                effective, and fulfilled workforce. <br />I couldn’t be more excited and thankful to
+                be here, giving life to PurDriven. It is an honor to be part of it.
               </>
             }
           />
@@ -217,7 +235,8 @@ export default function LandingPage() {
           </li>
         </ul>
       </section>
-      <footer id="contact-us">
+      {/* Footer Section */}
+      <footer className="footer-section" id="contact-us">
         <div className="footer-logo mb-6">
           <FooterLogoIcon />
         </div>
@@ -262,22 +281,30 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
-          <div>
+          <div style={{ zIndex: 60 }}>
             <div>
               <div className="footer-link-heading">{LANG_HOMEPAGE_CONNECT}</div>
               <div className="flex gap-6 items-center mt-5 pb-8">
                 <div className="social-links">
-                  <a href="">
+                  <a
+                    href="https://www.linkedin.com/company/purdriven/"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     <img src={linkdinicon} alt="" />
                   </a>
                 </div>
                 <div className="social-links">
-                  <a href="">
+                  <a href="https://www.instagram.com/purdriven/" rel="noreferrer" target="_blank">
                     <img src={instagramIcon} alt="" />
                   </a>
                 </div>
                 <div className="social-links">
-                  <a href="">
+                  <a
+                    href="https://www.facebook.com/meintelifestyle"
+                    rel="noreferrer"
+                    target="_blank"
+                  >
                     <img src={facebook} alt="" />
                   </a>
                 </div>
@@ -285,11 +312,11 @@ export default function LandingPage() {
             </div>
           </div>
         </div>
+        <div className="absolute bottom-0 right-0 ">
+          <img src={footerIcon} alt="" className="landing-footer-img" />
+        </div>
+        <div className="py-5 text-center copyright">&#169; {LANG_HOMEPAGE_RIGHTS}</div>
       </footer>
-      <div className="absolute bottom-0 right-0 ">
-        <img src={footerIcon} alt="" className="landing-footer-img" />
-      </div>
-      <div className="py-5 text-center copyright">&#169; {LANG_HOMEPAGE_RIGHTS}</div>
     </div>
   );
 }

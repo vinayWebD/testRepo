@@ -117,7 +117,8 @@ const ForgotPassword = () => {
           <CheckIcon />
           <div className="text-[28px] font-medium text-greydark">{LANG_OTP_SENT_SUCCESS}</div>
           <h4 className="text-greydark font-medium break-words">
-            {LANG_OTP_SENT_TO_MAIL} {formik?.values?.email}
+            {LANG_OTP_SENT_TO_MAIL} <br />
+            <span className="font-semibold"> {formik?.values?.email}</span>
           </h4>
         </div>
       </Modal>
