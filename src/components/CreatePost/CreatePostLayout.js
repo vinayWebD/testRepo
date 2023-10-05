@@ -16,6 +16,7 @@ import compressImage from '../../utils/compressImage';
 import { fetchFileUPloadAWS, fetchGenratePreSignedUrl } from '../../services/signup';
 import { getFileExtension } from '../../utils/helper';
 import OutlinedButton from '../common/OutlinedButton';
+import Loader from '../common/Loader';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 const { POST_PATTERN } = REGEX;
@@ -34,6 +35,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
   const [links, setLinks] = useState([]);
   const [openFileBrowser, setOpenFileBrowser] = useState(0);
   const [openForcedPreview, setOpenForcedPreview] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const mediaInput = useRef(null);
 
   useEffect(() => {
@@ -87,6 +89,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
    * @param {*} filesToUpload
    */
   const uploadFilesOnAWS = async (filesToUpload) => {
+    setIsLoading(true);
     const uploadedMedia = [...media];
 
     if (filesToUpload?.length) {
@@ -107,6 +110,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
         }
       }
       setMedia([...uploadedMedia]);
+      setIsLoading(false);
       setOpenForcedPreview(true);
     }
   };
@@ -125,10 +129,12 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
    * Function that calls the create post API
    */
   const savePostHandler = async () => {
+    setIsLoading(true);
     const response = await createPost({ caption: text, links, media });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
+    setIsLoading(false);
     if (successStatus(status)) {
       ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
       closePopupHandler();
@@ -140,7 +146,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
   };
 
   return (
-    <>
+    <div className="relative">
       <div className="max-h-[70vh] overflow-y-auto">
         <div className="relative px-[18px] flex flex-col gap-2">
           <EmojiTextarea
@@ -208,7 +214,9 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
         className="contents w-0 h-0 "
         accept={POST_IMAGE_TYPES}
       />
-    </>
+
+      {isLoading ? <Loader /> : ''}
+    </div>
   );
 };
 
