@@ -23,4 +23,16 @@ export const POST_IMAGE_TYPES = [
   'image/jpeg',
   'image/png',
   'image/gif',
+  'image/jpg',
 ];
+
+export const POST_VIDEO_TYPES = [
+  'video/mp4',
+  'video/mpeg',
+  'video/webm',
+  'video/x-matroska',
+  'video/quicktime',
+];
+
+export const POST_IMAGE_EXTENSIONS = ['heif', 'heic', 'png', 'jpeg', 'png', 'gif', 'jpg'];
+export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quicktime'];

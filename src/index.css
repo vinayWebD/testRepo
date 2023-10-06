@@ -118,11 +118,11 @@
   height: 100%;
 }
 
-.slick-arrow {
+.media-preview .slick-arrow {
   display: none !important;
 }
 
-.slick-slide {
+.media-preview .slick-slide {
   max-height: 70vh;
   display: flex !important;
   align-items: center;
@@ -130,16 +130,16 @@
   overflow-y: hidden;
 }
 
-.slick-track {
+.media-preview .slick-track {
   display: flex !important;
   align-items: center;
   justify-content: center;
 }
 
-.slick-slide img,
-.slick-slide video {
+.media-preview .slick-slide img,
+.media-preview .slick-slide video {
   max-height: 70vh;
-  border-radius: 6px;
+  border-radius: 6px !important;
 }
 /* Global CSS override for carosul */
 

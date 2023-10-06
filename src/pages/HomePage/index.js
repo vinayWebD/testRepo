@@ -16,15 +16,24 @@ const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 
 const HomePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
-  const [isSuccessModalOpen, setIsSuccessModalOpen] = useState(false);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const [typeOfPost, setTypeOfPost] = useState(null);
+
+  const handleOpenPopup = (type) => {
+    setTypeOfPost(type);
+    setIsCreatePostModalOpen(true);
+  };
 
   return (
     <PrivateLayout>
       <div className="grid grid-cols-12 gap-3">
         <div className="col-span-9">
           <Card classNames="p-5">
-            <div className="" onClick={() => setIsSuccessModalOpen(true)}>
-              <div className="cursor-pointer flex gap-3 items-center pt-4 pb-6 border-0 border-b-[1px] border-b-greymedium">
+            <div className="">
+              <div
+                className="cursor-pointer flex gap-3 items-center pt-4 pb-6 border-0 border-b-[1px] border-b-greymedium hover:opacity-70"
+                onClick={() => handleOpenPopup('caption')}
+              >
                 <Avatar
                   name={`${userData?.first_name} ${userData?.last_name}`}
                   image={userData.profile_picture_url}
@@ -33,15 +42,24 @@ const HomePage = () => {
                 <p className="text-greylight">{LANG_WRITE_SOMETHING}</p>
               </div>
               <div className="flex gap-14 mt-3 pt-3 pb-2">
-                <div className="flex gap-2">
+                <div
+                  className="flex gap-2 cursor-pointer hover:opacity-70"
+                  onClick={() => handleOpenPopup('photo')}
+                >
                   <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
                 </div>
 
-                <div className="flex gap-2">
+                <div
+                  className="flex gap-2 cursor-pointer hover:opacity-70"
+                  onClick={() => handleOpenPopup('video')}
+                >
                   <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
                 </div>
 
-                <div className="flex gap-2">
+                <div
+                  className="flex gap-2 cursor-pointer hover:opacity-70"
+                  onClick={() => handleOpenPopup('link')}
+                >
                   <LinkIcon /> <p>{BTNLBL_LINK}</p>
                 </div>
               </div>
@@ -58,13 +76,19 @@ const HomePage = () => {
         </div>
       </div>
       <Modal
-        isOpen={isSuccessModalOpen}
-        onClose={() => setIsSuccessModalOpen(false)}
+        isOpen={isCreatePostModalOpen}
+        onClose={() => setIsCreatePostModalOpen(false)}
         isTitle={true}
         title={'Create a Post'}
         childrenClassNames="overflow-y-auto"
       >
-        <CreatePostLayout closePopupHandler={() => setIsSuccessModalOpen(false)} />
+        <CreatePostLayout
+          closePopupHandler={() => {
+            setIsCreatePostModalOpen(false);
+            setTypeOfPost(null);
+          }}
+          openTypeOfPost={typeOfPost}
+        />
       </Modal>
     </PrivateLayout>
   );

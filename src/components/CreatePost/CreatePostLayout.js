@@ -3,7 +3,7 @@ import PhotoIcon from '../Icons/PhotoIcon';
 import VideoIcon from '../Icons/VideoIcon';
 import LinkIcon from '../Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
-import { LIMITS, POST_IMAGE_TYPES, REGEX } from '../../constants/constants';
+import { LIMITS, POST_IMAGE_TYPES, POST_VIDEO_TYPES, REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
 import Modal from '../Modal';
 import EmojiTextarea from '../common/EmojieTextarea';
@@ -28,7 +28,7 @@ const {
 
 const { POST_MAX_IMAGE_SIZE_IN_BYTES } = LIMITS;
 
-const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
+const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null }) => {
   const [text, setText] = useState('');
   const [media, setMedia] = useState([]);
   const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
@@ -36,6 +36,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
   const [openFileBrowser, setOpenFileBrowser] = useState(0);
   const [openForcedPreview, setOpenForcedPreview] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [mediaTypeToUpload, setMediaTypeToUpload] = useState('photo');
   const mediaInput = useRef(null);
 
   useEffect(() => {
@@ -43,6 +44,16 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
       mediaInput?.current?.click();
     }
   }, [openFileBrowser]);
+
+  useEffect(() => {
+    if (openTypeOfPost) {
+      if (['photo', 'video'].includes(openTypeOfPost)) {
+        handleFileBrowser(openTypeOfPost);
+      } else if (openTypeOfPost === 'link') {
+        setIsLinkSectionOpen(true);
+      }
+    }
+  }, [openTypeOfPost]);
 
   const isPostButtonDisabled = () => {
     return !POST_PATTERN.test(text);
@@ -57,7 +68,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
       failedFiles = [];
     for (let i = 0; i < mediaInput?.current?.files?.length; i++) {
       const currentFile = mediaInput?.current?.files[i];
-
+      console.log('--currentFile--', currentFile);
       if (
         currentFile?.type?.includes('image/') &&
         currentFile?.size > POST_MAX_IMAGE_SIZE_IN_BYTES
@@ -121,8 +132,11 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
    */
   const handleFileBrowser = (type) => {
     if (type === 'photo') {
-      setOpenFileBrowser((prev) => prev + 1);
+      setMediaTypeToUpload('photo');
+    } else if (type === 'video') {
+      setMediaTypeToUpload('video');
     }
+    setOpenFileBrowser((prev) => prev + 1);
   };
 
   /**
@@ -168,7 +182,10 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
             <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
           </div>
 
-          <div className="flex gap-2 cursor-pointer hover:opacity-70" onClick={() => {}}>
+          <div
+            className="flex gap-2 cursor-pointer hover:opacity-70"
+            onClick={() => handleFileBrowser('video')}
+          >
             <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
           </div>
 
@@ -212,7 +229,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {} }) => {
           e.target.value = null;
         }} // We are setting this to null because we want to be able to select the same file simultaneously
         className="contents w-0 h-0 "
-        accept={POST_IMAGE_TYPES}
+        accept={mediaTypeToUpload === 'photo' ? POST_IMAGE_TYPES : POST_VIDEO_TYPES}
       />
 
       {isLoading ? <Loader /> : ''}

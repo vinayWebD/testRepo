@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import RemoveIcon from './Icons/RemoveIcon';
 import Modal from './Modal';
 import CreatePostMediaPreview from './CreatePost/CreatePostMediaPreview';
+import { getFileExtension } from '../utils/helper';
+import { POST_IMAGE_EXTENSIONS } from '../constants/constants';
 
 const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {} }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(forcedPreview || false);
@@ -46,7 +48,7 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
       return (
         <MediaItem
           url={media[0].url}
-          type={media[0].type}
+          path={media[0].path}
           index={0}
           onClick={handleClick}
           removeMedia={handleRemoveMedia}
@@ -55,11 +57,11 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
     } else if (media.length === 2 || media.length === 4) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
-          {media.map(({ url, type }, index) => (
+          {media.map(({ url, path }, index) => (
             <MediaItem
               url={url}
-              type={type}
               key={index}
+              path={path}
               index={index}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
@@ -73,8 +75,8 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
           <div className="w-[50%]">
             <MediaItem
               url={media[0].url}
-              type={media[0].type}
               index={0}
+              path={media[0].path}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
             />
@@ -82,14 +84,14 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
           <div className="flex gap-1 w-[50%] flex-col">
             <MediaItem
               url={media[1].url}
-              type={media[1].type}
+              path={media[1].path}
               index={1}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
             />
             <MediaItem
               url={media[2].url}
-              type={media[2].type}
+              path={media[2].path}
               index={2}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
@@ -103,14 +105,14 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
           <div className="w-full flex gap-1 ">
             <MediaItem
               url={media[0].url}
-              type={media[0].type}
+              path={media[0].path}
               index={0}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
             />
             <MediaItem
               url={media[1].url}
-              type={media[1].type}
+              path={media[1].path}
               index={1}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
@@ -119,21 +121,21 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
           <div className="w-full flex gap-1">
             <MediaItem
               url={media[2].url}
-              type={media[2].type}
+              path={media[2].path}
               index={2}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
             />
             <MediaItem
               url={media[3].url}
-              type={media[3].type}
+              path={media[3].path}
               index={3}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
             />
             <MediaItem
               url={media[4].url}
-              type={media[4].type}
+              path={media[4].path}
               showMoreOverlay={media.length - 5}
               index={4}
               onClick={handleClick}
@@ -159,19 +161,23 @@ const MediaLayout = ({ media = [], forcedPreview = false, updateMedia = () => {}
 export default MediaLayout;
 
 const MediaItem = ({
-  type,
   url = '',
+  path = '',
   showMoreOverlay = 0,
   index = 0,
   onClick = () => {},
   removeMedia = () => {},
 }) => {
-  if (type === 'video') {
+  let mediaType = POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase())
+    ? 'photo'
+    : 'video';
+
+  if (mediaType === 'video') {
     return (
       <div className="h-auto relative w-full">
         <video
           src={url}
-          className="w-full min-h-full min-w-full"
+          className="w-full min-h-full min-w-full rounded-lg"
           controls={true}
           height={'100%'}
           onClick={() => onClick(index)}

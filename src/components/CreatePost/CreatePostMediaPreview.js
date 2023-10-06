@@ -6,6 +6,8 @@ import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
 import OutlinedButton from '../common/OutlinedButton';
 import BinIcon from '../Icons/BinIcon';
+import { POST_IMAGE_EXTENSIONS } from '../../constants/constants';
+import { getFileExtension } from '../../utils/helper';
 
 const CreatePostMediaPreview = ({
   media = [],
@@ -28,20 +30,20 @@ const CreatePostMediaPreview = ({
 
   return (
     <>
-      <div className="overflow-hidden">
+      <div className="overflow-hidden media-preview">
         <Slider {...settings} ref={setSliderRef}>
-          {media.map(({ url, type }, _i) => {
+          {media.map(({ url, path }, _i) => {
             return (
               <div className="h-auto relative" key={_i}>
-                {type === 'video' ? (
+                {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
+                  <img src={url} />
+                ) : (
                   <video
                     src={url}
                     className="w-full min-h-full min-w-full"
                     controls={true}
                     height={'100%'}
                   />
-                ) : (
-                  <img src={url} />
                 )}
                 <div
                   className="absolute right-2 top-2"
