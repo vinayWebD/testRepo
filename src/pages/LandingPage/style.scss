@@ -312,17 +312,18 @@
       }
     }
     .work-section {
-      height: auto;
-      height: auto;
-      background-size: cover;
-      background-repeat: round;
+      background-image: url('../../assets/images/expansion_depth_potential 2.svg');
+      height: 542px;
       .heading {
+        max-width: 293px;
+        padding-top: 50px;
         font-size: 28px;
         line-height: 34px;
       }
       .content,
       .card-content {
-        font-size: 14px;
+        line-height: 17px;
+        font-size: 12px;
         font-weight: 500;
       }
     }
@@ -377,6 +378,9 @@
           }
         }
       }
+    }
+    .work-section {
+      background-image: url('../../assets/images/expansion_depth_potential 1.svg');
     }
   }
 }
