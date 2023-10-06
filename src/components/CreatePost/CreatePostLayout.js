@@ -23,7 +23,7 @@ const { POST_PATTERN } = REGEX;
 const { LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
 const {
   successToast: { TST_POST_CREATED_SUCCESSFULLY = '' },
-  errorToast: { TST_POST_UPLOAD_INVALID_MEDIA = '' },
+  errorToast: { TST_POST_UPLOAD_INVALID_MEDIA = '', TST_POST_MAX_ALLOWED_MEDIA = '' },
   toastid: {
     TST_POST_CREATED_SUCCESS_ID,
     TST_POST_CREATED_FAILED_ID,
@@ -31,9 +31,14 @@ const {
   },
 } = TOASTMESSAGES;
 
-const { POST_MAX_IMAGE_SIZE_IN_BYTES, POST_MAX_VIDEO_SIZE_IN_BYTES } = LIMITS;
+const { POST_MAX_IMAGE_SIZE_IN_BYTES, POST_MAX_VIDEO_SIZE_IN_BYTES, POST_MAX_ALLOWED_MEDIA } =
+  LIMITS;
 
-const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null }) => {
+const CreatePostLayout = ({
+  closePopupHandler = () => {},
+  openTypeOfPost = null,
+  reloadData = () => {},
+}) => {
   const [text, setText] = useState('');
   const [media, setMedia] = useState([]);
   const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
@@ -71,25 +76,32 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
   const uploadMedia = async () => {
     const filesToUpload = [],
       failedFiles = [];
-    for (let i = 0; i < mediaInput?.current?.files?.length; i++) {
-      const currentFile = mediaInput?.current?.files[i];
 
-      if (currentFile?.type?.includes('image/')) {
-        // If image if greater than POST_MAX_IMAGE_SIZE_IN_BYTES, then this shall not be uploaded
-        if (currentFile?.size > POST_MAX_IMAGE_SIZE_IN_BYTES) {
-          failedFiles.push(mediaInput?.current?.files[i]);
-        } else {
-          const compressedImage = await compressImage({
-            file: mediaInput?.current?.files[i],
-          });
-          filesToUpload.push(compressedImage);
-        }
-      } else if (currentFile?.type?.includes('video/')) {
-        // If video if greater than POST_MAX_VIDEO_SIZE_IN_BYTES, then this shall not be uploaded
-        if (currentFile?.size > POST_MAX_VIDEO_SIZE_IN_BYTES) {
-          failedFiles.push(mediaInput?.current?.files[i]);
-        } else {
-          filesToUpload.push(mediaInput?.current?.files[i]);
+    if (mediaInput?.current?.files?.length + media.length > POST_MAX_ALLOWED_MEDIA) {
+      ToastNotifyError(TST_POST_MAX_ALLOWED_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
+    }
+
+    for (let i = 0; i < mediaInput?.current?.files?.length; i++) {
+      if (i < POST_MAX_ALLOWED_MEDIA) {
+        const currentFile = mediaInput?.current?.files[i];
+
+        if (currentFile?.type?.includes('image/')) {
+          // If image if greater than POST_MAX_IMAGE_SIZE_IN_BYTES, then this shall not be uploaded
+          if (currentFile?.size > POST_MAX_IMAGE_SIZE_IN_BYTES) {
+            failedFiles.push(mediaInput?.current?.files[i]);
+          } else {
+            const compressedImage = await compressImage({
+              file: mediaInput?.current?.files[i],
+            });
+            filesToUpload.push(compressedImage);
+          }
+        } else if (currentFile?.type?.includes('video/')) {
+          // If video if greater than POST_MAX_VIDEO_SIZE_IN_BYTES, then this shall not be uploaded
+          if (currentFile?.size > POST_MAX_VIDEO_SIZE_IN_BYTES) {
+            failedFiles.push(mediaInput?.current?.files[i]);
+          } else {
+            filesToUpload.push(mediaInput?.current?.files[i]);
+          }
         }
       }
     }
@@ -138,12 +150,14 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
    * @param {*} type
    */
   const handleFileBrowser = (type) => {
-    if (type === 'photo') {
-      setMediaTypeToUpload('photo');
-    } else if (type === 'video') {
-      setMediaTypeToUpload('video');
+    if (media.length < POST_MAX_ALLOWED_MEDIA) {
+      if (type === 'photo') {
+        setMediaTypeToUpload('photo');
+      } else if (type === 'video') {
+        setMediaTypeToUpload('video');
+      }
+      setOpenFileBrowser((prev) => prev + 1);
     }
-    setOpenFileBrowser((prev) => prev + 1);
   };
 
   /**
@@ -159,6 +173,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
     if (successStatus(status)) {
       ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
       closePopupHandler();
+      await reloadData();
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, TST_POST_CREATED_FAILED_ID);
@@ -176,21 +191,34 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
             handleChange={(val) => setText(val)}
           />
           {media.length ? (
-            <MediaLayout media={media} forcedPreview={openForcedPreview} updateMedia={setMedia} />
+            <MediaLayout
+              media={media}
+              forcedPreview={openForcedPreview}
+              updateMedia={setMedia}
+              allowOnlyView={false}
+            />
           ) : (
             ''
           )}
         </div>
         <div className="flex gap-14 mt-3 py-3 justify-between px-6">
           <div
-            className="flex gap-2 cursor-pointer hover:opacity-70"
+            className={`flex gap-2 hover:opacity-70 ${
+              media?.length < POST_MAX_ALLOWED_MEDIA
+                ? 'cursor-pointer'
+                : 'cursor-not-allowed text-greylight'
+            }`}
             onClick={() => handleFileBrowser('photo')}
           >
             <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
           </div>
 
           <div
-            className="flex gap-2 cursor-pointer hover:opacity-70"
+            className={`flex gap-2 hover:opacity-70 ${
+              media?.length < POST_MAX_ALLOWED_MEDIA
+                ? 'cursor-pointer'
+                : 'cursor-not-allowed text-greylight'
+            }`}
             onClick={() => handleFileBrowser('video')}
           >
             <VideoIcon /> <p>{BTNLBL_VIDEO}</p>

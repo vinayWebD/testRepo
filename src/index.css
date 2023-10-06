@@ -101,6 +101,14 @@
   -webkit-text-fill-color: transparent;
 }
 
+.media-item img,
+.media-item video {
+  object-fit: cover;
+  height: 100%;
+  max-height: 300px;
+  border-radius: 8px;
+}
+
 .EmojiPickerReact {
   --epr-emoji-size: 25px !important;
 }
@@ -109,13 +117,7 @@
   flex: 1;
   overflow-y: hidden;
   align-items: stretch;
-  overflow-y: auto;
-}
-
-.media-layout img {
-  object-fit: cover;
-  border-radius: 8px;
-  height: 100%;
+  max-height: 300px;
 }
 
 .media-preview .slick-arrow {
@@ -255,4 +257,8 @@
   font-style: normal;
   font-weight: 400;
   line-height: 18px; /* 128.571% */
+}
+
+.dropdown {
+  box-shadow: 1px 1px 20px rgba(40, 41, 61, 0.08);
 }

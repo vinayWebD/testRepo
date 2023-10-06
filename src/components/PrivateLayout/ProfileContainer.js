@@ -16,7 +16,7 @@ const ProfileContainer = () => {
         />
 
         <div className="flex flex-col gap-1 overflow-hidden">
-          <p className="text-greydark text-[14px] md:text-[20px] font-medium overflow-hidden truncate">
+          <p className="text-greydark text-[14px] md:text-[20px] font-medium overflow-hidden truncate capitalize">
             {userData?.first_name} {userData?.last_name}
           </p>
           <h4 className="font-normal text-greylight text-[12px] md:text-[14px]">

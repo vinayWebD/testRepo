@@ -1,7 +1,7 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { CREATE_POST } = NETWORK_CONSTANTS;
+const { CREATE_POST, FETCH_POSTS } = NETWORK_CONSTANTS;
 
 /**
  * API for creating post
@@ -22,4 +22,13 @@ const createPost = async ({ caption, links = [], media = [] }) => {
   }
 };
 
-export { createPost };
+const fetchPosts = async ({ page = 1 }) => {
+  try {
+    const response = await apiUtility(FETCH_POSTS, 'GET', { page });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export { createPost, fetchPosts };
