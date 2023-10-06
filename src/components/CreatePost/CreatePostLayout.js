@@ -23,10 +23,15 @@ const { POST_PATTERN } = REGEX;
 const { LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
 const {
   successToast: { TST_POST_CREATED_SUCCESSFULLY = '' },
-  toastid: { TST_POST_CREATED_SUCCESS_ID, TST_POST_CREATED_FAILED_ID },
+  errorToast: { TST_POST_UPLOAD_INVALID_MEDIA = '' },
+  toastid: {
+    TST_POST_CREATED_SUCCESS_ID,
+    TST_POST_CREATED_FAILED_ID,
+    TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID,
+  },
 } = TOASTMESSAGES;
 
-const { POST_MAX_IMAGE_SIZE_IN_BYTES } = LIMITS;
+const { POST_MAX_IMAGE_SIZE_IN_BYTES, POST_MAX_VIDEO_SIZE_IN_BYTES } = LIMITS;
 
 const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null }) => {
   const [text, setText] = useState('');
@@ -68,27 +73,29 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
       failedFiles = [];
     for (let i = 0; i < mediaInput?.current?.files?.length; i++) {
       const currentFile = mediaInput?.current?.files[i];
-      console.log('--currentFile--', currentFile);
-      if (
-        currentFile?.type?.includes('image/') &&
-        currentFile?.size > POST_MAX_IMAGE_SIZE_IN_BYTES
-      ) {
-        failedFiles.push(mediaInput?.current?.files[i]);
-      } else if (
-        currentFile?.type?.includes('image/') &&
-        currentFile?.size <= POST_MAX_IMAGE_SIZE_IN_BYTES
-      ) {
-        const compressedImage = await compressImage({
-          file: mediaInput?.current?.files[i],
-        });
-        filesToUpload.push(compressedImage);
-      } else {
-        filesToUpload.push(mediaInput?.current?.files[i]);
+
+      if (currentFile?.type?.includes('image/')) {
+        // If image if greater than POST_MAX_IMAGE_SIZE_IN_BYTES, then this shall not be uploaded
+        if (currentFile?.size > POST_MAX_IMAGE_SIZE_IN_BYTES) {
+          failedFiles.push(mediaInput?.current?.files[i]);
+        } else {
+          const compressedImage = await compressImage({
+            file: mediaInput?.current?.files[i],
+          });
+          filesToUpload.push(compressedImage);
+        }
+      } else if (currentFile?.type?.includes('video/')) {
+        // If video if greater than POST_MAX_VIDEO_SIZE_IN_BYTES, then this shall not be uploaded
+        if (currentFile?.size > POST_MAX_VIDEO_SIZE_IN_BYTES) {
+          failedFiles.push(mediaInput?.current?.files[i]);
+        } else {
+          filesToUpload.push(mediaInput?.current?.files[i]);
+        }
       }
     }
 
     if (failedFiles.length) {
-      console.log('----error in failed');
+      ToastNotifyError(TST_POST_UPLOAD_INVALID_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
     }
 
     // Upload the files on AWS
@@ -100,10 +107,10 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
    * @param {*} filesToUpload
    */
   const uploadFilesOnAWS = async (filesToUpload) => {
-    setIsLoading(true);
     const uploadedMedia = [...media];
 
     if (filesToUpload?.length) {
+      setIsLoading(true);
       for (let i = 0; i < filesToUpload.length; i++) {
         const uploadData = new FormData();
         const file = filesToUpload[i];
@@ -197,7 +204,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
           </div>
         </div>
       </div>
-      <div className="flex justify-end px-6 border-greymedium border-t pt-5">
+      <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <OutlinedButton
           label={'Post'}
           disabled={isPostButtonDisabled()}
@@ -210,7 +217,7 @@ const CreatePostLayout = ({ closePopupHandler = () => {}, openTypeOfPost = null 
         onClose={() => setIsLinkSectionOpen(false)}
         isTitle={true}
         title={'Add Links'}
-        additionalClassNames="py-4 px-0"
+        padding="p-0"
       >
         <CreatePostLinkLayout
           links={links}

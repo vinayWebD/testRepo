@@ -32,6 +32,8 @@ export const TOASTMESSAGES = {
     TST_INVALID_IMAGE: 'Invalid image file',
     TST_INVALID_FILE: 'Invalid file type',
     TST_INVALID_LINKS: 'One or multiple invalid links added',
+    TST_POST_UPLOAD_INVALID_MEDIA:
+      'Some of the files failed to upload. Image files must be 10MB or less, and video files must be 50MB or less',
   },
   toastid: {
     TST_LOGIN_SUCCESS_ID: 'login-success',
@@ -51,5 +53,6 @@ export const TOASTMESSAGES = {
     TST_POST_CREATED_SUCCESS_ID: 'post-created-success',
     TST_POST_CREATED_FAILED_ID: 'post-created-failed',
     TST_LINK_VALIDATION_FAILED_ID: 'link-validation-failed',
+    TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID: 'post-upload-validation-failed',
   },
 };

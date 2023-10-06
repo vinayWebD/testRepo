@@ -81,6 +81,7 @@ const HomePage = () => {
         isTitle={true}
         title={'Create a Post'}
         childrenClassNames="overflow-y-auto"
+        padding="p-0"
       >
         <CreatePostLayout
           closePopupHandler={() => {
