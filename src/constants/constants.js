@@ -13,4 +13,14 @@ export const VERIFY_EMAIL_ORIGIN = {
 
 export const LIMITS = {
   POST_CAPTION_MAX_LIMIT: 100,
+  POST_MAX_IMAGE_SIZE_IN_BYTES: 1e7,
 };
+
+export const POST_IMAGE_TYPES = [
+  'image/heif',
+  'image/heic',
+  'image/png',
+  'image/jpeg',
+  'image/png',
+  'image/gif',
+];

@@ -122,10 +122,24 @@
   display: none !important;
 }
 
-.slick-slide.slick-active.slick-current {
-  height: 78vh;
-  display: flex;
+.slick-slide {
+  max-height: 70vh;
+  display: flex !important;
   align-items: center;
+  justify-content: center;
+  overflow-y: hidden;
+}
+
+.slick-track {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+}
+
+.slick-slide img,
+.slick-slide video {
+  max-height: 70vh;
+  border-radius: 6px;
 }
 /* Global CSS override for carosul */
 

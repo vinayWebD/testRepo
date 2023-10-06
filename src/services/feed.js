@@ -8,11 +8,13 @@ const { CREATE_POST } = NETWORK_CONSTANTS;
  * @param {*} param0
  * @returns
  */
-const createPost = async ({ caption, links = [] }) => {
+const createPost = async ({ caption, links = [], media = [] }) => {
+  media = media.map((m) => ({ path: m.path }));
   try {
     const response = await apiUtility(CREATE_POST, 'POST', {
       caption,
       links,
+      media,
     });
     return response;
   } catch (error) {

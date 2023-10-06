@@ -9,6 +9,7 @@ function Modal({
   isTitle = true,
   width = 'max-w-[540px]',
   padding = 'px-6',
+  childrenClassNames = 'md:max-h-5/6 max-h-[500px]',
 }) {
   if (!isOpen) return null;
 
@@ -22,14 +23,16 @@ function Modal({
         onClick={(e) => e.stopPropagation()}
       >
         {isTitle && (
-          <div className="flex items-center justify-between p-[18px] bg-[#E9F6FF] sticky top-0">
+          <div className="flex items-center justify-between p-[18px] bg-[#E9F6FF] sticky top-0 z-10">
             <div className="pl-[18px] modal-title">{title}</div>
             <div onClick={onClose} className="cursor-pointer">
               <CloseIcon />
             </div>
           </div>
         )}
-        <div className={`py-4 text-left ${padding}  md:max-h-5/6 max-h-[500px]`}>{children}</div>
+        <div className={`py-4 overflow-y-auto text-left ${padding} ${childrenClassNames}`}>
+          {children}
+        </div>
       </div>
     </div>
   );
