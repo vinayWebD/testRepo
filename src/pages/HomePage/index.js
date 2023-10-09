@@ -104,7 +104,7 @@ const HomePage = () => {
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
-                    <MediaLayout media={post?.media} />
+                    <MediaLayout media={post?.media} allowOnlyView={true} origin="feed" />
                   </div>
 
                   <ActionButtons
