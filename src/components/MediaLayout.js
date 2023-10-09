@@ -164,13 +164,7 @@ const MediaLayout = ({
   };
 
   return (
-    <div
-      className={`media-layout ${
-        media.length !== 1 ? 'border border-greymedium p-2' : ''
-      } rounded-lg`}
-    >
-      {getMedia()}
-    </div>
+    <div className={`media-layout ${media.length !== 1 ? 'p-2' : ''} rounded-lg`}>{getMedia()}</div>
   );
 };
 
