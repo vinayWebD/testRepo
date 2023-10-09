@@ -26,7 +26,7 @@ const Dropdown = ({ options = [{}], IconComponent = () => <DownCaret /> }) => {
 
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-48 rounded-sm shadow-md bg-white z-10"
+          className="origin-top-right absolute right-0 mt-2 w-48 rounded-sm dropdown bg-white z-10"
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"

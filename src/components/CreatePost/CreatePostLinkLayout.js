@@ -72,7 +72,7 @@ const CreatePostLinkLayout = ({ links = [], setLinks, closePopupHandler = () => 
           </p>
         </div>
       </div>
-      <div className="flex justify-end px-6 border-greymedium border-t pt-5">
+      <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <OutlinedButton
           label={BTNLBL_SAVE}
           disabled={isLinkButtonDisabled()}
