@@ -10,6 +10,7 @@ import Post from '../../components/Post';
 import { useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
+import AddFriendIcon from '../../components/Icons/AddFriendIcon';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -54,7 +55,41 @@ const HomePage = () => {
         </div>
 
         <div className="col-span-3">
-          <Card classNames="p-3"></Card>
+          <Card>
+            <div className="rounded-t-lg flex flex-col gap-2 blue-white-gradient p-3 text-white">
+              <div className="flex items-center gap-2">
+                <AddFriendIcon />
+                <p className="font-semibold text-xl">Invite People</p>
+              </div>
+              <p className="text-sm">Lorem ipsum dolor sit amet consectetur.</p>
+            </div>
+            <div className="p-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70">
+              Invite Now
+            </div>
+          </Card>
+
+          <Card classNames="p-3 mt-[14px]">
+            <p className="font-semibold text-base">Notification</p>
+
+            <div className="border-b border-[#DFDFDF] mt-1 py-2">
+              <p className="greydark text-sm">Lorem ipsum dolor sit amet consectetur.</p>
+              <p className="text-greymedium text-xs">2 Hours ago</p>
+            </div>
+            <div className="border-b border-[#DFDFDF] mt-1 py-2">
+              <p className="greydark text-sm">
+                Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.
+              </p>
+              <p className="text-greymedium text-xs">2 Hours ago</p>
+            </div>
+            <div className="border-b border-[#DFDFDF] mt-1 py-2">
+              <p className="greydark text-sm">Lorem ipsum dolor sit amet consectetur.</p>
+              <p className="text-greymedium text-xs">2 Hours ago</p>
+            </div>
+
+            <div className="pt-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70">
+              View All
+            </div>
+          </Card>
         </div>
       </div>
       <Modal
