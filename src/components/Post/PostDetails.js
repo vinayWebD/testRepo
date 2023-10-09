@@ -16,7 +16,7 @@ var settings = {
   slidesToScroll: 1,
 };
 
-const PostDetailsPreview = ({ post = {} }) => {
+const PostDetails = ({ post = {} }) => {
   const [sliderRef, setSliderRef] = useState(null);
 
   return (
@@ -93,4 +93,4 @@ const PostDetailsPreview = ({ post = {} }) => {
   );
 };
 
-export default PostDetailsPreview;
+export default PostDetails;

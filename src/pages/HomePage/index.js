@@ -17,7 +17,7 @@ import CaptionLinkContainer from '../../components/Post/CaptionLinkContainer';
 import ActionButtons from '../../components/Post/ActionButtons';
 import Loader from '../../components/common/Loader';
 import MediaLayout from '../../components/MediaLayout';
-import PostDetailsPreview from '../../components/Post/PostDetailsPreview';
+import PostDetails from '../../components/Post/PostDetails';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -163,7 +163,7 @@ const HomePage = () => {
         childrenClassNames=""
         padding="!p-0"
       >
-        <PostDetailsPreview post={activePost} />
+        <PostDetails post={activePost} />
       </Modal>
     </PrivateLayout>
   );
