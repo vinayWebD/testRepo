@@ -17,6 +17,7 @@ import CaptionLinkContainer from '../../components/Post/CaptionLinkContainer';
 import ActionButtons from '../../components/Post/ActionButtons';
 import Loader from '../../components/common/Loader';
 import MediaLayout from '../../components/MediaLayout';
+import PostDetailsPreview from '../../components/Post/PostDetailsPreview';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -27,6 +28,8 @@ const HomePage = () => {
   const [typeOfPost, setTypeOfPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
+  const [activePost, setActivePost] = useState({});
 
   const handleOpenPopup = (type) => {
     setTypeOfPost(type);
@@ -104,7 +107,15 @@ const HomePage = () => {
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
-                    <MediaLayout media={post?.media} allowOnlyView={true} origin="feed" />
+                    <MediaLayout
+                      media={post?.media}
+                      allowOnlyView={true}
+                      origin="feed"
+                      onMediaClickHandler={() => {
+                        setIsPreviewDetailsPostOpen(true);
+                        setActivePost({ ...post });
+                      }}
+                    />
                   </div>
 
                   <ActionButtons
@@ -125,6 +136,7 @@ const HomePage = () => {
           <Card classNames="p-3"></Card>
         </div>
       </div>
+
       <Modal
         isOpen={isCreatePostModalOpen}
         onClose={() => setIsCreatePostModalOpen(false)}
@@ -141,6 +153,17 @@ const HomePage = () => {
           openTypeOfPost={typeOfPost}
           reloadData={fetchPost}
         />
+      </Modal>
+
+      <Modal
+        isOpen={isPreviewDetailsPostOpen}
+        onClose={() => setIsPreviewDetailsPostOpen(false)}
+        isTitle={false}
+        width="!w-[75vw]"
+        childrenClassNames=""
+        padding="!p-0"
+      >
+        <PostDetailsPreview post={activePost} />
       </Modal>
     </PrivateLayout>
   );

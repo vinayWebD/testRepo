@@ -10,15 +10,23 @@ const MediaLayout = ({
   forcedPreview = false,
   updateMedia = () => {},
   origin = 'create-edit-post',
+  onMediaClickHandler = () => {},
 }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(forcedPreview || false);
   const [customActiveIndex, setCustomActiveIndex] = useState(forcedPreview ? 0 : null);
 
+  // If there is no media, we can early return
   if (!media.length) return null;
 
   const handleClick = (currentIndex) => {
-    setCustomActiveIndex(currentIndex);
-    setIsPreviewOpen(true);
+    // If the user is coming from any other origin that create or edit post, then we can perform the onMediaClickHandler() fn
+    if (origin !== 'create-edit-post') {
+      onMediaClickHandler();
+    } else {
+      // If user is creating or editing post, then we need to open the preview of each media
+      setCustomActiveIndex(currentIndex);
+      setIsPreviewOpen(true);
+    }
   };
 
   const handleRemoveMedia = (currentIndex) => {
@@ -26,30 +34,27 @@ const MediaLayout = ({
     updateMedia(updatedMedia);
   };
 
-  if (isPreviewOpen) {
-    if (origin === 'create-edit-post') {
-      return (
-        <Modal
-          isOpen={isPreviewOpen}
-          onClose={() => setIsPreviewOpen(false)}
-          isTitle={true}
-          title={'Create Post'}
-          width="!w-[75vw]"
-          childrenClassNames=""
-        >
-          <div className="m-auto pt-4">
-            <CreatePostMediaPreview
-              media={media}
-              customActiveIndex={customActiveIndex}
-              removeMedia={handleRemoveMedia}
-              closeModal={() => setIsPreviewOpen(false)}
-            />
-          </div>
-        </Modal>
-      );
-    } else {
-      return null;
-    }
+  if (isPreviewOpen && origin === 'create-edit-post') {
+    // The popup/preview when any media is clicked when creating or editing a post
+    return (
+      <Modal
+        isOpen={isPreviewOpen}
+        onClose={() => setIsPreviewOpen(false)}
+        isTitle={true}
+        title={'Create Post'}
+        width="!w-[75vw]"
+        childrenClassNames=""
+      >
+        <div className="m-auto pt-4">
+          <CreatePostMediaPreview
+            media={media}
+            customActiveIndex={customActiveIndex}
+            removeMedia={handleRemoveMedia}
+            closeModal={() => setIsPreviewOpen(false)}
+          />
+        </div>
+      </Modal>
+    );
   }
 
   const getMedia = () => {
@@ -63,14 +68,14 @@ const MediaLayout = ({
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="object-cover w-full rounded-lg"
+              className="object-cover w-full rounded-lg cursor-pointer hover:opacity-70"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
             <video
               src={media[0].url}
-              className="w-full rounded-lg"
-              controls={true}
+              className="w-full rounded-lg cursor-pointer hover:opacity-70"
+              controls={false}
               onClick={() => handleClick(customActiveIndex)}
             />
           )}
@@ -239,8 +244,8 @@ const MediaItem = ({
       <div className={`relative w-full media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'}`}>
         <video
           src={url}
-          className={`w-full min-h-full min-w-full rounded-lg ${className}`}
-          controls={true}
+          className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer  hover:opacity-70`}
+          controls={false}
           height={'100%'}
           onClick={() => onClick(index)}
         />
@@ -266,7 +271,7 @@ const MediaItem = ({
         <img
           src={url}
           alt="media"
-          className={`w-full ${className} rounded-lg h-[100%]`}
+          className={`w-full ${className} rounded-lg h-[100%] cursor-pointer hover:opacity-70`}
           onClick={() => onClick(index)}
         />
         {showMoreOverlay ? (

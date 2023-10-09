@@ -10,8 +10,10 @@ const ActionButtons = ({
   commentCount = 0,
   shareCount = 0,
   likeCount = 0,
+  className = 'gap-[10%]',
+  isCommentSectionOpenDefault = false,
 }) => {
-  const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(false);
+  const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(isCommentSectionOpenDefault);
 
   const commentClickHandler = () => {
     setIsCommentSectionOpen(true);
@@ -19,7 +21,7 @@ const ActionButtons = ({
 
   return (
     <>
-      <div className="flex w-full mt-7 gap-[10%]">
+      <div className={`flex w-full mt-7 ${className}`}>
         <div className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70">
           {isLikedByMe ? <LikeFilledIcon /> : <LikeEmptyIcon />}
           <p className="text-16 font-bold text-greylight">
