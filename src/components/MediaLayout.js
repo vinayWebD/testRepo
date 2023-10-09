@@ -50,26 +50,53 @@ const MediaLayout = ({
 
   const getMedia = () => {
     if (media.length === 1) {
-      return (
-        <div
-          key={media.path}
-          className="w-full max-h-[400px] bg-blueprimary overflow-hidden rounded-lg relative"
-        >
-          <img src={media[0].url} className="object-cover w-full rounded-lg" />
-          {origin === 'create-edit-post' ? (
-            <div
-              className="absolute top-2 right-2 cursor-pointer"
-              onClick={() => handleRemoveMedia(customActiveIndex)}
-            >
-              <span>
-                <RemoveIcon />
-              </span>
-            </div>
-          ) : (
-            ''
-          )}
-        </div>
-      );
+      let mediaType = POST_IMAGE_EXTENSIONS.includes(getFileExtension(media[0].path)?.toLowerCase())
+        ? 'photo'
+        : 'video';
+
+      if (mediaType === 'photo') {
+        return (
+          <div
+            key={media.path}
+            className="w-full max-h-[400px] overflow-hidden rounded-lg relative"
+          >
+            <img src={media[0].url} className="object-cover w-full rounded-lg" />
+            {origin === 'create-edit-post' ? (
+              <div
+                className="absolute top-2 right-2 cursor-pointer"
+                onClick={() => handleRemoveMedia(customActiveIndex)}
+              >
+                <span>
+                  <RemoveIcon />
+                </span>
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
+        );
+      } else {
+        return (
+          <div
+            key={media.path}
+            className="w-full max-h-[400px] overflow-hidden rounded-lg relative"
+          >
+            <video src={media[0].url} className="w-full rounded-lg" />
+            {origin === 'create-edit-post' ? (
+              <div
+                className="absolute top-2 right-2 cursor-pointer"
+                onClick={() => handleRemoveMedia(customActiveIndex)}
+              >
+                <span>
+                  <RemoveIcon />
+                </span>
+              </div>
+            ) : (
+              ''
+            )}
+          </div>
+        );
+      }
     } else if (media.length === 2 || media.length === 4) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
