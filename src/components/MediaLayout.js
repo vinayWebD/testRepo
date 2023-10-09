@@ -17,8 +17,8 @@ const MediaLayout = ({
   if (!media.length) return null;
 
   const handleClick = (currentIndex) => {
-    setIsPreviewOpen(true);
     setCustomActiveIndex(currentIndex);
+    setIsPreviewOpen(true);
   };
 
   const handleRemoveMedia = (currentIndex) => {
@@ -26,26 +26,30 @@ const MediaLayout = ({
     updateMedia(updatedMedia);
   };
 
-  if (isPreviewOpen && origin === 'create-edit-post') {
-    return (
-      <Modal
-        isOpen={isPreviewOpen}
-        onClose={() => setIsPreviewOpen(false)}
-        isTitle={true}
-        title={'Create Post'}
-        width="!w-[75vw]"
-        childrenClassNames=""
-      >
-        <div className="m-auto pt-4">
-          <CreatePostMediaPreview
-            media={media}
-            customActiveIndex={customActiveIndex}
-            removeMedia={handleRemoveMedia}
-            closeModal={() => setIsPreviewOpen(false)}
-          />
-        </div>
-      </Modal>
-    );
+  if (isPreviewOpen) {
+    if (origin === 'create-edit-post') {
+      return (
+        <Modal
+          isOpen={isPreviewOpen}
+          onClose={() => setIsPreviewOpen(false)}
+          isTitle={true}
+          title={'Create Post'}
+          width="!w-[75vw]"
+          childrenClassNames=""
+        >
+          <div className="m-auto pt-4">
+            <CreatePostMediaPreview
+              media={media}
+              customActiveIndex={customActiveIndex}
+              removeMedia={handleRemoveMedia}
+              closeModal={() => setIsPreviewOpen(false)}
+            />
+          </div>
+        </Modal>
+      );
+    } else {
+      return null;
+    }
   }
 
   const getMedia = () => {
@@ -54,49 +58,37 @@ const MediaLayout = ({
         ? 'photo'
         : 'video';
 
-      if (mediaType === 'photo') {
-        return (
-          <div
-            key={media.path}
-            className="w-full max-h-[400px] overflow-hidden rounded-lg relative"
-          >
-            <img src={media[0].url} className="object-cover w-full rounded-lg" />
-            {origin === 'create-edit-post' ? (
-              <div
-                className="absolute top-2 right-2 cursor-pointer"
-                onClick={() => handleRemoveMedia(customActiveIndex)}
-              >
-                <span>
-                  <RemoveIcon />
-                </span>
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-        );
-      } else {
-        return (
-          <div
-            key={media.path}
-            className="w-full max-h-[400px] overflow-hidden rounded-lg relative"
-          >
-            <video src={media[0].url} className="w-full rounded-lg" />
-            {origin === 'create-edit-post' ? (
-              <div
-                className="absolute top-2 right-2 cursor-pointer"
-                onClick={() => handleRemoveMedia(customActiveIndex)}
-              >
-                <span>
-                  <RemoveIcon />
-                </span>
-              </div>
-            ) : (
-              ''
-            )}
-          </div>
-        );
-      }
+      return (
+        <div key={media.path} className="w-full max-h-[400px] overflow-hidden rounded-lg relative">
+          {mediaType === 'photo' ? (
+            <img
+              src={media[0].url}
+              className="object-cover w-full rounded-lg"
+              onClick={() => handleClick(customActiveIndex)}
+            />
+          ) : (
+            <video
+              src={media[0].url}
+              className="w-full rounded-lg"
+              controls={true}
+              onClick={() => handleClick(customActiveIndex)}
+            />
+          )}
+
+          {origin === 'create-edit-post' ? (
+            <div
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => handleRemoveMedia(customActiveIndex)}
+            >
+              <span>
+                <RemoveIcon />
+              </span>
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+      );
     } else if (media.length === 2 || media.length === 4) {
       return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
@@ -244,11 +236,7 @@ const MediaItem = ({
 
   if (mediaType === 'video') {
     return (
-      <div
-        className={`h-auto relative w-full media-item ${
-          isParentHalf ? 'max-h-[200px]' : 'h-[100%]'
-        }`}
-      >
+      <div className={`relative w-full media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'}`}>
         <video
           src={url}
           className={`w-full min-h-full min-w-full rounded-lg ${className}`}
