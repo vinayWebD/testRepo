@@ -72,7 +72,7 @@ export default function LandingPage() {
 
   return (
     <div className=" landing-page">
-      <div className="max-w-[1440px] mx-auto relative">
+      <div className="mx-auto relative">
         <navbar>
           <Navbar />
         </navbar>
