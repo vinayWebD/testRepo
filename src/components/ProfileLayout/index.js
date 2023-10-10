@@ -1,0 +1,34 @@
+import React from 'react';
+import PrivateHeader from '../common/PrivateHeader';
+import Background from '../../assets/images/private-background.svg';
+import ProfileContainer from './ProfileContainer';
+
+/**
+ * This component is the layout for the authenticated pages
+ * @param {*} param0
+ * @returns
+ */
+const ProfileLayout = ({ children }) => {
+  return (
+    <div>
+      <div
+        className="flex w-full flex-col min-h-[150vh] bg-fixed bg-bottom"
+        style={{ backgroundImage: `url(${Background})` }}
+      >
+        {/* The header component */}
+        <PrivateHeader />
+
+        <div className="py-[14px] px-[5%] flex-grow grid grid-cols-12 gap-5 mt-[61px]">
+          {/* This is a common sidebar that should be on all private authenticated pages */}
+          <div className="col-span-2 md:col-span-1 lg:col-span-3 sticky top-[61px] z-40">
+            {/* The profile info - image, name etc. */}
+            <ProfileContainer />
+          </div>
+          <div className="col-span-10 md:col-span-11 lg:col-span-9">{children}</div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default ProfileLayout;
