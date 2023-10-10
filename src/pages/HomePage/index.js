@@ -9,7 +9,7 @@ import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { useEffect, useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
-import { fetchPosts } from '../../services/feed';
+import { fetchPostDetails, fetchPosts } from '../../services/feed';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import Header from '../../components/Post/Header';
@@ -17,6 +17,7 @@ import CaptionLinkContainer from '../../components/Post/CaptionLinkContainer';
 import ActionButtons from '../../components/Post/ActionButtons';
 import Loader from '../../components/common/Loader';
 import MediaLayout from '../../components/MediaLayout';
+import PostDetails from '../../components/Post/PostDetails';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -27,6 +28,8 @@ const HomePage = () => {
   const [typeOfPost, setTypeOfPost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+  const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
+  const [activePost, setActivePost] = useState({});
 
   const handleOpenPopup = (type) => {
     setTypeOfPost(type);
@@ -34,10 +37,10 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchPost();
+    fetchAllPosts();
   }, []);
 
-  const fetchPost = async () => {
+  const fetchAllPosts = async () => {
     setIsLoading(true);
     const response = await fetchPosts({ page: 1 });
 
@@ -48,6 +51,28 @@ const HomePage = () => {
       ToastNotifyError(errormsg, '');
     } else {
       setPosts(data?.results);
+    }
+  };
+
+  const fetchSinglePostDetails = async ({ postId }) => {
+    const response = await fetchPostDetails({ postId });
+
+    const { status, data } = response;
+    const errormsg = getErrorMessage(data);
+    if (!successStatus(status) && errormsg) {
+      ToastNotifyError(errormsg, '');
+    } else {
+      const allPosts = posts.map((post) => {
+        if (post?.post_id === postId) {
+          return data;
+        } else {
+          return post;
+        }
+      });
+      setPosts(allPosts);
+      if (activePost?.post_id === postId) {
+        setActivePost(data);
+      }
     }
   };
 
@@ -104,7 +129,15 @@ const HomePage = () => {
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
-                    <MediaLayout media={post?.media} />
+                    <MediaLayout
+                      media={post?.media}
+                      allowOnlyView={true}
+                      origin="feed"
+                      onMediaClickHandler={() => {
+                        setIsPreviewDetailsPostOpen(true);
+                        setActivePost({ ...post });
+                      }}
+                    />
                   </div>
 
                   <ActionButtons
@@ -112,6 +145,8 @@ const HomePage = () => {
                     likeCount={post?.like_count}
                     shareCount={post?.share_count}
                     isLikedByMe={post?.is_liked_by_me}
+                    postId={post?.post_id}
+                    reloadPostDetails={fetchSinglePostDetails}
                   />
                 </Card>
               );
@@ -125,6 +160,7 @@ const HomePage = () => {
           <Card classNames="p-3"></Card>
         </div>
       </div>
+
       <Modal
         isOpen={isCreatePostModalOpen}
         onClose={() => setIsCreatePostModalOpen(false)}
@@ -139,8 +175,19 @@ const HomePage = () => {
             setTypeOfPost(null);
           }}
           openTypeOfPost={typeOfPost}
-          reloadData={fetchPost}
+          reloadData={fetchAllPosts}
         />
+      </Modal>
+
+      <Modal
+        isOpen={isPreviewDetailsPostOpen}
+        onClose={() => setIsPreviewDetailsPostOpen(false)}
+        isTitle={false}
+        width="!w-[75vw]"
+        childrenClassNames=""
+        padding="!p-0"
+      >
+        <PostDetails post={activePost} reloadPostDetails={fetchSinglePostDetails} />
       </Modal>
     </PrivateLayout>
   );

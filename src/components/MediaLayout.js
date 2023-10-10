@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import RemoveIcon from './Icons/RemoveIcon';
 import Modal from './Modal';
 import CreatePostMediaPreview from './CreatePost/CreatePostMediaPreview';
@@ -9,16 +9,24 @@ const MediaLayout = ({
   media = [],
   forcedPreview = false,
   updateMedia = () => {},
-  allowOnlyView = true,
+  origin = 'create-edit-post',
+  onMediaClickHandler = () => {},
 }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(forcedPreview || false);
   const [customActiveIndex, setCustomActiveIndex] = useState(forcedPreview ? 0 : null);
 
+  // If there is no media, we can early return
   if (!media.length) return null;
 
   const handleClick = (currentIndex) => {
-    setIsPreviewOpen(true);
-    setCustomActiveIndex(currentIndex);
+    // If the user is coming from any other origin that create or edit post, then we can perform the onMediaClickHandler() fn
+    if (origin !== 'create-edit-post') {
+      onMediaClickHandler();
+    } else {
+      // If user is creating or editing post, then we need to open the preview of each media
+      setCustomActiveIndex(currentIndex);
+      setIsPreviewOpen(true);
+    }
   };
 
   const handleRemoveMedia = (currentIndex) => {
@@ -26,7 +34,8 @@ const MediaLayout = ({
     updateMedia(updatedMedia);
   };
 
-  if (isPreviewOpen && !allowOnlyView) {
+  if (isPreviewOpen && origin === 'create-edit-post') {
+    // The popup/preview when any media is clicked when creating or editing a post
     return (
       <Modal
         isOpen={isPreviewOpen}
@@ -50,15 +59,40 @@ const MediaLayout = ({
 
   const getMedia = () => {
     if (media.length === 1) {
+      let mediaType = POST_IMAGE_EXTENSIONS.includes(getFileExtension(media[0].path)?.toLowerCase())
+        ? 'photo'
+        : 'video';
+
       return (
-        <MediaItem
-          url={media[0].url}
-          path={media[0].path}
-          index={0}
-          onClick={handleClick}
-          removeMedia={handleRemoveMedia}
-          allowOnlyView={allowOnlyView}
-        />
+        <div key={media.path} className="w-full max-h-[400px] overflow-hidden rounded-lg relative">
+          {mediaType === 'photo' ? (
+            <img
+              src={media[0].url}
+              className="object-cover w-full rounded-lg cursor-pointer hover:opacity-70"
+              onClick={() => handleClick(customActiveIndex)}
+            />
+          ) : (
+            <video
+              src={media[0].url}
+              className="w-full rounded-lg cursor-pointer hover:opacity-70"
+              controls={false}
+              onClick={() => handleClick(customActiveIndex)}
+            />
+          )}
+
+          {origin === 'create-edit-post' ? (
+            <div
+              className="absolute top-2 right-2 cursor-pointer"
+              onClick={() => handleRemoveMedia(customActiveIndex)}
+            >
+              <span>
+                <RemoveIcon />
+              </span>
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
       );
     } else if (media.length === 2 || media.length === 4) {
       return (
@@ -71,7 +105,8 @@ const MediaLayout = ({
               index={index}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
+              isParentHalf={media.length === 4}
             />
           ))}
         </div>
@@ -79,25 +114,25 @@ const MediaLayout = ({
     } else if (media.length === 3) {
       return (
         <div className="flex gap-1 w-full">
-          <div className="w-[60%]">
+          <div className="w-[60%] max-h-[400px]">
             <MediaItem
               url={media[0].url}
               index={0}
               path={media[0].path}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
               className="max-h-none min-h-[-webkit-fill-available]"
             />
           </div>
-          <div className="flex gap-1 w-[40%] flex-col">
+          <div className="flex gap-1 w-[40%] flex-col max-h-[400px]">
             <MediaItem
               url={media[1].url}
               path={media[1].path}
               index={1}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
             />
             <MediaItem
               url={media[2].url}
@@ -105,7 +140,7 @@ const MediaLayout = ({
               index={2}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
             />
           </div>
         </div>
@@ -120,7 +155,8 @@ const MediaLayout = ({
               index={0}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
+              isParentHalf={true}
             />
             <MediaItem
               url={media[1].url}
@@ -128,7 +164,8 @@ const MediaLayout = ({
               index={1}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
+              isParentHalf={true}
             />
           </div>
           <div className="w-full flex gap-1">
@@ -138,7 +175,8 @@ const MediaLayout = ({
               index={2}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
+              isParentHalf={true}
             />
             <MediaItem
               url={media[3].url}
@@ -146,7 +184,8 @@ const MediaLayout = ({
               index={3}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
+              isParentHalf={true}
             />
             <MediaItem
               url={media[4].url}
@@ -155,7 +194,8 @@ const MediaLayout = ({
               index={4}
               onClick={handleClick}
               removeMedia={handleRemoveMedia}
-              allowOnlyView={allowOnlyView}
+              allowOnlyView={origin !== 'create-edit-post'}
+              isParentHalf={true}
             />
           </div>
         </div>
@@ -164,11 +204,11 @@ const MediaLayout = ({
   };
 
   return (
-    <div className={`media-layout ${media.length !== 1 ? 'p-2' : ''} rounded-lg`}>{getMedia()}</div>
+    <div className={`media-layout ${media.length !== 1 ? '' : ''} rounded-lg max-h-[400px]`}>
+      {getMedia()}
+    </div>
   );
 };
-
-export default MediaLayout;
 
 const MediaItem = ({
   url = '',
@@ -179,6 +219,7 @@ const MediaItem = ({
   removeMedia = () => {},
   allowOnlyView = true,
   className = '',
+  isParentHalf = false,
 }) => {
   let mediaType = POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase())
     ? 'photo'
@@ -198,16 +239,19 @@ const MediaItem = ({
 
   if (mediaType === 'video') {
     return (
-      <div className="h-auto relative w-full media-item">
+      <div className={`relative w-full media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'}`}>
         <video
           src={url}
-          className={`w-full min-h-full min-w-full rounded-lg ${className}`}
-          controls={true}
+          className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer  hover:opacity-70`}
+          controls={false}
           height={'100%'}
           onClick={() => onClick(index)}
         />
         {showMoreOverlay ? (
-          <div className="absolute cursor-pointer" onClick={() => onClick(index)}>
+          <div
+            className="cursor-pointer absolute top-0 left-0 text-white text-lg w-full h-full bg-[#0000008a] rounded-lg font-medium flex justify-center text-center items-center"
+            onClick={() => onClick(index)}
+          >
             + {showMoreOverlay}
           </div>
         ) : (
@@ -217,11 +261,15 @@ const MediaItem = ({
     );
   } else {
     return (
-      <div className="relative w-full overflow-hidden media-item ">
+      <div
+        className={`relative w-full overflow-hidden media-item ${
+          isParentHalf ? 'max-h-[200px]' : 'h-[100%]'
+        }`}
+      >
         <img
           src={url}
           alt="media"
-          className={`w-full ${className}`}
+          className={`w-full ${className} rounded-lg h-[100%] cursor-pointer hover:opacity-70`}
           onClick={() => onClick(index)}
         />
         {showMoreOverlay ? (
@@ -238,3 +286,11 @@ const MediaItem = ({
     );
   }
 };
+
+// Custom comparison function
+const areEqual = (prevProps, nextProps) => {
+  // If the media prop hasn't changed, don't re-render
+  return prevProps.media.length === nextProps.media.length;
+};
+
+export default memo(MediaLayout, areEqual);
