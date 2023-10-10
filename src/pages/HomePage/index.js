@@ -9,7 +9,7 @@ import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { useEffect, useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
-import { fetchPosts } from '../../services/feed';
+import { fetchPostDetails, fetchPosts } from '../../services/feed';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import Header from '../../components/Post/Header';
@@ -37,10 +37,10 @@ const HomePage = () => {
   };
 
   useEffect(() => {
-    fetchPost();
+    fetchAllPosts();
   }, []);
 
-  const fetchPost = async () => {
+  const fetchAllPosts = async () => {
     setIsLoading(true);
     const response = await fetchPosts({ page: 1 });
 
@@ -51,6 +51,28 @@ const HomePage = () => {
       ToastNotifyError(errormsg, '');
     } else {
       setPosts(data?.results);
+    }
+  };
+
+  const fetchSinglePostDetails = async ({ postId }) => {
+    const response = await fetchPostDetails({ postId });
+
+    const { status, data } = response;
+    const errormsg = getErrorMessage(data);
+    if (!successStatus(status) && errormsg) {
+      ToastNotifyError(errormsg, '');
+    } else {
+      const allPosts = posts.map((post) => {
+        if (post?.post_id === postId) {
+          return data;
+        } else {
+          return post;
+        }
+      });
+      setPosts(allPosts);
+      if (activePost?.post_id === postId) {
+        setActivePost(data);
+      }
     }
   };
 
@@ -123,6 +145,8 @@ const HomePage = () => {
                     likeCount={post?.like_count}
                     shareCount={post?.share_count}
                     isLikedByMe={post?.is_liked_by_me}
+                    postId={post?.post_id}
+                    reloadPostDetails={fetchSinglePostDetails}
                   />
                 </Card>
               );
@@ -151,7 +175,7 @@ const HomePage = () => {
             setTypeOfPost(null);
           }}
           openTypeOfPost={typeOfPost}
-          reloadData={fetchPost}
+          reloadData={fetchAllPosts}
         />
       </Modal>
 
@@ -163,7 +187,7 @@ const HomePage = () => {
         childrenClassNames=""
         padding="!p-0"
       >
-        <PostDetails post={activePost} />
+        <PostDetails post={activePost} reloadPostDetails={fetchSinglePostDetails} />
       </Modal>
     </PrivateLayout>
   );

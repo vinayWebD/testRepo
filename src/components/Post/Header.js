@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import Avatar from '../common/Avatar';
 import Dropdown from '../common/Dropdown';
 import ThreeDots from '../Icons/ThreeDots';
@@ -39,4 +39,12 @@ const Header = ({ createdAt = '', creatorName = '', creatorProfilePicUrl = '' })
   );
 };
 
-export default Header;
+const areEqual = (prevProps, nextProps) => {
+  return (
+    prevProps.createdAt === nextProps.createdAt ||
+    prevProps.creatorName === nextProps.creatorName ||
+    prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl
+  );
+};
+
+export default memo(Header, areEqual);

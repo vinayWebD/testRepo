@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { memo, useState } from 'react';
 import RemoveIcon from './Icons/RemoveIcon';
 import Modal from './Modal';
 import CreatePostMediaPreview from './CreatePost/CreatePostMediaPreview';
@@ -210,8 +210,6 @@ const MediaLayout = ({
   );
 };
 
-export default MediaLayout;
-
 const MediaItem = ({
   url = '',
   path = '',
@@ -288,3 +286,11 @@ const MediaItem = ({
     );
   }
 };
+
+// Custom comparison function
+const areEqual = (prevProps, nextProps) => {
+  // If the media prop hasn't changed, don't re-render
+  return prevProps.media.length === nextProps.media.length;
+};
+
+export default memo(MediaLayout, areEqual);

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import CaptionLinkContainer from './CaptionLinkContainer';
 import ActionButtons from './ActionButtons';
@@ -16,13 +16,29 @@ var settings = {
   slidesToScroll: 1,
 };
 
-const PostDetails = ({ post = {} }) => {
+const PostDetails = ({ post = {}, reloadPostDetails = () => {} }) => {
   const [sliderRef, setSliderRef] = useState(null);
+
+  useEffect(() => {
+    if (post?.post_id) {
+      reloadPostDetails({ postId: post?.post_id });
+    }
+  }, [post?.post_id]);
+
+  const postHeader = useMemo(() => {
+    return (
+      <Header
+        createdAt={post?.created_at}
+        creatorName={post?.created_by}
+        creatorProfilePicUrl={post?.profile_image_url}
+      />
+    );
+  }, []);
 
   return (
     <div className="post-details flex  min-h-[65vh] max-h-[75vh]">
       <div className="w-[65%] relative">
-        <Slider {...settings} ref={setSliderRef}>
+        <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
             return (
               <div className="w-full !flex justify-center items-center outline-0" key={_i}>
@@ -71,11 +87,7 @@ const PostDetails = ({ post = {} }) => {
       </div>
 
       <div className="w-[35%] flex flex-col py-5 px-2 overflow-y-auto">
-        <Header
-          createdAt={post?.created_at}
-          creatorName={post?.created_by}
-          creatorProfilePicUrl={post?.profile_image_url}
-        />
+        {postHeader}
         <CaptionLinkContainer caption={post?.caption} links={post?.links} />
 
         <div className="!text-sm">
@@ -86,6 +98,8 @@ const PostDetails = ({ post = {} }) => {
             isLikedByMe={post?.is_liked_by_me}
             className="gap-[7%]"
             isCommentSectionOpenDefault={true}
+            postId={post?.post_id}
+            reloadPostDetails={reloadPostDetails}
           />
         </div>
       </div>
