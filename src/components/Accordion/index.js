@@ -2,12 +2,13 @@ import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 
-const AccordionItem = ({ title, children, icon }) => {
+const AccordionItem = ({ title, children, icon, disabled }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <div className={`bg-white mb-4 ${isOpen ? 'accordion-open' : ''}`}>
       <button
+        disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left py-[17px] px-[24px] focus:outline-none focus:bg-gray-200 flex items-center justify-between"
       >
@@ -35,11 +36,11 @@ const AccordionItem = ({ title, children, icon }) => {
     </div>
   );
 };
-const Accordion = ({ items }) => {
+const Accordion = ({ items, disabled }) => {
   return (
     <div>
       {items.map((item, index) => (
-        <AccordionItem key={index} title={item.title} icon={item.icon}>
+        <AccordionItem key={index} title={item.title} icon={item.icon} disabled={disabled}>
           {item.content}
         </AccordionItem>
       ))}

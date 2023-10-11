@@ -1,3 +1,4 @@
+import { useFormik } from 'formik';
 import { useRef, useState } from 'react';
 // import Accordion from '../../components/Accordion';
 import BlueDivider from '../../components/common/BlueDivider';
@@ -12,6 +13,8 @@ import { UploadIcon } from '../../components/Icons/UploadIcon';
 // import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
+import { fetchWorkInterest } from '../../services/signup';
+import { validationSchemaInterest } from '../../validations';
 // import { CertificateContent } from './CertificateContent';
 // import { EducationContent } from './EducationContent';
 // import { ExperienceContent } from './ExperienceContent';
@@ -22,6 +25,32 @@ export function InterestsTabContent() {
   const [career, setCareer] = useState('');
   // const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
+
+  const initialWork = {
+    interest: '',
+  };
+
+  const interestSubmit = async () => {
+    let dataToSend = {
+      work: '',
+      interest: 'formikWork.values.interest',
+    };
+
+    await fetchWorkInterest(dataToSend);
+  };
+
+  const formikInterest = useFormik({
+    initialValues: initialWork,
+    validationSchema: validationSchemaInterest,
+    onSubmit: interestSubmit,
+  });
+
+  const {
+    values: { interest = '' },
+    touched: { title: tuc_interest },
+    errors: { title: err_interest },
+  } = formikInterest;
+
   return (
     <div className="py-[36px] px-[70px] bg-bluebg">
       <div className="tab-content-title">So far so good. Let’s talk about your Interests</div>
@@ -30,7 +59,15 @@ export function InterestsTabContent() {
       <div className="flex items-center mt-8 mb-5">
         <div className="w-[170px] form-title">About Interests</div>
         <div className="grow">
-          <TextArea height="h-[160px]" placeholder="Enter Description" />
+          <TextArea
+            height="h-[160px]"
+            placeholder="Enter Description"
+            value={interest}
+            onChange={(e) => formikInterest.setFieldValue('interest', e.target.value)}
+            onBlur={interestSubmit}
+            error={tuc_interest && err_interest}
+            helperText={tuc_interest && err_interest}
+          />
         </div>
       </div>
       <div className="mb-8 flex justify-between">

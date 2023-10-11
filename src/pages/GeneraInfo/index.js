@@ -20,7 +20,7 @@ import {
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 
-const { HOME, PATH_SIGNUP } = PATHS;
+const { HOME, PATH_SIGNUP, PATH_WORK } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
@@ -61,9 +61,11 @@ function GeneralInfo() {
   };
 
   const handleSkip = () => {
-    dispatch(login(userData));
+    // dispatch(login(userData));
     secureLocalStorage.removeItem('object');
-    navigate(HOME, { replace: true });
+    // navigate(HOME, { replace: true });
+    console.log(HOME);
+    navigate(PATH_WORK, { replace: true });
   };
 
   useEffect(() => {
@@ -99,7 +101,7 @@ function GeneralInfo() {
     if (successStatus(status)) {
       ToastNotifySuccess('General Info added Successfully', 'location-success');
       dispatch(login(userData));
-      navigate(HOME, { replace: true });
+      // navigate(HOME, { replace: true });
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, 'location-failed');
