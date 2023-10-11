@@ -229,12 +229,14 @@ const CreatePostLayout = ({
           )}
 
           {media.length ? (
-            <MediaLayout
-              media={media}
-              forcedPreview={openForcedPreview}
-              updateMedia={setMedia}
-              allowOnlyView={false}
-            />
+            <div className="border border-greymedium rounded-lg p-2">
+              <MediaLayout
+                media={media}
+                forcedPreview={openForcedPreview}
+                updateMedia={setMedia}
+                allowOnlyView={false}
+              />
+            </div>
           ) : (
             ''
           )}

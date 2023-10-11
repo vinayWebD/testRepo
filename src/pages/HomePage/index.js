@@ -203,6 +203,7 @@ const HomePage = () => {
         title={'Create a Post'}
         childrenClassNames="overflow-y-auto"
         padding="p-0"
+        titleClassNames=""
       >
         <CreatePostLayout
           closePopupHandler={() => {
@@ -221,6 +222,7 @@ const HomePage = () => {
         width="!w-[75vw]"
         childrenClassNames=""
         padding="!p-0"
+        titleClassNames=""
       >
         <PostDetails post={activePost} reloadPostDetails={fetchSinglePostDetails} />
       </Modal>

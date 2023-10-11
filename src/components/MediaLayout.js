@@ -44,6 +44,7 @@ const MediaLayout = ({
         title={'Create Post'}
         width="!w-[75vw]"
         childrenClassNames=""
+        titleClassNames=""
       >
         <div className="m-auto pt-4">
           <CreatePostMediaPreview
