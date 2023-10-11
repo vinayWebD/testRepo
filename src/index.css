@@ -274,3 +274,7 @@
   max-height: 100%;
   object-fit: contain;
 }
+
+.blue-white-gradient {
+  background: linear-gradient(187deg, #0071bc, #74afca, #c0dbe7);
+}
