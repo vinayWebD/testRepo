@@ -133,6 +133,7 @@ const LANG = {
     },
     FEED: {
       LANG_WRITE_SOMETHING: 'Write something ...',
+      LANG_CREATE_POST: 'Create Post',
     },
     CREATE_POST: {
       LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',

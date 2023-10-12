@@ -44,9 +44,14 @@ const PrivateHeader = () => {
     },
   ];
 
+  const onClickLogoHandler = () => {
+    window.scrollTo(0, 0);
+    navigate(HOME);
+  };
+
   return (
     <div className="bg-darkblue py-[14px] h-[61px] flex px-[5%] justify-between items-center fixed top-0 w-full left-0 z-50">
-      <span onClick={() => navigate(HOME)} className="cursor-pointer">
+      <span onClick={() => onClickLogoHandler()} className="cursor-pointer">
         <HeaderLogoIcon />
       </span>
       <div className="flex gap-7 items-center">

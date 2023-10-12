@@ -4,6 +4,9 @@ import Modal from './Modal';
 import CreatePostMediaPreview from './CreatePost/CreatePostMediaPreview';
 import { getFileExtension } from '../utils/helper';
 import { POST_IMAGE_EXTENSIONS } from '../constants/constants';
+import { LANG } from '../constants/lang';
+
+const { LANG_CREATE_POST } = LANG.PAGES.FEED;
 
 const MediaLayout = ({
   media = [],
@@ -41,7 +44,7 @@ const MediaLayout = ({
         isOpen={isPreviewOpen}
         onClose={() => setIsPreviewOpen(false)}
         isTitle={true}
-        title={'Create Post'}
+        title={LANG_CREATE_POST}
         width="!w-[75vw]"
         childrenClassNames=""
         titleClassNames=""

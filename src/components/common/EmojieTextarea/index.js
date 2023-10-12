@@ -15,7 +15,14 @@ const EmojiTextarea = ({
   const emojieContainerRef = useRef(null);
 
   const onEmojiClick = (emojiObject) => {
-    handleChange((prevText) => prevText + emojiObject.emoji);
+    handleChange((prevText) => {
+      // We need to allow the input of emojies only when the max length of textarea has not reached
+      if (prevText.length + emojiObject.emoji?.length <= maxLength) {
+        return prevText + emojiObject.emoji;
+      } else {
+        return prevText;
+      }
+    });
   };
 
   useEffect(() => {
@@ -48,7 +55,9 @@ const EmojiTextarea = ({
         <EmojieIcon />
       </span>
 
-      <div className="absolute right-3 bottom-3 text-xs text-greylight">{value.length}/100</div>
+      <div className="absolute right-3 bottom-3 text-xs text-greylight">
+        {value.length}/{maxLength}
+      </div>
 
       {showEmojiPicker && (
         <div className="absolute top-11 right-2 z-[1000] max-h-[320px]" ref={emojieContainerRef}>

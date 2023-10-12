@@ -71,7 +71,7 @@ const CreatePostLayout = ({
   }, [openTypeOfPost]);
 
   const isPostButtonDisabled = () => {
-    return !POST_PATTERN.test(text);
+    return !POST_PATTERN.test(text) && !media?.length && !links.length;
   };
 
   /**
