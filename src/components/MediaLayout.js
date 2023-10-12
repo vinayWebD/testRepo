@@ -72,13 +72,13 @@ const MediaLayout = ({
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="object-cover w-full rounded-lg cursor-pointer hover:opacity-70"
+              className="object-cover w-full rounded-lg cursor-pointer"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
             <video
               src={media[0].url}
-              className="w-full rounded-lg cursor-pointer hover:opacity-70"
+              className="w-full rounded-lg cursor-pointer"
               controls={false}
               onClick={() => handleClick(customActiveIndex)}
             />
@@ -246,7 +246,7 @@ const MediaItem = ({
       <div className={`relative w-full media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'}`}>
         <video
           src={url}
-          className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer  hover:opacity-70`}
+          className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer`}
           controls={false}
           height={'100%'}
           onClick={() => onClick(index)}
@@ -273,7 +273,7 @@ const MediaItem = ({
         <img
           src={url}
           alt="media"
-          className={`w-full ${className} rounded-lg h-[100%] cursor-pointer hover:opacity-70`}
+          className={`w-full ${className} rounded-lg h-[100%] cursor-pointer`}
           onClick={() => onClick(index)}
         />
         {showMoreOverlay ? (

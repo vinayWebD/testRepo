@@ -21,6 +21,7 @@ import AddFriendIcon from '../../components/Icons/AddFriendIcon';
 import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 import { PAGE_SIZE } from '../../constants/constants';
 import SpinningLoader from '../../components/common/SpinningLoader';
+import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -37,6 +38,7 @@ const HomePage = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
   const loaderRef = useRef(null);
+  const hasUserScrolled = useWindowScrolledDown();
 
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
 
@@ -158,18 +160,22 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-            <div className="fixed bottom-2 right-[15%] md:right-[15%] z-20">
-              <button
-                type={'button'}
-                className={
-                  'w-16 h-6 rounded-lg text-white bg-blueprimary text-xs flex gap-1 justify-center items-center hover:opacity-70'
-                }
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                <span className="text-xs">Top</span>
-                <UpChevronFilled />
-              </button>
-            </div>
+            {hasUserScrolled ? (
+              <div className="fixed bottom-2 right-[15%] md:right-[15%] z-20">
+                <button
+                  type={'button'}
+                  className={
+                    'w-16 h-6 rounded-lg text-white bg-blueprimary text-xs flex gap-1 justify-center items-center hover:opacity-70'
+                  }
+                  onClick={() => window.scrollTo(0, 0)}
+                >
+                  <span className="text-xs">Top</span>
+                  <UpChevronFilled />
+                </button>
+              </div>
+            ) : (
+              ''
+            )}
           </Card>
 
           <div className="mt-3">
