@@ -1,16 +1,19 @@
 import { useFormik } from 'formik';
-import { useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { successStatus } from '../../common';
 import Accordion from '../../components/Accordion';
-import { SkillsChips } from '../../components/Chips';
+import { SkillsChips, SkillsChipsBlue } from '../../components/Chips';
 import BlueDivider from '../../components/common/BlueDivider';
 import { Button } from '../../components/common/Button';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import { BookIcon } from '../../components/Icons/BookIcon';
 import { CertificateIcon } from '../../components/Icons/CertificateIcon';
+import EditBlueIcon from '../../components/Icons/EditBlueIcon';
 import { ExperienceIcon } from '../../components/Icons/ExperienceIcon';
+import LinksIcon from '../../components/Icons/LinksIcon';
 import { MediaIcon } from '../../components/Icons/MediaIcon';
+import SkillsIcon from '../../components/Icons/SkillsIcon';
 import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
@@ -19,7 +22,9 @@ import {
   fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
+  fetchCareersList,
   fetchCareerTitle,
+  fetchUpdateCareer,
   fetchWorkInterest,
 } from '../../services/signup';
 import {
@@ -38,13 +43,30 @@ export function WorkTabContent() {
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
   const [careerId, setCareerId] = useState(null);
-  const [linksList, setLinksList] = useState(null);
-  const [skillsList, setSkillsList] = useState(null);
-  localStorage.setItem('token', 'Token 1409983f5786ca374b844874adb193b8168f9446');
+  const [linksList, setLinksList] = useState([]);
+  const [skillsList, setSkillsList] = useState([]);
+  const [careerList, setCareerList] = useState([]);
+  localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
+
+  const getCareerList = async () => {
+    const response = await fetchCareersList();
+    const {
+      status,
+      data: { results = [] },
+    } = response;
+    if (successStatus(status)) {
+      setCareerList(results);
+    }
+  };
+
+  useEffect(() => {
+    getCareerList();
+  }, []);
 
   const careerSubmit = async () => {
     // we will call this api in case only when there is no career id
     //  because of we are calling this function onblur
+
     if (!careerId) {
       let dataToSend = {
         title: title,
@@ -56,6 +78,18 @@ export function WorkTabContent() {
       } = response;
       if (successStatus(status)) {
         setCareerId(career_id);
+      }
+    } else {
+      let dataToUpdate = {
+        postData: {
+          title: title,
+        },
+        id: careerId,
+      };
+      const response = await fetchUpdateCareer(dataToUpdate);
+      const { status } = response;
+      if (successStatus(status)) {
+        getCareerList();
       }
     }
   };
@@ -147,7 +181,6 @@ export function WorkTabContent() {
     const { status } = response;
     if (successStatus(status)) {
       getLinksList();
-      console.log('linksadd');
     }
   };
   const formikLinks = useFormik({
@@ -177,7 +210,6 @@ export function WorkTabContent() {
     const { status } = response;
     if (successStatus(status)) {
       getSkillsList();
-      console.log('linksadd');
     }
   };
 
@@ -192,8 +224,6 @@ export function WorkTabContent() {
     touched: { domain: tuc_name },
     errors: { domain: err_name },
   } = formikSkills;
-
-  console.log('linksList', linksList, 'skillsList', skillsList);
 
   return (
     <div className="py-[36px] px-[70px] bg-bluebg">
@@ -222,6 +252,7 @@ export function WorkTabContent() {
             <BlueDivider />
           </div>
           <OutlinedButton
+            disabled={!careerList.length}
             label="Add Career"
             Icon={<AddBlueIcon />}
             IconDisabled={<AddBlueIcon fill="#D1D1D1" />}
@@ -272,6 +303,49 @@ export function WorkTabContent() {
               },
             ]}
           />
+          {linksList.length > 0 && (
+            <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <span className="mr-4">
+                    <LinksIcon />
+                  </span>
+                  <span className="form-title-blue">Links</span>
+                </div>
+                <span onClick={() => setIsLinksModalOpen(true)}>
+                  <EditBlueIcon />
+                </span>
+              </div>
+              <div className="flex gap-[24px] grow-0 mt-6">
+                {linksList.map((links, idx) => (
+                  <div key={idx}>
+                    <div className="detail-label">{links.domain}</div>
+                    <div className="detail-heading">{links.url}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {skillsList.length > 0 && (
+            <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <span className="mr-4">
+                    <SkillsIcon />
+                  </span>
+                  <span className="form-title-blue">Skills</span>
+                </div>
+                <span onClick={() => setIsSkillModalOpen(true)}>
+                  <EditBlueIcon />
+                </span>
+              </div>
+              <div className="flex gap-[24px] grow-0 mt-6">
+                {skillsList &&
+                  skillsList.map(({ name }, idx) => <SkillsChipsBlue label={name} key={idx} />)}
+              </div>
+            </div>
+          )}
+
           <div className="mt-[36px] flex justify-between flex-wrap">
             <div className="flex gap-4 flex-wrap">
               <div>

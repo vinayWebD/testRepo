@@ -12,6 +12,11 @@ const NETWORK_CONSTANTS = {
   CREATE_POST: '/v1/feeds/posts/',
   CARRERS: '/v1/accounts/careers/',
   ABOUT: '/v1/accounts/about/',
+  EXPERIENCES: '/v1/accounts/experiences/',
+  EDUCATION: '/v1/accounts/educations/',
+  CERTIFICATE: '/v1/accounts/certificates/',
+  LINKS: '/v1/accounts/links/',
+  SKILLS: '/v1/accounts/skills/',
 };
 
 export default NETWORK_CONSTANTS;

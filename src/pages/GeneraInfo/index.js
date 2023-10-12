@@ -20,7 +20,7 @@ import {
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 
-const { HOME, PATH_SIGNUP, PATH_WORK } = PATHS;
+const { PATH_SIGNUP, PATH_WORK } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
@@ -61,10 +61,7 @@ function GeneralInfo() {
   };
 
   const handleSkip = () => {
-    // dispatch(login(userData));
     secureLocalStorage.removeItem('object');
-    // navigate(HOME, { replace: true });
-    console.log(HOME);
     navigate(PATH_WORK, { replace: true });
   };
 

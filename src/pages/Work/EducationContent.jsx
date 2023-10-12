@@ -8,12 +8,26 @@ import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
-import { fetchCareerEducation, fetchCareerEducationList } from '../../services/signup';
+import {
+  fetchCareerEducation,
+  fetchCareerEducationList,
+  fetchEducationSingle,
+} from '../../services/signup';
 import { validationSchemaEducation } from '../../validations';
+import EditBlueIcon from '../../components/Icons/EditBlueIcon';
 
 export function EducationContent({ careerId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [educationList, setEducationList] = useState([]);
+  const [editId, setEditId] = useState(null);
+
+  const getEducation = async () => {
+    const response = await fetchEducationSingle(editId);
+    const { status, data = {} } = response;
+    if (successStatus(status)) {
+      console.log(data);
+    }
+  };
 
   const getEducationsList = async () => {
     const response = await fetchCareerEducationList(careerId);
@@ -25,6 +39,9 @@ export function EducationContent({ careerId }) {
       setEducationList(results);
     }
   };
+  useEffect(() => {
+    getEducation();
+  }, [editId]);
 
   useEffect(() => {
     getEducationsList();
@@ -42,9 +59,14 @@ export function EducationContent({ careerId }) {
         field_of_study: field_of_study,
         other: other,
       },
-      id: careerId,
+      id: editId ? editId : careerId,
     };
-    const response = await fetchCareerEducation(dataToSend);
+    let response;
+    if (editId) {
+      response = await fetchCareerEducation(dataToSend);
+    } else {
+      response = await fetchCareerEducation(dataToSend);
+    }
     const { status } = response;
     if (successStatus(status)) {
       formik.resetForm();
@@ -101,7 +123,7 @@ export function EducationContent({ careerId }) {
       return educationList.map((data, idx) => (
         <Fragment key={idx}>
           <div>
-            <div className="pr-[48px] flex justify-between">
+            <div className="pr-[64px] flex justify-between relative">
               <div className="pb-[24px] ">
                 <div className="detail-label">School/College/University</div>
                 <div className="detail-heading">{data.school}</div>
@@ -120,6 +142,9 @@ export function EducationContent({ careerId }) {
                   <div className="detail-heading">{moment(data?.end_date).format('ll')}</div>
                 </div>
               </div>
+              <span className="absolute right-[0] top-[50%] cursor-pointer">
+                <EditBlueIcon />
+              </span>
             </div>
             <div className="flex justify-between">
               <div className="pb-[24px]">
@@ -140,9 +165,12 @@ export function EducationContent({ careerId }) {
           </div>
           <Modal
             isTitle={true}
-            title="Edit Education"
+            title={editId ? 'Edit Education' : 'Add Education'}
             isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            onClose={() => {
+              setEditId(data?.education_id);
+              setIsModalOpen(true);
+            }}
             width="max-w-[472px]"
             padding={0}
           >

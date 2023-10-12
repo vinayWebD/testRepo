@@ -1,29 +1,18 @@
 import { useFormik } from 'formik';
 import { useRef, useState } from 'react';
-// import Accordion from '../../components/Accordion';
 import BlueDivider from '../../components/common/BlueDivider';
 import { Button } from '../../components/common/Button';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import { UploadIcon } from '../../components/Icons/UploadIcon';
-// import { BookIcon } from '../../components/Icons/BookIcon';
-// import { CertificateIcon } from '../../components/Icons/CertificateIcon';
-// import { ExperienceIcon } from '../../components/Icons/ExperienceIcon';
-// import { MediaIcon } from '../../components/Icons/MediaIcon';
-// import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { fetchWorkInterest } from '../../services/signup';
 import { validationSchemaInterest } from '../../validations';
-// import { CertificateContent } from './CertificateContent';
-// import { EducationContent } from './EducationContent';
-// import { ExperienceContent } from './ExperienceContent';
-// import { MediaContent } from './MediaContent';
 
 export function InterestsTabContent() {
   const ref = useRef();
   const [career, setCareer] = useState('');
-  // const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
 
   const initialWork = {

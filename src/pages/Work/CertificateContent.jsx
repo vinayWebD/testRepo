@@ -4,17 +4,36 @@ import { successStatus } from '../../common';
 import { Button } from '../../components/common/Button';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
+import EditBlueIcon from '../../components/Icons/EditBlueIcon';
 import { UploadIcon } from '../../components/Icons/UploadIcon';
 import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
-import { fetchCareerCertificate, fetchCareerCertificateList } from '../../services/signup';
+import {
+  fetchCareerCertificate,
+  fetchCareerCertificateList,
+  fetchCareerCertificateSingle,
+  fetchUpdateCertificate,
+} from '../../services/signup';
 import { validationSchemaCertificate } from '../../validations';
 
 export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [certifacresList, setcertifacresList] = useState([]);
+  const [editId, setEditId] = useState(null);
 
-  const getcertifacressList = async () => {
+  const getCertificate = async () => {
+    const response = await fetchCareerCertificateSingle(careerId);
+    const { status, data = {} } = response;
+    if (successStatus(status)) {
+      console.log(data);
+    }
+  };
+
+  useEffect(() => {
+    getCertificate();
+  }, [editId]);
+
+  const getCertificatesList = async () => {
     const response = await fetchCareerCertificateList(careerId);
     const {
       status,
@@ -26,8 +45,8 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
   };
 
   useEffect(() => {
-    getcertifacressList();
-  }, []);
+    getCertificatesList();
+  }, [editId]);
 
   const certificateSubmit = async (values) => {
     const { title, year, institution } = values;
@@ -38,13 +57,18 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
         year: year,
         institution: institution,
       },
-      id: careerId,
+      id: editId ? editId : careerId,
     };
-    const response = await fetchCareerCertificate(dataToSend);
+    let response;
+    if (editId) {
+      response = await fetchUpdateCertificate(dataToSend);
+    } else {
+      response = await fetchCareerCertificate(dataToSend);
+    }
     const { status } = response;
     if (successStatus(status)) {
       setIsModalOpen(false);
-      getcertifacressList();
+      getCertificatesList();
       formik.resetForm();
     }
   };
@@ -73,7 +97,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
       return certifacresList.map((data, idx) => (
         <Fragment key={idx}>
           <div>
-            <div className="pr-[48px] flex justify-between">
+            <div className="pr-[64px] flex justify-between relative">
               <div className="pb-[24px] ">
                 <div className="detail-label">Title</div>
                 <div className="detail-heading">{data.title}</div>
@@ -87,6 +111,15 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
                 <div className="detail-heading">{data?.year}</div>
               </div>
               <div></div>
+              <span
+                className="absolute right-[0] top-[50%] cursor-pointer"
+                onClick={() => {
+                  setIsModalOpen(true);
+                  setEditId(data?.certificate_id);
+                }}
+              >
+                <EditBlueIcon />
+              </span>
             </div>
             <div className="py-[24px]">
               <div className="bg-greymedium h-[1px] w-full" />
@@ -94,9 +127,12 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
           </div>
           <Modal
             isTitle={true}
-            title="Edit Education"
+            title={editId ? 'Edit Certificate' : 'Add Certificate'}
             isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
+            onClose={() => {
+              setEditId(null);
+              setIsModalOpen(false);
+            }}
             width="max-w-[472px]"
             padding={0}
           >
@@ -104,6 +140,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
               <div className="px-6">
                 <div className="pb-6">
                   <InputBox
+                    name="title"
                     label="Title"
                     placeholder="Enter Title"
                     value={title}
@@ -114,6 +151,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
                 </div>
                 <div className="pb-6">
                   <InputBox
+                    name="institution"
                     label="Institution"
                     placeholder="Enter Institution"
                     value={institution}

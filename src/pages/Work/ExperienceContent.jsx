@@ -8,28 +8,43 @@ import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { validationSchemaExperience } from '../../validations';
-import { fetchCareerExperience, fetchCareerExperienceList } from '../../services/signup';
+import {
+  fetchCareerExperience,
+  fetchCareerExperienceList,
+  fetchExperienceSingle,
+  fetchUpdateExperience,
+} from '../../services/signup';
 import { successStatus } from '../../common';
-
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
+import EditBlueIcon from '../../components/Icons/EditBlueIcon';
 
 export function ExperienceContent({ careerId = null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [experienceList, setExperienceList] = useState([]);
+  const [editId, setEditId] = useState(null);
+
+  const getExperiences = async () => {
+    const response = await fetchExperienceSingle(editId);
+    const { status, data = {} } = response;
+    if (successStatus(status)) {
+      console.log(data);
+    }
+  };
 
   const getExperiencesList = async () => {
     const response = await fetchCareerExperienceList(careerId);
     const {
       status,
       data: { results = [] },
-      data = {},
     } = response;
-    console.log(results, 'results');
-    console.log(data, 'results');
     if (successStatus(status)) {
       setExperienceList(results);
     }
   };
+
+  useEffect(() => {
+    getExperiences();
+  }, [editId]);
 
   useEffect(() => {
     getExperiencesList();
@@ -44,11 +59,17 @@ export function ExperienceContent({ careerId = null }) {
         start_date: start_date,
         company: company,
       },
-      id: careerId,
+      id: editId ? editId : careerId,
     };
-    const response = await fetchCareerExperience(dataToSend);
+    let response;
+    if (editId) {
+      response = await fetchUpdateExperience(careerId);
+    } else {
+      response = await fetchCareerExperience(dataToSend);
+    }
     const { status } = response;
     if (successStatus(status)) {
+      formik.resetForm();
       getExperiencesList();
     }
   };
@@ -91,7 +112,7 @@ export function ExperienceContent({ careerId = null }) {
       return experienceList.map((data, idx) => (
         <Fragment key={idx}>
           <div>
-            <div className="pr-[48px] flex justify-between">
+            <div className="pr-[64px] flex justify-between relative">
               <div className="pb-[24px]">
                 <div className="detail-label">Title</div>
                 <div className="detail-heading">{data.title}</div>
@@ -100,17 +121,25 @@ export function ExperienceContent({ careerId = null }) {
                 <div className="detail-label">Company</div>
                 <div className="detail-heading">{data.company}</div>
               </div>
-              <div className="flex justify-between gap-[36px]">
-                <div className="pb-[24px]">
-                  <div className="detail-label">Start Date</div>
-                  <div className="detail-heading">{moment(data?.start_date).format('ll')}</div>
-                </div>
-                <div className="pb-[24px]">
-                  <div className="detail-label"> End Date</div>
-                  <div className="detail-heading">{moment(data?.end_date).format('ll')}</div>
-                </div>
+              <div className="pb-[24px]">
+                <div className="detail-label">Start Date</div>
+                <div className="detail-heading">{moment(data?.start_date).format('ll')}</div>
               </div>
+              <div className="pb-[24px]">
+                <div className="detail-label"> End Date</div>
+                <div className="detail-heading">{moment(data?.end_date).format('ll')}</div>
+              </div>
+              <span
+                className="absolute right-[0] top-[50%] cursor-pointer"
+                onClick={() => {
+                  setIsModalOpen(true);
+                  setEditId(data?.experience_id);
+                }}
+              >
+                <EditBlueIcon />
+              </span>
             </div>
+
             <div>
               <div className="detail-label">Description</div>
               <div className="detail-heading">{data.description}</div>
@@ -121,7 +150,7 @@ export function ExperienceContent({ careerId = null }) {
           </div>
           <Modal
             isTitle={true}
-            title="Edit Education"
+            title={editId ? 'Edit Experience' : 'Edit Experience'}
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             width="max-w-[472px]"
@@ -131,6 +160,7 @@ export function ExperienceContent({ careerId = null }) {
               <div className="px-6">
                 <div className="pb-6">
                   <InputBox
+                    name="title"
                     label="Title"
                     placeholder="Enter Title"
                     className
@@ -142,6 +172,7 @@ export function ExperienceContent({ careerId = null }) {
                 </div>
                 <div className="pb-6">
                   <InputBox
+                    name="company"
                     label="Company Name"
                     placeholder="Enter Company Name"
                     value={company}
@@ -152,6 +183,7 @@ export function ExperienceContent({ careerId = null }) {
                 </div>
                 <div className="grid grid-cols-2 gap-4 pb-4">
                   <InputBox
+                    name="start_date"
                     type="date"
                     label="Start Date"
                     placeholder="Select Date"
@@ -161,6 +193,7 @@ export function ExperienceContent({ careerId = null }) {
                     helperText={tuc_start_date && err_start_date}
                   />
                   <InputBox
+                    name=""
                     type="date"
                     label="End Date"
                     placeholder="Select Date"
@@ -176,6 +209,7 @@ export function ExperienceContent({ careerId = null }) {
                 </div>
                 <div className="mb-4">
                   <TextArea
+                    name="description"
                     label="Description"
                     height="h-[230px]"
                     placeholder="Enter Description"

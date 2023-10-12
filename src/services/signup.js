@@ -1,6 +1,18 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
-const { SIGNUP, VERIFY_EMAIL, PRE_SIGNED_URL, PROFILE, CARRERS, ABOUT } = NETWORK_CONSTANTS;
+const {
+  SIGNUP,
+  VERIFY_EMAIL,
+  PRE_SIGNED_URL,
+  PROFILE,
+  CARRERS,
+  ABOUT,
+  CERTIFICATE,
+  EXPERIENCES,
+  EDUCATION,
+  // LINKS,
+  // SKILLS,
+} = NETWORK_CONSTANTS;
 
 /**
  * Function for API calling of signup user step 1
@@ -106,6 +118,36 @@ const fetchCareerExperience = async (dataTosend) => {
 };
 
 /**
+ * Function for API calling update experience
+ * @param {*} param
+ * @returns
+ */
+
+const fetchUpdateExperience = async (dataToSend) => {
+  const { postData, id } = dataToSend;
+  try {
+    const response = await apiUtility(`${EXPERIENCES}${id}/`, 'PATCH', postData);
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+/**
+ * Function for API calling get single experience
+ * @param {*} param
+ * @returns
+ */
+
+const fetchExperienceSingle = async (id) => {
+  try {
+    const response = await apiUtility(`${EXPERIENCES}${id}/`, 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
  * Function for API calling of add Education
  * @param {*} param
  * @returns
@@ -118,6 +160,21 @@ const fetchCareerEducation = async (dataTosend) => {
       'POST',
       dataTosend.data,
     );
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling get single experience
+ * @param {*} param
+ * @returns
+ */
+
+const fetchEducationSingle = async (id) => {
+  try {
+    const response = await apiUtility(`${EDUCATION}${id}/`, 'GET');
     return response;
   } catch (err) {
     return err;
@@ -184,12 +241,46 @@ const fetchCareerCertificateList = async (id) => {
     return err;
   }
 };
+
+/**
+ * Function for API calling of add Certificate
+ * @param {*} param
+ * @returns
+ */
+
+const fetchUpdateCertificate = async (dataTosend) => {
+  try {
+    const response = await apiUtility(
+      `${CERTIFICATE}${dataTosend?.id}/`,
+      'PATCH',
+      dataTosend?.data,
+    );
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling of get Certificate
+ * @param {*} param
+ * @returns
+ */
+
+const fetchCareerCertificateSingle = async (id) => {
+  try {
+    const response = await apiUtility(`${CERTIFICATE}${id}/`, 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 /**
  * Function for API calling of add Links
  * @param {*} param
  * @returns
  */
-
 const fetchCareerAddLinks = async (dataToSend) => {
   const { postData, id } = dataToSend;
   try {
@@ -214,6 +305,13 @@ const fetchCareerAddSkills = async (dataToSend) => {
     return err;
   }
 };
+
+/**
+ * Function for API calling of list of links
+ * @param {*} param
+ * @returns
+ */
+
 const fetchCareerLinkslist = async (id) => {
   try {
     const response = await apiUtility(`${CARRERS}${id}/links/`, 'GET');
@@ -223,7 +321,7 @@ const fetchCareerLinkslist = async (id) => {
   }
 };
 /**
- * Function for API calling of add Skills
+ * Function for API calling of list of Links
  * @param {*} param
  * @returns
  */
@@ -231,6 +329,37 @@ const fetchCareerLinkslist = async (id) => {
 const fetchCareerSkillslist = async (id) => {
   try {
     const response = await apiUtility(`${CARRERS}${id}/skills/`, 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling get list of careers
+ * @param {*} param
+ * @returns
+ */
+
+const fetchCareersList = async () => {
+  try {
+    const response = await apiUtility(CARRERS, 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling update career
+ * @param {*} param
+ * @returns
+ */
+
+const fetchUpdateCareer = async (dataToSend) => {
+  const { postData, id } = dataToSend;
+  try {
+    const response = await apiUtility(`${CARRERS}${id}/`, 'PATCH', postData);
     return response;
   } catch (err) {
     return err;
@@ -255,4 +384,11 @@ export {
   fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
+  fetchCareersList,
+  fetchUpdateCareer,
+  fetchUpdateCertificate,
+  fetchCareerCertificateSingle,
+  fetchUpdateExperience,
+  fetchExperienceSingle,
+  fetchEducationSingle,
 };
