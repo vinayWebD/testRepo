@@ -19,6 +19,7 @@ import Loader from '../../components/common/Loader';
 import MediaLayout from '../../components/MediaLayout';
 import PostDetails from '../../components/Post/PostDetails';
 import AddFriendIcon from '../../components/Icons/AddFriendIcon';
+import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -116,6 +117,18 @@ const HomePage = () => {
                   <LinkIcon /> <p>{BTNLBL_LINK}</p>
                 </div>
               </div>
+            </div>
+            <div className="fixed bottom-2 right-[15%] md:right-[15%] z-20">
+              <button
+                type={'button'}
+                className={
+                  'w-16 h-6 rounded-lg text-white bg-blueprimary text-xs flex gap-1 justify-center items-center hover:opacity-70'
+                }
+                onClick={() => window.scrollTo(0, 0)}
+              >
+                <span className="text-xs">Top</span>
+                <UpChevronFilled />
+              </button>
             </div>
           </Card>
 

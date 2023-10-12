@@ -9,8 +9,11 @@ import DownCaret from '../Icons/DownCaret';
 import { logoutDispatcher } from '../../redux/dispatchers/authDispatcher';
 import { DROPDOWN_OPTION_LABELS } from '../../constants/lang';
 import AddFriendIcon from '../Icons/AddFriendIcon';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
+const { HOME } = PATHS;
 
 const DropDownParent = ({ userData = {} }) => {
   const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
@@ -26,6 +29,7 @@ const DropDownParent = ({ userData = {} }) => {
 const PrivateHeader = () => {
   const deviceType = useDeviceType();
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { searchValue = '' } = useSelector((state) => state?.appSearch || {});
   const userData = useSelector((state) => state?.auth?.user) || {};
 
@@ -42,7 +46,9 @@ const PrivateHeader = () => {
 
   return (
     <div className="bg-darkblue py-[14px] h-[61px] flex px-[5%] justify-between items-center fixed top-0 w-full left-0 z-50">
-      <HeaderLogoIcon />
+      <span onClick={() => navigate(HOME)} className="cursor-pointer">
+        <HeaderLogoIcon />
+      </span>
       <div className="flex gap-7 items-center">
         {
           // Hide the search input bar on mobile
