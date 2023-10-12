@@ -29,7 +29,7 @@ const CaptionLinkContainer = ({ caption = '', links = [] }) => {
         )}
       </p>
 
-      {links.map((link, i) => (
+      {links?.map((link, i) => (
         <a
           href="https://www.purdriven.com/feed/?trk=homepage-basic_sign-in-submit"
           className="text-sm text-[#70baff] font-semibold"

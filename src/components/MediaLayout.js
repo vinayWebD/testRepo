@@ -21,7 +21,7 @@ const MediaLayout = ({
   const handleClick = (currentIndex) => {
     // If the user is coming from any other origin that create or edit post, then we can perform the onMediaClickHandler() fn
     if (origin !== 'create-edit-post') {
-      onMediaClickHandler();
+      onMediaClickHandler(currentIndex);
     } else {
       // If user is creating or editing post, then we need to open the preview of each media
       setCustomActiveIndex(currentIndex);

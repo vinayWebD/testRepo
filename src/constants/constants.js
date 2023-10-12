@@ -37,3 +37,7 @@ export const POST_VIDEO_TYPES = [
 
 export const POST_IMAGE_EXTENSIONS = ['heif', 'heic', 'png', 'jpeg', 'png', 'jpg'];
 export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quicktime'];
+
+export const PAGE_SIZE = {
+  FEED: 20,
+};

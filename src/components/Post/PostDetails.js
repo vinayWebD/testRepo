@@ -8,16 +8,16 @@ import { getFileExtension } from '../../utils/helper';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
 
-var settings = {
-  dots: false,
-  infinite: true,
-  speed: 500,
-  slidesToShow: 1,
-  slidesToScroll: 1,
-};
-
-const PostDetails = ({ post = {}, reloadPostDetails = () => {} }) => {
+const PostDetails = ({ post = {}, reloadPostDetails = () => {}, customActiveIndex = 0 }) => {
   const [sliderRef, setSliderRef] = useState(null);
+  var settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    initialSlide: customActiveIndex,
+  };
 
   useEffect(() => {
     if (post?.post_id) {

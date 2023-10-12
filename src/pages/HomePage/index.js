@@ -6,7 +6,7 @@ import PhotoIcon from '../../components/Icons/PhotoIcon';
 import VideoIcon from '../../components/Icons/VideoIcon';
 import LinkIcon from '../../components/Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
 import { fetchPostDetails, fetchPosts } from '../../services/feed';
@@ -15,11 +15,12 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import Header from '../../components/Post/Header';
 import CaptionLinkContainer from '../../components/Post/CaptionLinkContainer';
 import ActionButtons from '../../components/Post/ActionButtons';
-import Loader from '../../components/common/Loader';
 import MediaLayout from '../../components/MediaLayout';
 import PostDetails from '../../components/Post/PostDetails';
 import AddFriendIcon from '../../components/Icons/AddFriendIcon';
 import UpChevronFilled from '../../components/Icons/UpChevronFilled';
+import { PAGE_SIZE } from '../../constants/constants';
+import SpinningLoader from '../../components/common/SpinningLoader';
 
 const { LANG_WRITE_SOMETHING } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -32,19 +33,49 @@ const HomePage = () => {
   const [posts, setPosts] = useState([]);
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [allPostsLoaded, setAllPostsLoaded] = useState(false);
+  const loaderRef = useRef(null);
+
+  const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
+
+  // This is for the infinite scroll pagination
+  useEffect(() => {
+    const observer = new IntersectionObserver(handleObserver, {
+      root: null,
+      rootMargin: '20px',
+      threshold: 1.0,
+    });
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, [loaderRef, posts]);
+
+  const handleObserver = (entities) => {
+    const target = entities[0];
+    if (target.isIntersecting) {
+      setCurrentPage((prevPage) => prevPage + 1);
+      fetchAllPosts();
+    }
+  };
 
   const handleOpenPopup = (type) => {
     setTypeOfPost(type);
     setIsCreatePostModalOpen(true);
   };
 
-  useEffect(() => {
-    fetchAllPosts();
-  }, []);
-
   const fetchAllPosts = async () => {
+    if (allPostsLoaded) return; // prevent fetching if all posts are loaded
+
     setIsLoading(true);
-    const response = await fetchPosts({ page: 1 });
+    const response = await fetchPosts({ page: currentPage });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -52,7 +83,16 @@ const HomePage = () => {
     if (!successStatus(status) && errormsg) {
       ToastNotifyError(errormsg, '');
     } else {
-      setPosts(data?.results);
+      if (data?.results?.length < FEED_PAGE_SIZE) {
+        setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
+      } else {
+        if (currentPage === 1) {
+          // For the first time we just need to set the data as is
+          setPosts(data.results);
+        } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
+          setPosts((prevPosts) => [...prevPosts, ...data.results]);
+        }
+      }
     }
   };
 
@@ -61,7 +101,7 @@ const HomePage = () => {
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
-    if (!successStatus(status) && errormsg) {
+    if (!successStatus(status)) {
       ToastNotifyError(errormsg, '');
     } else {
       const allPosts = posts.map((post) => {
@@ -147,9 +187,10 @@ const HomePage = () => {
                       media={post?.media}
                       allowOnlyView={true}
                       origin="feed"
-                      onMediaClickHandler={() => {
+                      onMediaClickHandler={(customIndex) => {
                         setIsPreviewDetailsPostOpen(true);
                         setActivePost({ ...post });
+                        setActiveMediaIndex(customIndex);
                       }}
                     />
                   </div>
@@ -166,7 +207,17 @@ const HomePage = () => {
               );
             })}
 
-            {isLoading && <Loader />}
+            {!allPostsLoaded && (
+              <div ref={loaderRef} className="loading-more-indicator">
+                {isLoading && (
+                  <span className="flex gap-2">
+                    <span className="flex gap-2 w-full justify-center items-center">
+                      Loading... <SpinningLoader />
+                    </span>
+                  </span>
+                )}
+              </div>
+            )}
           </div>
         </div>
 
@@ -237,7 +288,11 @@ const HomePage = () => {
         padding="!p-0"
         titleClassNames=""
       >
-        <PostDetails post={activePost} reloadPostDetails={fetchSinglePostDetails} />
+        <PostDetails
+          post={activePost}
+          reloadPostDetails={fetchSinglePostDetails}
+          customActiveIndex={activeMediaIndex}
+        />
       </Modal>
     </PrivateLayout>
   );

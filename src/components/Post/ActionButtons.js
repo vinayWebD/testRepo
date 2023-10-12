@@ -5,8 +5,7 @@ import LikeEmptyIcon from '../Icons/LikeEmptyIcon';
 import LikeFilledIcon from '../Icons/LikeFilledIcon';
 import CommentInput from './CommentInput';
 import { likePost, unlikePost } from '../../services/feed';
-import { getErrorMessage, successStatus } from '../../common';
-import { ToastNotifyError } from '../Toast/ToastNotify';
+import { successStatus } from '../../common';
 
 const ActionButtons = ({
   isLikedByMe = false,
@@ -37,21 +36,14 @@ const ActionButtons = ({
 
     if (_isLikedByMe) {
       _setIsLikeCount((prev) => prev - 1);
-    } else {
-      _setIsLikeCount((prev) => prev + 1);
-    }
-
-    if (isLikedByMe) {
       response = await unlikePost({ postId });
     } else {
+      _setIsLikeCount((prev) => prev + 1);
       response = await likePost({ postId });
     }
 
-    const { status, data } = response;
-    const errormsg = getErrorMessage(data);
-    if (!successStatus(status) && errormsg) {
-      ToastNotifyError(errormsg, 'like-unlike-post-failed');
-    } else {
+    const { status } = response;
+    if (successStatus(status)) {
       await reloadPostDetails({ postId });
     }
   };
@@ -65,7 +57,7 @@ const ActionButtons = ({
         >
           {_isLikedByMe ? <LikeFilledIcon /> : <LikeEmptyIcon />}
           <p className="text-16 font-bold text-greylight">
-            {_likeCount} {likeCount === 1 ? 'Like' : 'Likes'}
+            {_likeCount} {_likeCount === 1 ? 'Like' : 'Likes'}
           </p>
         </div>
 
