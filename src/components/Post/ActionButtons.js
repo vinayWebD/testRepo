@@ -50,14 +50,14 @@ const ActionButtons = ({
 
   return (
     <>
-      <div className={`flex w-full mt-7 ${className}`}>
+      <div className={`flex w-full mb-2 mt-7 ${className}`}>
         <div
           className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70"
           onClick={likeOrUnlikeClickHandler}
         >
           {_isLikedByMe ? <LikeFilledIcon /> : <LikeEmptyIcon />}
-          <p className="text-16 font-bold text-greylight">
-            {_likeCount} {_likeCount === 1 ? 'Like' : 'Likes'}
+          <p className={`text-16 text-greylight ${_isLikedByMe ? 'font-bold' : ''}`}>
+            {_likeCount || undefined} {_likeCount <= 1 ? 'Like' : 'Likes'}
           </p>
         </div>
 
@@ -67,14 +67,14 @@ const ActionButtons = ({
         >
           <CommentIcon />
           <p className="text-16 text-greylight">
-            {commentCount} {commentCount === 1 ? 'Comment' : 'Comments'}
+            {commentCount || undefined} {commentCount <= 1 ? 'Comment' : 'Comments'}
           </p>
         </div>
 
         <div className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70">
           <ShareIcon />
           <p className="text-16 text-greylight">
-            {shareCount} {shareCount === 1 ? 'Share' : 'Shares'}
+            {shareCount || undefined} {shareCount <= 1 ? 'Share' : 'Shares'}
           </p>
         </div>
       </div>
