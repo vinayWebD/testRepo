@@ -5,7 +5,6 @@ import LinkIcon from '../Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { LIMITS, POST_IMAGE_TYPES, POST_VIDEO_TYPES, REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
-import Modal from '../Modal';
 import EmojiTextarea from '../common/EmojieTextarea';
 import { createPost } from '../../services/feed';
 import { getErrorMessage, successStatus } from '../../common';
@@ -15,19 +14,24 @@ import CreatePostLinkLayout from './CreatePostLinkLayout';
 import compressImage from '../../utils/compressImage';
 import { fetchFileUPloadAWS, fetchGenratePreSignedUrl } from '../../services/signup';
 import { getFileExtension } from '../../utils/helper';
-import OutlinedButton from '../common/OutlinedButton';
 import Loader from '../common/Loader';
+import { Button } from '../common/Button';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
-const { POST_PATTERN } = REGEX;
+const { POST_PATTERN, LINK_PATTERN } = REGEX;
 const { LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
 const {
   successToast: { TST_POST_CREATED_SUCCESSFULLY = '' },
-  errorToast: { TST_POST_UPLOAD_INVALID_MEDIA = '', TST_POST_MAX_ALLOWED_MEDIA = '' },
+  errorToast: {
+    TST_POST_UPLOAD_INVALID_MEDIA = '',
+    TST_POST_MAX_ALLOWED_MEDIA = '',
+    TST_INVALID_LINKS = '',
+  },
   toastid: {
     TST_POST_CREATED_SUCCESS_ID,
     TST_POST_CREATED_FAILED_ID,
     TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID,
+    TST_LINK_VALIDATION_FAILED_ID,
   },
 } = TOASTMESSAGES;
 
@@ -41,8 +45,9 @@ const CreatePostLayout = ({
 }) => {
   const [text, setText] = useState('');
   const [media, setMedia] = useState([]);
-  const [isLinkSectionOpen, setIsLinkSectionOpen] = useState(false);
+  const [isInputLinkOpen, setIsInputLinkOpen] = useState(false);
   const [links, setLinks] = useState([]);
+  const [linkInInput, setLinkInInput] = useState('');
   const [openFileBrowser, setOpenFileBrowser] = useState(0);
   const [openForcedPreview, setOpenForcedPreview] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +65,7 @@ const CreatePostLayout = ({
       if (['photo', 'video'].includes(openTypeOfPost)) {
         handleFileBrowser(openTypeOfPost);
       } else if (openTypeOfPost === 'link') {
-        setIsLinkSectionOpen(true);
+        setIsInputLinkOpen(true);
       }
     }
   }, [openTypeOfPost]);
@@ -165,7 +170,27 @@ const CreatePostLayout = ({
    */
   const savePostHandler = async () => {
     setIsLoading(true);
-    const response = await createPost({ caption: text, links, media });
+
+    let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
+    let allLinks = [...links];
+
+    // If there is anything typed in the input box and the plus button is not clicked, so we need to check
+    // if there is some value in it and if it's valid
+    if (link) {
+      if (!link.startsWith('https://')) {
+        link = `https://${link}`;
+      }
+
+      if (!LINK_PATTERN.test(link)) {
+        ToastNotifyError(TST_INVALID_LINKS, TST_LINK_VALIDATION_FAILED_ID);
+        setIsLoading(false);
+        return false;
+      } else {
+        allLinks = [link, ...allLinks];
+      }
+    }
+
+    const response = await createPost({ caption: text, links: allLinks, media });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -190,13 +215,28 @@ const CreatePostLayout = ({
             value={text}
             handleChange={(val) => setText(val)}
           />
-          {media.length ? (
-            <MediaLayout
-              media={media}
-              forcedPreview={openForcedPreview}
-              updateMedia={setMedia}
-              allowOnlyView={false}
+
+          {isInputLinkOpen ? (
+            <CreatePostLinkLayout
+              links={links}
+              setLinks={setLinks}
+              linkInInput={linkInInput}
+              setLinkInInput={setLinkInInput}
+              isInputLinkOpen={isInputLinkOpen}
             />
+          ) : (
+            ''
+          )}
+
+          {media.length ? (
+            <div className="border border-greymedium rounded-lg p-2">
+              <MediaLayout
+                media={media}
+                forcedPreview={openForcedPreview}
+                updateMedia={setMedia}
+                allowOnlyView={false}
+              />
+            </div>
           ) : (
             ''
           )}
@@ -226,33 +266,20 @@ const CreatePostLayout = ({
 
           <div
             className="flex gap-2 cursor-pointer hover:opacity-70"
-            onClick={() => setIsLinkSectionOpen(true)}
+            onClick={() => setIsInputLinkOpen(true)}
           >
             <LinkIcon /> <p>{BTNLBL_LINK}</p>
           </div>
         </div>
       </div>
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
-        <OutlinedButton
+        <Button
           label={'Post'}
-          disabled={isPostButtonDisabled()}
+          isDisabled={isPostButtonDisabled()}
           onClick={savePostHandler}
+          showArrowIcon={false}
         />
       </div>
-
-      <Modal
-        isOpen={isLinkSectionOpen}
-        onClose={() => setIsLinkSectionOpen(false)}
-        isTitle={true}
-        title={'Add Links'}
-        padding="p-0"
-      >
-        <CreatePostLinkLayout
-          links={links}
-          setLinks={setLinks}
-          closePopupHandler={() => setIsLinkSectionOpen(false)}
-        />
-      </Modal>
 
       {/* The below input field is for opening the Media Files Browser in the user's system */}
       <input

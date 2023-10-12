@@ -10,6 +10,7 @@ function Modal({
   width = 'max-w-[540px]',
   padding = 'px-6',
   childrenClassNames = 'md:max-h-5/6 max-h-[500px]',
+  titleClassNames = 'pl-[18px]',
 }) {
   if (!isOpen) return null;
 
@@ -24,7 +25,7 @@ function Modal({
       >
         {isTitle && (
           <div className="flex items-center justify-between p-[18px] bg-[#E9F6FF] sticky top-0 z-10">
-            <div className="pl-[18px] modal-title">{title}</div>
+            <div className={`modal-title ${titleClassNames}`}>{title}</div>
             <div onClick={onClose} className="cursor-pointer">
               <CloseIcon />
             </div>
