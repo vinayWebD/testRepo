@@ -20,6 +20,7 @@ module.exports = {
       lightblue: '#DEF2FF',
       lightbluebg: '#E9F6FF',
       deleteRed: '#E83E39',
+      iconBackground: '#0081CC0D'
     },
     extend: {
       fontFamily: {
@@ -31,6 +32,9 @@ module.exports = {
       borderColor: {
         customGray: 'rgba(161, 160, 160, 0.50)',
       },
+      height: {
+        screenHeight: 'cal(100vh - 300px)'
+      }
     },
   },
   plugins: [],
