@@ -70,7 +70,7 @@ const MediaLayout = ({
       return (
         <div
           key={media.path}
-          className="w-full rounded-lg relative border border-greylight flex justify-center items-center"
+          className="w-full rounded-lg relative border border-greymedium flex justify-center items-center"
         >
           {mediaType === 'photo' ? (
             <img
