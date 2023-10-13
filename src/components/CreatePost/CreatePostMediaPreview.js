@@ -5,9 +5,9 @@ import 'slick-carousel/slick/slick-theme.css';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
 import OutlinedButton from '../common/OutlinedButton';
-import BinIcon from '../Icons/BinIcon';
 import { POST_IMAGE_EXTENSIONS } from '../../constants/constants';
 import { getFileExtension } from '../../utils/helper';
+import RemoveIcon from '../Icons/RemoveIcon';
 
 const CreatePostMediaPreview = ({
   media = [],
@@ -49,7 +49,7 @@ const CreatePostMediaPreview = ({
                   className="absolute right-2 top-2"
                   onClick={() => removeMedia(customActiveIndex)}
                 >
-                  <BinIcon />
+                  <RemoveIcon />
                 </div>
               </div>
             );

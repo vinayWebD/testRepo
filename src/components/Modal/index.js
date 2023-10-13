@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { CloseIcon } from '../Icons/CloseIcon';
 
 function Modal({
@@ -12,6 +12,18 @@ function Modal({
   childrenClassNames = 'md:max-h-5/6 max-h-[500px]',
   titleClassNames = 'pl-[18px]',
 }) {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+    // Clean up
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   return (
