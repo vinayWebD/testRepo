@@ -68,17 +68,20 @@ const MediaLayout = ({
         : 'video';
 
       return (
-        <div key={media.path} className="w-full max-h-[400px] overflow-hidden rounded-lg relative">
+        <div
+          key={media.path}
+          className="w-full rounded-lg relative border border-greylight flex justify-center items-center"
+        >
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="object-cover w-full rounded-lg cursor-pointer"
+              className="cursor-pointer"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
             <video
               src={media[0].url}
-              className="w-full rounded-lg cursor-pointer"
+              className="w-full cursor-pointer"
               controls={false}
               onClick={() => handleClick(customActiveIndex)}
             />
@@ -208,7 +211,7 @@ const MediaLayout = ({
   };
 
   return (
-    <div className={`media-layout ${media.length !== 1 ? '' : ''} rounded-lg max-h-[400px]`}>
+    <div className={`media-layout ${media.length !== 1 ? ' max-h-[400px]' : ''} rounded-lg`}>
       {getMedia()}
     </div>
   );

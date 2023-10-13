@@ -17,11 +17,10 @@ import CaptionLinkContainer from '../../components/Post/CaptionLinkContainer';
 import ActionButtons from '../../components/Post/ActionButtons';
 import MediaLayout from '../../components/MediaLayout';
 import PostDetails from '../../components/Post/PostDetails';
-
 import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 import { PAGE_SIZE } from '../../constants/constants';
-import SpinningLoader from '../../components/common/SpinningLoader';
 import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
+import PostSkeleton from '../../components/common/PostSkeleton';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -47,7 +46,7 @@ const HomePage = () => {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: '20px',
-      threshold: 1.0,
+      threshold: 1,
     });
     if (loaderRef.current) {
       observer.observe(loaderRef.current);
@@ -62,9 +61,13 @@ const HomePage = () => {
 
   const handleObserver = (entities) => {
     const target = entities[0];
-    if (target.isIntersecting) {
+    console.log(target);
+
+    if (target.isIntersecting && target.intersectionRatio > 0.9) {
+      console.log('yes');
+
+      fetchAllPosts(currentPage);
       setCurrentPage((prevPage) => prevPage + 1);
-      fetchAllPosts();
     }
   };
 
@@ -73,11 +76,11 @@ const HomePage = () => {
     setIsCreatePostModalOpen(true);
   };
 
-  const fetchAllPosts = async () => {
+  const fetchAllPosts = async (page) => {
     if (allPostsLoaded) return; // prevent fetching if all posts are loaded
 
     setIsLoading(true);
-    const response = await fetchPosts({ page: currentPage });
+    const response = await fetchPosts({ page });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -88,7 +91,7 @@ const HomePage = () => {
       if (data?.results?.length < FEED_PAGE_SIZE) {
         setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
       } else {
-        if (currentPage === 1) {
+        if (page === 1) {
           // For the first time we just need to set the data as is
           setPosts(data.results);
         } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
@@ -161,7 +164,7 @@ const HomePage = () => {
               </div>
             </div>
             {hasUserScrolled ? (
-              <div className="fixed bottom-2 right-[15%] md:right-[15%] z-20">
+              <div className="fixed bottom-2 right-[22%] md:right-[22%] z-20">
                 <button
                   type={'button'}
                   className={
@@ -213,21 +216,28 @@ const HomePage = () => {
               );
             })}
 
+            {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
             {!allPostsLoaded && (
               <div ref={loaderRef} className="loading-more-indicator">
-                {isLoading && (
-                  <span className="flex gap-2">
-                    <span className="flex gap-2 w-full justify-center items-center">
-                      Loading... <SpinningLoader />
-                    </span>
-                  </span>
-                )}
+                <span className="flex gap-2">
+                  <span className="flex gap-2 w-full justify-center items-center"></span>
+                </span>
               </div>
             )}
+
+            {isLoading
+              ? ['', ''].map((i, _i) => (
+                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                    <span className="flex gap-2">
+                      <span className="flex gap-2 w-full justify-center items-center">
+                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                      </span>
+                    </span>
+                  </Card>
+                ))
+              : ''}
           </div>
         </div>
-
-
       </div>
 
       <Modal
