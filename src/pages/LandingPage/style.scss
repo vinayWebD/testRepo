@@ -97,6 +97,12 @@
     padding: 0 100px;
     min-height: 506px;
     background-image: url('../../assets/images/expansion_depth_potential 1.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; /* Center horizontally and vertically */
+    height: 900px; /* Adjust the desired height */
+    width: 100%; /* Ensure the container takes the full width */
+    padding-top: 7.5%;
     .heading {
       padding-top: 70px;
       color: #fff;
@@ -260,6 +266,22 @@
     font-style: normal;
     font-weight: 500;
     line-height: 24px;
+  }
+  @media screen and (max-width: 2500px) {
+    .work-section {
+      padding-top: 10%;
+    }
+  }
+  @media screen and (max-width: 2000px) {
+    .work-section {
+      padding-top: 11%;
+    }
+  }
+  @media screen and (max-width: 1800px) {
+    .work-section {
+      height: auto; /* Adjust the desired height */
+      padding-top: 0%;
+    }
   }
   @media screen and (max-width: 600px) {
     .join-section,
