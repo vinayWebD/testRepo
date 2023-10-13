@@ -252,7 +252,7 @@ export default function LandingPage() {
                 <span>
                   <MailIcon />
                 </span>
-                <span className>purdriven@gmail.com</span>
+                <span className>info@purdriven.com</span>
               </div>
             </div>
             <div>
