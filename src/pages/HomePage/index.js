@@ -17,7 +17,7 @@ import CaptionLinkContainer from '../../components/Post/CaptionLinkContainer';
 import ActionButtons from '../../components/Post/ActionButtons';
 import MediaLayout from '../../components/MediaLayout';
 import PostDetails from '../../components/Post/PostDetails';
-import AddFriendIcon from '../../components/Icons/AddFriendIcon';
+
 import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 import { PAGE_SIZE } from '../../constants/constants';
 import SpinningLoader from '../../components/common/SpinningLoader';
@@ -123,7 +123,7 @@ const HomePage = () => {
   return (
     <PrivateLayout>
       <div className="grid grid-cols-12 gap-5 feed-page">
-        <div className="col-span-9">
+        <div className="col-span-12">
           <Card classNames="p-5">
             <div className="">
               <div
@@ -227,43 +227,7 @@ const HomePage = () => {
           </div>
         </div>
 
-        <div className="col-span-3">
-          <Card>
-            <div className="rounded-t-lg flex flex-col gap-2 blue-white-gradient p-3 text-white">
-              <div className="flex items-center gap-2">
-                <AddFriendIcon />
-                <p className="font-semibold text-xl">Invite People</p>
-              </div>
-              <p className="text-sm">Lorem ipsum dolor sit amet consectetur.</p>
-            </div>
-            <div className="p-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70">
-              Invite Now
-            </div>
-          </Card>
 
-          <Card classNames="p-3 mt-[14px]">
-            <p className="font-semibold text-base">Notification</p>
-
-            <div className="border-b border-[#DFDFDF] mt-1 py-2">
-              <p className="greydark text-sm">Lorem ipsum dolor sit amet consectetur.</p>
-              <p className="text-greymedium text-xs">2 Hours ago</p>
-            </div>
-            <div className="border-b border-[#DFDFDF] mt-1 py-2">
-              <p className="greydark text-sm">
-                Lorem ipsum dolor sit amet consectetur.Lorem ipsum dolor sit amet consectetur.
-              </p>
-              <p className="text-greymedium text-xs">2 Hours ago</p>
-            </div>
-            <div className="border-b border-[#DFDFDF] mt-1 py-2">
-              <p className="greydark text-sm">Lorem ipsum dolor sit amet consectetur.</p>
-              <p className="text-greymedium text-xs">2 Hours ago</p>
-            </div>
-
-            <div className="pt-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70">
-              View All
-            </div>
-          </Card>
-        </div>
       </div>
 
       <Modal
