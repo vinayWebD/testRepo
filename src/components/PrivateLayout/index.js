@@ -4,7 +4,7 @@ import Background from '../../assets/images/private-background.svg';
 import ProfileContainer from './ProfileContainer';
 import LeftNavigation from './LeftNavigation';
 import Card from '../common/Card';
-
+import NotificationSection from '../../pages/HomePage/NotificationSection';
 /**
  * This component is the layout for the authenticated pages
  * @param {*} param0
@@ -31,8 +31,11 @@ const PrivateLayout = ({ children }) => {
               <LeftNavigation />
             </Card>
           </div>
-          <div className="col-span-10 md:col-span-11 lg:col-span-9 overflow-y-auto py-[14px] ">
+          <div className="col-span-7 md:col-span-8 lg:col-span-6 overflow-y-auto py-[14px] ">
             {children}
+          </div>
+          <div className="col-span-3 py-[14px] h-fit sticky top-[61px] z-40">
+            <NotificationSection />
           </div>
         </div>
       </div>

@@ -21,7 +21,6 @@ import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 import { PAGE_SIZE } from '../../constants/constants';
 import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 import PostSkeleton from '../../components/common/PostSkeleton';
-import NotificationSection from './NotificationSection';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -127,7 +126,7 @@ const HomePage = () => {
   return (
     <PrivateLayout>
       <div className="grid grid-cols-12 gap-5 feed-page">
-        <div className="col-span-9">
+        <div className="col-span-12">
           <Card classNames="p-5">
             <div className="">
               <div
@@ -165,7 +164,7 @@ const HomePage = () => {
               </div>
             </div>
             {hasUserScrolled ? (
-              <div className="fixed bottom-2 right-[15%] md:right-[15%] z-20">
+              <div className="fixed bottom-2 right-[22%] md:right-[22%] z-20">
                 <button
                   type={'button'}
                   className={
@@ -238,10 +237,6 @@ const HomePage = () => {
                 ))
               : ''}
           </div>
-        </div>
-
-        <div className="col-span-3">
-          <NotificationSection />
         </div>
       </div>
 

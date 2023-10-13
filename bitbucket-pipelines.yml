@@ -25,20 +25,18 @@ pipelines:
       - step:
           name: Invalidate Cloudfront cache
           script:
-            # triggering a distribution invalidation to refresh the CDN caches
-            - pipe: atlassian/aws-cloudfront-invalidate:0.6.0
+            - pipe: atlassian/aws-cloudfront-invalidate:0.1.2
               variables:
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
                 AWS_DEFAULT_REGION: $AWS_REGION
                 DISTRIBUTION_ID: $CLOUDFRONT_DEV_DIST_ID
-
     staging:
       - step:
           name: UAT Build
           script:
             - npm install
-            - npm run build-uat
+            - npm run build:staging
             - cd build
           artifacts:
             - build/**
@@ -56,7 +54,7 @@ pipelines:
       - step:
           name: Invalidate Cloudfront cache
           script:
-            - pipe: atlassian/aws-cloudfront-invalidate:0.6.0
+            - pipe: atlassian/aws-cloudfront-invalidate:0.1.2
               variables:
                 AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
                 AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
