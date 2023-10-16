@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import Avatar from '../common/Avatar';
 import Dropdown from '../common/Dropdown';
 import ThreeDots from '../Icons/ThreeDots';
-import moment from 'moment';
+import timeSpan from '../../utils/timeSpan';
 
 const OPTIONS = [
   {
@@ -34,7 +34,7 @@ const Header = ({
       />
       <div>
         <p className="font-semibold capitalize">{creatorName}</p>
-        <p className="text-[12px] text-greylight">{moment(createdAt).format('DD MMMM YYYY')}</p>
+        <p className="text-[12px] text-greylight">{timeSpan(createdAt)}</p>
       </div>
 
       {showThreeDots && (

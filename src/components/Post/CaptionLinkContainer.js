@@ -1,8 +1,11 @@
 import React, { useState } from 'react';
+import { LIMITS } from '../../constants/constants';
+
+const { POST_CAPTION_MAX_LIMIT } = LIMITS;
 
 const CaptionLinkContainer = ({ caption = '', links = [] }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const maxCharsBeforeSeeMore = 80; // change this value as needed
+  const maxCharsBeforeSeeMore = POST_CAPTION_MAX_LIMIT; // change this value as needed
 
   const handleToggleExpanded = () => {
     setIsExpanded(!isExpanded);

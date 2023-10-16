@@ -76,11 +76,11 @@ const MediaLayout = ({
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="cursor-pointer max-h-[inherit]"
+              className="cursor-pointer max-h-[inherit] p-1"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
-            <div className="relative  w-full h-full">
+            <div className="relative w-full h-full p-1">
               <img
                 src={playButton}
                 alt="playButton"
