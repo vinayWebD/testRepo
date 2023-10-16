@@ -70,18 +70,18 @@ const MediaLayout = ({
       return (
         <div
           key={media.path}
-          className="w-full rounded-lg relative border border-greymedium flex justify-center items-center"
+          className="w-full rounded-lg relative border border-greymedium flex justify-center items-center min-h-[150px] max-h-[550px]"
         >
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="cursor-pointer"
+              className="cursor-pointer max-h-[inherit]"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
             <video
               src={media[0].url}
-              className="w-full cursor-pointer"
+              className="w-full cursor-pointer max-h-[inherit]"
               controls={false}
               onClick={() => handleClick(customActiveIndex)}
             />

@@ -19,7 +19,12 @@ const OPTIONS = [
   },
 ];
 
-const Header = ({ createdAt = '', creatorName = '', creatorProfilePicUrl = '' }) => {
+const Header = ({
+  createdAt = '',
+  creatorName = '',
+  creatorProfilePicUrl = '',
+  showThreeDots = true,
+}) => {
   return (
     <div className="flex gap-2 items-center">
       <Avatar
@@ -32,9 +37,11 @@ const Header = ({ createdAt = '', creatorName = '', creatorProfilePicUrl = '' })
         <p className="text-[12px] text-greylight">{moment(createdAt).format('DD MMMM YYYY')}</p>
       </div>
 
-      <div className="ml-auto cursor-pointer">
-        <Dropdown options={OPTIONS} IconComponent={() => <ThreeDots />} />
-      </div>
+      {showThreeDots && (
+        <div className="ml-auto cursor-pointer">
+          <Dropdown options={OPTIONS} IconComponent={() => <ThreeDots />} />
+        </div>
+      )}
     </div>
   );
 };
@@ -43,7 +50,8 @@ const areEqual = (prevProps, nextProps) => {
   return (
     prevProps.createdAt === nextProps.createdAt ||
     prevProps.creatorName === nextProps.creatorName ||
-    prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl
+    prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl ||
+    prevProps.showThreeDots === nextProps.showThreeDots
   );
 };
 

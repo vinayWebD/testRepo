@@ -61,11 +61,8 @@ const HomePage = () => {
 
   const handleObserver = (entities) => {
     const target = entities[0];
-    console.log(target);
 
     if (target.isIntersecting && target.intersectionRatio > 0.9) {
-      console.log('yes');
-
       fetchAllPosts(currentPage);
       setCurrentPage((prevPage) => prevPage + 1);
     }
@@ -272,6 +269,7 @@ const HomePage = () => {
           post={activePost}
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
+          onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
         />
       </Modal>
     </PrivateLayout>

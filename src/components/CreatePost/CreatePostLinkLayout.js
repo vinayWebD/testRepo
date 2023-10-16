@@ -99,6 +99,7 @@ const CreatePostLinkLayout = ({
             </div>
           </div>
         )}
+        <p className="text-xs text-greylight mt-1">Click in the field to add link (Max 5)</p>
 
         {links?.map((link, _i) => {
           return (

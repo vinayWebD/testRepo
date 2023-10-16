@@ -7,8 +7,14 @@ import { POST_IMAGE_EXTENSIONS } from '../../constants/constants';
 import { getFileExtension } from '../../utils/helper';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
+import { CloseIcon } from '../Icons/CloseIcon';
 
-const PostDetails = ({ post = {}, reloadPostDetails = () => {}, customActiveIndex = 0 }) => {
+const PostDetails = ({
+  post = {},
+  reloadPostDetails = () => {},
+  customActiveIndex = 0,
+  onCloseHandler = () => {},
+}) => {
   const [sliderRef, setSliderRef] = useState(null);
   var settings = {
     dots: false,
@@ -31,13 +37,14 @@ const PostDetails = ({ post = {}, reloadPostDetails = () => {}, customActiveInde
         createdAt={post?.created_at}
         creatorName={post?.created_by}
         creatorProfilePicUrl={post?.profile_image_url}
+        showThreeDots={false}
       />
     );
   }, []);
 
   return (
     <div className="post-details flex  min-h-[65vh] max-h-[75vh]">
-      <div className="w-[65%] relative">
+      <div className="w-[65%] relative bg-greydark">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
             return (
@@ -86,8 +93,13 @@ const PostDetails = ({ post = {}, reloadPostDetails = () => {}, customActiveInde
         )}
       </div>
 
-      <div className="w-[35%] flex flex-col py-5 px-2 overflow-y-auto">
-        {postHeader}
+      <div className="w-[35%] flex flex-col py-5 px-[10px] overflow-y-auto">
+        <div className="w-full flex justify-between">
+          {postHeader}
+          <div className="cursor-pointer" onClick={onCloseHandler}>
+            <CloseIcon />
+          </div>
+        </div>
         <CaptionLinkContainer caption={post?.caption} links={post?.links} />
 
         <div className="!text-sm">

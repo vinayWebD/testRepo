@@ -271,6 +271,11 @@ const CreatePostLayout = ({
             <LinkIcon /> <p>{BTNLBL_LINK}</p>
           </div>
         </div>
+        <p className="px-6 text-xs text-greylight pb-2">
+          Click the button to browse (Max allowed each photo of{' '}
+          {POST_MAX_IMAGE_SIZE_IN_BYTES / (1024 * 1024)} MB and video of{' '}
+          {POST_MAX_VIDEO_SIZE_IN_BYTES / (1024 * 1024)} MB)
+        </p>
       </div>
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
