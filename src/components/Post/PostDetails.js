@@ -1,4 +1,5 @@
-import React, { useEffect, useMemo, useState } from 'react';
+/* eslint-disable no-unused-vars */
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import Header from './Header';
 import CaptionLinkContainer from './CaptionLinkContainer';
 import ActionButtons from './ActionButtons';
@@ -8,6 +9,8 @@ import { getFileExtension } from '../../utils/helper';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
 import { CloseIcon } from '../Icons/CloseIcon';
+import { Player, BigPlayButton } from 'video-react';
+import 'video-react/dist/video-react.css';
 
 const PostDetails = ({
   post = {},
@@ -16,6 +19,8 @@ const PostDetails = ({
   onCloseHandler = () => {},
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
+  const refPlayerWrap = useRef();
+  const refPlayer = useRef();
   var settings = {
     dots: false,
     infinite: true,
@@ -30,6 +35,31 @@ const PostDetails = ({
       reloadPostDetails({ postId: post?.post_id });
     }
   }, [post?.post_id]);
+
+  useEffect(() => {
+    if (refPlayerWrap.current) {
+      let options = {
+        rootMargin: '-30% 0px -10% 0px',
+        threshold: 1.0,
+      };
+      / eslint-disable no-unused-vars /;
+      let handlePlay = (entries) => {
+        entries.forEach((entry) => {
+          // if (entry.isIntersecting) {
+          if (entry.intersectionRatio >= 0.5) {
+            refPlayer?.current?.actions?.play();
+            // }
+          } else {
+            refPlayer?.current?.actions?.pause();
+          }
+        });
+      };
+
+      let observer = new IntersectionObserver(handlePlay, options);
+
+      observer.observe(refPlayerWrap?.current);
+    }
+  });
 
   const postHeader = useMemo(() => {
     return (
@@ -48,16 +78,26 @@ const PostDetails = ({
         <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
             return (
-              <div className="w-full !flex justify-center items-center outline-0" key={_i}>
+              <div
+                className={`w-full !flex justify-center items-center outline-0 ${
+                  !POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) &&
+                  'video-preview'
+                }`}
+                key={_i}
+              >
                 {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
                   <img src={url} />
                 ) : (
-                  <video
-                    src={url}
-                    className="w-full min-h-full min-w-full"
-                    controls={true}
-                    height={'100%'}
-                  />
+                  // <div className='video-preview'>
+                  <Player>
+                    <source src={url} className="video-preview" />
+                    <BigPlayButton
+                      position="center"
+                      className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !top-[40%] !left-[45%] !mt-0 !ml-0"
+                    />
+                  </Player>
+
+                  // </div>
                 )}
               </div>
             );
@@ -66,7 +106,10 @@ const PostDetails = ({
 
         {post?.media.length > 1 ? (
           <>
-            <div className="absolute top-0 left-1 flex justify-center items-center h-full">
+            <div
+              className="absolute top-1 left-1 flex justify-center items-center h-full"
+              style={{ height: '90%' }}
+            >
               <div
                 className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
                 onClick={sliderRef?.slickPrev}
@@ -77,7 +120,10 @@ const PostDetails = ({
               </div>
             </div>
 
-            <div className="absolute top-0 right-1 flex justify-center items-center h-full">
+            <div
+              className="absolute top-1 right-1 flex justify-center items-center h-full"
+              style={{ height: '90%' }}
+            >
               <div
                 className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
                 onClick={sliderRef?.slickNext}
