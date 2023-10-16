@@ -266,6 +266,9 @@
 .post-details .video-preview .video-react-controls-enabled .video-react-control-bar{
   height: auto !important;
 }
+.post-details .video-preview .video-react-progress-control{
+  top: 14px !important;
+}
 
 .post-details .video-preview .video-react-loading-spinner{
   height: auto !important;
