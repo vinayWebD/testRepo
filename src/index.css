@@ -263,11 +263,11 @@
 .post-details .video-preview .video-react-controls-enabled .video-react-video {
   height: inherit !important;
 }
-.post-details .video-preview .video-react-controls-enabled .video-react-control-bar{
+.post-details .video-preview .video-react-controls-enabled .video-react-control-bar {
   height: auto !important;
 }
 
-.post-details .video-preview .video-react-loading-spinner{
+.post-details .video-preview .video-react-loading-spinner {
   height: auto !important;
   /* display: none !important; */
 }
