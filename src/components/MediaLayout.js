@@ -5,15 +5,16 @@ import CreatePostMediaPreview from './CreatePost/CreatePostMediaPreview';
 import { getFileExtension } from '../utils/helper';
 import { POST_IMAGE_EXTENSIONS } from '../constants/constants';
 import { LANG } from '../constants/lang';
+import playButton from '../assets/images/playButton.svg'
 
 const { LANG_CREATE_POST } = LANG.PAGES.FEED;
 
 const MediaLayout = ({
   media = [],
   forcedPreview = false,
-  updateMedia = () => {},
+  updateMedia = () => { },
   origin = 'create-edit-post',
-  onMediaClickHandler = () => {},
+  onMediaClickHandler = () => { },
 }) => {
   const [isPreviewOpen, setIsPreviewOpen] = useState(forcedPreview || false);
   const [customActiveIndex, setCustomActiveIndex] = useState(forcedPreview ? 0 : null);
@@ -79,12 +80,15 @@ const MediaLayout = ({
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
-            <video
-              src={media[0].url}
-              className="w-full cursor-pointer"
-              controls={false}
-              onClick={() => handleClick(customActiveIndex)}
-            />
+            <div className='relative  w-full h-full'>
+              <img src={playButton} alt="playButton" className='absolute top-[41%] left-[45%] md:left-[42%] md:top-[37%] w-[15%]' />
+              <video
+                src={media[0].url}
+                className="w-full cursor-pointer"
+                controls={false}
+                onClick={() => handleClick(customActiveIndex)}
+              />
+            </div>
           )}
 
           {origin === 'create-edit-post' ? (
@@ -222,8 +226,8 @@ const MediaItem = ({
   path = '',
   showMoreOverlay = 0,
   index = 0,
-  onClick = () => {},
-  removeMedia = () => {},
+  onClick = () => { },
+  removeMedia = () => { },
   allowOnlyView = true,
   className = '',
   isParentHalf = false,
@@ -247,13 +251,17 @@ const MediaItem = ({
   if (mediaType === 'video') {
     return (
       <div className={`relative w-full media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'}`}>
-        <video
-          src={url}
-          className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer`}
-          controls={false}
-          height={'100%'}
-          onClick={() => onClick(index)}
-        />
+        <div className='relative w-full h-full'>
+          <img src={playButton} alt="playButton" className='absolute top-[36%] left-[42%] w-[15%]' />
+          <video
+            src={url}
+            className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer`}
+            controls={false}
+            height={'100%'}
+            onClick={() => onClick(index)}
+          />
+
+        </div>
         {showMoreOverlay ? (
           <div
             className="cursor-pointer absolute top-0 left-0 text-white text-lg w-full h-full bg-[#0000008a] rounded-lg font-medium flex justify-center text-center items-center"
@@ -269,9 +277,8 @@ const MediaItem = ({
   } else {
     return (
       <div
-        className={`relative w-full overflow-hidden media-item ${
-          isParentHalf ? 'max-h-[200px]' : 'h-[100%]'
-        }`}
+        className={`relative w-full overflow-hidden media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'
+          }`}
       >
         <img
           src={url}

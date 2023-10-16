@@ -260,6 +260,18 @@
   box-shadow: 1px 1px 20px rgba(40, 41, 61, 0.08);
 }
 
+.post-details .video-preview .video-react-controls-enabled .video-react-video {
+  height: inherit !important;
+}
+.post-details .video-preview .video-react-controls-enabled .video-react-control-bar{
+  height: auto !important;
+}
+
+.post-details .video-preview .video-react-loading-spinner{
+  height: auto !important;
+  /* display: none !important; */
+}
+
 .post-details .slick-slider,
 .post-details .slick-track,
 .post-details .slick-slider div,
