@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Header from './Header';
 import CaptionLinkContainer from './CaptionLinkContainer';
 import ActionButtons from './ActionButtons';
@@ -19,8 +18,16 @@ const PostDetails = ({
   onCloseHandler = () => {},
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
-  const refPlayerWrap = useRef();
-  const refPlayer = useRef();
+
+  // Pause video when moving to another slide
+  const handleBeforeChange = (currentSlide) => {
+    const currentVideo = document.querySelector(
+      `.slick-slide[data-index="${currentSlide}"] .video-react-controls-enabled.video-react video`,
+    );
+
+    currentVideo?.pause();
+  };
+
   var settings = {
     dots: false,
     infinite: true,
@@ -28,6 +35,7 @@ const PostDetails = ({
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: customActiveIndex,
+    beforeChange: (currentSlide) => handleBeforeChange(currentSlide),
   };
 
   useEffect(() => {
@@ -36,30 +44,34 @@ const PostDetails = ({
     }
   }, [post?.post_id]);
 
+  // The slider should work when the post details component is loaded
   useEffect(() => {
-    if (refPlayerWrap.current) {
-      let options = {
-        rootMargin: '-30% 0px -10% 0px',
-        threshold: 1.0,
-      };
-      / eslint-disable no-unused-vars /;
-      let handlePlay = (entries) => {
-        entries.forEach((entry) => {
-          // if (entry.isIntersecting) {
-          if (entry.intersectionRatio >= 0.5) {
-            refPlayer?.current?.actions?.play();
-            // }
-          } else {
-            refPlayer?.current?.actions?.pause();
-          }
-        });
-      };
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') {
+        // Left arrow should take us to the prev slide
+        sliderRef?.slickPrev();
+      } else if (e.key === 'ArrowRight') {
+        // Right arrow should take us to the next slide
+        sliderRef?.slickNext();
+      } else if (e.key === 'Space' || e.key === ' ') {
+        // If the current slide consists of video, then we shall play or pause it on the basis of Space key
+        const currentVideo = document.querySelector(
+          '.slick-slide.slick-active.slick-current .video-react-controls-enabled.video-react video',
+        );
+        if (currentVideo?.paused) {
+          currentVideo?.play();
+        } else {
+          currentVideo?.pause();
+        }
+      }
+    };
 
-      let observer = new IntersectionObserver(handlePlay, options);
+    document.addEventListener('keydown', handleKeyDown);
 
-      observer.observe(refPlayerWrap?.current);
-    }
-  });
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [sliderRef]);
 
   const postHeader = useMemo(() => {
     return (
@@ -73,7 +85,7 @@ const PostDetails = ({
   }, []);
 
   return (
-    <div className="post-details flex  min-h-[65vh] max-h-[75vh]">
+    <div className="post-details flex min-h-[65vh] max-h-[75vh]">
       <div className="w-[65%] relative bg-greydark">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
@@ -88,7 +100,6 @@ const PostDetails = ({
                 {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
                   <img src={url} />
                 ) : (
-                  // <div className='video-preview'>
                   <Player>
                     <source src={url} className="video-preview" />
                     <BigPlayButton
@@ -96,8 +107,6 @@ const PostDetails = ({
                       className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !top-[40%] !left-[45%] !mt-0 !ml-0"
                     />
                   </Player>
-
-                  // </div>
                 )}
               </div>
             );
@@ -139,7 +148,7 @@ const PostDetails = ({
         )}
       </div>
 
-      <div className="w-[35%] flex flex-col py-5 px-[10px] overflow-y-auto">
+      <div className="w-[35%] flex flex-col py-5 px-[15px] overflow-y-auto">
         <div className="w-full flex justify-between">
           {postHeader}
           <div className="cursor-pointer" onClick={onCloseHandler}>
@@ -154,7 +163,7 @@ const PostDetails = ({
             likeCount={post?.like_count}
             shareCount={post?.share_count}
             isLikedByMe={post?.is_liked_by_me}
-            className="gap-[7%]"
+            className="justify-between"
             isCommentSectionOpenDefault={true}
             postId={post?.post_id}
             reloadPostDetails={reloadPostDetails}

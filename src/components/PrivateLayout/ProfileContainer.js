@@ -13,6 +13,7 @@ const ProfileContainer = () => {
         <Avatar
           classNames="w-[40%] h-[40%] max-w-[72px] max-h-[72px]"
           image={userData?.profile_picture_url}
+          name={`${userData?.first_name} ${userData?.last_name}`}
         />
 
         <div className="flex flex-col gap-1 overflow-hidden">

@@ -28,7 +28,7 @@ function Modal({
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-[#33333333]"
+      className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
       onClick={onClose}
     >
       <div

@@ -71,7 +71,9 @@ const CreatePostLayout = ({
   }, [openTypeOfPost]);
 
   const isPostButtonDisabled = () => {
-    return !POST_PATTERN.test(text) && !media?.length && !links.length;
+    let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
+    let allLinks = [link, ...links];
+    return !POST_PATTERN.test(text) && !media?.length && !allLinks.length;
   };
 
   /**
@@ -198,7 +200,7 @@ const CreatePostLayout = ({
     if (successStatus(status)) {
       ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
       closePopupHandler();
-      await reloadData();
+      await reloadData(1);
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, TST_POST_CREATED_FAILED_ID);
@@ -229,7 +231,9 @@ const CreatePostLayout = ({
           )}
 
           {media.length ? (
-            <div className="border border-greymedium rounded-lg p-2">
+            <div
+              className={`${media.length > 1 ? 'border border-greymedium' : ''}  rounded-lg p-2`}
+            >
               <MediaLayout
                 media={media}
                 forcedPreview={openForcedPreview}
