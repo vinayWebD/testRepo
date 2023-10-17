@@ -4,10 +4,10 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import LeftChevron from '../Icons/LeftChevron';
 import RightChevron from '../Icons/RightChevron';
-import OutlinedButton from '../common/OutlinedButton';
 import { POST_IMAGE_EXTENSIONS } from '../../constants/constants';
 import { getFileExtension } from '../../utils/helper';
 import RemoveIcon from '../Icons/RemoveIcon';
+import { Button } from '../common/Button';
 
 const CreatePostMediaPreview = ({
   media = [],
@@ -68,7 +68,7 @@ const CreatePostMediaPreview = ({
           </button>
         </div>
         <div className="absolute right-0">
-          <OutlinedButton label={'Next'} onClick={closeModal} />
+          <Button label={'Next'} onClick={closeModal} showArrowIcon={false} />
         </div>
       </div>
     </>

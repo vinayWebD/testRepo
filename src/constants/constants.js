@@ -19,14 +19,7 @@ export const LIMITS = {
   POST_READ_MORE_LIMIT: 300,
 };
 
-export const POST_IMAGE_TYPES = [
-  'image/heif',
-  'image/heic',
-  'image/png',
-  'image/jpeg',
-  'image/png',
-  'image/jpg',
-];
+export const POST_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/png', 'image/jpg'];
 
 export const POST_VIDEO_TYPES = [
   'video/mp4',
@@ -36,7 +29,7 @@ export const POST_VIDEO_TYPES = [
   'video/quicktime',
 ];
 
-export const POST_IMAGE_EXTENSIONS = ['heif', 'heic', 'png', 'jpeg', 'png', 'jpg'];
+export const POST_IMAGE_EXTENSIONS = ['png', 'jpeg', 'png', 'jpg'];
 export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quicktime'];
 
 export const PAGE_SIZE = {
