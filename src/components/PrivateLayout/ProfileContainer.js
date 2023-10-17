@@ -8,8 +8,8 @@ import { PATHS } from '../../constants/urlPaths';
 
 const ProfileContainer = () => {
   const userData = useSelector((state) => state.auth.user || {});
-  const navigate = useNavigate()
-  const { PROFILE } = PATHS
+  const navigate = useNavigate();
+  const { PROFILE } = PATHS;
   return (
     <Card classNames="hidden lg:block py-8 px-4">
       <div className="flex gap-3 justify-center lg:justify-normal">

@@ -11,8 +11,8 @@ const ProfileContainer = ({ userData }) => {
   return (
     <Card classNames="lg:block py-4 px-2 md:px-4 relative">
       <div className="block gap-4">
-        <div className='bg-iconBackground p-1 rounded w-fit absolute right-[5%]'>
-          <img src={edit} alt="edit" className='cursor-pointer' />
+        <div className="bg-iconBackground p-1 rounded w-fit absolute right-[5%]">
+          <img src={edit} alt="edit" className="cursor-pointer" />
         </div>
         <Avatar
           classNames="w-[40%] h-[40%] max-w-[100px] max-h-[100px] m-auto"
@@ -25,16 +25,22 @@ const ProfileContainer = ({ userData }) => {
           <h4 className="font-normal text-greydark text-[12px] md:text-[14px]">
             UI/UX Designer | Influencer at Masco{' '}
           </h4>
-          {
-            userData?.location && <h6 className="flex font-normal text-greydark text-[8px] md:text-[10px] justify-center items-center">
-              <img src={location} alt="location" className='pr-1' />{userData?.location}
+          {userData?.location && (
+            <h6 className="flex font-normal text-greydark text-[8px] md:text-[10px] justify-center items-center">
+              <img src={location} alt="location" className="pr-1" />
+              {userData?.location}
             </h6>
-          }
+          )}
           <h6 className="flex font-normal text-greydark text-[8px] md:text-[10px] justify-center items-center">
-            <img src={mail} alt="mail" className='pr-1' />{userData?.email}
+            <img src={mail} alt="mail" className="pr-1" />
+            {userData?.email}
           </h6>
           <div className="font-normal text-greylight text-[8px] md:text-[10px] leading-3">
-            LoremI contributed to diverse projects by crafting compelling visual assets in alignment with the brand's identity. I collaborated closely with cross-functional teams to conceptualize and refine user interfaces, enhancing overall user experience. I played a key role in producing impactful marketing materials, including social media graphics and promotional visuals.
+            LoremI contributed to diverse projects by crafting compelling visual assets in alignment
+            with the brand's identity. I collaborated closely with cross-functional teams to
+            conceptualize and refine user interfaces, enhancing overall user experience. I played a
+            key role in producing impactful marketing materials, including social media graphics and
+            promotional visuals.
           </div>
         </div>
       </div>

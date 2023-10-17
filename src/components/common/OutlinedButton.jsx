@@ -1,4 +1,4 @@
-import addIcon from '../../assets/images/addIcon.svg'
+import addIcon from '../../assets/images/addIcon.svg';
 const OutlinedButton = ({
   label,
   Icon,

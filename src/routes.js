@@ -21,7 +21,7 @@ const {
   FORGOT_PASSWORD,
   RESET_PASSWORD,
   PATH_WORK,
-  PROFILE
+  PROFILE,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
