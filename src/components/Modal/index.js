@@ -1,6 +1,23 @@
 import React, { useEffect } from 'react';
 import { CloseIcon } from '../Icons/CloseIcon';
 
+// globalModalCounter.js
+let globalModalCounter = 0;
+
+export const incrementModalCounter = () => {
+  globalModalCounter++;
+};
+
+export const decrementModalCounter = () => {
+  if (globalModalCounter > 0) {
+    globalModalCounter--;
+  }
+};
+
+export const getModalCounter = () => {
+  return globalModalCounter;
+};
+
 function Modal({
   isOpen,
   onClose,
@@ -14,13 +31,23 @@ function Modal({
 }) {
   useEffect(() => {
     if (isOpen) {
+      incrementModalCounter();
+    }
+
+    // Set overflow only once when first modal opens or when the last modal closes.
+    if (getModalCounter() === 1 && isOpen) {
       document.body.style.overflow = 'hidden';
-    } else {
+    } else if (getModalCounter() === 0 && !isOpen) {
       document.body.style.overflow = 'auto';
     }
-    // Clean up
+
     return () => {
-      document.body.style.overflow = 'auto';
+      if (isOpen) {
+        decrementModalCounter();
+        if (getModalCounter() === 0) {
+          document.body.style.overflow = 'auto';
+        }
+      }
     };
   }, [isOpen]);
 
@@ -28,7 +55,7 @@ function Modal({
 
   return (
     <div
-      className="fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
+      className="cust-modal-fixed fixed top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
       onClick={onClose}
     >
       <div
