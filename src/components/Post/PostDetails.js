@@ -104,7 +104,7 @@ const PostDetails = ({
                     <source src={url} className="video-preview" />
                     <BigPlayButton
                       position="center"
-                      className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !top-[40%] !left-[45%] !mt-0 !ml-0"
+                      className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !left-[45%] !ml-0"
                     />
                   </Player>
                 )}
@@ -115,10 +115,7 @@ const PostDetails = ({
 
         {post?.media.length > 1 ? (
           <>
-            <div
-              className="absolute top-1 left-1 flex justify-center items-center h-full"
-              style={{ height: '90%' }}
-            >
+            <div className="absolute top-1 left-1 flex justify-center items-center h-full">
               <div
                 className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
                 onClick={sliderRef?.slickPrev}
@@ -129,10 +126,7 @@ const PostDetails = ({
               </div>
             </div>
 
-            <div
-              className="absolute top-1 right-1 flex justify-center items-center h-full"
-              style={{ height: '90%' }}
-            >
+            <div className="absolute top-1 right-1 flex justify-center items-center h-full">
               <div
                 className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
                 onClick={sliderRef?.slickNext}
