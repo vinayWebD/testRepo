@@ -12,7 +12,7 @@ const ActionButtons = ({
   commentCount = 0,
   shareCount = 0,
   likeCount = 0,
-  className = 'gap-[10%]',
+  className = 'md:gap-[10%]',
   isCommentSectionOpenDefault = false,
   postId = '',
   reloadPostDetails = () => {},

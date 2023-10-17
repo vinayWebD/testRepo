@@ -5,6 +5,7 @@ import ProfileContainer from './ProfileContainer';
 import LeftNavigation from './LeftNavigation';
 import Card from '../common/Card';
 import NotificationSection from '../../pages/HomePage/NotificationSection';
+import MobileBottomNavigation from './MobileBottomNavigation';
 /**
  * This component is the layout for the authenticated pages
  * @param {*} param0
@@ -20,9 +21,9 @@ const PrivateLayout = ({ children }) => {
         {/* The header component */}
         <PrivateHeader />
 
-        <div className="px-[5%] flex-grow grid grid-cols-12 gap-5 mt-[61px]">
+        <div className="px-0 md:px-[5%] mt-[61px] flex-grow grid grid-cols-12 gap-5 ">
           {/* This is a common sidebar that should be on all private authenticated pages */}
-          <div className="col-span-2 md:col-span-1 lg:col-span-3 sticky top-[61px] z-40 py-[14px] h-fit">
+          <div className="hidden md:block col-span-2 md:col-span-1 lg:col-span-3 sticky top-[61px] z-40 py-[14px] h-fit">
             {/* The profile info - image, name etc. */}
             <ProfileContainer />
 
@@ -31,10 +32,12 @@ const PrivateLayout = ({ children }) => {
               <LeftNavigation />
             </Card>
           </div>
-          <div className="col-span-7 md:col-span-8 lg:col-span-6 overflow-y-auto py-[14px] ">
+          <div className="col-span-12 md:col-span-8 lg:col-span-6 overflow-y-auto md:py-[14px] mb-[60px] md:mb-0">
             {children}
+
+            <MobileBottomNavigation />
           </div>
-          <div className="col-span-3 py-[14px] h-fit sticky top-[61px] z-40">
+          <div className="hidden md:block col-span-3 py-[14px] h-fit sticky top-[61px] z-40">
             <NotificationSection />
           </div>
         </div>
