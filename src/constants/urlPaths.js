@@ -8,4 +8,5 @@ export const PATHS = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   PATH_WORK: '/work',
+  PROFILE: '/my-profile'
 };

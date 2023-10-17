@@ -3,10 +3,13 @@ import Card from '../common/Card';
 import Avatar from '../common/Avatar';
 import { Button } from '../common/Button';
 import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 const ProfileContainer = () => {
   const userData = useSelector((state) => state.auth.user || {});
-
+  const navigate = useNavigate()
+  const { PROFILE } = PATHS
   return (
     <Card classNames="hidden lg:block py-8 px-4">
       <div className="flex gap-3 justify-center lg:justify-normal">
@@ -28,6 +31,7 @@ const ProfileContainer = () => {
             label="View Profile"
             additionalClassNames="mt-2 pl-0 pr-0"
             showArrowIcon={false}
+            onClick={() => navigate(PROFILE)}
           />
         </div>
       </div>

@@ -42,6 +42,10 @@
 .bg-gradient-button {
   background: linear-gradient(53deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
 }
+
+.bg-gradient-button-button {
+  background: linear-gradient(90deg, #75B0CA 37%, #60A1C8 54%, #408AC6 75%, #1282C3 88%);
+}
 .para-normal {
   color: #fff;
   font-family: Montserrat;
