@@ -11,7 +11,7 @@ const CaptionLinkContainer = ({ caption = '', links = [] }) => {
     setIsExpanded(!isExpanded);
   };
 
-  const shouldShowSeeMore = caption.length > maxCharsBeforeSeeMore;
+  const shouldShowSeeMore = caption?.length > maxCharsBeforeSeeMore;
 
   const displayedCaption =
     isExpanded || !shouldShowSeeMore
