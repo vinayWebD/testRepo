@@ -25,9 +25,11 @@ function Modal({
   title,
   isTitle = true,
   width = 'max-w-[540px]',
+  height = 'h-auto',
   padding = 'px-6',
   childrenClassNames = 'md:max-h-5/6 max-h-[500px]',
   titleClassNames = 'pl-[18px]',
+  titleParentClassNames = 'm-3',
 }) {
   useEffect(() => {
     if (isOpen) {
@@ -59,7 +61,7 @@ function Modal({
       onClick={onClose}
     >
       <div
-        className={`bg-white md:w-11/12 ${width} rounded-md shadow-lg z-50 overflow-y-auto m-3`}
+        className={`bg-white md:w-11/12 ${width} ${height} rounded-md shadow-lg z-50 overflow-y-auto ${titleParentClassNames}`}
         onClick={(e) => e.stopPropagation()}
       >
         {isTitle && (

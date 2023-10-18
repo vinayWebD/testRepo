@@ -246,6 +246,8 @@ const HomePage = () => {
         childrenClassNames="overflow-y-auto"
         padding="p-0"
         titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100vh] md:h-auto"
       >
         <CreatePostLayout
           closePopupHandler={() => {
@@ -265,6 +267,7 @@ const HomePage = () => {
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
       >
         <PostDetails
           post={activePost}

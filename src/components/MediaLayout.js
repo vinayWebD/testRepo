@@ -46,9 +46,10 @@ const MediaLayout = ({
         onClose={() => setIsPreviewOpen(false)}
         isTitle={true}
         title={LANG_CREATE_POST}
-        width="!w-[75vw]"
+        width="w-[100vw] md:!w-[75vw]"
         childrenClassNames=""
         titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
       >
         <div className="m-auto pt-4">
           <CreatePostMediaPreview
@@ -111,7 +112,7 @@ const MediaLayout = ({
       );
     } else if (media.length === 2 || media.length === 4) {
       return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
+        <div className="grid grid-cols-2 gap-1 max-w-screen-lg mx-auto ">
           {media.map(({ url, path }, index) => (
             <MediaItem
               url={url}
