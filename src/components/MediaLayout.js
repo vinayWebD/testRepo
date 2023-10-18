@@ -71,16 +71,16 @@ const MediaLayout = ({
       return (
         <div
           key={media.path}
-          className="w-full rounded-lg relative border border-greymedium flex justify-center items-center min-h-[150px] max-h-[550px]"
+          className="w-full rounded-lg relative md:border md:border-greymedium flex justify-center items-center min-h-[150px] max-h-[550px]"
         >
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="cursor-pointer max-h-[inherit] p-1"
+              className="cursor-pointer max-h-[inherit] rounded-lg"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
-            <div className="relative w-full h-full p-1">
+            <div className="relative w-full h-full rounded-lg">
               <img
                 src={playButton}
                 alt="playButton"
@@ -129,7 +129,7 @@ const MediaLayout = ({
     } else if (media.length === 3) {
       return (
         <div className="flex gap-1 w-full">
-          <div className="w-[60%] max-h-[400px]">
+          <div className="w-[60%] max-h-[500px] md:max-h-[400px]">
             <MediaItem
               url={media[0].url}
               index={0}
@@ -140,7 +140,7 @@ const MediaLayout = ({
               className="max-h-none min-h-[-webkit-fill-available]"
             />
           </div>
-          <div className="flex gap-1 w-[40%] flex-col max-h-[400px]">
+          <div className="flex gap-1 w-[40%] flex-col max-h-[500px] md:max-h-[400px]">
             <MediaItem
               url={media[1].url}
               path={media[1].path}
@@ -219,7 +219,11 @@ const MediaLayout = ({
   };
 
   return (
-    <div className={`media-layout ${media.length !== 1 ? ' max-h-[400px]' : ''} rounded-lg`}>
+    <div
+      className={`media-layout ${
+        media.length !== 1 ? ' max-h-[500px] md:max-h-[400px]' : ''
+      } rounded-lg`}
+    >
       {getMedia()}
     </div>
   );
@@ -254,7 +258,11 @@ const MediaItem = ({
 
   if (mediaType === 'video') {
     return (
-      <div className={`relative w-full media-item ${isParentHalf ? 'max-h-[200px]' : 'h-[100%]'}`}>
+      <div
+        className={`relative w-full media-item ${
+          isParentHalf ? 'max-h-[250px] md:max-h-[200px]' : 'h-[100%]'
+        }`}
+      >
         <div className="relative w-full h-full">
           <img
             src={playButton}
@@ -285,7 +293,7 @@ const MediaItem = ({
     return (
       <div
         className={`relative w-full overflow-hidden media-item ${
-          isParentHalf ? 'max-h-[200px]' : 'h-[100%]'
+          isParentHalf ? 'max-h-[250px] md:max-h-[200px]' : 'h-[100%]'
         }`}
       >
         <img

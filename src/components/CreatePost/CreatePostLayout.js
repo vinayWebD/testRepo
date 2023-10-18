@@ -245,7 +245,7 @@ const CreatePostLayout = ({
             ''
           )}
         </div>
-        <div className="flex gap-14 mt-3 py-3 justify-between px-6">
+        <div className="flex md:gap-14 mt-3 py-3 justify-between px-6">
           <div
             className={`flex gap-2 hover:opacity-70 ${
               media?.length < POST_MAX_ALLOWED_MEDIA

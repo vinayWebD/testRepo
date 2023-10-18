@@ -12,7 +12,7 @@ const ActionButtons = ({
   commentCount = 0,
   shareCount = 0,
   likeCount = 0,
-  className = 'gap-[10%]',
+  className = 'md:gap-[10%]',
   isCommentSectionOpenDefault = false,
   postId = '',
   reloadPostDetails = () => {},
@@ -20,6 +20,14 @@ const ActionButtons = ({
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(isCommentSectionOpenDefault);
   const [_isLikedByMe, _setIsLikedByMe] = useState(isLikedByMe);
   const [_likeCount, _setIsLikeCount] = useState(likeCount);
+  const [isAnimating, setIsAnimating] = useState(false);
+
+  useEffect(() => {
+    if (isAnimating) {
+      const timer = setTimeout(() => setIsAnimating(false), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isAnimating]);
 
   useEffect(() => {
     _setIsLikeCount(likeCount);
@@ -35,9 +43,10 @@ const ActionButtons = ({
     _setIsLikedByMe((prev) => !prev);
 
     if (_isLikedByMe) {
-      _setIsLikeCount((prev) => prev - 1);
+      _setIsLikeCount((prev) => (prev > 0 ? prev - 1 : 0));
       response = await unlikePost({ postId });
     } else {
+      setIsAnimating(true); // Trigger the animation
       _setIsLikeCount((prev) => prev + 1);
       response = await likePost({ postId });
     }
@@ -50,9 +59,11 @@ const ActionButtons = ({
 
   return (
     <>
-      <div className={`flex w-full mb-2 mt-7 ${className}`}>
+      <div className={`flex w-full mb-2 mt-7 select-none ${className}`}>
         <div
-          className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70"
+          className={`flex gap-1 justify-center items-center cursor-pointer ${
+            isAnimating ? 'scale-bounce' : ''
+          }`}
           onClick={likeOrUnlikeClickHandler}
         >
           {_isLikedByMe ? <LikeFilledIcon /> : <LikeEmptyIcon />}

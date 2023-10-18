@@ -57,8 +57,8 @@ const CreatePostMediaPreview = ({
         </Slider>
       </div>
 
-      <div className="flex gap-2 w-full justify-center mt-2 relative h-[50px] items-center">
-        <div className="flex justify-center gap-3 items-center">
+      <div className="flex gap-2 w-full md:justify-center mt-2 relative h-[50px] items-center">
+        <div className="flex justify-normal md:justify-center gap-3 md:items-center">
           <button onClick={sliderRef?.slickPrev}>
             <LeftChevron />
           </button>

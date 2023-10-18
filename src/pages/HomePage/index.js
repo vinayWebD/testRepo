@@ -137,7 +137,7 @@ const HomePage = () => {
                 />
                 <p className="text-greylight">{LANG_WRITE_SOMETHING}</p>
               </div>
-              <div className="flex gap-14 mt-3 pt-3 pb-2">
+              <div className="flex md:gap-14 mt-3 pt-3 pb-2 justify-between md:justify-normal">
                 <div
                   className="flex gap-2 cursor-pointer hover:opacity-70"
                   onClick={() => handleOpenPopup('photo')}
@@ -161,11 +161,11 @@ const HomePage = () => {
               </div>
             </div>
             {hasUserScrolled ? (
-              <div className="fixed bottom-2 right-[22%] md:right-[22%] z-20">
+              <div className="fixed bottom-[65px] md:bottom-2 right-[10%] md:right-[22%] z-20">
                 <button
                   type={'button'}
                   className={
-                    'w-16 h-6 rounded-lg text-white bg-blueprimary text-xs flex gap-1 justify-center items-center hover:opacity-70'
+                    'w-16 h-8 md:h-6 rounded-lg text-white bg-blueprimary text-xs flex gap-1 justify-center items-center hover:opacity-70'
                   }
                   onClick={() => window.scrollTo(0, 0)}
                 >
@@ -181,7 +181,7 @@ const HomePage = () => {
           <div className="mt-3">
             {posts.map((post) => {
               return (
-                <Card classNames="p-4 mt-4" key={post?.post_id}>
+                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.post_id}>
                   <Header
                     createdAt={post?.created_at}
                     creatorName={post?.created_by}
@@ -208,6 +208,7 @@ const HomePage = () => {
                     isLikedByMe={post?.is_liked_by_me}
                     postId={post?.post_id}
                     reloadPostDetails={fetchSinglePostDetails}
+                    className="justify-between md:justify-start md:gap-[10%]"
                   />
                 </Card>
               );
@@ -260,7 +261,7 @@ const HomePage = () => {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width="!w-[75vw]"
+        width="!w-[100vw] md:!w-[75vw]"
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""

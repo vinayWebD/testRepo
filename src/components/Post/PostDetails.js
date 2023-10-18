@@ -85,8 +85,14 @@ const PostDetails = ({
   }, []);
 
   return (
-    <div className="post-details flex min-h-[65vh] max-h-[75vh]">
-      <div className="w-[65%] relative bg-greydark">
+    <div className="post-details flex flex-col md:flex-row h-[100vh] md:min-h-[65vh] md:max-h-[75vh] relative">
+      <div
+        className="flex md:hidden bg-[#fefefe1a] rounded-full justify-end p-3 absolute right-[10px] top-1 z-10"
+        onClick={onCloseHandler}
+      >
+        <CloseIcon fill={'#ffffff'} />
+      </div>
+      <div className="w-full md:w-[65%] relative bg-greydark max-h-[50vh] md:max-h-none">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
             return (
@@ -142,10 +148,10 @@ const PostDetails = ({
         )}
       </div>
 
-      <div className="w-[35%] flex flex-col py-5 px-[15px] overflow-y-auto">
+      <div className="w-full md:w-[35%] flex flex-col py-5 px-[15px] overflow-y-auto">
         <div className="w-full flex justify-between">
           {postHeader}
-          <div className="cursor-pointer" onClick={onCloseHandler}>
+          <div className="cursor-pointer hidden md:block" onClick={onCloseHandler}>
             <CloseIcon />
           </div>
         </div>
