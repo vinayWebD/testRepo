@@ -37,5 +37,20 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '@keyframes scaleBounce': {
+          '0%, 100%': { transform: 'scale(1)', opacity: 1 },
+          '50%': { transform: 'scale(1.2)', opacity: 0.2 },
+        },
+        '.scale-bounce': {
+          animationTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          animationDuration: '270ms',
+          animationName: 'scaleBounce',
+        },
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
+  ],
 };

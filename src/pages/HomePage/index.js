@@ -261,7 +261,7 @@ const HomePage = () => {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width="!w-[75vw]"
+        width="!w-[100vw] md:!w-[75vw]"
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""

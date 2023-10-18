@@ -11,6 +11,7 @@ import { DROPDOWN_OPTION_LABELS } from '../../constants/lang';
 import AddFriendIcon from '../Icons/AddFriendIcon';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import SearchIcon from '../Icons/SearchIcon';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
@@ -64,7 +65,7 @@ const PrivateHeader = () => {
               value={searchValue}
             />
           ) : (
-            ''
+            <SearchIcon width={28} height={28} />
           )
         }
 
