@@ -60,7 +60,7 @@ const PostDetails = ({
         );
 
         if (currentVideo) {
-          if (currentVideo?.paused) {
+          if (currentVideo?.paused || currentVideo.ended) {
             currentVideo?.play();
           } else {
             currentVideo?.pause();

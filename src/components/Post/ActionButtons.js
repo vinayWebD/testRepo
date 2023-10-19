@@ -61,7 +61,7 @@ const ActionButtons = ({
     <>
       <div className={`flex w-full mb-2 mt-7 select-none ${className}`}>
         <div
-          className={`flex gap-1 justify-center items-center cursor-pointer ${
+          className={`flex gap-1 justify-center items-center cursor-pointer hover:opacity-70 ${
             isAnimating ? 'scale-bounce' : ''
           }`}
           onClick={likeOrUnlikeClickHandler}
