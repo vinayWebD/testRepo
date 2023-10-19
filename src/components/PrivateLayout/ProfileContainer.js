@@ -24,7 +24,7 @@ const ProfileContainer = () => {
             {userData?.first_name} {userData?.last_name}
           </p>
           <h4 className="font-normal text-greylight text-[12px] md:text-[14px]">
-            UI/UX Designer | Influencer at Masco{' '}
+            {userData?.designation}
           </h4>
 
           <Button
