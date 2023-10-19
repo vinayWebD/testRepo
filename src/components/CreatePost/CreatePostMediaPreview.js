@@ -18,6 +18,13 @@ const CreatePostMediaPreview = ({
   const [sliderRef, setSliderRef] = useState(null);
   const [activeSlideIndex, setActiveSlideIndex] = useState(customActiveIndex || 0);
 
+  const handleRemoveMedia = (index) => {
+    if (activeSlideIndex + 1 === media.length) {
+      setActiveSlideIndex((prev) => prev - 1);
+    }
+    removeMedia(index);
+  };
+
   var settings = {
     dots: false,
     infinite: true,
@@ -31,7 +38,7 @@ const CreatePostMediaPreview = ({
   return (
     <>
       <div className="overflow-hidden media-preview">
-        <Slider {...settings} ref={setSliderRef}>
+        <Slider {...settings} ref={setSliderRef} customPaging={activeSlideIndex}>
           {media.map(({ url, path }, _i) => {
             return (
               <div className="h-auto relative" key={_i}>
@@ -47,7 +54,7 @@ const CreatePostMediaPreview = ({
                 )}
                 <div
                   className="absolute right-2 top-2"
-                  onClick={() => removeMedia(customActiveIndex)}
+                  onClick={() => handleRemoveMedia(activeSlideIndex)}
                 >
                   <RemoveIcon />
                 </div>
