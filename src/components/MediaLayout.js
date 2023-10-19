@@ -85,7 +85,7 @@ const MediaLayout = ({
               <img
                 src={playButton}
                 alt="playButton"
-                className="absolute top-[41%] left-[45%] md:left-[42%] md:top-[37%] w-[15%]"
+                className="absolute w-11 h-11 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
               />
               <video
                 src={media[0].url}
@@ -268,7 +268,7 @@ const MediaItem = ({
           <img
             src={playButton}
             alt="playButton"
-            className="absolute top-[36%] left-[42%] w-[15%]"
+            className="absolute w-11 h-11 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
           />
           <video
             src={url}

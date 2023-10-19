@@ -58,10 +58,13 @@ const PostDetails = ({
         const currentVideo = document.querySelector(
           '.slick-slide.slick-active.slick-current .video-react-controls-enabled.video-react video',
         );
-        if (currentVideo?.paused) {
-          currentVideo?.play();
-        } else {
-          currentVideo?.pause();
+
+        if (currentVideo) {
+          if (currentVideo?.paused) {
+            currentVideo?.play();
+          } else {
+            currentVideo?.pause();
+          }
         }
       }
     };
@@ -121,7 +124,7 @@ const PostDetails = ({
 
         {post?.media.length > 1 ? (
           <>
-            <div className="absolute top-1 left-1 flex justify-center items-center h-full">
+            <div className="absolute top-1 left-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
                 className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
                 onClick={sliderRef?.slickPrev}
@@ -132,7 +135,7 @@ const PostDetails = ({
               </div>
             </div>
 
-            <div className="absolute top-1 right-1 flex justify-center items-center h-full">
+            <div className="absolute top-1 right-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
                 className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
                 onClick={sliderRef?.slickNext}
