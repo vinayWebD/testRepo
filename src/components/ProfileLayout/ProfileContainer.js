@@ -4,7 +4,6 @@ import Card from '../common/Card';
 import Avatar from '../common/Avatar';
 import location from '../../assets/images/location.svg';
 import mail from '../../assets/images/mail.svg';
-import dummy from '../../assets/images/dummy.jpeg';
 import edit from '../../assets/images/editIcon.svg';
 
 const ProfileContainer = ({ userData }) => {
@@ -16,7 +15,8 @@ const ProfileContainer = ({ userData }) => {
         </div>
         <Avatar
           classNames="w-[40%] h-[40%] max-w-[100px] max-h-[100px] m-auto"
-          image={userData?.profile_picture_url ? userData?.profile_picture_url : dummy}
+          image={userData?.profile_picture_url}
+          name={`${userData?.first_name} ${userData?.last_name}`}
         />
         <div className="flex flex-col gap-1 overflow-hidden text-center pt-2">
           <p className="text-greydark text-[14px] md:text-[20px] font-semibold overflow-hidden truncate capitalize">
