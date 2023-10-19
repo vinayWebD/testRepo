@@ -210,7 +210,7 @@ const CreatePostLayout = ({
 
   return (
     <div className="relative">
-      <div className="max-h-[70vh] overflow-y-auto">
+      <div className="h-[83vh] max-h-[83vh] md:h-auto md:max-h-[70vh] overflow-y-auto">
         <div className="relative px-[18px] flex flex-col gap-2">
           <EmojiTextarea
             placeholder={LANG_TEXT_AREA_PLACEHOLDER}
@@ -245,41 +245,44 @@ const CreatePostLayout = ({
             ''
           )}
         </div>
-        <div className="flex md:gap-14 mt-3 py-3 justify-between px-6">
-          <div
-            className={`flex gap-2 hover:opacity-70 ${
-              media?.length < POST_MAX_ALLOWED_MEDIA
-                ? 'cursor-pointer'
-                : 'cursor-not-allowed text-greylight'
-            }`}
-            onClick={() => handleFileBrowser('photo')}
-          >
-            <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
+        <div className="flex gap-3 flex-col mt-3 py-3 justify-between px-6">
+          <div className="flex md:gap-14 justify-between w-full">
+            <div
+              className={`flex gap-2 hover:opacity-70 ${
+                media?.length < POST_MAX_ALLOWED_MEDIA
+                  ? 'cursor-pointer'
+                  : 'cursor-not-allowed text-greylight'
+              }`}
+              onClick={() => handleFileBrowser('photo')}
+            >
+              <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
+            </div>
+
+            <div
+              className={`flex gap-2 hover:opacity-70 ${
+                media?.length < POST_MAX_ALLOWED_MEDIA
+                  ? 'cursor-pointer'
+                  : 'cursor-not-allowed text-greylight'
+              }`}
+              onClick={() => handleFileBrowser('video')}
+            >
+              <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
+            </div>
+
+            <div
+              className="flex gap-2 cursor-pointer hover:opacity-70"
+              onClick={() => setIsInputLinkOpen(true)}
+            >
+              <LinkIcon /> <p>{BTNLBL_LINK}</p>
+            </div>
           </div>
 
-          <div
-            className={`flex gap-2 hover:opacity-70 ${
-              media?.length < POST_MAX_ALLOWED_MEDIA
-                ? 'cursor-pointer'
-                : 'cursor-not-allowed text-greylight'
-            }`}
-            onClick={() => handleFileBrowser('video')}
-          >
-            <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
-          </div>
-
-          <div
-            className="flex gap-2 cursor-pointer hover:opacity-70"
-            onClick={() => setIsInputLinkOpen(true)}
-          >
-            <LinkIcon /> <p>{BTNLBL_LINK}</p>
-          </div>
+          <p className="text-xs text-greylight pb-2 w-full">
+            Click the button to browse (Max allowed each photo of{' '}
+            {POST_MAX_IMAGE_SIZE_IN_BYTES / (1024 * 1024)} MB and video of{' '}
+            {POST_MAX_VIDEO_SIZE_IN_BYTES / (1024 * 1024)} MB)
+          </p>
         </div>
-        <p className="px-6 text-xs text-greylight pb-2">
-          Click the button to browse (Max allowed each photo of{' '}
-          {POST_MAX_IMAGE_SIZE_IN_BYTES / (1024 * 1024)} MB and video of{' '}
-          {POST_MAX_VIDEO_SIZE_IN_BYTES / (1024 * 1024)} MB)
-        </p>
       </div>
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
