@@ -4,7 +4,6 @@ import Card from '../common/Card';
 import Avatar from '../common/Avatar';
 import location from '../../assets/images/location.svg';
 import mail from '../../assets/images/mail.svg';
-import dummy from '../../assets/images/dummy.jpeg';
 import edit from '../../assets/images/editIcon.svg';
 
 const ProfileContainer = ({ userData }) => {
@@ -16,14 +15,15 @@ const ProfileContainer = ({ userData }) => {
         </div>
         <Avatar
           classNames="w-[40%] h-[40%] max-w-[100px] max-h-[100px] m-auto"
-          image={userData?.profile_picture_url ? userData?.profile_picture_url : dummy}
+          image={userData?.profile_picture_url}
+          name={`${userData?.first_name} ${userData?.last_name}`}
         />
         <div className="flex flex-col gap-1 overflow-hidden text-center pt-2">
-          <p className="text-greydark text-[14px] md:text-[20px] font-medium overflow-hidden truncate capitalize">
+          <p className="text-greydark text-[14px] md:text-[20px] font-semibold overflow-hidden truncate capitalize">
             {userData?.first_name} {userData?.last_name}
           </p>
           <h4 className="font-normal text-greydark text-[12px] md:text-[14px]">
-            UI/UX Designer | Influencer at Masco{' '}
+            {userData?.designation}
           </h4>
           {userData?.location && (
             <h6 className="flex font-normal text-greydark text-[8px] md:text-[10px] justify-center items-center">
@@ -35,12 +35,8 @@ const ProfileContainer = ({ userData }) => {
             <img src={mail} alt="mail" className="pr-1" />
             {userData?.email}
           </h6>
-          <div className="font-normal text-greylight text-[8px] md:text-[10px] leading-3">
-            LoremI contributed to diverse projects by crafting compelling visual assets in alignment
-            with the brand's identity. I collaborated closely with cross-functional teams to
-            conceptualize and refine user interfaces, enhancing overall user experience. I played a
-            key role in producing impactful marketing materials, including social media graphics and
-            promotional visuals.
+          <div className="font-medium text-[8px] md:text-[10px] leading-3" style={{ color: '#A1A0A0' }}>
+            {userData?.description}
           </div>
         </div>
       </div>

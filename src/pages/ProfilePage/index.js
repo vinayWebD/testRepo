@@ -24,7 +24,7 @@ const ProfilePage = () => {
       <div className="col-span-10 md:col-span-12 xs:col-span-12 sm:col-span-12 lg:col-span-4 xl:col-span-3 lg:sticky top-[61px] z-40 lg:h-fit	">
         {/* The profile info - image, name etc. */}
         <div
-          className="flex text-[15px] md:text-[18px] lg:text-[24px] py-4 sticky h-fit cursor-pointer"
+          className="flex text-[15px] md:text-[18px] lg:text-[24px] py-4 sticky h-fit cursor-pointer font-medium"
           onClick={() => navigate(-1)}
         >
           <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
@@ -42,27 +42,24 @@ const ProfilePage = () => {
                 bottomNotRound={true}
               >
                 <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${
-                    tab === 'work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                  }`}
+                  className={`w-[33.3%] p-4 cursor-pointer ${tab === 'work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+                    }`}
                   onClick={() => setTab('work')}
                   style={{ fontWeight: '500' }}
                 >
                   Work
                 </div>
                 <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${
-                    tab === 'interest' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                  }`}
+                  className={`w-[33.3%] p-4 cursor-pointer ${tab === 'interest' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+                    }`}
                   onClick={() => setTab('interest')}
                   style={{ fontWeight: '500' }}
                 >
-                  Interest
+                  Interests
                 </div>
                 <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${
-                    tab === 'myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                  }`}
+                  className={`w-[33.3%] p-4 cursor-pointer ${tab === 'myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+                    }`}
                   onClick={() => setTab('myself')}
                   style={{ fontWeight: '500' }}
                 >
@@ -75,10 +72,10 @@ const ProfilePage = () => {
                   <WorkDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
                     <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
-                    <h4 className="font-600 text-greydark text-[12px] md:text-[14px] my-2">
+                    <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No work added yet.
                     </h4>
-                    <h5 className="font-500 text-greydark text-[10px] md:text-[14px] mb-2">
+                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
                       It helps people quickly identify your many talents.
                     </h5>
                     <div className="text-center mx-auto flex mt-2">
@@ -96,7 +93,7 @@ const ProfilePage = () => {
                   <InterestDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
                     <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
-                    <h4 className="font-600 text-greydark text-[12px] md:text-[14px] my-2">
+                    <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No Interests added yet.
                     </h4>
                     <div className="text-center mx-auto flex mt-2">
@@ -113,10 +110,10 @@ const ProfilePage = () => {
                 <>
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
                     <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
-                    <h4 className="font-600 text-greydark text-[12px] md:text-[14px] my-2">
+                    <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No work added yet.
                     </h4>
-                    <h5 className="font-500 text-greydark text-[10px] md:text-[14px] mb-2">
+                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
                       It helps people quickly identify your many talents.
                     </h5>
                     <div className="text-center mx-auto flex mt-2">
