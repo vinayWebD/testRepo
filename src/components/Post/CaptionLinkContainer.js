@@ -35,7 +35,7 @@ const CaptionLinkContainer = ({ caption = '', links = [] }) => {
       {links?.map((link, i) => (
         <a
           href={link}
-          className="text-sm text-blueprimary font-semibold"
+          className="text-sm text-blueprimary font-semibold w-fit"
           target="_blank"
           rel="noreferrer"
           key={i}
