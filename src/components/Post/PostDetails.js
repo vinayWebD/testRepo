@@ -21,11 +21,14 @@ const PostDetails = ({
 
   // Pause video when moving to another slide
   const handleBeforeChange = (currentSlide) => {
-    const currentVideo = document.querySelector(
-      `.slick-slide[data-index="${currentSlide}"] .video-react-controls-enabled.video-react video`,
-    );
+    if (post?.media?.length > 1) {
+      // If the media length > 1, then only we have to pause the video of the current slide when moving to next or previous slide
+      const currentVideo = document.querySelector(
+        `.slick-slide[data-index="${currentSlide}"] .video-react-controls-enabled.video-react video`,
+      );
 
-    currentVideo?.pause();
+      currentVideo?.pause();
+    }
   };
 
   var settings = {
@@ -46,7 +49,7 @@ const PostDetails = ({
 
   // The slider should work when the post details component is loaded
   useEffect(() => {
-    const handleKeyDown = (e) => {
+    const handleKeyDown = async (e) => {
       if (e.key === 'ArrowLeft') {
         // Left arrow should take us to the prev slide
         sliderRef?.slickPrev();
@@ -60,10 +63,16 @@ const PostDetails = ({
         );
 
         if (currentVideo) {
-          if (currentVideo?.paused) {
-            currentVideo?.play();
+          // If the current is a video, then we shall check if the video is paused based on the class name
+          e.preventDefault();
+          if (
+            document.querySelector(
+              '.slick-slide.slick-active.slick-current .video-react-play-control.video-react-paused',
+            )
+          ) {
+            await currentVideo?.play();
           } else {
-            currentVideo?.pause();
+            await currentVideo?.pause();
           }
         }
       }

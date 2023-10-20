@@ -72,16 +72,16 @@ const MediaLayout = ({
       return (
         <div
           key={media.path}
-          className="w-full rounded-lg relative md:border md:border-greymedium flex justify-center items-center min-h-[150px] max-h-[550px]"
+          className="w-full overflow-hidden rounded-lg relative md:border md:border-greymedium flex justify-center items-center min-h-[150px] max-h-[550px]"
         >
           {mediaType === 'photo' ? (
             <img
               src={media[0].url}
-              className="cursor-pointer max-h-[inherit] rounded-lg"
+              className="cursor-pointer max-h-[inherit] rounded-[7px]"
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
-            <div className="relative w-full h-full rounded-lg">
+            <div className="relative w-full h-full overflow-hidden">
               <img
                 src={playButton}
                 alt="playButton"
@@ -89,7 +89,7 @@ const MediaLayout = ({
               />
               <video
                 src={media[0].url}
-                className="w-full cursor-pointer"
+                className="w-full cursor-pointer rounded-[7px]"
                 controls={false}
                 onClick={() => handleClick(customActiveIndex)}
               />
