@@ -308,7 +308,7 @@
 
     .hero-section {
       height: 400px;
-      background-image: url('../../assets/images/herosmall.png');
+      background-image: none;
       .content-box {
         padding-top: 53px;
         padding-left: 36px;
@@ -319,6 +319,7 @@
         }
         .sub-content {
           margin-left: 0;
+          max-width: 85%;
         }
       }
     }
