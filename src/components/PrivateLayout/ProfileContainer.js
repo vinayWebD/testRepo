@@ -19,7 +19,7 @@ const ProfileContainer = () => {
           name={`${userData?.first_name} ${userData?.last_name}`}
         />
 
-        <div className="flex flex-col gap-1 overflow-hidden">
+        <div className="flex flex-col gap-1 overflow-hidden w-full">
           <p className="text-greydark text-[14px] md:text-[20px] font-medium overflow-hidden truncate capitalize">
             {userData?.first_name} {userData?.last_name}
           </p>
@@ -29,7 +29,7 @@ const ProfileContainer = () => {
 
           <Button
             label="View Profile"
-            additionalClassNames="mt-2 pl-0 pr-0"
+            additionalClassNames="mt-2 !px-[10%] xl:text-[15px] lg:text-[14px] lg:w-full xl:w-[90%]"
             showArrowIcon={false}
             onClick={() => navigate(PROFILE)}
           />
