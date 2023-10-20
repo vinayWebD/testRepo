@@ -301,3 +301,8 @@
 .blue-white-gradient {
   background: linear-gradient(187deg, #0071bc, #74afca, #c0dbe7);
 }
+
+.video-react-bezel.video-react-bezel-animation-alt,
+.video-react-bezel.video-react-bezel-animation {
+  display: none !important;
+}
