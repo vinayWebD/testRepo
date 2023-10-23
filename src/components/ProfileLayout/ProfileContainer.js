@@ -35,7 +35,10 @@ const ProfileContainer = ({ userData }) => {
             <img src={mail} alt="mail" className="pr-1" />
             {userData?.email}
           </h6>
-          <div className="font-medium text-[8px] md:text-[10px] leading-3" style={{ color: '#A1A0A0' }}>
+          <div
+            className="font-medium text-[8px] md:text-[10px] leading-3"
+            style={{ color: '#A1A0A0' }}
+          >
             {userData?.description}
           </div>
         </div>
