@@ -42,24 +42,27 @@ const ProfilePage = () => {
                 bottomNotRound={true}
               >
                 <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${tab === 'work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                    }`}
+                  className={`w-[33.3%] p-4 cursor-pointer ${
+                    tab === 'work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+                  }`}
                   onClick={() => setTab('work')}
                   style={{ fontWeight: '500' }}
                 >
                   Work
                 </div>
                 <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${tab === 'interest' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                    }`}
+                  className={`w-[33.3%] p-4 cursor-pointer ${
+                    tab === 'interest' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+                  }`}
                   onClick={() => setTab('interest')}
                   style={{ fontWeight: '500' }}
                 >
                   Interests
                 </div>
                 <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${tab === 'myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                    }`}
+                  className={`w-[33.3%] p-4 cursor-pointer ${
+                    tab === 'myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+                  }`}
                   onClick={() => setTab('myself')}
                   style={{ fontWeight: '500' }}
                 >
