@@ -32,7 +32,7 @@ const PrivateLayout = ({ children }) => {
               <LeftNavigation />
             </Card>
           </div>
-          <div className="col-span-12 md:col-span-8 lg:col-span-6 overflow-y-auto md:py-[14px]">
+          <div className="col-span-12 md:col-span-8 lg:col-span-6 overflow-y-auto md:py-[14px] mb-[60px] md:mb-0">
             {children}
 
             <MobileBottomNavigation />
