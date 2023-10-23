@@ -247,7 +247,7 @@ const HomePage = () => {
         padding="p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[calc(100vh-60px)] md:h-auto"
+        height="h-[calc(100vh-120px)] md:h-auto"
       >
         <CreatePostLayout
           closePopupHandler={() => {
