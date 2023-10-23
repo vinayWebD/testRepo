@@ -247,7 +247,7 @@ const HomePage = () => {
         padding="p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[100vh] max-h-[100vh] max-h[-webkit-fill-available] md:h-auto"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
         <CreatePostLayout
           closePopupHandler={() => {
@@ -268,7 +268,7 @@ const HomePage = () => {
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[100vh] max-h-[100vh] max-h[-webkit-fill-available] md:h-auto"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
         <PostDetails
           post={activePost}
