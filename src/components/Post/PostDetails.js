@@ -104,7 +104,7 @@ const PostDetails = ({
       >
         <CloseIcon fill={'#ffffff'} />
       </div>
-      <div className="w-full md:w-[65%] relative bg-greydark min-h-[50vh] max-h-[65vh] md:max-h-none md:min-h-full">
+      <div className="w-full md:w-[65%] relative bg-greydark min-h-[50dvh] max-h-[65dvh] md:max-h-none md:min-h-full">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
             return (
