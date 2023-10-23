@@ -97,14 +97,14 @@ const PostDetails = ({
   }, []);
 
   return (
-    <div className="post-details flex flex-col md:flex-row h-100dvh max-h-[100dvh] md:min-h-[65vh] md:max-h-[75vh] relative">
+    <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh] md:min-h-[65vh] md:max-h-[75vh] relative">
       <div
         className="flex md:hidden bg-[#fefefe1a] rounded-full justify-end p-3 absolute right-[10px] top-1 z-10"
         onClick={onCloseHandler}
       >
         <CloseIcon fill={'#ffffff'} />
       </div>
-      <div className="w-full md:w-[65%] relative bg-greydark min-h-[50dvh] max-h-[65dvh] md:max-h-none md:min-h-full overflow-hidden">
+      <div className="w-full md:w-[65%] relative bg-greydark min-h-[50dvh] max-h-[65dvh] md:max-h-none md:min-h-full">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
           {post?.media.map(({ url, path }, _i) => {
             return (
@@ -118,8 +118,8 @@ const PostDetails = ({
                 {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
                   <img src={url} />
                 ) : (
-                  <Player>
-                    <source src={url} className="video-preview" />
+                  <Player className="w-full h-full !p-0">
+                    <source src={url} className="w-full h-full video-preview" />
                     <BigPlayButton
                       position="center"
                       className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !left-[45%] !ml-0"

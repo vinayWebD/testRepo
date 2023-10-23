@@ -18,24 +18,6 @@ const App = () => {
     }
   }, [localStorage.getItem('token')]);
 
-  useEffect(() => {
-    const setVhVariable = () => {
-      document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
-      console.log('---->>window.innerHeight * 0.01', window.innerHeight * 0.01);
-    };
-
-    window.addEventListener('resize', setVhVariable);
-    window.addEventListener('orientationchange', setVhVariable);
-
-    // Initial set
-    setVhVariable();
-
-    return () => {
-      window.removeEventListener('resize', setVhVariable);
-      window.removeEventListener('orientationchange', setVhVariable);
-    };
-  }, []);
-
   if (globalLoading) {
     return <MultiColorLoader />; // Or a loading spinner component
   }

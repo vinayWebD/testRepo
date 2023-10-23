@@ -81,7 +81,7 @@ const MediaLayout = ({
               onClick={() => handleClick(customActiveIndex)}
             />
           ) : (
-            <div className="relative w-full h-full overflow-hidden">
+            <div className="relative w-full h-full max-h-[inherit] overflow-hidden">
               <img
                 src={playButton}
                 alt="playButton"
@@ -89,7 +89,7 @@ const MediaLayout = ({
               />
               <video
                 src={media[0].url}
-                className="w-full cursor-pointer rounded-[7px]"
+                className="w-full cursor-pointer max-h-[inherit] rounded-[7px]"
                 controls={false}
                 onClick={() => handleClick(customActiveIndex)}
               />
