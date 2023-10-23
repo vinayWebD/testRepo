@@ -210,7 +210,7 @@ const CreatePostLayout = ({
 
   return (
     <div className="relative">
-      <div className="h-[calc(77vh-120px)] max-h-[calc(77vh-120px)] md:h-auto md:max-h-[70vh] overflow-y-auto">
+      <div className="h-[calc(80vh-120px)] max-h-[calc(80vh-120px)] md:h-auto md:max-h-[70vh] overflow-y-auto">
         <div className="relative px-[18px] flex flex-col gap-2">
           <EmojiTextarea
             placeholder={LANG_TEXT_AREA_PLACEHOLDER}
