@@ -33,7 +33,7 @@ module.exports = {
         customGray: 'rgba(161, 160, 160, 0.50)',
       },
       height: {
-        screenHeight: 'cal(100vh - 300px)',
+        screenHeight: 'calc(100vh - 300px)',
       },
     },
   },
