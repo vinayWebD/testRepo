@@ -13,12 +13,17 @@ import { useNavigate } from 'react-router-dom';
 import WorkDetail from './WorkDetail';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import InterestDetail from './InterestDetail';
+import useScrollToTop from '../../hooks/useScrollToTop';
 
 const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   // const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState('work');
   const navigate = useNavigate();
+
+  // Scrolling to top whenever user comes on this page for the first time
+  useScrollToTop();
+
   return (
     <ProfileLayout>
       <div className="col-span-10 md:col-span-12 xs:col-span-12 sm:col-span-12 lg:col-span-4 xl:col-span-3 lg:sticky top-[61px] z-40 lg:h-fit	">

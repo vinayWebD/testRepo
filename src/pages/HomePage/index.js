@@ -21,6 +21,7 @@ import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 import { PAGE_SIZE } from '../../constants/constants';
 import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 import PostSkeleton from '../../components/common/PostSkeleton';
+import useScrollToTop from '../../hooks/useScrollToTop';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -38,6 +39,9 @@ const HomePage = () => {
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
   const loaderRef = useRef(null);
   const hasUserScrolled = useWindowScrolledDown();
+
+  // Scrolling to top whenever user comes on this page for the first time
+  useScrollToTop();
 
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
 
