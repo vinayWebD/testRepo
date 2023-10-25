@@ -6,6 +6,8 @@ import LikeFilledIcon from '../Icons/LikeFilledIcon';
 import CommentInput from './CommentInput';
 import { likePost, unlikePost } from '../../services/feed';
 import { successStatus } from '../../common';
+import CommentLayout from './CommentLayout';
+import DownCaret from '../Icons/DownCaret';
 
 const ActionButtons = ({
   isLikedByMe = false,
@@ -94,6 +96,15 @@ const ActionButtons = ({
         <>
           <div className="mt-7">
             <CommentInput />
+          </div>
+          <div className="mt-3">
+            <CommentLayout />
+            <CommentLayout />
+
+            <div className="flex gap-1 mt-3 cursor-pointer hover:opacity-70">
+              <p className="text14 text-greydark">Load more comments</p>{' '}
+              <DownCaret fill="#A1A0A0" />
+            </div>
           </div>
         </>
       ) : (

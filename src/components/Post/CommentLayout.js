@@ -9,7 +9,7 @@ const CommentLayout = () => {
       <Avatar name="A" classNames="w-[40px] h-[40px]" />
       <div className="relative flex flex-col justify-center gap-1 p-2 bg-whitelight rounded-lg">
         <div className="flex justify-between items-center">
-          <div className="text-[16px] font-semibold text-greydark">Anna</div>
+          <div className="text14 font-semibold text-greydark">Anna</div>
           <div className="flex items-center justify-center gap-4">
             <p className="text-xs text-greylight">2 hours</p>
             <div className="w-[20px] relative top-1">
@@ -20,7 +20,7 @@ const CommentLayout = () => {
           </div>
         </div>
 
-        <div className="text-[13px] lg:text-[16px] text-greydark">
+        <div className="text-[13px] lg:text14 text-greydark">
           {`Ready to make a difference in the world as a UX designer? 🌎 Our new course, "Design for a
           Better World,".,`}
         </div>
