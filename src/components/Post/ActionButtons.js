@@ -67,7 +67,7 @@ const ActionButtons = ({
           onClick={likeOrUnlikeClickHandler}
         >
           {_isLikedByMe ? <LikeFilledIcon /> : <LikeEmptyIcon />}
-          <p className={`text-16 text-greylight ${_isLikedByMe ? 'font-bold' : ''}`}>
+          <p className={`text16 text-greylight ${_isLikedByMe ? 'font-bold' : ''}`}>
             {_likeCount || undefined} {_likeCount <= 1 ? 'Like' : 'Likes'}
           </p>
         </div>
@@ -77,23 +77,25 @@ const ActionButtons = ({
           onClick={commentClickHandler}
         >
           <CommentIcon />
-          <p className="text-16 text-greylight">
+          <p className="text16 text-greylight">
             {commentCount || undefined} {commentCount <= 1 ? 'Comment' : 'Comments'}
           </p>
         </div>
 
         <div className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70">
           <ShareIcon />
-          <p className="text-16 text-greylight">
+          <p className="text16 text-greylight">
             {shareCount || undefined} {shareCount <= 1 ? 'Share' : 'Shares'}
           </p>
         </div>
       </div>
 
       {isCommentSectionOpen ? (
-        <div className="mt-7">
-          <CommentInput />
-        </div>
+        <>
+          <div className="mt-7">
+            <CommentInput />
+          </div>
+        </>
       ) : (
         ''
       )}

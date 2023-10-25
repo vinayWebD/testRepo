@@ -131,7 +131,7 @@ const HomePage = () => {
           <Card classNames="p-5">
             <div className="">
               <div
-                className="cursor-pointer flex gap-3 items-center pt-4 pb-6 border-0 border-b-[1px] border-b-greymedium hover:opacity-70"
+                className="cursor-pointer flex gap-3 items-center pt-1 pb-3 lg:pt-4 lg:pb-6 border-0 border-b-[1px] border-b-greymedium hover:opacity-70"
                 onClick={() => handleOpenPopup('caption')}
               >
                 <Avatar
@@ -139,25 +139,25 @@ const HomePage = () => {
                   image={userData.profile_picture_url}
                   classNames="w-[40px] h-[40px]"
                 />
-                <p className="text-greylight">{LANG_WRITE_SOMETHING}</p>
+                <p className="text-greylight text16">{LANG_WRITE_SOMETHING}</p>
               </div>
-              <div className="flex md:gap-14 mt-3 pt-3 pb-2 justify-between md:justify-normal">
+              <div className="flex md:gap-14 mt-3 pt-2 pb-1 lg:pt-3 lg:pb-2 justify-between md:justify-normal text16">
                 <div
-                  className="flex gap-2 cursor-pointer hover:opacity-70"
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-70"
                   onClick={() => handleOpenPopup('photo')}
                 >
                   <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
                 </div>
 
                 <div
-                  className="flex gap-2 cursor-pointer hover:opacity-70"
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-70"
                   onClick={() => handleOpenPopup('video')}
                 >
                   <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
                 </div>
 
                 <div
-                  className="flex gap-2 cursor-pointer hover:opacity-70"
+                  className="flex items-center gap-2 cursor-pointer hover:opacity-70"
                   onClick={() => handleOpenPopup('link')}
                 >
                   <LinkIcon /> <p>{BTNLBL_LINK}</p>

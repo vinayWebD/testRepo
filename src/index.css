@@ -30,6 +30,9 @@
   textarea {
     @apply border border-greymedium p-4 rounded-lg resize-none;
   }
+  .text16 {
+    @apply text-[14px] lg:text-[16px];
+  }
 }
 
 @import 'tailwindcss/components';
