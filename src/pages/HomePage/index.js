@@ -20,7 +20,7 @@ import PostDetails from '../../components/Post/PostDetails';
 import UpChevronFilled from '../../components/Icons/UpChevronFilled';
 import { PAGE_SIZE } from '../../constants/constants';
 import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
-// import PostSkeleton from '../../components/common/PostSkeleton';
+import PostSkeleton from '../../components/common/PostSkeleton';
 import useScrollToTop from '../../hooks/useScrollToTop';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
@@ -126,7 +126,7 @@ const HomePage = () => {
 
   return (
     <PrivateLayout>
-      <div className="grid grid-cols-12 gap-5 feed-page min-h-[100vh]">
+      <div className="grid grid-cols-12 gap-5 feed-page overflow-y-hidden">
         <div className="col-span-12">
           <Card classNames="p-5">
             <div className="">
@@ -218,7 +218,7 @@ const HomePage = () => {
               );
             })}
 
-            {/* {isLoading
+            {isLoading
               ? ['', ''].map((i, _i) => (
                   <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
                     <span className="flex gap-2">
@@ -228,14 +228,13 @@ const HomePage = () => {
                     </span>
                   </Card>
                 ))
-              : ''} */}
+              : ''}
 
             {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
             {!allPostsLoaded && (
               <div ref={loaderRef} className="loading-more-indicator">
                 <span className="flex gap-2">
                   <span className="flex gap-2 w-full justify-center items-center"></span>
-                  {isLoading && 'Loading....'}
                 </span>
               </div>
             )}
