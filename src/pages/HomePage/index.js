@@ -126,7 +126,7 @@ const HomePage = () => {
 
   return (
     <PrivateLayout>
-      <div className="grid grid-cols-12 gap-5 feed-page min-h-[100dvh]">
+      <div className="grid grid-cols-12 gap-5 feed-page min-h-[100dvh] max-h-max">
         <div className="col-span-12">
           <Card classNames="p-5">
             <div className="">
