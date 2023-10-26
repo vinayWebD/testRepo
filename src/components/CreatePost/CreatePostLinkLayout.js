@@ -109,7 +109,9 @@ const CreatePostLinkLayout = ({
             >
               <div className="flex gap-1 text-blueprimary text-sm mt-4">
                 <img src={InputLinkImage} />
-                <a href={link}>{link}</a>
+                <a href={link} className="break-all">
+                  {link}
+                </a>
               </div>
 
               <div onClick={() => handleRemoveLink(_i)} className="cursor-pointer">
