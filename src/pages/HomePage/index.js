@@ -126,7 +126,7 @@ const HomePage = () => {
 
   return (
     <PrivateLayout>
-      <div className="grid grid-cols-12 gap-5 feed-page overflow-y-hidden">
+      <div className="grid grid-cols-12 gap-5 feed-page">
         <div className="col-span-12">
           <Card classNames="p-5">
             <div className="">
