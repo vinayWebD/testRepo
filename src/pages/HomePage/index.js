@@ -6,7 +6,7 @@ import PhotoIcon from '../../components/Icons/PhotoIcon';
 import VideoIcon from '../../components/Icons/VideoIcon';
 import LinkIcon from '../../components/Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
 import { fetchPostDetails, fetchPosts } from '../../services/feed';
@@ -37,7 +37,6 @@ const HomePage = () => {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
-  const loaderRef = useRef(null);
   const hasUserScrolled = useWindowScrolledDown();
 
   // Scrolling to top whenever user comes on this page for the first time
@@ -45,31 +44,9 @@ const HomePage = () => {
 
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
 
-  // This is for the infinite scroll pagination
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: '20px',
-      threshold: 1,
-    });
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
-      }
-    };
-  }, [loaderRef, posts]);
-
-  const handleObserver = (entities) => {
-    const target = entities[0];
-
-    if (target.isIntersecting && target.intersectionRatio > 0.9) {
-      fetchAllPosts(currentPage);
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
+  const handleObserver = () => {
+    fetchAllPosts(currentPage);
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   const handleOpenPopup = (type) => {
@@ -231,13 +208,7 @@ const HomePage = () => {
               : ''}
 
             {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
-            {!allPostsLoaded && (
-              <div ref={loaderRef} className="loading-more-indicator">
-                <span className="flex gap-2">
-                  <span className="flex gap-2 w-full justify-center items-center"></span>
-                </span>
-              </div>
-            )}
+            {!allPostsLoaded && <p onClick={() => handleObserver()}>Load More</p>}
           </div>
         </div>
       </div>
