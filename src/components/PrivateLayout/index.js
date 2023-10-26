@@ -37,7 +37,7 @@ const PrivateLayout = ({ children }) => {
 
             <MobileBottomNavigation />
           </div>
-          <div className="hidden md:block col-span-3 py-[14px] h-fit sticky top-[61px] z-40">
+          <div className="hidden md:block col-span-3 py-[14px] sticky top-[61px] z-40">
             <NotificationSection />
           </div>
         </div>
