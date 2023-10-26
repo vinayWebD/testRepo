@@ -90,13 +90,13 @@ function ConfirmationModal({
               label={secondaryButtonTitle}
               onClick={secondaryButtonAction}
               isIcon={false}
-              additionalClassNames="!h-[40px] !text16 w-[33%] !text-center justify-center"
+              additionalClassNames="!h-[40px] !text16 !w-[33%] !text-center justify-center"
             />
             <Button
               label={primaryButtonTitle}
               onClick={primaryButtonAction}
               showArrowIcon={false}
-              additionalClassNames="!h-[40px] w-[33%] !px-[30px] !py-2 !text16"
+              additionalClassNames="!h-[40px] !w-[33%] !px-[30px] !py-2 !text16"
             />
           </div>
         </div>

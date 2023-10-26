@@ -33,12 +33,7 @@ function InterestDetail() {
         </div>
       </div>
       <div className="text-center mx-auto flex mb-3 p-4 justify-end">
-        <OutlinedButton
-          label={'Add Interests'}
-          additionalClassNames="mt-2 pl-0 pr-0 w-fit"
-          showArrowIcon={false}
-          add
-        />
+        <OutlinedButton label={'Add Interests'} showArrowIcon={false} add />
       </div>
       <div>
         <div className="flex items-center justify-between">

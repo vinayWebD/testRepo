@@ -87,12 +87,7 @@ const ProfilePage = () => {
                       It helps people quickly identify your many talents.
                     </h5>
                     <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton
-                        label={'Add'}
-                        additionalClassNames="mt-2 pl-0 pr-0 w-fit"
-                        showArrowIcon={false}
-                        add
-                      />
+                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
                     </div>
                   </Card>
                 </>
@@ -105,12 +100,7 @@ const ProfilePage = () => {
                       No Interests added yet.
                     </h4>
                     <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton
-                        label={'Add Interests'}
-                        additionalClassNames="mt-2 pl-0 pr-0 w-fit"
-                        showArrowIcon={false}
-                        add
-                      />
+                      <OutlinedButton label={'Add Interests'} showArrowIcon={false} add />
                     </div>
                   </Card>
                 </>
@@ -125,12 +115,7 @@ const ProfilePage = () => {
                       It helps people quickly identify your many talents.
                     </h5>
                     <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton
-                        label={'Add'}
-                        additionalClassNames="mt-2 pl-0 pr-0 w-fit"
-                        showArrowIcon={false}
-                        add
-                      />
+                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
                     </div>
                   </Card>
                 </>

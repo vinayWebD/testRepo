@@ -27,12 +27,7 @@ function WorkDetail() {
         creativity with strategic goals.
       </div>
       <div className="text-center mx-auto flex mt-2">
-        <OutlinedButton
-          label={'Add Career'}
-          additionalClassNames="mt-2 pl-0 pr-0 w-fit"
-          showArrowIcon={false}
-          add
-        />
+        <OutlinedButton label={'Add Career'} showArrowIcon={false} add />
       </div>
     </Card>
   );

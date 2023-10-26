@@ -7,7 +7,7 @@ const OutlinedButton = ({
   isIcon = true,
   isSkip = false,
   isDelete = false,
-  add,
+  add = false,
   additionalClassNames = '',
   ...props
 }) => {
@@ -21,7 +21,7 @@ const OutlinedButton = ({
   return (
     <button
       disabled={disabled}
-      className={`outlined-btn rounded-full py-2 px-[20px] items-center space-x-2 hover: focus:outline-none flex
+      className={`outlined-btn rounded-full py-2 px-[20px] flex items-center space-x-2 hover: focus:outline-none flex
       ${disabled ? 'cursor-not-allowed border-2 border-greymedium text-greymedium' : ''}
       ${isSkip || isDelete ? 'border-none' : 'text-blueprimary border-2 border-blueprimary'}
       ${isSkip ? 'text-greydark' : ''}
@@ -33,14 +33,14 @@ const OutlinedButton = ({
       {renderIcon()}
       {add ? (
         <span>
-          <img src={addIcon} alt="add" />
+          <img src={addIcon} alt="add" />{' '}
         </span>
       ) : (
         ''
       )}
+
       <span>{label}</span>
     </button>
   );
 };
-
 export default OutlinedButton;
