@@ -309,11 +309,3 @@
 .video-react-bezel.video-react-bezel-animation {
   display: none !important;
 }
-
-html,
-body {
-  transform: translate3d(0, 0, 0);
-  -webkit-transform: translate3d(0, 0, 0);
-  perspective: 1000;
-  -webkit-perspective: 1000;
-}
