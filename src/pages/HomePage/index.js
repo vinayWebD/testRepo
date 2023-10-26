@@ -126,7 +126,7 @@ const HomePage = () => {
 
   return (
     <PrivateLayout>
-      <div className="grid grid-cols-12 gap-5 feed-page min-h-[100dvh] max-h-max">
+      <div className="grid grid-cols-12 gap-5 feed-page overflow-y-hidden">
         <div className="col-span-12">
           <Card classNames="p-5">
             <div className="">
@@ -218,15 +218,6 @@ const HomePage = () => {
               );
             })}
 
-            {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
-            {!allPostsLoaded && (
-              <div ref={loaderRef} className="loading-more-indicator">
-                <span className="flex gap-2">
-                  <span className="flex gap-2 w-full justify-center items-center"></span>
-                </span>
-              </div>
-            )}
-
             {isLoading
               ? ['', ''].map((i, _i) => (
                   <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
@@ -238,6 +229,15 @@ const HomePage = () => {
                   </Card>
                 ))
               : ''}
+
+            {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
+            {!allPostsLoaded && (
+              <div ref={loaderRef} className="loading-more-indicator">
+                <span className="flex gap-2">
+                  <span className="flex gap-2 w-full justify-center items-center"></span>
+                </span>
+              </div>
+            )}
           </div>
         </div>
       </div>
