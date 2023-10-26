@@ -23,7 +23,7 @@ const PrivateLayout = ({ children }) => {
 
         <div className="px-0 md:px-[5%] mt-[61px] flex-grow grid grid-cols-12 gap-5 ">
           {/* This is a common sidebar that should be on all private authenticated pages */}
-          <div className="hidden md:block col-span-2 md:col-span-1 lg:col-span-3 sticky top-[61px] z-40 py-[14px] h-fit">
+          <div className="hidden md:block col-span-2 md:col-span-1 lg:col-span-3 sticky top-[61px] z-40 py-[14px]">
             {/* The profile info - image, name etc. */}
             <ProfileContainer />
 
@@ -32,7 +32,7 @@ const PrivateLayout = ({ children }) => {
               <LeftNavigation />
             </Card>
           </div>
-          <div className="col-span-12 md:col-span-8 overflow-y-auto lg:col-span-6 md:py-[14px] mb-[60px] md:mb-0">
+          <div className="col-span-12 md:col-span-8 min-h-screen overflow-y-auto lg:col-span-6 md:py-[14px] mb-[60px] md:mb-0">
             {children}
 
             <MobileBottomNavigation />
