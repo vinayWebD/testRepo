@@ -190,6 +190,7 @@ const HomePage = () => {
                     createdAt={post?.created_at}
                     creatorName={post?.created_by}
                     creatorProfilePicUrl={post?.profile_image_url}
+                    isCreatedByMe={false}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">

@@ -43,12 +43,13 @@ const CommentInput = ({ onChange = () => {} }) => {
         <Avatar
           name={`${userData?.first_name} ${userData?.last_name}`}
           image={userData?.profile_picture_url}
+          classNames="w-[37px] h-[37px]"
         />
         <div className="flex w-full">
           <textarea
             value={value}
             placeholder={'Write a comment'}
-            className="p-[9px] min-h-10 outline-none w-full border-2 !border-r-0 rounded-r-none border-greymedium text-sm text-greylight bg-white"
+            className="p-[9px] min-h-10 outline-none w-full border-2 !border-r-0 rounded-r-none border-greylighter text-sm  placeholder:text-greylight bg-white"
             onChange={(e) => onChangeHandler(e)}
             autoComplete={'true'}
             rows={1}
@@ -56,7 +57,7 @@ const CommentInput = ({ onChange = () => {} }) => {
             ref={textareaRef}
           />
           <div
-            className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greymedium ${
+            className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greylighter ${
               !value ? 'cursor-not-allowed' : 'cursor-pointer'
             }`}
             onClick={() => {}}

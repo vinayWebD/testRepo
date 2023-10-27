@@ -50,29 +50,31 @@ const PostDetails = ({
   // The slider should work when the post details component is loaded
   useEffect(() => {
     const handleKeyDown = async (e) => {
-      if (e.key === 'ArrowLeft') {
-        // Left arrow should take us to the prev slide
-        sliderRef?.slickPrev();
-      } else if (e.key === 'ArrowRight') {
-        // Right arrow should take us to the next slide
-        sliderRef?.slickNext();
-      } else if (e.key === 'Space' || e.key === ' ') {
-        // If the current slide consists of video, then we shall play or pause it on the basis of Space key
-        const currentVideo = document.querySelector(
-          '.slick-slide.slick-active.slick-current .video-react-controls-enabled.video-react video',
-        );
+      if (e?.target?.tagName?.toLowerCase() !== 'textarea') {
+        if (e.key === 'ArrowLeft') {
+          // Left arrow should take us to the prev slide
+          sliderRef?.slickPrev();
+        } else if (e.key === 'ArrowRight') {
+          // Right arrow should take us to the next slide
+          sliderRef?.slickNext();
+        } else if (e.key === 'Space' || e.key === ' ') {
+          // If the current slide consists of video, then we shall play or pause it on the basis of Space key
+          const currentVideo = document.querySelector(
+            '.slick-slide.slick-active.slick-current .video-react-controls-enabled.video-react video',
+          );
 
-        if (currentVideo) {
-          // If the current is a video, then we shall check if the video is paused based on the class name
-          e.preventDefault();
-          if (
-            document.querySelector(
-              '.slick-slide.slick-active.slick-current .video-react-play-control.video-react-paused',
-            )
-          ) {
-            await currentVideo?.play();
-          } else {
-            await currentVideo?.pause();
+          if (currentVideo) {
+            // If the current is a video, then we shall check if the video is paused based on the class name
+            e.preventDefault();
+            if (
+              document.querySelector(
+                '.slick-slide.slick-active.slick-current .video-react-play-control.video-react-paused',
+              )
+            ) {
+              await currentVideo?.play();
+            } else {
+              await currentVideo?.pause();
+            }
           }
         }
       }
@@ -92,6 +94,7 @@ const PostDetails = ({
         creatorName={post?.created_by}
         creatorProfilePicUrl={post?.profile_image_url}
         showThreeDots={false}
+        isCreatedByMe={false}
       />
     );
   }, []);
