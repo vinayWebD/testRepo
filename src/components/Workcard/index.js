@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const WorkCard = ({ titleLeft, titleRight, content }) => {
   return (
     <div className="work-card-wrap">
-      <div className="card-title mb-[35px]">
+      <div className="card-title">
         <span className="left mr-1">{titleLeft}</span>
         <span className="right">{titleRight}</span>
       </div>

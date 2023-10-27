@@ -289,7 +289,7 @@ export default function LandingPage() {
             <div style={{ zIndex: 60 }}>
               <div>
                 <div className="footer-link-heading">{LANG_HOMEPAGE_CONNECT}</div>
-                <div className="flex gap-6 items-center mt-5 pb-8">
+                <div className="flex gap-6 icon-gap items-center mt-5 pb-8">
                   <div className="social-links">
                     <a
                       href="https://www.linkedin.com/company/purdriven/"
