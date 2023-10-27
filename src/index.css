@@ -33,6 +33,9 @@
   .text16 {
     @apply text-[14px] lg:text-[16px];
   }
+  .text14 {
+    @apply text-[12px] lg:text-[14px];
+  }
 }
 
 @import 'tailwindcss/components';

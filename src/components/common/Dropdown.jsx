@@ -1,7 +1,13 @@
 import React, { useState, useRef } from 'react';
 import DownCaret from '../Icons/DownCaret';
 
-const Dropdown = ({ options = [{}], IconComponent = () => <DownCaret /> }) => {
+const Dropdown = ({
+  options = [{}],
+  IconComponent = () => <DownCaret />,
+  parentClassName = '',
+  optionsClassName = '',
+  optionItemClassName = '',
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
@@ -19,14 +25,14 @@ const Dropdown = ({ options = [{}], IconComponent = () => <DownCaret /> }) => {
   }, []);
 
   return (
-    <div ref={dropdownRef} className="relative inline-block text-left">
+    <div ref={dropdownRef} className={`relative inline-block text-left ${parentClassName}`}>
       <button onClick={() => setIsOpen(!isOpen)}>
         <IconComponent />
       </button>
 
       {isOpen && (
         <div
-          className="origin-top-right absolute right-0 mt-2 w-48 rounded-sm dropdown bg-white z-10"
+          className={`origin-top-right absolute right-0 mt-2 w-48 rounded-sm dropdown bg-white z-10 ${optionsClassName}`}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="menu-button"
@@ -36,7 +42,7 @@ const Dropdown = ({ options = [{}], IconComponent = () => <DownCaret /> }) => {
             {options.map(({ name, action }, index) => (
               <button
                 key={index}
-                className="border-b-[1px] border-greymedium border-opacity-50 last:border-0 text-left block px-6 py-3 text-sm font-medium text-greydark hover:bg-gray-100 hover:text-gray-900 w-full"
+                className={`border-b-[1px] border-greymedium border-opacity-50 last:border-0 text-left block px-6 py-3 text-sm font-medium text-greydark hover:bg-gray-100 hover:text-gray-900 w-full ${optionItemClassName}`}
                 role="menuitem"
                 tabIndex="-1"
                 onClick={action}

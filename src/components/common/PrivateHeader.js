@@ -12,6 +12,8 @@ import AddFriendIcon from '../Icons/AddFriendIcon';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import SearchIcon from '../Icons/SearchIcon';
+import ConfirmationModal from '../Modal/ConfirmationModal';
+import { useState } from 'react';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
@@ -33,6 +35,7 @@ const PrivateHeader = () => {
   const navigate = useNavigate();
   const { searchValue = '' } = useSelector((state) => state?.appSearch || {});
   const userData = useSelector((state) => state?.auth?.user) || {};
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
 
   const searchInputChangeHandler = (val) => {
     dispatch(updateSearch({ searchValue: val }));
@@ -41,7 +44,7 @@ const PrivateHeader = () => {
   const OPTIONS = [
     {
       name: DDLBL_LOGOUT,
-      action: () => dispatch(logoutDispatcher()),
+      action: () => setIsLogoutModalOpen(true),
     },
   ];
 
@@ -70,6 +73,17 @@ const PrivateHeader = () => {
         }
 
         <AddFriendIcon />
+        <ConfirmationModal
+          title={DDLBL_LOGOUT}
+          isOpen={isLogoutModalOpen}
+          onClose={() => setIsLogoutModalOpen(false)}
+          primaryButtonTitle="No"
+          primaryButtonAction={() => setIsLogoutModalOpen(false)}
+          secondaryButtonTitle="Yes"
+          secondaryButtonAction={() => dispatch(logoutDispatcher())}
+        >
+          Are you sure you want to logout?
+        </ConfirmationModal>
 
         <Dropdown options={OPTIONS} IconComponent={() => <DropDownParent userData={userData} />} />
       </div>

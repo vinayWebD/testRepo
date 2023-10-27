@@ -7,7 +7,8 @@ const OutlinedButton = ({
   isIcon = true,
   isSkip = false,
   isDelete = false,
-  add,
+  add = false,
+  additionalClassNames = '',
   ...props
 }) => {
   const renderIcon = () => {
@@ -25,14 +26,21 @@ const OutlinedButton = ({
       ${isSkip || isDelete ? 'border-none' : 'text-blueprimary border-2 border-blueprimary'}
       ${isSkip ? 'text-greydark' : ''}
       ${isDelete ? 'text-deleteRed' : ''}
+      ${additionalClassNames}
       `}
       {...props}
     >
       {renderIcon()}
-      <span>{add ? <img src={addIcon} alt="add" /> : ''}</span>
+      {add ? (
+        <span>
+          <img src={addIcon} alt="add" />{' '}
+        </span>
+      ) : (
+        ''
+      )}
+
       <span>{label}</span>
     </button>
   );
 };
-
 export default OutlinedButton;

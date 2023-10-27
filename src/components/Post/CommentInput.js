@@ -56,10 +56,14 @@ const CommentInput = ({ onChange = () => {} }) => {
             ref={textareaRef}
           />
           <div
-            className="px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greymedium"
+            className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greymedium ${
+              !value ? 'cursor-not-allowed' : 'cursor-pointer'
+            }`}
             onClick={() => {}}
           >
-            <SendIcon />
+            <div className={`${!value ? 'opacity-60' : ''}`}>
+              <SendIcon />
+            </div>
           </div>
         </div>
       </div>
