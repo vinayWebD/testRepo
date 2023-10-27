@@ -1,30 +1,52 @@
-import React, { memo } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import Avatar from '../common/Avatar';
 import Dropdown from '../common/Dropdown';
 import ThreeDots from '../Icons/ThreeDots';
 import timeSpan from '../../utils/timeSpan';
-
-const OPTIONS = [
-  {
-    name: 'Report',
-    action: () => {},
-  },
-  {
-    name: 'Save',
-    action: () => {},
-  },
-  {
-    name: 'Hide',
-    action: () => {},
-  },
-];
 
 const Header = ({
   createdAt = '',
   creatorName = '',
   creatorProfilePicUrl = '',
   showThreeDots = true,
+  isCreatedByMe = false,
 }) => {
+  const [options, setOptions] = useState([]);
+
+  useEffect(() => {
+    if (isCreatedByMe) {
+      setOptions([
+        {
+          name: 'Edit',
+          action: () => {},
+        },
+        {
+          name: 'Delete',
+          action: () => {},
+        },
+        {
+          name: 'Copy link',
+          action: () => {},
+        },
+      ]);
+    } else {
+      setOptions([
+        {
+          name: 'Report',
+          action: () => {},
+        },
+        {
+          name: 'Unfollow',
+          action: () => {},
+        },
+        {
+          name: 'Copy link',
+          action: () => {},
+        },
+      ]);
+    }
+  }, [isCreatedByMe]);
+
   return (
     <div className="flex gap-2 items-center">
       <Avatar
@@ -39,7 +61,7 @@ const Header = ({
 
       {showThreeDots && (
         <div className="ml-auto cursor-pointer">
-          <Dropdown options={OPTIONS} IconComponent={() => <ThreeDots />} />
+          <Dropdown options={options} IconComponent={() => <ThreeDots />} />
         </div>
       )}
     </div>

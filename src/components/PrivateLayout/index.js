@@ -15,7 +15,7 @@ const PrivateLayout = ({ children }) => {
   return (
     <div>
       <div
-        className="flex w-full flex-col bg-fixed bg-bottom bg-cover"
+        className="flex w-full flex-col bg-fixed bg-bottom bg-contain lg:bg-cover bg-no-repeat"
         style={{ backgroundImage: `url(${Background})` }}
       >
         {/* The header component */}

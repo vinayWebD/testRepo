@@ -11,6 +11,7 @@ module.exports = {
       greylight: '#A1A0A0',
       greymedium: '#D1D1D1',
       greydark: '#333333',
+      greylighter: '#E3E6EB',
       red: '#FF0000',
       hyperlink: '#70BAFF',
       bluebg: '#F8FCFF',
