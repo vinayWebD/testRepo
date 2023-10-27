@@ -44,6 +44,9 @@
           font-style: normal;
           font-weight: 500;
           line-height: 24px;
+          @media screen and (max-width: 600px) {
+          font-size: 12px;
+          }
         }
         .vertical-divider {
           width: 2px;
@@ -77,6 +80,9 @@
         font-style: normal;
         font-weight: 600;
         line-height: 60px;
+         @media screen and (max-width: 1000px) {
+          font-size: 32px;
+          }
          @media screen and (max-width: 600px) {
           font-size: 28px;
         }
@@ -125,6 +131,9 @@
       font-style: normal;
       font-weight: 600;
       line-height: 60px;
+      @media screen and (max-width: 1000px) {
+          font-size: 32px;
+      }
     }
     .content {
       max-width: 676px;
@@ -146,6 +155,9 @@
       font-style: normal;
       font-weight: 600;
       line-height: 60px; /* 125% */
+      @media screen and (max-width: 1000px) {
+        font-size: 32px;
+      }
     }
     .name {
       color: #fff;
@@ -154,7 +166,7 @@
       font-style: normal;
       font-weight: 600;
       line-height: normal;
-      @media screen and (max-width: 600px) {
+      @media screen and (max-width: 1000px) {
         margin-top: 10px;
         font-size: 22px;
       }
@@ -219,6 +231,9 @@
         line-height: 33px;
         max-width: 424px;
         margin-bottom: 2.5rem;
+        @media screen and (max-width: 1000px) {
+          max-width: 100%;
+        }
         @media screen and (max-width: 600px) {
          font-size: 20px;
          line-height: 30px;
@@ -269,7 +284,12 @@
   .landing-footer-img {
     mix-blend-mode: luminosity;
     @media screen and (max-width: 1000px) {
-      opacity: 0.3;
+      opacity: 0.5;
+    }
+    @media screen and (max-width: 600px) {
+      opacity: 1;
+        width: 150px;
+        margin-bottom: 72px;
     }
   }
   .copyright {
@@ -282,7 +302,7 @@
   }
   .icon-gap{
     @media screen and (max-width: 600px) {
-          gap: 3em !important;
+          gap: 2.5em !important;
         }
   }
   .social-links {
@@ -391,6 +411,7 @@
         padding-top: 50px;
         font-size: 28px;
         line-height: 34px;
+       
         @media screen and (max-width: 600px) {
           padding-top: 30px;
         }
@@ -428,6 +449,7 @@
       margin: 0 !important;
     }
     .footer-section {
+      padding-top: 1px;
       .footer-logo {
         padding: 0 36px;
       }
@@ -446,7 +468,7 @@
         }
         .sub-content {
           .sub-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
             line-height: 18px;
             max-width: 250px;
