@@ -19,6 +19,7 @@ import {
   fetchProfileEdit,
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
+import { getFileExtension } from '../../utils/helper';
 
 const { HOME, PATH_SIGNUP } = PATHS;
 const {
@@ -43,19 +44,19 @@ function GeneralInfo() {
   }
 
   const getPreSignedUrl = async () => {
-    const uploadData = new FormData();
+    // const uploadData = new FormData();
     if (cropImageFile) {
-      const response = await fetchGenratePreSignedUrl();
+      const response = await fetchGenratePreSignedUrl(getFileExtension(cropImageFile?.name), 'profilePicture');
       const { status = 0, data = {} } = response;
       if (successStatus(status)) {
-        const { fields: { key, AWSAccessKeyId, policy, signature } = {}, url } = data;
+        const { data: { url, key } } = data;
         formik.setFieldValue('profile_picture', key);
-        uploadData.append('key', key);
-        uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
-        uploadData.append('policy', policy);
-        uploadData.append('signature', signature);
-        uploadData.append('file', cropImageFile);
-        await fetchFileUPloadAWS({ url: url, dataTosend: uploadData });
+        // uploadData.append('key', key);
+        // uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
+        // uploadData.append('policy', policy);
+        // uploadData.append('signature', signature);
+        // uploadData.append('file', cropImageFile);
+        await fetchFileUPloadAWS({ url: url });
       }
     }
   };
@@ -82,11 +83,11 @@ function GeneralInfo() {
     if (location && profile_picture) {
       dataToSend = {
         location,
-        profile_picture,
+        profilePicture: profile_picture,
       };
     } else if (profile_picture) {
       dataToSend = {
-        profile_picture,
+        profilePicture: profile_picture,
       };
     } else {
       dataToSend = {

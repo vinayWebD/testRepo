@@ -6,18 +6,18 @@ import { globalLoading, login, logout, profile } from '../slices/authSlice';
  */
 const loginDispatcher =
   ({ email, password }) =>
-  async (dispatch) => {
-    const { status, data } = await loginUser({ email, password, dispatch });
+    async (dispatch) => {
+      const { status, data } = await loginUser({ email, password, dispatch });
 
-    if (status === 201) {
-      localStorage.setItem('token', data?.token);
-      dispatch(login(data));
-      // We are calling profile dispatcher so that the profile gets updated - API + Redux
-      dispatch(profileDispatcher());
-    }
+      if (status === 200) {
+        localStorage.setItem('token', data?.data?.token);
+        dispatch(login(data));
+        // We are calling profile dispatcher so that the profile gets updated - API + Redux
+        dispatch(profileDispatcher());
+      }
 
-    return { status, data };
-  };
+      return { status, data };
+    };
 
 /**
  * Logout dispatcher will call logout user API and
@@ -37,8 +37,7 @@ const logoutDispatcher = () => async (dispatch) => {
  */
 const profileDispatcher = () => async (dispatch) => {
   dispatch(globalLoading(true));
-  const { status, data } = await userProfile(dispatch);
-
+  const { status, data: { data } } = await userProfile(dispatch);
   if (status === 200) {
     dispatch(profile(data));
   }
@@ -51,10 +50,10 @@ const profileDispatcher = () => async (dispatch) => {
  */
 const forgotPasswordOtpDispatcher =
   ({ email }) =>
-  async (dispatch) => {
-    const { status, data } = await sendForgotPasswordOtp({ email, dispatch });
+    async (dispatch) => {
+      const { status, data } = await sendForgotPasswordOtp({ email, dispatch });
 
-    return { status, data };
-  };
+      return { status, data };
+    };
 
 export { loginDispatcher, logoutDispatcher, profileDispatcher, forgotPasswordOtpDispatcher };

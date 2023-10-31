@@ -43,10 +43,9 @@ function LoginPage() {
     if (!isLoading) {
       setIsLoading(true);
       const response = await dispatch(loginDispatcher(values));
-
       const { status, data } = response;
       if (!successStatus(status)) {
-        const errormsg = getErrorMessage(data);
+        const errormsg = getErrorMessage(data.data.message);
         if (errormsg) {
           ToastNotifyError(errormsg, TST_LOGIN_ERROR_ID);
           setIsLoading(false);

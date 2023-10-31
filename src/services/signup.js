@@ -31,10 +31,11 @@ const verifyEmail = async (dataToSend) => {
   }
 };
 
-const fetchGenratePreSignedUrl = async (extension = 'jpeg') => {
+const fetchGenratePreSignedUrl = async (extension = 'jpeg', type) => {
   try {
     const response = await apiUtility(PRE_SIGNED_URL, 'GET', {
       extension: extension?.toLowerCase(),
+      type: type
     });
     return response;
   } catch (err) {
@@ -43,9 +44,9 @@ const fetchGenratePreSignedUrl = async (extension = 'jpeg') => {
 };
 
 const fetchFileUPloadAWS = async (data) => {
-  const { url, dataTosend } = data;
+  const { url } = data;
   try {
-    const response = await apiUtility(url, 'POST', dataTosend, false);
+    const response = await apiUtility(url, 'PUT', {}, false);
     return response;
   } catch (err) {
     return err;

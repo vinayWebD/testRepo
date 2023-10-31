@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 import { useSelector } from 'react-redux';
 import Avatar from '../../components/common/Avatar';
 import Card from '../../components/common/Card';
@@ -78,28 +80,28 @@ const HomePage = () => {
   };
 
   const fetchAllPosts = async (page) => {
-    if (allPostsLoaded) return; // prevent fetching if all posts are loaded
+    //   if (allPostsLoaded) return; // prevent fetching if all posts are loaded
 
-    setIsLoading(true);
-    const response = await fetchPosts({ page });
+    //   setIsLoading(true);
+    //   const response = await fetchPosts({ page });
 
-    const { status, data } = response;
-    const errormsg = getErrorMessage(data);
-    setIsLoading(false);
-    if (!successStatus(status) && errormsg) {
-      ToastNotifyError(errormsg, '');
-    } else {
-      if (data?.results?.length < FEED_PAGE_SIZE) {
-        setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
-      } else {
-        if (page === 1) {
-          // For the first time we just need to set the data as is
-          setPosts(data.results);
-        } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
-          setPosts((prevPosts) => [...prevPosts, ...data.results]);
-        }
-      }
-    }
+    //   const { status, data } = response;
+    //   const errormsg = getErrorMessage(data);
+    //   setIsLoading(false);
+    //   if (!successStatus(status) && errormsg) {
+    //     ToastNotifyError(errormsg, '');
+    //   } else {
+    //     if (data?.results?.length < FEED_PAGE_SIZE) {
+    //       setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
+    //     } else {
+    //       if (page === 1) {
+    //         // For the first time we just need to set the data as is
+    //         setPosts(data.results);
+    //       } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
+    //         setPosts((prevPosts) => [...prevPosts, ...data.results]);
+    //       }
+    //     }
+    //   }
   };
 
   const fetchSinglePostDetails = async ({ postId }) => {
@@ -135,8 +137,8 @@ const HomePage = () => {
                 onClick={() => handleOpenPopup('caption')}
               >
                 <Avatar
-                  name={`${userData?.first_name} ${userData?.last_name}`}
-                  image={userData.profile_picture_url}
+                  name={`${userData?.firstName} ${userData?.lastName}`}
+                  image={userData.profilePictureUrl}
                   classNames="w-[40px] h-[40px]"
                 />
                 <p className="text-greylight text16">{LANG_WRITE_SOMETHING}</p>
@@ -221,14 +223,14 @@ const HomePage = () => {
 
             {isLoading
               ? ['', ''].map((i, _i) => (
-                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                    <span className="flex gap-2">
-                      <span className="flex gap-2 w-full justify-center items-center">
-                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
-                      </span>
+                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                  <span className="flex gap-2">
+                    <span className="flex gap-2 w-full justify-center items-center">
+                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
                     </span>
-                  </Card>
-                ))
+                  </span>
+                </Card>
+              ))
               : ''}
 
             {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
