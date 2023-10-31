@@ -19,11 +19,11 @@ const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
 
 const DropDownParent = ({ userData = {} }) => {
-  const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
+  const { firstName = '', lastName = '', profilePictureUrl = '' } = userData;
 
   return (
     <div className="flex items-center gap-1 cursor-pointer">
-      <Avatar name={`${first_name} ${last_name}`} image={profile_picture_url} />
+      <Avatar name={`${firstName} ${lastName}`} image={profilePictureUrl} />
       <DownCaret />
     </div>
   );

@@ -126,7 +126,7 @@ function VerifyEmail() {
             ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
           }
         } else {
-          if (data?.is_valid) {
+          if (data?.data?.isValid) {
             navigate(RESET_PASSWORD, {
               state: { email, code: otp },
             });
@@ -139,23 +139,18 @@ function VerifyEmail() {
           code: otp,
           email: email,
         };
-        const response = await verifyEmail(dataToSend);
-        const {
-          status,
-          data: { data: { token = null } },
-          data = {},
-        } = response;
+        const { data, status } = await verifyEmail(dataToSend);
         setIsLoading(false);
-        const errormsg = getErrorMessage(data);
-        if (successStatus(status)) {
-          ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
-          localStorage.setItem('token', token);
-          secureLocalStorage.setItem('object', { data });
-          navigate(PATH_GENERAL_INFO);
-        } else {
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
           if (errormsg) {
             ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
           }
+        } else {
+          ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
+          localStorage.setItem('token', data?.data?.token);
+          secureLocalStorage.setItem('object', { data });
+          navigate(PATH_GENERAL_INFO);
         }
       }
     }
@@ -170,8 +165,9 @@ function VerifyEmail() {
           </span>
           <h1 className="text-white pr-2">{LANG_VERIFY_EMAIL}</h1>
         </div>
-        <h4 className="text-white mt-2 mb-4 pr-2">{`${historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
-          } ${email || ''}`}</h4>
+        <h4 className="text-white mt-2 mb-4 pr-2">{`${
+          historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
+        } ${email || ''}`}</h4>
       </div>
       <form onSubmit={onSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <div className="mb-4">
@@ -201,8 +197,9 @@ function VerifyEmail() {
           additionalClassNames="capitalize"
         />
         <div
-          className={`flex gap-2 text-white items-center justify-center para-normal ${counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
-            }`}
+          className={`flex gap-2 text-white items-center justify-center para-normal ${
+            counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
+          }`}
           onClick={() => (counter > 0 ? null : resendHandler())}
         >
           <span className="underline">

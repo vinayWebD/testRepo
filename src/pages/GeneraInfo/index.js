@@ -46,10 +46,15 @@ function GeneralInfo() {
   const getPreSignedUrl = async () => {
     // const uploadData = new FormData();
     if (cropImageFile) {
-      const response = await fetchGenratePreSignedUrl(getFileExtension(cropImageFile?.name), 'profilePicture');
+      const response = await fetchGenratePreSignedUrl(
+        getFileExtension(cropImageFile?.name),
+        'profilePicture',
+      );
       const { status = 0, data = {} } = response;
       if (successStatus(status)) {
-        const { data: { url, key } } = data;
+        const {
+          data: { url, key },
+        } = data;
         formik.setFieldValue('profile_picture', key);
         // uploadData.append('key', key);
         // uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
