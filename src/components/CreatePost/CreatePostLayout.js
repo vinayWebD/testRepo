@@ -131,18 +131,12 @@ const CreatePostLayout = ({
     if (filesToUpload?.length) {
       setIsLoading(true);
       for (let i = 0; i < filesToUpload.length; i++) {
-        const uploadData = new FormData();
         const file = filesToUpload[i];
-        const response = await fetchGenratePreSignedUrl(getFileExtension(file?.name));
+        const response = await fetchGenratePreSignedUrl(getFileExtension(file?.name), 'post');
         const { status = 0, data = {} } = response;
         if (successStatus(status)) {
-          const { fields: { key, AWSAccessKeyId, policy, signature } = {}, url } = data;
-          uploadData.append('key', key);
-          uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
-          uploadData.append('policy', policy);
-          uploadData.append('signature', signature);
-          uploadData.append('file', file);
-          await fetchFileUPloadAWS({ url, dataTosend: uploadData });
+          const { key, url } = data?.data || {};
+          await fetchFileUPloadAWS({ url });
           uploadedMedia.push({ path: key, url: URL.createObjectURL(file) });
         }
       }
