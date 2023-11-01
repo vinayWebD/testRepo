@@ -100,7 +100,7 @@ const PostDetails = ({
   }, []);
 
   return (
-    <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh]  md:min-h-[50vh] md:max-h-[55vh] lg:min-h-[65vh] lg:max-h-[75vh] relative">
+    <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh]  md:min-h-[50vh] md:max-h-[70vh] lg:min-h-[65vh] lg:max-h-[75vh] relative">
       <div
         className="flex md:hidden bg-[#fefefe1a] rounded-full justify-end p-3 absolute right-[10px] top-1 z-10"
         onClick={onCloseHandler}

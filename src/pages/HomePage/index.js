@@ -193,6 +193,11 @@ const HomePage = () => {
                     isCreatedByMe={true}
                     postId={post?.post_id}
                     reloadData={fetchAllPosts}
+                    postDetails={{
+                      caption: post?.caption,
+                      media: post?.media,
+                      links: post?.links,
+                    }}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
