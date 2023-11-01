@@ -1,7 +1,8 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { CREATE_POST, FETCH_POSTS, LIKE_UNLIKE_POST, FETCH_POST_DETAILS } = NETWORK_CONSTANTS;
+const { CREATE_POST, FETCH_POSTS, LIKE_UNLIKE_POST, FETCH_POST_DETAILS, DELETE_POST } =
+  NETWORK_CONSTANTS;
 
 /**
  * API for creating post
@@ -58,4 +59,13 @@ const fetchPostDetails = async ({ postId }) => {
   }
 };
 
-export { createPost, fetchPosts, likePost, unlikePost, fetchPostDetails };
+const deletePost = async ({ postId }) => {
+  try {
+    const response = await apiUtility(DELETE_POST, 'DELETE', { postId });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export { createPost, fetchPosts, likePost, unlikePost, fetchPostDetails, deletePost };

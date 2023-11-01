@@ -25,7 +25,7 @@ function ConfirmationModal({
   children,
   title,
   isTitle = true,
-  width = 'max-w-[95vw] md:max-w-[470px]',
+  width = 'max-w-[95vw] md:max-w-[430px]',
   height = 'h-auto',
   padding = 'px-6',
   childrenClassNames = 'md:max-h-5/6 max-h-[500px]',
@@ -85,7 +85,7 @@ function ConfirmationModal({
             {children}
           </div>
 
-          <div className="flex justify-around items-center">
+          <div className="flex items-center justify-center gap-[12%]">
             <OutlinedButton
               label={secondaryButtonTitle}
               onClick={secondaryButtonAction}

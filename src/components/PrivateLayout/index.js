@@ -6,14 +6,20 @@ import LeftNavigation from './LeftNavigation';
 import Card from '../common/Card';
 import NotificationSection from '../../pages/HomePage/NotificationSection';
 import MobileBottomNavigation from './MobileBottomNavigation';
+import { useSelector } from 'react-redux';
+import Loader from '../common/Loader';
 /**
  * This component is the layout for the authenticated pages
  * @param {*} param0
  * @returns
  */
 const PrivateLayout = ({ children }) => {
+  const isGlobalTransparentLoadingPrivate = useSelector(
+    (state) => state?.auth?.globalTransparentLoadingPrivate,
+  );
+
   return (
-    <div>
+    <div className="relative">
       <div
         className="flex w-full flex-col bg-fixed bg-bottom bg-cover bg-no-repeat"
         style={{ backgroundImage: `url(${Background})` }}
@@ -42,6 +48,13 @@ const PrivateLayout = ({ children }) => {
           </div>
         </div>
       </div>
+      {isGlobalTransparentLoadingPrivate ? (
+        <div className="fixed top-0 left-0 bg-[#b3b3b366] h-screen w-screen z-50 pointer-events-none">
+          <Loader />
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
