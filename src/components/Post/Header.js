@@ -3,15 +3,21 @@ import Avatar from '../common/Avatar';
 import Dropdown from '../common/Dropdown';
 import ThreeDots from '../Icons/ThreeDots';
 import timeSpan from '../../utils/timeSpan';
+import ConfirmationModal from '../Modal/ConfirmationModal';
+import { useDispatch } from 'react-redux';
+import { deletePostDispatcher } from '../../redux/dispatchers/feedDispatcher';
 
 const Header = ({
+  postId = '',
   createdAt = '',
   creatorName = '',
   creatorProfilePicUrl = '',
   showThreeDots = true,
-  isCreatedByMe = false,
+  isCreatedByMe = true,
 }) => {
+  const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (isCreatedByMe) {
@@ -22,7 +28,7 @@ const Header = ({
         },
         {
           name: 'Delete',
-          action: () => {},
+          action: () => setIsDeleteModalOpen(true),
         },
         {
           name: 'Copy link',
@@ -47,6 +53,10 @@ const Header = ({
     }
   }, [isCreatedByMe]);
 
+  const deletePostHandler = async () => {
+    dispatch(deletePostDispatcher(postId));
+  };
+
   return (
     <div className="flex gap-2 items-center">
       <Avatar
@@ -61,9 +71,24 @@ const Header = ({
 
       {showThreeDots && (
         <div className="ml-auto cursor-pointer">
-          <Dropdown options={options} IconComponent={() => <ThreeDots />} />
+          <Dropdown
+            options={options}
+            IconComponent={() => <ThreeDots className="w-[18px] h-[18px]" />}
+          />
         </div>
       )}
+
+      <ConfirmationModal
+        title="Delete Post"
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        primaryButtonTitle="Delete"
+        primaryButtonAction={() => deletePostHandler()}
+        secondaryButtonTitle="Cancel"
+        secondaryButtonAction={() => setIsDeleteModalOpen(false)}
+      >
+        Are you sure you want to delete this post?
+      </ConfirmationModal>
     </div>
   );
 };

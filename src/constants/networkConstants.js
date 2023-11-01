@@ -13,6 +13,7 @@ const NETWORK_CONSTANTS = {
   FETCH_POSTS: '/v1/feeds/',
   LIKE_UNLIKE_POST: (postId) => `/v1/feeds/posts/${postId}/likes/`,
   FETCH_POST_DETAILS: (postId) => `/v1/feeds/posts/${postId}/`,
+  DELETE_POST: '/v1/feeds/posts/delete',
 };
 
 export default NETWORK_CONSTANTS;
