@@ -191,7 +191,8 @@ const HomePage = () => {
                     creatorName={post?.created_by}
                     creatorProfilePicUrl={post?.profile_image_url}
                     isCreatedByMe={true}
-                    postId={post?.id}
+                    postId={post?.post_id}
+                    reloadData={fetchAllPosts}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">

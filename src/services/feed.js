@@ -61,7 +61,7 @@ const fetchPostDetails = async ({ postId }) => {
 
 const deletePost = async ({ postId }) => {
   try {
-    const response = await apiUtility(DELETE_POST, 'DELETE', { postId });
+    const response = await apiUtility(DELETE_POST(postId), 'DELETE');
     return response;
   } catch (error) {
     return error;

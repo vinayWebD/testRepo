@@ -8,7 +8,7 @@ const deletePostDispatcher =
   ({ postId }) =>
   async (dispatch) => {
     dispatch(globalTransparentLoadingPrivate(true));
-    const { status, data } = await deletePost({ postId, dispatch });
+    const { status, data } = await deletePost({ postId });
     dispatch(globalTransparentLoadingPrivate(false));
     return { status, data };
   };
