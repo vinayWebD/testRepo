@@ -3,7 +3,7 @@ import SendIcon from '../Icons/SendIcon';
 import { useSelector } from 'react-redux';
 import Avatar from '../common/Avatar';
 
-const CommentInput = ({ onChange = () => { } }) => {
+const CommentInput = ({ onChange = () => {} }) => {
   const [value, setValue] = useState('');
   const userData = useSelector((state) => state?.auth?.user) || {};
   const textareaRef = useRef(null);
@@ -57,9 +57,10 @@ const CommentInput = ({ onChange = () => { } }) => {
             ref={textareaRef}
           />
           <div
-            className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greylighter ${!value ? 'cursor-not-allowed' : 'cursor-pointer'
-              }`}
-            onClick={() => { }}
+            className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greylighter ${
+              !value ? 'cursor-not-allowed' : 'cursor-pointer'
+            }`}
+            onClick={() => {}}
           >
             <div className={`${!value ? 'opacity-60' : ''}`}>
               <SendIcon />

@@ -35,7 +35,7 @@ const fetchGenratePreSignedUrl = async (extension = 'jpeg', type) => {
   try {
     const response = await apiUtility(PRE_SIGNED_URL, 'GET', {
       extension: extension?.toLowerCase(),
-      type: type
+      type,
     });
     return response;
   } catch (err) {
