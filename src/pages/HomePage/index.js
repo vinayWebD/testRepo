@@ -51,7 +51,7 @@ const HomePage = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: '0px',
+      rootMargin: '0px', // Leaving no margin so that API does not get called before handedly
       threshold: 1,
     });
     if (loaderRef.current) {
@@ -92,7 +92,7 @@ const HomePage = () => {
     }
   };
 
-  const fetchAllPosts = debounce(fetchAllPostsAPI, currentPage === 0 ? 300 : 450);
+  const fetchAllPosts = debounce(fetchAllPostsAPI, currentPage === 0 ? 100 : 450); // Added debounce in the API calling so that multiple calls do not go because of inifnite scroll
 
   const handleObserver = (entities) => {
     const target = entities[0];
