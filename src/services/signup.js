@@ -44,14 +44,15 @@ const fetchGenratePreSignedUrl = async (extension = 'jpeg', type) => {
 };
 
 const fetchFileUPloadAWS = async (data) => {
-  const { url } = data;
+  const { url, selectedFile } = data;
   try {
-    const response = await apiUtility(url, 'PUT', {}, false);
+    const response = await apiUtility(url, 'PUT', selectedFile, false, () => {}, true);
     return response;
   } catch (err) {
     return err;
   }
 };
+
 const fetchProfileEdit = async (dataTosend) => {
   try {
     const response = await apiUtility(PROFILE, 'PATCH', dataTosend);

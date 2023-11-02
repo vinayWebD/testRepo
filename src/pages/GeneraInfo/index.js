@@ -44,7 +44,6 @@ function GeneralInfo() {
   }
 
   const getPreSignedUrl = async () => {
-    // const uploadData = new FormData();
     if (cropImageFile) {
       const response = await fetchGenratePreSignedUrl(
         getFileExtension(cropImageFile?.name),
@@ -56,12 +55,7 @@ function GeneralInfo() {
           data: { url, key },
         } = data;
         formik.setFieldValue('profile_picture', key);
-        // uploadData.append('key', key);
-        // uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
-        // uploadData.append('policy', policy);
-        // uploadData.append('signature', signature);
-        // uploadData.append('file', cropImageFile);
-        await fetchFileUPloadAWS({ url: url });
+        await fetchFileUPloadAWS({ url: url, selectedFile: cropImageFile });
       }
     }
   };

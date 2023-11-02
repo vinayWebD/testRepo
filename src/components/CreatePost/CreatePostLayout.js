@@ -136,7 +136,7 @@ const CreatePostLayout = ({
         const { status = 0, data = {} } = response;
         if (successStatus(status)) {
           const { key, url } = data?.data || {};
-          await fetchFileUPloadAWS({ url });
+          await fetchFileUPloadAWS({ url, selectedFile: file });
           uploadedMedia.push({ path: key, url: URL.createObjectURL(file) });
         }
       }
