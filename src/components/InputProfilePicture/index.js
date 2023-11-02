@@ -8,7 +8,14 @@ import Modal from '../Modal';
 import { CameraIcon } from '../Icons/CameraIcon';
 import { UserIcon } from '../Icons/UserIcon';
 
-const InputProfilePicture = ({ value, profilePic, setCropImageFile, inView = true }) => {
+const InputProfilePicture = ({
+  value,
+  profilePic,
+  setCropImageFile,
+  inView = true,
+  height = 'h-[86px]',
+  width = 'w-[86px]',
+}) => {
   const [imageFile, setImageFile] = useState(false);
   const [open, setOpen] = useState(false);
   const [cropedImage, setCropedImage] = useState('');
@@ -56,9 +63,9 @@ const InputProfilePicture = ({ value, profilePic, setCropImageFile, inView = tru
 
   const renderProfile = () => {
     if (cropedImage) {
-      return <img src={cropedImage} alt="" className="image_preview" />;
+      return <img src={cropedImage} alt="" className={`image_preview ${width} ${height}`} />;
     } else if (profilePic) {
-      return <img src={profilePic} alt="" className="image_preview" />;
+      return <img src={profilePic} alt="" className={`image_preview ${height} ${width}`} />;
     }
     return (
       <div className="flex items-center justify-center image_preview">
@@ -73,7 +80,7 @@ const InputProfilePicture = ({ value, profilePic, setCropImageFile, inView = tru
 
   return (
     <>
-      <div className="profile-image">
+      <div className={`relative profile-image ${width} ${height}`}>
         {renderProfile()}
         {inView && (
           <div className="absolute right-[2px] bottom-[2px]">

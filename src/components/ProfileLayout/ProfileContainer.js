@@ -1,16 +1,23 @@
 /* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '../common/Card';
 import Avatar from '../common/Avatar';
 import location from '../../assets/images/location.svg';
 import mail from '../../assets/images/mail.svg';
 import edit from '../../assets/images/editIcon.svg';
+import Modal from '../Modal';
+import EditProfile from '../EditProfile';
 
 const ProfileContainer = ({ userData }) => {
+  const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+
   return (
     <Card classNames="lg:block py-4 px-2 md:px-4 relative">
       <div className="block gap-4">
-        <div className="bg-iconBackground p-1 rounded w-fit absolute right-[5%]">
+        <div
+          className="bg-iconBackground p-1 rounded w-fit absolute right-[5%] hover:opacity-70"
+          onClick={() => setIsEditingModalOpen(true)}
+        >
           <img src={edit} alt="edit" className="cursor-pointer" />
         </div>
         <Avatar
@@ -35,14 +42,25 @@ const ProfileContainer = ({ userData }) => {
             <img src={mail} alt="mail" className="pr-1" />
             {userData?.email}
           </h6>
-          <div
-            className="font-medium text-[8px] md:text-[10px] leading-3"
-            style={{ color: '#A1A0A0' }}
-          >
+          <div className="font-medium text-[8px] md:text-[10px] leading-3 text-greylight">
             {userData?.description}
           </div>
         </div>
       </div>
+
+      <Modal
+        isOpen={isEditingModalOpen}
+        onClose={() => setIsEditingModalOpen(false)}
+        isTitle={true}
+        title={'Edit Profile'}
+        childrenClassNames=""
+        padding="!p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+      >
+        <EditProfile {...userData} />
+      </Modal>
     </Card>
   );
 };
