@@ -6,7 +6,7 @@ import { BUTTON_LABELS, LANG } from '../../constants/lang';
 import { LIMITS, POST_IMAGE_TYPES, POST_VIDEO_TYPES, REGEX } from '../../constants/constants';
 import MediaLayout from '../MediaLayout';
 import EmojiTextarea from '../common/EmojieTextarea';
-import { createPost } from '../../services/feed';
+import { createPost, editPost } from '../../services/feed';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import { TOASTMESSAGES } from '../../constants/messages';
@@ -42,6 +42,8 @@ const CreatePostLayout = ({
   closePopupHandler = () => {},
   openTypeOfPost = null,
   reloadData = () => {},
+  isEditing = false,
+  postDetails = {},
 }) => {
   const [text, setText] = useState('');
   const [media, setMedia] = useState([]);
@@ -60,6 +62,20 @@ const CreatePostLayout = ({
     }
   }, [openFileBrowser]);
 
+  // If we are in the editing mode, then we will set the states with the values of post details
+  useEffect(() => {
+    if (isEditing) {
+      setText(postDetails?.caption);
+      setMedia(postDetails.media);
+      setLinks(postDetails?.links);
+
+      // If there exist links already, then we need to show them
+      if (postDetails?.links?.length) {
+        setIsInputLinkOpen(true);
+      }
+    }
+  }, [isEditing]);
+
   useEffect(() => {
     if (openTypeOfPost) {
       if (['photo', 'video'].includes(openTypeOfPost)) {
@@ -73,7 +89,7 @@ const CreatePostLayout = ({
   const isPostButtonDisabled = () => {
     let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
     let allLinks = [link, ...links];
-    return !POST_PATTERN.test(text) && !media?.length && !allLinks.length;
+    return !POST_PATTERN.test(text) && !media?.length && !allLinks?.length;
   };
 
   /**
@@ -84,7 +100,7 @@ const CreatePostLayout = ({
     const filesToUpload = [],
       failedFiles = [];
 
-    if (mediaInput?.current?.files?.length + media.length > POST_MAX_ALLOWED_MEDIA) {
+    if (mediaInput?.current?.files?.length + media?.length > POST_MAX_ALLOWED_MEDIA) {
       ToastNotifyError(TST_POST_MAX_ALLOWED_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
     }
 
@@ -113,7 +129,7 @@ const CreatePostLayout = ({
       }
     }
 
-    if (failedFiles.length) {
+    if (failedFiles?.length) {
       ToastNotifyError(TST_POST_UPLOAD_INVALID_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
     }
 
@@ -131,19 +147,17 @@ const CreatePostLayout = ({
     if (filesToUpload?.length) {
       setIsLoading(true);
       for (let i = 0; i < filesToUpload.length; i++) {
-        const uploadData = new FormData();
         const file = filesToUpload[i];
-        const response = await fetchGenratePreSignedUrl(getFileExtension(file?.name));
+        const response = await fetchGenratePreSignedUrl(getFileExtension(file?.name), 'post');
         const { status = 0, data = {} } = response;
         if (successStatus(status)) {
-          const { fields: { key, AWSAccessKeyId, policy, signature } = {}, url } = data;
-          uploadData.append('key', key);
-          uploadData.append('AWSAccessKeyId', AWSAccessKeyId);
-          uploadData.append('policy', policy);
-          uploadData.append('signature', signature);
-          uploadData.append('file', file);
-          await fetchFileUPloadAWS({ url, dataTosend: uploadData });
-          uploadedMedia.push({ path: key, url: URL.createObjectURL(file) });
+          const { key, url } = data?.data || {};
+          try {
+            await fetchFileUPloadAWS({ url, selectedFile: file });
+            uploadedMedia.push({ key: URL.createObjectURL(file), path: key });
+          } catch (error) {
+            ToastNotifyError('Upload failed for a file');
+          }
         }
       }
       setMedia([...uploadedMedia]);
@@ -157,7 +171,7 @@ const CreatePostLayout = ({
    * @param {*} type
    */
   const handleFileBrowser = (type) => {
-    if (media.length < POST_MAX_ALLOWED_MEDIA) {
+    if (media?.length < POST_MAX_ALLOWED_MEDIA) {
       if (type === 'photo') {
         setMediaTypeToUpload('photo');
       } else if (type === 'video') {
@@ -172,27 +186,31 @@ const CreatePostLayout = ({
    */
   const savePostHandler = async () => {
     setIsLoading(true);
+    let response = {};
 
-    let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
-    let allLinks = [...links];
+    if (!isEditing) {
+      let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
+      let allLinks = [...links];
 
-    // If there is anything typed in the input box and the plus button is not clicked, so we need to check
-    // if there is some value in it and if it's valid
-    if (link) {
-      if (!link.startsWith('https://')) {
-        link = `https://${link}`;
+      // If there is anything typed in the input box and the plus button is not clicked, so we need to check
+      // if there is some value in it and if it's valid
+      if (link) {
+        if (!link.startsWith('https://')) {
+          link = `https://${link}`;
+        }
+
+        if (!LINK_PATTERN.test(link)) {
+          ToastNotifyError(TST_INVALID_LINKS, TST_LINK_VALIDATION_FAILED_ID);
+          setIsLoading(false);
+          return false;
+        } else {
+          allLinks = [link, ...allLinks];
+        }
       }
-
-      if (!LINK_PATTERN.test(link)) {
-        ToastNotifyError(TST_INVALID_LINKS, TST_LINK_VALIDATION_FAILED_ID);
-        setIsLoading(false);
-        return false;
-      } else {
-        allLinks = [link, ...allLinks];
-      }
+      response = await createPost({ caption: text, links: allLinks, media });
+    } else {
+      response = await editPost({ caption: text, postId: postDetails?.postId });
     }
-
-    const response = await createPost({ caption: text, links: allLinks, media });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -210,7 +228,7 @@ const CreatePostLayout = ({
 
   return (
     <div className="relative">
-      <div className="h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] overflow-y-auto">
+      <div className="h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] md:!overflow-visible">
         <div className="relative px-[18px] flex flex-col gap-2">
           <EmojiTextarea
             placeholder={LANG_TEXT_AREA_PLACEHOLDER}
@@ -218,75 +236,88 @@ const CreatePostLayout = ({
             handleChange={(val) => setText(val)}
           />
 
-          {isInputLinkOpen ? (
-            <CreatePostLinkLayout
-              links={links}
-              setLinks={setLinks}
-              linkInInput={linkInInput}
-              setLinkInInput={setLinkInInput}
-              isInputLinkOpen={isInputLinkOpen}
-            />
-          ) : (
-            ''
-          )}
+          {!isEditing ? (
+            <>
+              {isInputLinkOpen ? (
+                <CreatePostLinkLayout
+                  links={links}
+                  setLinks={setLinks}
+                  linkInInput={linkInInput}
+                  setLinkInInput={setLinkInInput}
+                  isInputLinkOpen={isInputLinkOpen}
+                />
+              ) : (
+                ''
+              )}
 
-          {media.length ? (
-            <div
-              className={`${media.length > 1 ? 'border border-greymedium' : ''}  rounded-lg p-2`}
-            >
-              <MediaLayout
-                media={media}
-                forcedPreview={openForcedPreview}
-                updateMedia={setMedia}
-                allowOnlyView={false}
-              />
-            </div>
+              {media?.length ? (
+                <div
+                  className={`${
+                    media.length > 1 ? 'border border-greymedium' : ''
+                  }  rounded-lg p-2`}
+                >
+                  <MediaLayout
+                    media={media}
+                    forcedPreview={openForcedPreview}
+                    updateMedia={setMedia}
+                    allowOnlyView={false}
+                  />
+                </div>
+              ) : (
+                ''
+              )}
+            </>
           ) : (
             ''
           )}
         </div>
-        <div className="flex gap-3 flex-col mt-3 py-3 justify-between px-6">
-          <div className="flex md:gap-14 justify-between w-full">
-            <div
-              className={`flex gap-2 hover:opacity-70 ${
-                media?.length < POST_MAX_ALLOWED_MEDIA
-                  ? 'cursor-pointer'
-                  : 'cursor-not-allowed text-greylight'
-              }`}
-              onClick={() => handleFileBrowser('photo')}
-            >
-              <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
+
+        {!isEditing ? (
+          <div className="flex gap-3 flex-col mt-3 py-3 justify-between px-6">
+            <div className="flex md:gap-14 justify-between w-full">
+              <div
+                className={`flex gap-2 hover:opacity-70 ${
+                  media?.length < POST_MAX_ALLOWED_MEDIA
+                    ? 'cursor-pointer'
+                    : 'cursor-not-allowed text-greylight'
+                }`}
+                onClick={() => handleFileBrowser('photo')}
+              >
+                <PhotoIcon /> <p>{BTNLBL_PHOTO}</p>
+              </div>
+
+              <div
+                className={`flex gap-2 hover:opacity-70 ${
+                  media?.length < POST_MAX_ALLOWED_MEDIA
+                    ? 'cursor-pointer'
+                    : 'cursor-not-allowed text-greylight'
+                }`}
+                onClick={() => handleFileBrowser('video')}
+              >
+                <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
+              </div>
+
+              <div
+                className="flex gap-2 cursor-pointer hover:opacity-70"
+                onClick={() => setIsInputLinkOpen(true)}
+              >
+                <LinkIcon /> <p>{BTNLBL_LINK}</p>
+              </div>
             </div>
 
-            <div
-              className={`flex gap-2 hover:opacity-70 ${
-                media?.length < POST_MAX_ALLOWED_MEDIA
-                  ? 'cursor-pointer'
-                  : 'cursor-not-allowed text-greylight'
-              }`}
-              onClick={() => handleFileBrowser('video')}
-            >
-              <VideoIcon /> <p>{BTNLBL_VIDEO}</p>
-            </div>
-
-            <div
-              className="flex gap-2 cursor-pointer hover:opacity-70"
-              onClick={() => setIsInputLinkOpen(true)}
-            >
-              <LinkIcon /> <p>{BTNLBL_LINK}</p>
-            </div>
+            <p className="text-xs text-greylight pb-2 w-full">
+              Click the button to browse (Max allowed each photo of{' '}
+              {POST_MAX_IMAGE_SIZE_IN_BYTES / (1024 * 1024)} MB and video of{' '}
+              {POST_MAX_VIDEO_SIZE_IN_BYTES / (1024 * 1024)} MB)
+            </p>
           </div>
-
-          <p className="text-xs text-greylight pb-2 w-full">
-            Click the button to browse (Max allowed each photo of{' '}
-            {POST_MAX_IMAGE_SIZE_IN_BYTES / (1024 * 1024)} MB and video of{' '}
-            {POST_MAX_VIDEO_SIZE_IN_BYTES / (1024 * 1024)} MB)
-          </p>
-        </div>
+        ) : (
+          ''
+        )}
       </div>
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
-          label={'Post'}
+          label={isEditing ? 'Update' : 'Post'}
           isDisabled={isPostButtonDisabled()}
           onClick={savePostHandler}
           showArrowIcon={false}

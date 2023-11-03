@@ -41,8 +41,8 @@ const CommentInput = ({ onChange = () => {} }) => {
     <div>
       <div className="flex gap-2 items-center relative w-full">
         <Avatar
-          name={`${userData?.first_name} ${userData?.last_name}`}
-          image={userData?.profile_picture_url}
+          name={`${userData?.firstName} ${userData?.lastName}`}
+          image={userData?.profilePictureUrl}
           classNames="w-[37px] h-[37px]"
         />
         <div className="flex w-full">

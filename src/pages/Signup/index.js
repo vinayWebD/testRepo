@@ -58,8 +58,8 @@ function Signup() {
     setIsLoading(true);
     const { firstname = null, lastname = null, email = null, password = null } = values;
     const dataToSend = {
-      first_name: firstname,
-      last_name: lastname,
+      firstName: firstname,
+      lastName: lastname,
       password: password.trim(),
       email: email.trim().toLowerCase(),
     };

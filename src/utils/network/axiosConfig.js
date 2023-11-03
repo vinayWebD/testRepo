@@ -5,7 +5,7 @@ const api = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-  timeout: 10000,
+  timeout: 10000000000,
 });
 
 /**
@@ -16,7 +16,7 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
     if (token && config.useAuthToken !== false) {
-      config.headers.Authorization = token;
+      config.headers.Authorization = 'Bearer ' + token;
     }
 
     // Check if request data is FormData (i.e., for file uploads)

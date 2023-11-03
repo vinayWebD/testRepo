@@ -89,7 +89,7 @@ const sendForgotPasswordOtp = async ({ email = '', dispatch }) => {
  */
 const forgotPasswordOtpValidation = async ({ email = '', code }) => {
   try {
-    const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'GET', {
+    const response = await apiUtility(FORGOT_PASSWORD_VERIFY_OTP, 'POST', {
       email: email.trim().toLowerCase(),
       code,
     });
@@ -104,12 +104,13 @@ const forgotPasswordOtpValidation = async ({ email = '', code }) => {
  * @param {*} param0
  * @returns
  */
-const resetPassword = async ({ email = '', code, password = '' }) => {
+const resetPassword = async ({ email = '', code, password = '', confirmPassword = '' }) => {
   try {
-    const response = await apiUtility(FORGOT_PASSWORD_RESET_PWD, 'PUT', {
+    const response = await apiUtility(FORGOT_PASSWORD_RESET_PWD, 'POST', {
       email: email.trim().toLowerCase(),
       code,
       password: password.trim(),
+      confirmPassword: confirmPassword?.trim(),
     });
     return response;
   } catch (error) {
