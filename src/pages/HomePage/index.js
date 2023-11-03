@@ -80,26 +80,26 @@ const HomePage = () => {
   };
 
   const fetchAllPosts = async (page) => {
-    //   if (allPostsLoaded) return; // prevent fetching if all posts are loaded
-    //   setIsLoading(true);
-    //   const response = await fetchPosts({ page });
-    //   const { status, data } = response;
-    //   const errormsg = getErrorMessage(data);
-    //   setIsLoading(false);
-    //   if (!successStatus(status) && errormsg) {
-    //     ToastNotifyError(errormsg, '');
-    //   } else {
-    //     if (data?.results?.length < FEED_PAGE_SIZE) {
-    //       setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
-    //     } else {
-    //       if (page === 1) {
-    //         // For the first time we just need to set the data as is
-    //         setPosts(data.results);
-    //       } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
-    //         setPosts((prevPosts) => [...prevPosts, ...data.results]);
-    //       }
-    //     }
-    //   }
+    if (allPostsLoaded && page !== 1) return; // prevent fetching if all posts are loaded
+    setIsLoading(true);
+    const response = await fetchPosts({ page });
+    const { status, data } = response;
+    const errormsg = getErrorMessage(data);
+    setIsLoading(false);
+    if (!successStatus(status) && errormsg) {
+      ToastNotifyError(errormsg, '');
+    } else {
+      if (data?.data?.length < FEED_PAGE_SIZE) {
+        setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
+      }
+
+      if (page === 1) {
+        // For the first time we just need to set the data as is
+        setPosts(data?.data);
+      } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
+        setPosts((prevPosts) => [...prevPosts, ...data.data]);
+      }
+    }
   };
 
   const fetchSinglePostDetails = async ({ postId }) => {
@@ -185,9 +185,9 @@ const HomePage = () => {
           <div className="mt-3">
             {posts.map((post) => {
               return (
-                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.post_id}>
+                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.id}>
                   <Header
-                    createdAt={post?.created_at}
+                    createdAt={post?.createdAt}
                     creatorName={post?.created_by}
                     creatorProfilePicUrl={post?.profile_image_url}
                     isCreatedByMe={true}
@@ -196,7 +196,7 @@ const HomePage = () => {
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
                     <MediaLayout
-                      media={post?.media}
+                      media={post?.postMedia}
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
@@ -212,7 +212,7 @@ const HomePage = () => {
                     likeCount={post?.like_count}
                     shareCount={post?.share_count}
                     isLikedByMe={post?.is_liked_by_me}
-                    postId={post?.post_id}
+                    postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
                   />

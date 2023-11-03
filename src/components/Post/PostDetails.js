@@ -21,7 +21,7 @@ const PostDetails = ({
 
   // Pause video when moving to another slide
   const handleBeforeChange = (currentSlide) => {
-    if (post?.media?.length > 1) {
+    if (post?.postMedia?.length > 1) {
       // If the media length > 1, then only we have to pause the video of the current slide when moving to next or previous slide
       const currentVideo = document.querySelector(
         `.slick-slide[data-index="${currentSlide}"] .video-react-controls-enabled.video-react video`,
@@ -90,7 +90,7 @@ const PostDetails = ({
   const postHeader = useMemo(() => {
     return (
       <Header
-        createdAt={post?.created_at}
+        createdAt={post?.createdAt}
         creatorName={post?.created_by}
         creatorProfilePicUrl={post?.profile_image_url}
         showThreeDots={false}
@@ -109,20 +109,20 @@ const PostDetails = ({
       </div>
       <div className="w-full md:w-[53%] lg:w-[65%] relative bg-greydark min-h-[50dvh] max-h-[65dvh] md:max-h-none md:min-h-full">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
-          {post?.media.map(({ url, path }, _i) => {
+          {post?.postMedia?.map(({ key, path }, _i) => {
             return (
               <div
                 className={`w-full !flex justify-center items-center outline-0 ${
-                  !POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) &&
+                  !POST_IMAGE_EXTENSIONS?.includes(getFileExtension(path)?.toLowerCase()) &&
                   'video-preview'
                 }`}
                 key={_i}
               >
-                {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
-                  <img src={url} />
+                {POST_IMAGE_EXTENSIONS?.includes(getFileExtension(path)?.toLowerCase()) ? (
+                  <img src={key} />
                 ) : (
                   <Player className="w-full h-full !p-0">
-                    <source src={url} className="w-full h-full video-preview" />
+                    <source src={key} className="w-full h-full video-preview" />
                     <BigPlayButton
                       position="center"
                       className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !left-[45%] !ml-0"
@@ -134,7 +134,7 @@ const PostDetails = ({
           })}
         </Slider>
 
-        {post?.media.length > 1 ? (
+        {post?.postMedia.length > 1 ? (
           <>
             <div className="absolute top-1 left-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div

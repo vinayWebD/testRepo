@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from '../constants/constants';
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
@@ -25,7 +26,7 @@ const createPost = async ({ caption, links = [], media = [] }) => {
 
 const fetchPosts = async ({ page = 1 }) => {
   try {
-    const response = await apiUtility(FETCH_POSTS, 'GET', { page });
+    const response = await apiUtility(FETCH_POSTS, 'GET', { page, limit: PAGE_SIZE.FEED });
     return response;
   } catch (error) {
     return error;

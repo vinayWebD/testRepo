@@ -136,8 +136,12 @@ const CreatePostLayout = ({
         const { status = 0, data = {} } = response;
         if (successStatus(status)) {
           const { key, url } = data?.data || {};
-          await fetchFileUPloadAWS({ url, selectedFile: file });
-          uploadedMedia.push({ path: key, url: URL.createObjectURL(file) });
+          try {
+            await fetchFileUPloadAWS({ url, selectedFile: file });
+            uploadedMedia.push({ key: URL.createObjectURL(file), path: key });
+          } catch (error) {
+            ToastNotifyError('Upload failed for a file');
+          }
         }
       }
       setMedia([...uploadedMedia]);
