@@ -67,8 +67,14 @@ const HomePage = () => {
     };
   }, [loaderRef, posts]);
 
-  const fetchAllPostsAPI = async (page) => {
-    if (allPostsLoaded && !isLoadingAPI) return; // prevent fetching if all posts are loaded
+  // When we reload the posts: maybe after creating new post, editing or deleting one
+  const reloadPosts = async () => {
+    setAllPostsLoaded(false);
+    await fetchAllPostsAPI(0, true);
+  };
+
+  const fetchAllPostsAPI = async (page, reloadForcefully = false) => {
+    if (!reloadForcefully && allPostsLoaded && !isLoadingAPI && page !== 0) return; // prevent fetching if all posts are loaded
 
     const response = await fetchPosts({ page: page + 1 });
 
@@ -78,17 +84,17 @@ const HomePage = () => {
     if (!successStatus(status) && errormsg) {
       ToastNotifyError(errormsg, '');
     } else {
-      if (data?.data?.length < FEED_PAGE_SIZE) {
-        setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
-      }
+      setAllPostsLoaded(data?.data?.length < FEED_PAGE_SIZE); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
 
       if (page === 0) {
         // For the first time we just need to set the data as is
         setPosts(data?.data);
-      } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
+        setCurrentPage(1);
+      } else if (currentPage * FEED_PAGE_SIZE === posts.length) {
         setPosts((prevPosts) => [...prevPosts, ...data.data]);
+        setCurrentPage((prevPage) => prevPage + 1);
       }
-      setCurrentPage((prevPage) => prevPage + 1);
+
       setIsLoading(false);
       isLoadingAPI = false;
     }
@@ -202,7 +208,12 @@ const HomePage = () => {
                     creatorProfilePicUrl={post?.profile_image_url}
                     isCreatedByMe={post?.UserId === userData?.id}
                     postId={post?.postId}
-                    reloadData={fetchAllPosts}
+                    reloadData={reloadPosts}
+                    postDetails={{
+                      caption: post?.caption,
+                      media: post?.media,
+                      links: post?.links,
+                    }}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
@@ -272,7 +283,7 @@ const HomePage = () => {
             setTypeOfPost(null);
           }}
           openTypeOfPost={typeOfPost}
-          reloadData={fetchAllPosts}
+          reloadData={reloadPosts}
         />
       </Modal>
 

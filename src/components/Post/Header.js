@@ -8,6 +8,11 @@ import { useDispatch } from 'react-redux';
 import { deletePostDispatcher } from '../../redux/dispatchers/feedDispatcher';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
+import Modal from '../Modal';
+import CreatePostLayout from '../CreatePost/CreatePostLayout';
+import { LANG } from '../../constants/lang';
+
+const { LANG_EDIT_POST } = LANG.PAGES.FEED;
 
 const Header = ({
   postId = '',
@@ -17,17 +22,19 @@ const Header = ({
   showThreeDots = true,
   isCreatedByMe = true,
   reloadData = () => {},
+  postDetails = {},
 }) => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
 
   useEffect(() => {
     if (isCreatedByMe) {
       setOptions([
         {
           name: 'Edit',
-          action: () => {},
+          action: () => setIsCreatePostModalOpen(true),
         },
         {
           name: 'Delete',
@@ -60,7 +67,7 @@ const Header = ({
     const { data, status } = (await dispatch(deletePostDispatcher({ postId }))) || {};
     if (successStatus(status)) {
       ToastNotifySuccess('Post deleted successfully');
-      await reloadData(1);
+      await reloadData(0);
     } else {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
@@ -91,6 +98,7 @@ const Header = ({
         </div>
       )}
 
+      {/* A confirmation popup to delete the post */}
       <ConfirmationModal
         title="Delete Post"
         isOpen={isDeleteModalOpen}
@@ -102,6 +110,29 @@ const Header = ({
       >
         Are you sure you want to delete this post?
       </ConfirmationModal>
+
+      {/* Modal to create or edit the post */}
+      <Modal
+        isOpen={isCreatePostModalOpen}
+        onClose={() => setIsCreatePostModalOpen(false)}
+        isTitle={true}
+        title={LANG_EDIT_POST}
+        childrenClassNames="overflow-y-auto"
+        padding="p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+      >
+        <CreatePostLayout
+          closePopupHandler={() => {
+            setIsCreatePostModalOpen(false);
+          }}
+          openTypeOfPost={null}
+          reloadData={reloadData}
+          isEditing={true}
+          postDetails={postDetails}
+        />
+      </Modal>
     </div>
   );
 };

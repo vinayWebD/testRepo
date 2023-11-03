@@ -42,6 +42,8 @@ const CreatePostLayout = ({
   closePopupHandler = () => {},
   openTypeOfPost = null,
   reloadData = () => {},
+  isEditing = false,
+  postDetails = {},
 }) => {
   const [text, setText] = useState('');
   const [media, setMedia] = useState([]);
@@ -60,6 +62,20 @@ const CreatePostLayout = ({
     }
   }, [openFileBrowser]);
 
+  // If we are in the editing mode, then we will set the states with the values of post details
+  useEffect(() => {
+    if (isEditing) {
+      setText(postDetails?.caption);
+      setMedia(postDetails.media);
+      setLinks(postDetails?.links);
+
+      // If there exist links already, then we need to show them
+      if (postDetails?.links?.length) {
+        setIsInputLinkOpen(true);
+      }
+    }
+  }, [isEditing]);
+
   useEffect(() => {
     if (openTypeOfPost) {
       if (['photo', 'video'].includes(openTypeOfPost)) {
@@ -73,7 +89,7 @@ const CreatePostLayout = ({
   const isPostButtonDisabled = () => {
     let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
     let allLinks = [link, ...links];
-    return !POST_PATTERN.test(text) && !media?.length && !allLinks.length;
+    return !POST_PATTERN.test(text) && !media?.length && !allLinks?.length;
   };
 
   /**
@@ -84,7 +100,7 @@ const CreatePostLayout = ({
     const filesToUpload = [],
       failedFiles = [];
 
-    if (mediaInput?.current?.files?.length + media.length > POST_MAX_ALLOWED_MEDIA) {
+    if (mediaInput?.current?.files?.length + media?.length > POST_MAX_ALLOWED_MEDIA) {
       ToastNotifyError(TST_POST_MAX_ALLOWED_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
     }
 
@@ -113,7 +129,7 @@ const CreatePostLayout = ({
       }
     }
 
-    if (failedFiles.length) {
+    if (failedFiles?.length) {
       ToastNotifyError(TST_POST_UPLOAD_INVALID_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
     }
 
@@ -155,7 +171,7 @@ const CreatePostLayout = ({
    * @param {*} type
    */
   const handleFileBrowser = (type) => {
-    if (media.length < POST_MAX_ALLOWED_MEDIA) {
+    if (media?.length < POST_MAX_ALLOWED_MEDIA) {
       if (type === 'photo') {
         setMediaTypeToUpload('photo');
       } else if (type === 'video') {
@@ -228,7 +244,7 @@ const CreatePostLayout = ({
             ''
           )}
 
-          {media.length ? (
+          {media?.length ? (
             <div
               className={`${media.length > 1 ? 'border border-greymedium' : ''}  rounded-lg p-2`}
             >
@@ -284,7 +300,7 @@ const CreatePostLayout = ({
       </div>
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
-          label={'Post'}
+          label={isEditing ? 'Update' : 'Post'}
           isDisabled={isPostButtonDisabled()}
           onClick={savePostHandler}
           showArrowIcon={false}
