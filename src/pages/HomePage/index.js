@@ -128,15 +128,18 @@ const HomePage = () => {
       ToastNotifyError(errormsg, '');
     } else {
       const allPosts = posts.map((post) => {
-        if (post?.post_id === postId) {
-          return data;
+        if (post?.id === postId) {
+          return {
+            ...post,
+            caption: data?.data?.caption,
+          };
         } else {
           return post;
         }
       });
       setPosts(allPosts);
-      if (activePost?.post_id === postId) {
-        setActivePost(data);
+      if (activePost?.id === postId) {
+        setActivePost(data?.data);
       }
     }
   };
@@ -210,10 +213,12 @@ const HomePage = () => {
                     isCreatedByMe={post?.UserId === userData?.id}
                     postId={post?.postId}
                     reloadData={reloadPosts}
+                    reloadPostDetails={fetchSinglePostDetails}
                     postDetails={{
                       caption: post?.caption,
                       media: post?.media,
                       links: post?.links,
+                      id: post?.id,
                     }}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
