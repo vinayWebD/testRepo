@@ -195,13 +195,14 @@ const HomePage = () => {
           <div className="mt-3">
             {posts.map((post) => {
               return (
-                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.id}>
+                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.postId}>
                   <Header
                     createdAt={post?.createdAt}
                     creatorName={post?.created_by}
                     creatorProfilePicUrl={post?.profile_image_url}
-                    isCreatedByMe={true}
-                    postId={post?.id}
+                    isCreatedByMe={post?.UserId === userData?.id}
+                    postId={post?.postId}
+                    reloadData={fetchAllPosts}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
@@ -222,7 +223,7 @@ const HomePage = () => {
                     likeCount={post?.like_count}
                     shareCount={post?.share_count}
                     isLikedByMe={post?.is_liked_by_me}
-                    postId={post?.id}
+                    postId={post?.postId}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
                   />

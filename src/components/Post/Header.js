@@ -6,6 +6,8 @@ import timeSpan from '../../utils/timeSpan';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import { useDispatch } from 'react-redux';
 import { deletePostDispatcher } from '../../redux/dispatchers/feedDispatcher';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 
 const Header = ({
   postId = '',
@@ -14,6 +16,7 @@ const Header = ({
   creatorProfilePicUrl = '',
   showThreeDots = true,
   isCreatedByMe = true,
+  reloadData = () => {},
 }) => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
@@ -54,7 +57,17 @@ const Header = ({
   }, [isCreatedByMe]);
 
   const deletePostHandler = async () => {
-    dispatch(deletePostDispatcher(postId));
+    const { data, status } = (await dispatch(deletePostDispatcher({ postId }))) || {};
+    if (successStatus(status)) {
+      ToastNotifySuccess('Post deleted successfully');
+      await reloadData(1);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+    setIsDeleteModalOpen(false);
   };
 
   return (
