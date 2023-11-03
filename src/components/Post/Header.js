@@ -122,7 +122,7 @@ const Header = ({
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0 md:!overflow-visible"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
-        width="!w-[100vw] md:!w-[75vw]"
+        width="!w-[100vw] md:max-w-[540px]"
       >
         <CreatePostLayout
           closePopupHandler={() => {
@@ -140,10 +140,11 @@ const Header = ({
 
 const areEqual = (prevProps, nextProps) => {
   return (
-    prevProps.createdAt === nextProps.createdAt ||
-    prevProps.creatorName === nextProps.creatorName ||
-    prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl ||
-    prevProps.showThreeDots === nextProps.showThreeDots
+    (prevProps.createdAt === nextProps.createdAt ||
+      prevProps.creatorName === nextProps.creatorName ||
+      prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl ||
+      prevProps.showThreeDots === nextProps.showThreeDots) &&
+    JSON.stringify(prevProps.postDetails) === JSON.stringify(nextProps.postDetails)
   );
 };
 

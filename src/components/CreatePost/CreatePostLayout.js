@@ -66,15 +66,8 @@ const CreatePostLayout = ({
   useEffect(() => {
     if (isEditing) {
       setText(postDetails?.caption);
-      setMedia(postDetails.media);
-      setLinks(postDetails?.links);
-
-      // If there exist links already, then we need to show them
-      if (postDetails?.links?.length) {
-        setIsInputLinkOpen(true);
-      }
     }
-  }, [isEditing]);
+  }, [isEditing, postDetails?.caption]);
 
   useEffect(() => {
     if (openTypeOfPost) {
@@ -229,7 +222,7 @@ const CreatePostLayout = ({
   return (
     <div className="relative">
       <div className="h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] md:!overflow-visible">
-        <div className="relative px-[18px] flex flex-col gap-2">
+        <div className={`relative px-[18px] flex flex-col gap-2 ${isEditing ? 'pb-2' : ''}`}>
           <EmojiTextarea
             placeholder={LANG_TEXT_AREA_PLACEHOLDER}
             value={text}
