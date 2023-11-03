@@ -117,11 +117,12 @@ const Header = ({
         onClose={() => setIsCreatePostModalOpen(false)}
         isTitle={true}
         title={LANG_EDIT_POST}
-        childrenClassNames="overflow-y-auto"
+        childrenClassNames="!overflow-visible"
         padding="p-0"
         titleClassNames=""
-        titleParentClassNames="md:m-3 m-0"
+        titleParentClassNames="md:m-3 m-0 md:!overflow-visible"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
+        width="!w-[100vw] md:!w-[75vw]"
       >
         <CreatePostLayout
           closePopupHandler={() => {
@@ -130,7 +131,7 @@ const Header = ({
           openTypeOfPost={null}
           reloadData={reloadData}
           isEditing={true}
-          postDetails={postDetails}
+          postDetails={{ ...postDetails, postId }}
         />
       </Modal>
     </div>

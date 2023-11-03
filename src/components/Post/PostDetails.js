@@ -10,6 +10,7 @@ import RightChevron from '../Icons/RightChevron';
 import { CloseIcon } from '../Icons/CloseIcon';
 import { Player, BigPlayButton } from 'video-react';
 import 'video-react/dist/video-react.css';
+import { useSelector } from 'react-redux';
 
 const PostDetails = ({
   post = {},
@@ -18,6 +19,7 @@ const PostDetails = ({
   onCloseHandler = () => {},
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
+  const userData = useSelector((state) => state?.auth?.user) || {};
 
   // Pause video when moving to another slide
   const handleBeforeChange = (currentSlide) => {
@@ -91,10 +93,10 @@ const PostDetails = ({
     return (
       <Header
         createdAt={post?.createdAt}
-        creatorName={post?.created_by}
-        creatorProfilePicUrl={post?.profile_image_url}
+        creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+        creatorProfilePicUrl={post?.User?.profilePictureUrl}
         showThreeDots={false}
-        isCreatedByMe={false}
+        isCreatedByMe={post?.UserId === userData?.id}
       />
     );
   }, []);
@@ -174,13 +176,13 @@ const PostDetails = ({
 
         <div className="!text-sm">
           <ActionButtons
-            commentCount={post?.comment_count}
-            likeCount={post?.like_count}
-            shareCount={post?.share_count}
-            isLikedByMe={post?.is_liked_by_me}
+            commentCount={post?.commentCount}
+            likeCount={post?.likeCount}
+            shareCount={post?.shareCount}
+            isLikedByMe={post?.isLikedByMe}
             className="justify-between"
             isCommentSectionOpenDefault={true}
-            postId={post?.post_id}
+            postId={post?.id}
             reloadPostDetails={reloadPostDetails}
           />
         </div>

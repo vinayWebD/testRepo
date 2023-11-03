@@ -11,9 +11,10 @@ const NETWORK_CONSTANTS = {
   FORGOT_PASSWORD_RESET_PWD: '/v1/accounts/reset-password/',
   CREATE_POST: '/v1/feeds/posts/',
   FETCH_POSTS: '/v1/feeds/',
-  LIKE_UNLIKE_POST: (postId) => `/v1/feeds/posts/${postId}/likes/`,
+  LIKE_UNLIKE_POST: '/v1/feeds/posts/like/',
   FETCH_POST_DETAILS: (postId) => `/v1/feeds/posts/${postId}/`,
   DELETE_POST: (postId) => `/v1/feeds/posts/${postId}/`,
+  EDIT_POST: (postId) => `/v1/feeds/posts/${postId}`,
 };
 
 export default NETWORK_CONSTANTS;

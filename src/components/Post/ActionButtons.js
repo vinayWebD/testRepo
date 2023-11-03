@@ -46,11 +46,11 @@ const ActionButtons = ({
 
     if (_isLikedByMe) {
       _setIsLikeCount((prev) => (prev > 0 ? prev - 1 : 0));
-      response = await unlikePost({ postId });
+      response = await unlikePost({ postId, type: 0 });
     } else {
       setIsAnimating(true); // Trigger the animation
       _setIsLikeCount((prev) => prev + 1);
-      response = await likePost({ postId });
+      response = await likePost({ postId, type: 1 });
     }
 
     const { status } = response;

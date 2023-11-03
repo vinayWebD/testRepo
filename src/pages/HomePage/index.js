@@ -70,6 +70,7 @@ const HomePage = () => {
   // When we reload the posts: maybe after creating new post, editing or deleting one
   const reloadPosts = async () => {
     setAllPostsLoaded(false);
+    window.scrollTo(0, 0);
     await fetchAllPostsAPI(0, true);
   };
 
@@ -204,8 +205,8 @@ const HomePage = () => {
                 <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.postId}>
                   <Header
                     createdAt={post?.createdAt}
-                    creatorName={post?.created_by}
-                    creatorProfilePicUrl={post?.profile_image_url}
+                    creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+                    creatorProfilePicUrl={post?.User?.profilePictureUrl}
                     isCreatedByMe={post?.UserId === userData?.id}
                     postId={post?.postId}
                     reloadData={reloadPosts}
@@ -230,11 +231,11 @@ const HomePage = () => {
                   </div>
 
                   <ActionButtons
-                    commentCount={post?.comment_count}
-                    likeCount={post?.like_count}
-                    shareCount={post?.share_count}
-                    isLikedByMe={post?.is_liked_by_me}
-                    postId={post?.postId}
+                    commentCount={post?.commentCount}
+                    likeCount={post?.likeCount}
+                    shareCount={post?.shareCount}
+                    isLikedByMe={post?.isLikedByMe}
+                    postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
                   />
@@ -271,10 +272,10 @@ const HomePage = () => {
         onClose={() => setIsCreatePostModalOpen(false)}
         isTitle={true}
         title={LANG_CREATE_POST}
-        childrenClassNames="overflow-y-auto"
+        childrenClassNames="!overflow-visible"
         padding="p-0"
         titleClassNames=""
-        titleParentClassNames="md:m-3 m-0"
+        titleParentClassNames="md:m-3 m-0 md:!overflow-visible"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
         <CreatePostLayout

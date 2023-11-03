@@ -2,7 +2,7 @@ import { PAGE_SIZE } from '../constants/constants';
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { CREATE_POST, FETCH_POSTS, LIKE_UNLIKE_POST, FETCH_POST_DETAILS, DELETE_POST } =
+const { CREATE_POST, FETCH_POSTS, LIKE_UNLIKE_POST, FETCH_POST_DETAILS, DELETE_POST, EDIT_POST } =
   NETWORK_CONSTANTS;
 
 /**
@@ -33,9 +33,10 @@ const fetchPosts = async ({ page = 1 }) => {
   }
 };
 
-const likePost = async ({ postId }) => {
+const likePost = async ({ postId, type = 1 }) => {
+  // 1 -> like, 0 -> unlike
   try {
-    const response = await apiUtility(LIKE_UNLIKE_POST(postId), 'POST');
+    const response = await apiUtility(LIKE_UNLIKE_POST, 'POST', { PostId: postId, type });
     return response;
   } catch (error) {
     return error;
@@ -69,4 +70,20 @@ const deletePost = async ({ postId }) => {
   }
 };
 
-export { createPost, fetchPosts, likePost, unlikePost, fetchPostDetails, deletePost };
+/**
+ * API for editing post
+ * @param {*} param0
+ * @returns
+ */
+const editPost = async ({ postId, caption }) => {
+  try {
+    const response = await apiUtility(EDIT_POST(postId), 'PATCH', {
+      caption,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export { createPost, fetchPosts, likePost, unlikePost, fetchPostDetails, deletePost, editPost };
