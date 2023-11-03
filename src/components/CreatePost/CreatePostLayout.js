@@ -198,7 +198,7 @@ const CreatePostLayout = ({
     if (successStatus(status)) {
       ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
       closePopupHandler();
-      await reloadData(1);
+      await reloadData(0);
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, TST_POST_CREATED_FAILED_ID);

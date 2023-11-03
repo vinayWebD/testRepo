@@ -24,6 +24,7 @@ import { PAGE_SIZE } from '../../constants/constants';
 import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 import PostSkeleton from '../../components/common/PostSkeleton';
 import useScrollToTop from '../../hooks/useScrollToTop';
+import debounce from '../../utils/debounce';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -37,10 +38,11 @@ const HomePage = () => {
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
   const loaderRef = useRef(null);
   const hasUserScrolled = useWindowScrolledDown();
+  let isLoadingAPI = false; // This we are using to avoid multiple API calls because of infinite scroll
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
@@ -51,7 +53,7 @@ const HomePage = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: '20px',
+      rootMargin: '0px', // Leaving no margin so that API does not get called before handedly
       threshold: 1,
     });
     if (loaderRef.current) {
@@ -65,27 +67,14 @@ const HomePage = () => {
     };
   }, [loaderRef, posts]);
 
-  const handleObserver = (entities) => {
-    const target = entities[0];
+  const fetchAllPostsAPI = async (page) => {
+    if (allPostsLoaded && !isLoadingAPI) return; // prevent fetching if all posts are loaded
 
-    if (target.isIntersecting && target.intersectionRatio > 0.9) {
-      fetchAllPosts(currentPage);
-      setCurrentPage((prevPage) => prevPage + 1);
-    }
-  };
+    const response = await fetchPosts({ page: page + 1 });
 
-  const handleOpenPopup = (type) => {
-    setTypeOfPost(type);
-    setIsCreatePostModalOpen(true);
-  };
-
-  const fetchAllPosts = async (page) => {
-    if (allPostsLoaded && page !== 1) return; // prevent fetching if all posts are loaded
-    setIsLoading(true);
-    const response = await fetchPosts({ page });
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
-    setIsLoading(false);
+
     if (!successStatus(status) && errormsg) {
       ToastNotifyError(errormsg, '');
     } else {
@@ -93,13 +82,34 @@ const HomePage = () => {
         setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
       }
 
-      if (page === 1) {
+      if (page === 0) {
         // For the first time we just need to set the data as is
         setPosts(data?.data);
       } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
         setPosts((prevPosts) => [...prevPosts, ...data.data]);
       }
+      setCurrentPage((prevPage) => prevPage + 1);
+      setIsLoading(false);
+      isLoadingAPI = false;
     }
+  };
+
+  const fetchAllPosts = debounce(fetchAllPostsAPI, currentPage === 0 ? 20 : 450); // Added debounce in the API calling so that multiple calls do not go because of inifnite scroll
+
+  const handleObserver = (entities) => {
+    const target = entities[0];
+
+    if (target.isIntersecting && target.intersectionRatio >= 1) {
+      isLoadingAPI = true;
+      setIsLoading(true);
+
+      fetchAllPosts(currentPage);
+    }
+  };
+
+  const handleOpenPopup = (type) => {
+    setTypeOfPost(type);
+    setIsCreatePostModalOpen(true);
   };
 
   const fetchSinglePostDetails = async ({ postId }) => {
