@@ -44,6 +44,7 @@ const CreatePostLayout = ({
   reloadData = () => {},
   isEditing = false,
   postDetails = {},
+  reloadPostDetails = () => {},
 }) => {
   const [text, setText] = useState('');
   const [media, setMedia] = useState([]);
@@ -211,7 +212,11 @@ const CreatePostLayout = ({
     if (successStatus(status)) {
       ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
       closePopupHandler();
-      await reloadData(0);
+      if (isEditing) {
+        await reloadPostDetails({ postId: postDetails?.id });
+      } else {
+        await reloadData(0);
+      }
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, TST_POST_CREATED_FAILED_ID);

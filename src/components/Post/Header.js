@@ -23,6 +23,7 @@ const Header = ({
   isCreatedByMe = true,
   reloadData = () => {},
   postDetails = {},
+  reloadPostDetails = () => {},
 }) => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
@@ -130,6 +131,7 @@ const Header = ({
           }}
           openTypeOfPost={null}
           reloadData={reloadData}
+          reloadPostDetails={reloadPostDetails}
           isEditing={true}
           postDetails={{ ...postDetails, postId }}
         />
