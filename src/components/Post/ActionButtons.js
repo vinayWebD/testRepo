@@ -4,7 +4,7 @@ import ShareIcon from '../Icons/ShareIcon';
 import LikeEmptyIcon from '../Icons/LikeEmptyIcon';
 import LikeFilledIcon from '../Icons/LikeFilledIcon';
 import CommentInput from './CommentInput';
-import { likePost, unlikePost } from '../../services/feed';
+import { likePost } from '../../services/feed';
 import { successStatus } from '../../common';
 import CommentLayout from './CommentLayout';
 import DownCaret from '../Icons/DownCaret';
@@ -46,7 +46,7 @@ const ActionButtons = ({
 
     if (_isLikedByMe) {
       _setIsLikeCount((prev) => (prev > 0 ? prev - 1 : 0));
-      response = await unlikePost({ postId, type: 0 });
+      response = await likePost({ postId, type: 0 });
     } else {
       setIsAnimating(true); // Trigger the animation
       _setIsLikeCount((prev) => prev + 1);
