@@ -7,16 +7,18 @@ import { updateSearch } from '../../redux/slices/appSearchSlice';
 import Dropdown from './Dropdown';
 import DownCaret from '../Icons/DownCaret';
 import { logoutDispatcher } from '../../redux/dispatchers/authDispatcher';
-import { DROPDOWN_OPTION_LABELS } from '../../constants/lang';
+import { DROPDOWN_OPTION_LABELS, BUTTON_LABELS } from '../../constants/lang';
 import AddFriendIcon from '../Icons/AddFriendIcon';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import SearchIcon from '../Icons/SearchIcon';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import { useState } from 'react';
+import FriendRequestsBar from './FriendRequestsBar';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
+const { BTNLBL_FRIEND_REQUESTS } = BUTTON_LABELS;
 
 const DropDownParent = ({ userData = {} }) => {
   const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
@@ -36,6 +38,7 @@ const PrivateHeader = () => {
   const { searchValue = '' } = useSelector((state) => state?.appSearch || {});
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const [isFriendRequestModalOpen, setIsFriendRequestModalOpen] = useState(false);
 
   const searchInputChangeHandler = (val) => {
     dispatch(updateSearch({ searchValue: val }));
@@ -54,7 +57,10 @@ const PrivateHeader = () => {
   };
 
   return (
-    <div className="bg-darkblue py-[14px] h-[61px] flex px-[5%] justify-between items-center fixed top-0 w-full left-0 z-50">
+    <div
+      className=" bg-darkblue py-[14px] h-[61px] flex px-[5%] justify-between items-center fixed top-0 w-full left-0 z-50"
+      style={{ zIndex: 333 }}
+    >
       <span onClick={() => onClickLogoHandler()} className="cursor-pointer">
         <HeaderLogoIcon />
       </span>
@@ -71,8 +77,13 @@ const PrivateHeader = () => {
             <SearchIcon width={28} height={28} />
           )
         }
+        <div
+          className="cursor-pointer"
+          onClick={() => setIsFriendRequestModalOpen(!isFriendRequestModalOpen)}
+        >
+          <AddFriendIcon />
+        </div>
 
-        <AddFriendIcon />
         <ConfirmationModal
           title={DDLBL_LOGOUT}
           isOpen={isLogoutModalOpen}
@@ -87,6 +98,20 @@ const PrivateHeader = () => {
 
         <Dropdown options={OPTIONS} IconComponent={() => <DropDownParent userData={userData} />} />
       </div>
+
+      <FriendRequestsBar
+        isOpen={isFriendRequestModalOpen}
+        onClose={() => setIsFriendRequestModalOpen(false)}
+        isTitle={true}
+        title={BTNLBL_FRIEND_REQUESTS}
+        childrenClassNames="overflow-y-auto"
+        padding="p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height=" max-h-[100dvh] md:h-auto"
+      >
+        {/* <InvitePeopleLayout /> */}
+      </FriendRequestsBar>
     </div>
   );
 };

@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
+import MyNetwork from './pages/MyNetwork';
 
 const {
   LANDING,
@@ -22,6 +23,7 @@ const {
   RESET_PASSWORD,
   PATH_WORK,
   PROFILE,
+  MYNETWORK,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -75,6 +77,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: PROFILE,
     element: <ProfilePage />,
+  },
+  {
+    path: MYNETWORK,
+    element: <MyNetwork />,
   },
 ]);
 
