@@ -112,7 +112,7 @@ const Header = ({
         Are you sure you want to delete this post?
       </ConfirmationModal>
 
-      {/* Modal to create or edit the post */}
+      {/* Modal to edit the post */}
       <Modal
         isOpen={isCreatePostModalOpen}
         onClose={() => setIsCreatePostModalOpen(false)}
@@ -121,8 +121,8 @@ const Header = ({
         childrenClassNames="!overflow-visible"
         padding="p-0"
         titleClassNames=""
-        titleParentClassNames="md:m-3 m-0 md:!overflow-visible"
-        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto !overflow-visible"
         width="!w-[100vw] md:max-w-[540px]"
       >
         <CreatePostLayout

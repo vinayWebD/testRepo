@@ -226,7 +226,11 @@ const CreatePostLayout = ({
 
   return (
     <div className="relative">
-      <div className="h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] md:!overflow-visible">
+      <div
+        className={`h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
+          isEditing ? '!overflow-visible' : ''
+        }`}
+      >
         <div className={`relative px-[18px] flex flex-col gap-2 ${isEditing ? 'pb-2' : ''}`}>
           <EmojiTextarea
             placeholder={LANG_TEXT_AREA_PLACEHOLDER}

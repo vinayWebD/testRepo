@@ -277,10 +277,10 @@ const HomePage = () => {
         onClose={() => setIsCreatePostModalOpen(false)}
         isTitle={true}
         title={LANG_CREATE_POST}
-        childrenClassNames="!overflow-visible"
+        childrenClassNames="overflow-y-auto"
         padding="p-0"
         titleClassNames=""
-        titleParentClassNames="md:m-3 m-0 md:!overflow-visible"
+        titleParentClassNames="md:m-3 m-0"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
         <CreatePostLayout
