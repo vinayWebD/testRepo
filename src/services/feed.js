@@ -2,8 +2,15 @@ import { PAGE_SIZE } from '../constants/constants';
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { CREATE_POST, FETCH_POSTS, LIKE_UNLIKE_POST, FETCH_POST_DETAILS, DELETE_POST, EDIT_POST } =
-  NETWORK_CONSTANTS;
+const {
+  CREATE_POST,
+  FETCH_POSTS,
+  LIKE_UNLIKE_POST,
+  FETCH_POST_DETAILS,
+  DELETE_POST,
+  EDIT_POST,
+  CREATE_COMMENT,
+} = NETWORK_CONSTANTS;
 
 /**
  * API for creating post
@@ -86,4 +93,25 @@ const editPost = async ({ postId, caption }) => {
   }
 };
 
-export { createPost, fetchPosts, likePost, unlikePost, fetchPostDetails, deletePost, editPost };
+const createComment = async ({ postId, description }) => {
+  try {
+    const response = await apiUtility(CREATE_COMMENT, 'POST', {
+      PostId: postId,
+      description,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {
+  createPost,
+  fetchPosts,
+  likePost,
+  unlikePost,
+  fetchPostDetails,
+  deletePost,
+  editPost,
+  createComment,
+};

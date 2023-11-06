@@ -95,7 +95,7 @@ const ActionButtons = ({
       {isCommentSectionOpen ? (
         <>
           <div className="mt-7">
-            <CommentInput />
+            <CommentInput postId={postId} />
           </div>
           <div className="mt-3">
             <CommentLayout />
