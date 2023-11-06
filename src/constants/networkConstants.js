@@ -16,6 +16,8 @@ const NETWORK_CONSTANTS = {
   DELETE_POST: (postId) => `/v1/feeds/posts/${postId}/`,
   EDIT_POST: (postId) => `/v1/feeds/posts/${postId}`,
   CREATE_COMMENT: '/v1/feeds/posts/comment',
+  GET_COMMENTS: (postId) => `/v1/feeds/posts/comment/${postId}`,
+  DELETE_COMMENT: (id) => `/v1//feeds/posts/comment/${id}`,
 };
 
 export default NETWORK_CONSTANTS;

@@ -5,7 +5,7 @@ import Avatar from '../common/Avatar';
 import { createCommentDispatcher } from '../../redux/dispatchers/feedDispatcher';
 import { successStatus } from '../../common';
 
-const CommentInput = ({ postId, onChange = () => {} }) => {
+const CommentInput = ({ postId, onChange = () => {}, reloadPostDetails = () => {} }) => {
   const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const userData = useSelector((state) => state?.auth?.user) || {};
@@ -50,6 +50,8 @@ const CommentInput = ({ postId, onChange = () => {} }) => {
         (await dispatch(createCommentDispatcher({ postId, description: value }))) || {};
       if (successStatus(status)) {
         setValue('');
+        autoExpand();
+        await reloadPostDetails(postId);
       }
     }
   };

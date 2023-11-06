@@ -34,4 +34,5 @@ export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quic
 
 export const PAGE_SIZE = {
   FEED: 20,
+  COMMENT: 5,
 };

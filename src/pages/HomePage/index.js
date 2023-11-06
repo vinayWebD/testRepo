@@ -129,10 +129,7 @@ const HomePage = () => {
     } else {
       const allPosts = posts.map((post) => {
         if (post?.id === postId) {
-          return {
-            ...post,
-            caption: data?.data?.caption,
-          };
+          return data?.data;
         } else {
           return post;
         }

@@ -1,4 +1,4 @@
-import { createComment, deletePost } from '../../services/feed';
+import { createComment, deleteComment, deletePost } from '../../services/feed';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 /**
@@ -22,4 +22,13 @@ const createCommentDispatcher =
     return { status, data };
   };
 
-export { deletePostDispatcher, createCommentDispatcher };
+const deleteCommentDispatcher =
+  ({ id }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await deleteComment({ id });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+export { deletePostDispatcher, createCommentDispatcher, deleteCommentDispatcher };

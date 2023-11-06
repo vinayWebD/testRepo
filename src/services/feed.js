@@ -10,6 +10,8 @@ const {
   DELETE_POST,
   EDIT_POST,
   CREATE_COMMENT,
+  GET_COMMENTS,
+  DELETE_COMMENT,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -105,6 +107,27 @@ const createComment = async ({ postId, description }) => {
   }
 };
 
+const getComments = async ({ postId, page = 1 }) => {
+  try {
+    const response = await apiUtility(GET_COMMENTS(postId), 'GET', {
+      page,
+      limit: PAGE_SIZE.COMMENT,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+const deleteComment = async ({ id }) => {
+  try {
+    const response = await apiUtility(DELETE_COMMENT(id), 'DELETE');
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   createPost,
   fetchPosts,
@@ -114,4 +137,6 @@ export {
   deletePost,
   editPost,
   createComment,
+  getComments,
+  deleteComment,
 };
