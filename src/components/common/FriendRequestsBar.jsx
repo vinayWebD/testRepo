@@ -82,6 +82,7 @@ function FriendRequestsBar({
                 onChange={searchInputChangeHandler}
                 value={friendRequestSearch}
                 isFocusIn={focusOnSearch}
+                textColor="text-black"
                 onBlur={() => setFocusOnSearch(false)}
                 onFocus={() => setFocusOnSearch(true)}
                 className=""
