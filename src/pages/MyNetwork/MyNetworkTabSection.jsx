@@ -8,6 +8,7 @@ import UserCard from '../../components/MyNetworkLayout/UserCard';
 import Modal from '../../components/Modal';
 import { BUTTON_LABELS } from '../../constants/lang';
 import InvitePeopleLayout from './InvitePeopleLayout';
+import Pagination from '../../components/common/Pagination';
 const { BTNLBL_INVITE_PEOPLE } = BUTTON_LABELS;
 
 const MyNetworkTabSection = ({ selectedTab }) => {
@@ -70,10 +71,11 @@ const MyNetworkTabSection = ({ selectedTab }) => {
         </div>
       </div>
 
-      <div className="my-5 mx-9">
+      <div className="my-5 mx-9 h-[70vh] overflow-y-scroll mb-4 pr-3">
         {[0, 1, 2, 3, 4, 5, 6, 7].map((item) => (
           <UserCard key={item} selectedTab={selectedTab} />
         ))}
+        <Pagination />
       </div>
       <Modal
         isOpen={isInvitePeopleModalOpen}

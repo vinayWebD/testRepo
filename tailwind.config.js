@@ -25,6 +25,7 @@ module.exports = {
       gray: '#F2F2F2',
       deleteRed: '#E83E39',
       iconBackground: '#0081CC0D',
+      whiteGray: '#EDEDED',
     },
     extend: {
       fontFamily: {
