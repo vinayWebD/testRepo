@@ -109,9 +109,7 @@ const PrivateHeader = () => {
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
         height=" max-h-[100dvh] md:h-auto"
-      >
-        {/* <InvitePeopleLayout /> */}
-      </FriendRequestsBar>
+      ></FriendRequestsBar>
     </div>
   );
 };

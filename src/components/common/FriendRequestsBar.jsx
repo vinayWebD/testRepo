@@ -46,7 +46,7 @@ function FriendRequestsBar({
     if (getModalCounter() === 1 && isOpen) {
       document.body.style.overflow = 'hidden';
     } else if (getModalCounter() === 0 && !isOpen) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'scroll';
     }
 
     return () => {
