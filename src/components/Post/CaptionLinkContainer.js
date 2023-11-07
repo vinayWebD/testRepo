@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { LIMITS } from '../../constants/constants';
+import ReadMore from '../ReadMore';
 
 const { POST_READ_MORE_LIMIT } = LIMITS;
 
@@ -40,7 +41,9 @@ const CaptionLinkContainer = ({ caption = '', links = [] }) => {
           rel="noreferrer"
           key={i}
         >
-          {link}
+          <ReadMore length={200} className="text-darkblue font-bold">
+            {link}
+          </ReadMore>
         </a>
       ))}
     </div>
