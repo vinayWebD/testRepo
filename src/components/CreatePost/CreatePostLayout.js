@@ -82,8 +82,7 @@ const CreatePostLayout = ({
 
   const isPostButtonDisabled = () => {
     let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
-    let allLinks = [link, ...links];
-    return !POST_PATTERN.test(text) && !media?.length && !allLinks?.length;
+    return !POST_PATTERN.test(text) && !media?.length && !links?.length && !link;
   };
 
   /**
