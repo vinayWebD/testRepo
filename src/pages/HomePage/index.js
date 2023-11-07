@@ -128,6 +128,9 @@ const HomePage = () => {
       ToastNotifyError(errormsg, '');
     } else {
       const allPosts = posts.map((post) => {
+        if (activePost?.id === postId) {
+          setActivePost(data?.data);
+        }
         if (post?.id === postId) {
           return data?.data;
         } else {
@@ -135,9 +138,6 @@ const HomePage = () => {
         }
       });
       setPosts(allPosts);
-      if (activePost?.id === postId) {
-        setActivePost(data?.data);
-      }
     }
   };
 
