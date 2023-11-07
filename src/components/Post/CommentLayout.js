@@ -4,7 +4,7 @@ import ThreeDots from '../Icons/ThreeDots';
 import Dropdown from '../common/Dropdown';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import timeSpan from '../../utils/timeSpan';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deleteCommentDispatcher } from '../../redux/dispatchers/feedDispatcher';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
@@ -19,6 +19,7 @@ const CommentLayout = ({
   reloadPostDetails = () => {},
 }) => {
   const dispatch = useDispatch();
+  const userData = useSelector((state) => state?.auth?.user) || {};
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
@@ -49,16 +50,20 @@ const CommentLayout = ({
               </div>
               <div className="flex items-center justify-center gap-4">
                 <p className="text-xs text-greylight">{timeSpan(createdAt)}</p>
-                <div className="w-[20px] relative top-1">
-                  <Dropdown
-                    options={[
-                      { name: 'Edit', action: () => setIsEditing(true) },
-                      { name: 'Delete', action: () => setIsDeleteModalOpen(true) },
-                    ]}
-                    IconComponent={() => <ThreeDots className="w-[4px] h-[20px] rotate-90" />}
-                    optionsClassName="!top-0"
-                  />
-                </div>
+                {User?.id === userData?.id ? (
+                  <div className="w-[20px] relative top-1">
+                    <Dropdown
+                      options={[
+                        { name: 'Edit', action: () => setIsEditing(true) },
+                        { name: 'Delete', action: () => setIsDeleteModalOpen(true) },
+                      ]}
+                      IconComponent={() => <ThreeDots className="w-[4px] h-[20px] rotate-90" />}
+                      optionsClassName="!top-0"
+                    />
+                  </div>
+                ) : (
+                  ''
+                )}
               </div>
             </div>
 
@@ -86,6 +91,7 @@ const CommentLayout = ({
           commentDetails={{
             description,
             id,
+            userId: User?.id,
           }}
         />
       )}
