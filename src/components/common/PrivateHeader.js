@@ -14,6 +14,8 @@ import { PATHS } from '../../constants/urlPaths';
 import SearchIcon from '../Icons/SearchIcon';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import { useState } from 'react';
+import SuggestedSearch from '../PrivateLayout/SuggestedSearch';
+import SuggestedUser from '../PrivateLayout/SuggestedUser';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
@@ -36,8 +38,9 @@ const PrivateHeader = () => {
   const { searchValue = '' } = useSelector((state) => state?.appSearch || {});
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-
+  const [isSuggestUser, setIsSuggestUser] = useState(false);
   const searchInputChangeHandler = (val) => {
+    val ? setIsSuggestUser(true) : setIsSuggestUser(false);
     dispatch(updateSearch({ searchValue: val }));
   };
 
@@ -71,8 +74,8 @@ const PrivateHeader = () => {
             <SearchIcon width={28} height={28} />
           )
         }
-
         <AddFriendIcon />
+
         <ConfirmationModal
           title={DDLBL_LOGOUT}
           isOpen={isLogoutModalOpen}
@@ -84,7 +87,28 @@ const PrivateHeader = () => {
         >
           Are you sure you want to logout?
         </ConfirmationModal>
-
+        <SuggestedSearch isOpen={isSuggestUser} onClose={() => setIsSuggestUser(false)}>
+          <SuggestedUser
+            userName="Stev Jobs"
+            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+          />
+          <SuggestedUser
+            userName="Stev Jobs"
+            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+          />
+          <SuggestedUser
+            userName="Stev Jobs"
+            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+          />
+          <SuggestedUser
+            userName="Stev Jobs"
+            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+          />
+          <SuggestedUser
+            userName="Stev Jobs"
+            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+          />
+        </SuggestedSearch>
         <Dropdown options={OPTIONS} IconComponent={() => <DropDownParent userData={userData} />} />
       </div>
     </div>
