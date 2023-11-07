@@ -36,12 +36,12 @@ const CaptionLinkContainer = ({ caption = '', links = [] }) => {
       {links?.map((link, i) => (
         <a
           href={link}
-          className="text-sm text-blueprimary font-semibold max-w-max md:w-fit break-all"
+          className="text-sm text-blueprimary font-medium max-w-max md:w-fit break-all"
           target="_blank"
           rel="noreferrer"
           key={i}
         >
-          <ReadMore length={200} className="text-darkblue font-bold">
+          <ReadMore length={200} className="text-darkblue !font-semibold">
             {link}
           </ReadMore>
         </a>
