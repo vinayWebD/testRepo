@@ -16,7 +16,7 @@ export const LIMITS = {
   POST_MAX_IMAGE_SIZE_IN_BYTES: 10485760,
   POST_MAX_VIDEO_SIZE_IN_BYTES: 52428800,
   POST_MAX_ALLOWED_MEDIA: 10,
-  POST_READ_MORE_LIMIT: 300,
+  POST_READ_MORE_LIMIT: 200,
 };
 
 export const POST_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/png', 'image/jpg'];

@@ -44,10 +44,10 @@ const PostDetails = ({
   };
 
   useEffect(() => {
-    if (post?.post_id) {
-      reloadPostDetails({ postId: post?.post_id });
+    if (post?.id) {
+      reloadPostDetails({ postId: post?.id });
     }
-  }, [post?.post_id]);
+  }, [post?.id]);
 
   // The slider should work when the post details component is loaded
   useEffect(() => {

@@ -52,15 +52,6 @@ const likePost = async ({ postId, type = 1 }) => {
   }
 };
 
-const unlikePost = async ({ postId }) => {
-  try {
-    const response = await apiUtility(LIKE_UNLIKE_POST(postId), 'DELETE');
-    return response;
-  } catch (error) {
-    return error;
-  }
-};
-
 const fetchPostDetails = async ({ postId }) => {
   try {
     const response = await apiUtility(FETCH_POST_DETAILS(postId), 'GET');
@@ -132,7 +123,6 @@ export {
   createPost,
   fetchPosts,
   likePost,
-  unlikePost,
   fetchPostDetails,
   deletePost,
   editPost,
