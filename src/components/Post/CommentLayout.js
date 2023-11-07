@@ -71,10 +71,10 @@ const CommentLayout = ({
           title="Delete Comment"
           isOpen={isDeleteModalOpen}
           onClose={() => setIsDeleteModalOpen(false)}
-          primaryButtonTitle="No"
-          secondaryButtonTitle="Yes"
-          primaryButtonAction={() => setIsDeleteModalOpen(false)}
-          secondaryButtonAction={deleteCommentHandler}
+          primaryButtonTitle="Delete"
+          secondaryButtonTitle="No"
+          secondaryButtonAction={() => setIsDeleteModalOpen(false)}
+          primaryButtonAction={deleteCommentHandler}
         >
           Are you sure you want to delete this comment?
         </ConfirmationModal>
