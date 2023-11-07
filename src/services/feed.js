@@ -12,6 +12,7 @@ const {
   CREATE_COMMENT,
   GET_COMMENTS,
   DELETE_COMMENT,
+  EDIT_COMMENT,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -119,6 +120,17 @@ const deleteComment = async ({ id }) => {
   }
 };
 
+const editComment = async ({ id, description }) => {
+  try {
+    const response = await apiUtility(EDIT_COMMENT(id), 'PATCH', {
+      description,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   createPost,
   fetchPosts,
@@ -129,4 +141,5 @@ export {
   createComment,
   getComments,
   deleteComment,
+  editComment,
 };

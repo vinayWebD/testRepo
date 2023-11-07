@@ -1,15 +1,32 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SendIcon from '../Icons/SendIcon';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '../common/Avatar';
-import { createCommentDispatcher } from '../../redux/dispatchers/feedDispatcher';
+import {
+  createCommentDispatcher,
+  editCommentDispatcher,
+} from '../../redux/dispatchers/feedDispatcher';
 import { successStatus } from '../../common';
+import OutlinedButton from '../common/OutlinedButton';
 
-const CommentInput = ({ postId, onChange = () => {}, reloadPostDetails = () => {} }) => {
+const CommentInput = ({
+  postId,
+  onChange = () => {},
+  reloadPostDetails = () => {},
+  isEditing = false,
+  commentDetails = {},
+  cancelEditing = () => {},
+}) => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState(commentDetails?.description || '');
   const userData = useSelector((state) => state?.auth?.user) || {};
   const textareaRef = useRef(null);
+
+  useEffect(() => {
+    if (isEditing && commentDetails?.description !== value) {
+      setValue(commentDetails?.description);
+    }
+  }, [isEditing, commentDetails?.description]);
 
   const onChangeHandler = (e) => {
     setValue(e.target.value);
@@ -46,8 +63,19 @@ const CommentInput = ({ postId, onChange = () => {}, reloadPostDetails = () => {
 
   const submitCommentHandler = async () => {
     if (isValid()) {
-      const { status } =
-        (await dispatch(createCommentDispatcher({ postId, description: value }))) || {};
+      let status;
+      if (!isEditing) {
+        const response =
+          (await dispatch(createCommentDispatcher({ postId, description: value }))) || {};
+        status = response?.status;
+      } else {
+        const response =
+          (await dispatch(editCommentDispatcher({ id: commentDetails?.id, description: value }))) ||
+          {};
+        status = response?.status;
+        cancelEditing();
+      }
+
       if (successStatus(status)) {
         setValue('');
         autoExpand();
@@ -57,7 +85,7 @@ const CommentInput = ({ postId, onChange = () => {}, reloadPostDetails = () => {
   };
 
   return (
-    <div>
+    <div className="w-full">
       <div className="flex gap-2 items-center relative w-full">
         <Avatar
           name={`${userData?.firstName} ${userData?.lastName}`}
@@ -87,6 +115,17 @@ const CommentInput = ({ postId, onChange = () => {}, reloadPostDetails = () => {
           </div>
         </div>
       </div>
+      {isEditing ? (
+        <div className="float-right mt-2">
+          <OutlinedButton
+            label={'Cancel'}
+            onClick={cancelEditing}
+            additionalClassNames="!text-[11px] !px-3 !py-2 hover:opacity-70"
+          />
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };
