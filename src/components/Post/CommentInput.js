@@ -1,9 +1,12 @@
 import React, { useRef, useState } from 'react';
 import SendIcon from '../Icons/SendIcon';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '../common/Avatar';
+import { createCommentDispatcher } from '../../redux/dispatchers/feedDispatcher';
+import { successStatus } from '../../common';
 
-const CommentInput = ({ onChange = () => {} }) => {
+const CommentInput = ({ postId, onChange = () => {}, reloadPostDetails = () => {} }) => {
+  const dispatch = useDispatch();
   const [value, setValue] = useState('');
   const userData = useSelector((state) => state?.auth?.user) || {};
   const textareaRef = useRef(null);
@@ -37,6 +40,22 @@ const CommentInput = ({ onChange = () => {} }) => {
     }
   };
 
+  const isValid = () => {
+    return !!value?.trim()?.length;
+  };
+
+  const submitCommentHandler = async () => {
+    if (isValid()) {
+      const { status } =
+        (await dispatch(createCommentDispatcher({ postId, description: value }))) || {};
+      if (successStatus(status)) {
+        setValue('');
+        autoExpand();
+        await reloadPostDetails(postId);
+      }
+    }
+  };
+
   return (
     <div>
       <div className="flex gap-2 items-center relative w-full">
@@ -58,11 +77,11 @@ const CommentInput = ({ onChange = () => {} }) => {
           />
           <div
             className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greylighter ${
-              !value ? 'cursor-not-allowed' : 'cursor-pointer'
+              !isValid() ? 'cursor-not-allowed' : 'cursor-pointer'
             }`}
             onClick={() => {}}
           >
-            <div className={`${!value ? 'opacity-60' : ''}`}>
+            <div className={`${!isValid() ? 'opacity-60' : ''}`} onClick={submitCommentHandler}>
               <SendIcon />
             </div>
           </div>
