@@ -272,7 +272,7 @@ const MediaItem = ({
           />
           <video
             src={url}
-            className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer`}
+            className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer max-h-[500px] md:max-h-[400px]`}
             controls={false}
             height={'100%'}
             onClick={() => onClick(index)}
@@ -300,7 +300,7 @@ const MediaItem = ({
         <img
           src={url}
           alt="media"
-          className={`w-full ${className} rounded-lg h-[100%] cursor-pointer`}
+          className={`w-full ${className} rounded-lg h-[100%] cursor-pointer max-h-[500px] md:max-h-[400px]`}
           onClick={() => onClick(index)}
         />
         {showMoreOverlay ? (
