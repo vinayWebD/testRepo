@@ -5,6 +5,7 @@ import { searchUserDispatcher } from '../../redux/dispatchers/searchUserDispatch
 import { successStatus } from '../../common';
 import SearchIcon from '../Icons/SearchIcon';
 import debounce from '../../utils/debounce';
+import PostSkeleton from '../common/PostSkeleton';
 
 let globalModalCounter = 0;
 
@@ -114,19 +115,21 @@ function SuggestedSearch({
           })
         ) : (
           <div className="flex gap-2 p-3 cursor-pointer">
-            <div>
-              <SearchIcon color="black" />
-            </div>
             {!isGlobalTransparentLoadingPrivate ? (
-              <div>
-                <h4 className="text-bold font-medium leading-4 ">No result found</h4>
-                <h6 className="text-[10px] leading-4 font-normal text-greydark">
-                  Search another way
-                </h6>
-              </div>
+              <>
+                <div>
+                  <SearchIcon color="black" />
+                </div>
+                <div>
+                  <h4 className="text-bold font-medium leading-4 ">No result found</h4>
+                  <h6 className="text-[10px] leading-4 font-normal text-greydark">
+                    Search another way
+                  </h6>
+                </div>
+              </>
             ) : (
               <div>
-                <h4 className="text-bold font-medium leading-4 ">Searching...</h4>
+                <PostSkeleton showCaption={false} showMedia={false} />
               </div>
             )}
           </div>
