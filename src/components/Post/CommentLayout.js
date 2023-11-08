@@ -23,16 +23,19 @@ const CommentLayout = ({
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const { globalTransparentLoadingPrivate } = useSelector((state) => state.auth || {});
 
   const deleteCommentHandler = async () => {
-    const { status, data } = (await dispatch(deleteCommentDispatcher({ id }))) || {};
-    if (!successStatus(status)) {
-      const errormsg = getErrorMessage(data);
-      if (errormsg) {
-        ToastNotifyError(errormsg);
+    if (!globalTransparentLoadingPrivate) {
+      const { status, data } = (await dispatch(deleteCommentDispatcher({ id }))) || {};
+      if (!successStatus(status)) {
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg);
+        }
       }
+      await reloadPostDetails(PostId);
     }
-    await reloadPostDetails(PostId);
   };
 
   return (

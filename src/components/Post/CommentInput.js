@@ -20,6 +20,7 @@ const CommentInput = ({
   const [value, setValue] = useState('');
   const userData = useSelector((state) => state?.auth?.user) || {};
   const textareaRef = useRef(null);
+  const { globalTransparentLoadingPrivate } = useSelector((state) => state.auth || {});
 
   useEffect(() => {
     if (isEditing && commentDetails?.description !== value) {
@@ -64,7 +65,7 @@ const CommentInput = ({
   };
 
   const submitCommentHandler = async () => {
-    if (isValid()) {
+    if (isValid() && !globalTransparentLoadingPrivate) {
       let status;
       if (!isEditing) {
         const response =
