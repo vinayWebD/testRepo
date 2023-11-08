@@ -21,7 +21,7 @@ const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 const { POST_PATTERN, LINK_PATTERN } = REGEX;
 const { LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
 const {
-  successToast: { TST_POST_CREATED_SUCCESSFULLY = '' },
+  successToast: { TST_POST_CREATED_SUCCESSFULLY = '', TST_POST_UPDATED_SUCCESSFULLY = '' },
   errorToast: {
     TST_POST_UPLOAD_INVALID_MEDIA = '',
     TST_POST_MAX_ALLOWED_MEDIA = '',
@@ -82,8 +82,7 @@ const CreatePostLayout = ({
 
   const isPostButtonDisabled = () => {
     let link = !['', null, undefined].includes(linkInInput) ? linkInInput : undefined;
-    let allLinks = [link, ...links];
-    return !POST_PATTERN.test(text) && !media?.length && !allLinks?.length;
+    return !POST_PATTERN.test(text) && !media?.length && !links?.length && !link;
   };
 
   /**
@@ -210,7 +209,10 @@ const CreatePostLayout = ({
     const errormsg = getErrorMessage(data);
     setIsLoading(false);
     if (successStatus(status)) {
-      ToastNotifySuccess(TST_POST_CREATED_SUCCESSFULLY, TST_POST_CREATED_SUCCESS_ID);
+      ToastNotifySuccess(
+        isEditing ? TST_POST_UPDATED_SUCCESSFULLY : TST_POST_CREATED_SUCCESSFULLY,
+        TST_POST_CREATED_SUCCESS_ID,
+      );
       closePopupHandler();
       if (isEditing) {
         await reloadPostDetails({ postId: postDetails?.id });
@@ -227,7 +229,7 @@ const CreatePostLayout = ({
   return (
     <div className="relative">
       <div
-        className={`h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
+        className={`modal-internal h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
           isEditing ? '!overflow-visible' : ''
         }`}
       >
@@ -301,7 +303,10 @@ const CreatePostLayout = ({
 
               <div
                 className="flex gap-2 cursor-pointer hover:opacity-70"
-                onClick={() => setIsInputLinkOpen(true)}
+                onClick={() => {
+                  document.querySelector('.modal-internal').scroll(0, 0);
+                  setIsInputLinkOpen(true);
+                }}
               >
                 <LinkIcon /> <p>{BTNLBL_LINK}</p>
               </div>

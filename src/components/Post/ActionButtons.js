@@ -4,10 +4,13 @@ import ShareIcon from '../Icons/ShareIcon';
 import LikeEmptyIcon from '../Icons/LikeEmptyIcon';
 import LikeFilledIcon from '../Icons/LikeFilledIcon';
 import CommentInput from './CommentInput';
-import { likePost } from '../../services/feed';
-import { successStatus } from '../../common';
+import { getComments, likePost } from '../../services/feed';
+import { getErrorMessage, successStatus } from '../../common';
 import CommentLayout from './CommentLayout';
 import DownCaret from '../Icons/DownCaret';
+import CommentSkeleton from '../common/CommentSkeleton';
+import { PAGE_SIZE } from '../../constants/constants';
+import { ToastNotifyError } from '../Toast/ToastNotify';
 
 const ActionButtons = ({
   isLikedByMe = false,
@@ -23,6 +26,9 @@ const ActionButtons = ({
   const [_isLikedByMe, _setIsLikedByMe] = useState(isLikedByMe);
   const [_likeCount, _setIsLikeCount] = useState(likeCount);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [commentsPage, setCommentsPage] = useState(1);
+  const [comments, setComments] = useState([]);
+  const [isCommentLoading, setIsCommentLoading] = useState(false);
 
   useEffect(() => {
     if (isAnimating) {
@@ -35,6 +41,12 @@ const ActionButtons = ({
     _setIsLikeCount(likeCount);
     _setIsLikedByMe(isLikedByMe);
   }, [likeCount, isLikedByMe]);
+
+  useEffect(() => {
+    if (isCommentSectionOpen) {
+      fetchComments();
+    }
+  }, [isCommentSectionOpen, commentsPage]);
 
   const commentClickHandler = () => {
     setIsCommentSectionOpen(true);
@@ -57,6 +69,30 @@ const ActionButtons = ({
     if (successStatus(status)) {
       await reloadPostDetails({ postId });
     }
+  };
+
+  const fetchComments = async (page = commentsPage) => {
+    setIsCommentLoading(true);
+    const { status, data } = await getComments({ postId, page });
+    if (successStatus(status)) {
+      if (page === 1) {
+        setComments(data?.data);
+      } else {
+        setComments((prevData) => [...prevData, ...data.data]);
+      }
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+    setIsCommentLoading(false);
+  };
+
+  const reloadCommentWithPostDetails = async (postId) => {
+    setCommentsPage(1);
+    await fetchComments(1);
+    await reloadPostDetails({ postId });
   };
 
   return (
@@ -95,16 +131,40 @@ const ActionButtons = ({
       {isCommentSectionOpen ? (
         <>
           <div className="mt-7">
-            <CommentInput />
+            <CommentInput postId={postId} reloadPostDetails={reloadCommentWithPostDetails} />
           </div>
           <div className="mt-3">
-            <CommentLayout />
-            <CommentLayout />
+            {comments?.map((comment) => {
+              return (
+                <CommentLayout
+                  {...comment}
+                  key={comment?.id}
+                  reloadPostDetails={reloadCommentWithPostDetails}
+                />
+              );
+            })}
 
-            <div className="flex gap-1 mt-3 cursor-pointer hover:opacity-70">
-              <p className="text14 text-greydark">Load more comments</p>{' '}
-              <DownCaret fill="#A1A0A0" />
-            </div>
+            {isCommentLoading ? (
+              ['', ''].map((a, i) => {
+                return (
+                  <div className="mb-3" key={i}>
+                    {' '}
+                    <CommentSkeleton />
+                  </div>
+                );
+              })
+            ) : commentCount > comments?.length &&
+              comments.length === commentsPage * PAGE_SIZE.COMMENT ? (
+              <div
+                className="flex gap-1 mt-3 cursor-pointer hover:opacity-70"
+                onClick={() => setCommentsPage((prev) => prev + 1)}
+              >
+                <p className="text14 text-greydark">Load more comments</p>{' '}
+                <DownCaret fill="#A1A0A0" />
+              </div>
+            ) : (
+              ''
+            )}
           </div>
         </>
       ) : (
