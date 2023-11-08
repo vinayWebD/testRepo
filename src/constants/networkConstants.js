@@ -18,6 +18,7 @@ const NETWORK_CONSTANTS = {
   CREATE_COMMENT: '/v1/feeds/posts/comment',
   GET_COMMENTS: (postId) => `/v1/feeds/posts/comment/${postId}`,
   DELETE_COMMENT: (id) => `/v1//feeds/posts/comment/${id}`,
+  EDIT_COMMENT: (id) => `/v1/feeds/posts/comment/${id}`,
 };
 
 export default NETWORK_CONSTANTS;
