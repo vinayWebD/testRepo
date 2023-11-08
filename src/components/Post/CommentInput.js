@@ -7,6 +7,8 @@ import {
   editCommentDispatcher,
 } from '../../redux/dispatchers/feedDispatcher';
 import { successStatus } from '../../common';
+import { ToastNotifyError } from '../Toast/ToastNotify';
+import { LIMITS } from '../../constants/constants';
 
 const CommentInput = ({
   postId,
@@ -61,7 +63,7 @@ const CommentInput = ({
   };
 
   const isValid = () => {
-    return !!value?.trim()?.length;
+    return value?.trim()?.length > 0 && value?.trim()?.length <= LIMITS.COMMENT_MAX_LIMIT;
   };
 
   const submitCommentHandler = async () => {
@@ -85,6 +87,8 @@ const CommentInput = ({
         autoExpand();
         await reloadPostDetails(postId);
       }
+    } else {
+      ToastNotifyError(`Comment is required with max ${LIMITS.COMMENT_MAX_LIMIT} characters`);
     }
   };
 
