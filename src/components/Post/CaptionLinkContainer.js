@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { LIMITS } from '../../constants/constants';
 import ReadMore from '../ReadMore';
+import HtmlText from '../common/HtmlText';
 
 const { POST_READ_MORE_LIMIT } = LIMITS;
 
@@ -22,7 +23,7 @@ const CaptionLinkContainer = ({ caption = '', links = [] }) => {
   return (
     <div className="mt-3 flex gap-2 flex-col break-words">
       <p className="text-sm">
-        {displayedCaption}
+        <HtmlText text={displayedCaption} />
         {shouldShowSeeMore && (
           <span
             className="text-sm font-semibold cursor-pointer ml-2"

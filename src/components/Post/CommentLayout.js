@@ -9,6 +9,7 @@ import { deleteCommentDispatcher } from '../../redux/dispatchers/feedDispatcher'
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
 import CommentInput from './CommentInput';
+import HtmlText from '../common/HtmlText';
 
 const CommentLayout = ({
   PostId,
@@ -79,7 +80,9 @@ const CommentLayout = ({
               Are you sure you want to delete this comment?
             </ConfirmationModal>
 
-            <div className="text-[13px] lg:text14 text-greydark">{description}</div>
+            <div className="text-[13px] lg:text14 text-greydark">
+              <HtmlText text={description} />
+            </div>
           </div>
         </>
       ) : (

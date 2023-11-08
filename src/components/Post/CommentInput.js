@@ -7,7 +7,6 @@ import {
   editCommentDispatcher,
 } from '../../redux/dispatchers/feedDispatcher';
 import { successStatus } from '../../common';
-import OutlinedButton from '../common/OutlinedButton';
 
 const CommentInput = ({
   postId,
@@ -18,13 +17,16 @@ const CommentInput = ({
   cancelEditing = () => {},
 }) => {
   const dispatch = useDispatch();
-  const [value, setValue] = useState(commentDetails?.description || '');
+  const [value, setValue] = useState('');
   const userData = useSelector((state) => state?.auth?.user) || {};
   const textareaRef = useRef(null);
 
   useEffect(() => {
     if (isEditing && commentDetails?.description !== value) {
       setValue(commentDetails?.description);
+      textareaRef.current.value = commentDetails?.description;
+      textareaRef.current.focus();
+      autoExpand();
     }
   }, [isEditing, commentDetails?.description]);
 
@@ -78,6 +80,7 @@ const CommentInput = ({
 
       if (successStatus(status)) {
         setValue('');
+        textareaRef.current.value = '';
         autoExpand();
         await reloadPostDetails(postId);
       }
@@ -86,7 +89,7 @@ const CommentInput = ({
 
   return (
     <div className="w-full">
-      <div className="flex gap-2 items-center relative w-full">
+      <div className="flex gap-2 items-center relative w-full justify-center">
         <Avatar
           name={`${userData?.firstName} ${userData?.lastName}`}
           image={userData?.profilePictureUrl}
@@ -96,7 +99,9 @@ const CommentInput = ({
           <textarea
             value={value}
             placeholder={'Write a comment'}
-            className="p-[9px] min-h-10 outline-none w-full border-2 !border-r-0 rounded-r-none border-greylighter text-sm  placeholder:text-greylight bg-white"
+            className={`p-[9px] min-h-10 outline-none w-full border-2 !border-r-0 rounded-r-none border-greylighter text-sm  placeholder:text-greylight ${
+              isEditing ? 'bg-whitelight' : 'bg-white'
+            } `}
             onChange={(e) => onChangeHandler(e)}
             autoComplete={'true'}
             rows={1}
@@ -104,9 +109,9 @@ const CommentInput = ({
             ref={textareaRef}
           />
           <div
-            className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] border-l-0 border-2 border-greylighter ${
+            className={`px-3 ml-[-1px] flex items-center cursor-pointer rounded-r-[8px] border-l-0 border-2 border-greylighter ${
               !isValid() ? 'cursor-not-allowed' : 'cursor-pointer'
-            }`}
+            } ${isEditing ? 'bg-whitelight' : 'bg-white'}`}
             onClick={() => {}}
           >
             <div className={`${!isValid() ? 'opacity-60' : ''}`} onClick={submitCommentHandler}>
@@ -114,18 +119,16 @@ const CommentInput = ({
             </div>
           </div>
         </div>
+        {isEditing ? (
+          <div className="" onClick={cancelEditing}>
+            <p className="cursor-pointer text-blueprimary text-[12px] hover:opacity-70 font-medium">
+              Cancel
+            </p>
+          </div>
+        ) : (
+          ''
+        )}
       </div>
-      {isEditing ? (
-        <div className="float-right mt-2">
-          <OutlinedButton
-            label={'Cancel'}
-            onClick={cancelEditing}
-            additionalClassNames="!text-[11px] !px-3 !py-2 hover:opacity-70"
-          />
-        </div>
-      ) : (
-        ''
-      )}
     </div>
   );
 };
