@@ -15,12 +15,12 @@ const ProfileContainer = ({ userData }) => {
         </div>
         <Avatar
           classNames="w-[40%] h-[40%] max-w-[100px] max-h-[100px] m-auto"
-          image={userData?.profile_picture_url}
-          name={`${userData?.first_name} ${userData?.last_name}`}
+          image={userData?.profilePictureUrl}
+          name={`${userData?.firstName} ${userData?.lastName}`}
         />
         <div className="flex flex-col gap-1 overflow-hidden text-center pt-2">
           <p className="text-greydark text-[14px] md:text-[20px] font-semibold overflow-hidden truncate capitalize">
-            {userData?.first_name} {userData?.last_name}
+            {userData?.firstName} {userData?.lastName}
           </p>
           <h4 className="font-normal text-greydark text-[12px] md:text-[14px]">
             {userData?.designation}

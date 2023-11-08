@@ -11,14 +11,10 @@ export const successStatus = (statusCode) => {
 
 /**
  * function to return error string for given object
- * @param {*} obj
+ * @param {*} data
  * @returns
  */
 
-export const getErrorMessage = (obj) => {
-  const message = Object.values(obj).flat()[0];
-  if (message === '<') {
-    return null;
-  }
-  return message;
+export const getErrorMessage = (data) => {
+  return data?.message;
 };

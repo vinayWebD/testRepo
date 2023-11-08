@@ -19,6 +19,7 @@ export const TOASTMESSAGES = {
     TST_PROFILE_SUCCESSFULLY: 'Profile Updated Successfully',
     TST_PWD_RESET_SUCCESSFULLY: 'Password Reset Successfully',
     TST_POST_CREATED_SUCCESSFULLY: 'Post Created Successfully',
+    TST_POST_UPDATED_SUCCESSFULLY: 'Post Updated Successfully',
   },
   errorToast: {
     TST_PERMISSION_DENIED: 'Authentication Permission Denied',

@@ -21,11 +21,11 @@ const { HOME } = PATHS;
 const { BTNLBL_FRIEND_REQUESTS } = BUTTON_LABELS;
 
 const DropDownParent = ({ userData = {} }) => {
-  const { first_name = '', last_name = '', profile_picture_url = '' } = userData;
+  const { firstName = '', lastName = '', profilePictureUrl = '' } = userData;
 
   return (
     <div className="flex items-center gap-1 cursor-pointer">
-      <Avatar name={`${first_name} ${last_name}`} image={profile_picture_url} />
+      <Avatar name={`${firstName} ${lastName}`} image={profilePictureUrl} />
       <DownCaret />
     </div>
   );

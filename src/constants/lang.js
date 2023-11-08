@@ -134,6 +134,7 @@ const LANG = {
     FEED: {
       LANG_WRITE_SOMETHING: 'Write something ...',
       LANG_CREATE_POST: 'Create Post',
+      LANG_EDIT_POST: 'Edit Post',
     },
     CREATE_POST: {
       LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',
@@ -167,6 +168,7 @@ const TABS_NAME = {
   FOLLOWERS: 'Followers',
   FOLLOWING: 'Following',
   CONNECTIONS: 'Connections',
+  BTNLBL_UPDATE: 'Update',
 };
 
 const DROPDOWN_OPTION_LABELS = {

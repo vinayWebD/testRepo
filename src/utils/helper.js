@@ -6,3 +6,5 @@ export const getFileExtension = (name) => {
 
   return fileExtension;
 };
+
+export const getHTML = (text) => text.replace(/(\n)/g, '<br />');

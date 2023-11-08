@@ -7,6 +7,7 @@ const authSlice = createSlice({
     isAuthenticated: null,
     user: {},
     globalLoading: false,
+    globalTransparentLoadingPrivate: false,
   },
   reducers: {
     login: (state, action) => {
@@ -35,8 +36,13 @@ const authSlice = createSlice({
     globalLoading: (state, action) => {
       state.globalLoading = action?.payload;
     },
+    globalTransparentLoadingPrivate: (state, action) => {
+      // This is a state for showing a transparent full screen loader for private routes
+      state.globalTransparentLoadingPrivate = action?.payload;
+    },
   },
 });
 
-export const { login, logout, profile, globalLoading } = authSlice.actions;
+export const { login, logout, profile, globalLoading, globalTransparentLoadingPrivate } =
+  authSlice.actions;
 export default authSlice.reducer;

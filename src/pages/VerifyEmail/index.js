@@ -126,7 +126,7 @@ function VerifyEmail() {
             ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
           }
         } else {
-          if (data?.is_valid) {
+          if (data?.data?.isValid) {
             navigate(RESET_PASSWORD, {
               state: { email, code: otp },
             });
@@ -139,23 +139,18 @@ function VerifyEmail() {
           code: otp,
           email: email,
         };
-        const response = await verifyEmail(dataToSend);
-        const {
-          status,
-          data: { token = null },
-          data = {},
-        } = response;
+        const { data, status } = await verifyEmail(dataToSend);
         setIsLoading(false);
-        const errormsg = getErrorMessage(data);
-        if (successStatus(status)) {
-          ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
-          localStorage.setItem('token', token);
-          secureLocalStorage.setItem('object', { data });
-          navigate(PATH_GENERAL_INFO);
-        } else {
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
           if (errormsg) {
             ToastNotifyError(errormsg, TST_OTP_VRIFY_FAILED);
           }
+        } else {
+          ToastNotifySuccess(TST_SIGNUP_SUCCESSFULLY, TST_SIGNUP_SUCCESS_ID);
+          localStorage.setItem('token', data?.data?.token);
+          secureLocalStorage.setItem('object', { data });
+          navigate(PATH_GENERAL_INFO);
         }
       }
     }

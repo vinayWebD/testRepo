@@ -10,18 +10,19 @@ const ProfileContainer = () => {
   const userData = useSelector((state) => state.auth.user || {});
   const navigate = useNavigate();
   const { PROFILE } = PATHS;
+
   return (
     <Card classNames="hidden lg:block py-8 px-4">
       <div className="flex gap-3 justify-center lg:justify-normal">
         <Avatar
           classNames="w-[40%] h-[40%] max-w-[72px] max-h-[72px]"
-          image={userData?.profile_picture_url}
-          name={`${userData?.first_name} ${userData?.last_name}`}
+          image={userData?.profilePictureUrl}
+          name={`${userData?.firstName} ${userData?.lastName}`}
         />
 
         <div className="flex flex-col gap-1 overflow-hidden w-full">
           <p className="text-greydark text-[14px] md:text-[20px] font-medium overflow-hidden truncate capitalize">
-            {userData?.first_name} {userData?.last_name}
+            {userData?.firstName} {userData?.lastName}
           </p>
           <h4 className="font-normal text-greylight text-[12px] md:text-[14px]">
             {userData?.designation}

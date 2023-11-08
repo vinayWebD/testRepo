@@ -19,7 +19,7 @@ const CreatePostMediaPreview = ({
   const [activeSlideIndex, setActiveSlideIndex] = useState(customActiveIndex || 0);
 
   const handleRemoveMedia = (index) => {
-    if (activeSlideIndex + 1 === media.length) {
+    if (activeSlideIndex + 1 === media?.length) {
       setActiveSlideIndex((prev) => prev - 1);
     }
     removeMedia(index);
@@ -39,14 +39,14 @@ const CreatePostMediaPreview = ({
     <>
       <div className="overflow-hidden media-preview">
         <Slider {...settings} ref={setSliderRef} customPaging={activeSlideIndex}>
-          {media.map(({ url, path }, _i) => {
+          {media?.map(({ key, path }, _i) => {
             return (
               <div className="h-auto relative" key={_i}>
                 {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
-                  <img src={url} />
+                  <img src={key} />
                 ) : (
                   <video
-                    src={url}
+                    src={key}
                     className="w-full min-h-full min-w-full"
                     controls={true}
                     height={'100%'}

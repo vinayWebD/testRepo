@@ -10,6 +10,7 @@ import RightChevron from '../Icons/RightChevron';
 import { CloseIcon } from '../Icons/CloseIcon';
 import { Player, BigPlayButton } from 'video-react';
 import 'video-react/dist/video-react.css';
+import { useSelector } from 'react-redux';
 
 const PostDetails = ({
   post = {},
@@ -18,10 +19,11 @@ const PostDetails = ({
   onCloseHandler = () => {},
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
+  const userData = useSelector((state) => state?.auth?.user) || {};
 
   // Pause video when moving to another slide
   const handleBeforeChange = (currentSlide) => {
-    if (post?.media?.length > 1) {
+    if (post?.postMedia?.length > 1) {
       // If the media length > 1, then only we have to pause the video of the current slide when moving to next or previous slide
       const currentVideo = document.querySelector(
         `.slick-slide[data-index="${currentSlide}"] .video-react-controls-enabled.video-react video`,
@@ -42,10 +44,10 @@ const PostDetails = ({
   };
 
   useEffect(() => {
-    if (post?.post_id) {
-      reloadPostDetails({ postId: post?.post_id });
+    if (post?.id) {
+      reloadPostDetails({ postId: post?.id });
     }
-  }, [post?.post_id]);
+  }, [post?.id]);
 
   // The slider should work when the post details component is loaded
   useEffect(() => {
@@ -90,17 +92,17 @@ const PostDetails = ({
   const postHeader = useMemo(() => {
     return (
       <Header
-        createdAt={post?.created_at}
-        creatorName={post?.created_by}
-        creatorProfilePicUrl={post?.profile_image_url}
+        createdAt={post?.createdAt}
+        creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+        creatorProfilePicUrl={post?.User?.profilePictureUrl}
         showThreeDots={false}
-        isCreatedByMe={false}
+        isCreatedByMe={post?.UserId === userData?.id}
       />
     );
   }, []);
 
   return (
-    <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh]  md:min-h-[50vh] md:max-h-[55vh] lg:min-h-[65vh] lg:max-h-[75vh] relative">
+    <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh]  md:min-h-[50vh] md:max-h-[70vh] lg:min-h-[65vh] lg:max-h-[75vh] relative">
       <div
         className="flex md:hidden bg-[#fefefe1a] rounded-full justify-end p-3 absolute right-[10px] top-1 z-10"
         onClick={onCloseHandler}
@@ -109,20 +111,20 @@ const PostDetails = ({
       </div>
       <div className="w-full md:w-[53%] lg:w-[65%] relative bg-greydark min-h-[50dvh] max-h-[65dvh] md:max-h-none md:min-h-full">
         <Slider {...settings} arrows={false} ref={setSliderRef}>
-          {post?.media.map(({ url, path }, _i) => {
+          {post?.postMedia?.map(({ key, path }, _i) => {
             return (
               <div
                 className={`w-full !flex justify-center items-center outline-0 ${
-                  !POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) &&
+                  !POST_IMAGE_EXTENSIONS?.includes(getFileExtension(path)?.toLowerCase()) &&
                   'video-preview'
                 }`}
                 key={_i}
               >
-                {POST_IMAGE_EXTENSIONS.includes(getFileExtension(path)?.toLowerCase()) ? (
-                  <img src={url} />
+                {POST_IMAGE_EXTENSIONS?.includes(getFileExtension(path)?.toLowerCase()) ? (
+                  <img src={key} />
                 ) : (
                   <Player className="w-full h-full !p-0">
-                    <source src={url} className="w-full h-full video-preview" />
+                    <source src={key} className="w-full h-full video-preview" />
                     <BigPlayButton
                       position="center"
                       className="!border-none !text-[#000000b8] !bg-[#fffaf7bd] !text-[3.4em] !rounded-full !w-[50px] !h-[50px] !left-[45%] !ml-0"
@@ -134,7 +136,7 @@ const PostDetails = ({
           })}
         </Slider>
 
-        {post?.media.length > 1 ? (
+        {post?.postMedia.length > 1 ? (
           <>
             <div className="absolute top-1 left-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
@@ -174,13 +176,13 @@ const PostDetails = ({
 
         <div className="!text-sm">
           <ActionButtons
-            commentCount={post?.comment_count}
-            likeCount={post?.like_count}
-            shareCount={post?.share_count}
-            isLikedByMe={post?.is_liked_by_me}
+            commentCount={post?.commentCount}
+            likeCount={post?.likeCount}
+            shareCount={post?.shareCount}
+            isLikedByMe={post?.isLikedByMe}
             className="justify-between"
             isCommentSectionOpenDefault={true}
-            postId={post?.post_id}
+            postId={post?.id}
             reloadPostDetails={reloadPostDetails}
           />
         </div>
