@@ -125,7 +125,10 @@ const CommentInput = ({
           </div>
         </div>
         {isEditing ? (
-          <div className="" onClick={cancelEditing}>
+          <div
+            className=""
+            onClick={() => (!globalTransparentLoadingPrivate ? cancelEditing() : {})}
+          >
             <p className="cursor-pointer text-blueprimary text-[12px] hover:opacity-70 font-medium">
               Cancel
             </p>
