@@ -15,6 +15,7 @@ const NETWORK_CONSTANTS = {
   FETCH_POST_DETAILS: (postId) => `/v1/feeds/posts/${postId}/`,
   DELETE_POST: (postId) => `/v1/feeds/posts/${postId}/`,
   EDIT_POST: (postId) => `/v1/feeds/posts/${postId}`,
+  SEARCH_USER: '/v1/accounts/search-user',
 };
 
 export default NETWORK_CONSTANTS;
