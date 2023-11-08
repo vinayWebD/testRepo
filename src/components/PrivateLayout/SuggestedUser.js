@@ -4,7 +4,7 @@ import Avatar from '../common/Avatar';
 
 const SuggestedUser = ({ userName, userImg, userBio }) => {
   return (
-    <div className="flex gap-2 p-2 px-3 pb-3 hover:bg-greylight cursor-pointer">
+    <div className="flex gap-2 p-3 hover:bg-greylighter cursor-pointer">
       <div>
         <SearchIcon color="black" />
       </div>

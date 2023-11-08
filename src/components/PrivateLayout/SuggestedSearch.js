@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-// import { CloseIcon } from '../Icons/CloseIcon';
+import SuggestedUser from './SuggestedUser';
 
-// globalModalCounter.js
 let globalModalCounter = 0;
 
 export const incrementModalCounter = () => {
@@ -23,9 +22,7 @@ function SuggestedSearch({
   onClose,
   width = '',
   height = 'h-auto',
-  children,
-  // titleClassNames = 'pl-[18px]',
-  titleParentClassNames = 'm-3',
+  titleParentClassNames = '',
 }) {
   useEffect(() => {
     if (isOpen) {
@@ -35,14 +32,23 @@ function SuggestedSearch({
     // Set overflow only once when first modal opens or when the last modal closes.
     if (getModalCounter() === 1 && isOpen) {
       document.body.style.overflow = 'hidden';
+      document
+        ?.querySelector('.add-blur-after-search')
+        ?.classList?.add('blur-[1.5px]', 'pointer-events-none');
     } else if (getModalCounter() === 0 && !isOpen) {
       document.body.style.overflow = 'scroll';
+      document
+        ?.querySelector('.add-blur-after-search')
+        ?.classList?.remove('blur-[1.5px]', 'pointer-events-none');
     }
 
     return () => {
       if (isOpen) {
         decrementModalCounter();
         if (getModalCounter() === 0) {
+          document
+            ?.querySelector('.add-blur-after-search')
+            ?.classList?.remove('blur-[1.5px]', 'pointer-events-none');
           document.body.style.overflow = 'auto';
         }
       }
@@ -53,18 +59,51 @@ function SuggestedSearch({
 
   return (
     <div
-      className="cust-modal-fixed items-start fixed  top-0 left-0 w-full h-full mt-14 flex justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
+      className="bg-white items-start flex-wrap absolute top-[27px] left-0 w-full h-fit flex justify-center rounded-md z-50 shadow-lg"
       onClick={onClose}
     >
       <div
-        style={{ marginTop: '0px' }}
-        className={`bg-white min-[320px]:w-11/12 pt-4 overflow-x-hidden lg:w-[35%] min-[320px]:ml-0 lg:ml-[22rem] ${width} ${height} rounded-md shadow-lg z-50  ${titleParentClassNames}`}
-        onClick={(e) => e.stopPropagation()}
+        className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] pt-3 ${width} ${height} ${titleParentClassNames}`}
       >
-        {children}
-        <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] max-h-96 flex justify-center text-blueprimary cursor-pointer">
-          See All
-        </div>
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+        <SuggestedUser
+          userName="Stev Jobs"
+          userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+        />
+      </div>
+      <div className="border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        See All
       </div>
     </div>
   );

@@ -15,7 +15,6 @@ import SearchIcon from '../Icons/SearchIcon';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import { useState } from 'react';
 import SuggestedSearch from '../PrivateLayout/SuggestedSearch';
-import SuggestedUser from '../PrivateLayout/SuggestedUser';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
@@ -39,6 +38,7 @@ const PrivateHeader = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isSuggestUser, setIsSuggestUser] = useState(false);
+
   const searchInputChangeHandler = (val) => {
     val ? setIsSuggestUser(true) : setIsSuggestUser(false);
     dispatch(updateSearch({ searchValue: val }));
@@ -65,11 +65,18 @@ const PrivateHeader = () => {
         {
           // Hide the search input bar on mobile
           deviceType !== 'mobile' ? (
-            <SearchInput
-              className="h-[32px] w-[290px]"
-              onChange={searchInputChangeHandler}
-              value={searchValue}
-            />
+            <div className="relative">
+              <SearchInput
+                className="h-[32px] w-[290px]"
+                onChange={searchInputChangeHandler}
+                value={searchValue}
+              />
+              <SuggestedSearch
+                isOpen={isSuggestUser}
+                onClose={() => setIsSuggestUser(false)}
+                searchValue={searchValue}
+              />
+            </div>
           ) : (
             <SearchIcon width={28} height={28} />
           )
@@ -87,28 +94,7 @@ const PrivateHeader = () => {
         >
           Are you sure you want to logout?
         </ConfirmationModal>
-        <SuggestedSearch isOpen={isSuggestUser} onClose={() => setIsSuggestUser(false)}>
-          <SuggestedUser
-            userName="Stev Jobs"
-            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
-          />
-          <SuggestedUser
-            userName="Stev Jobs"
-            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
-          />
-          <SuggestedUser
-            userName="Stev Jobs"
-            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
-          />
-          <SuggestedUser
-            userName="Stev Jobs"
-            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
-          />
-          <SuggestedUser
-            userName="Stev Jobs"
-            userBio=" UiUx Designer | Media Composer | Founder of Lumina"
-          />
-        </SuggestedSearch>
+
         <Dropdown options={OPTIONS} IconComponent={() => <DropDownParent userData={userData} />} />
       </div>
     </div>
