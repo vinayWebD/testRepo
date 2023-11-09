@@ -12,5 +12,28 @@ export const VERIFY_EMAIL_ORIGIN = {
 };
 
 export const LIMITS = {
-  POST_CAPTION_MAX_LIMIT: 100,
+  POST_CAPTION_MAX_LIMIT: 500,
+  POST_MAX_IMAGE_SIZE_IN_BYTES: 10485760,
+  POST_MAX_VIDEO_SIZE_IN_BYTES: 52428800,
+  POST_MAX_ALLOWED_MEDIA: 10,
+  POST_READ_MORE_LIMIT: 200,
+  COMMENT_MAX_LIMIT: 500,
+};
+
+export const POST_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/png', 'image/jpg'];
+
+export const POST_VIDEO_TYPES = [
+  'video/mp4',
+  'video/mpeg',
+  'video/webm',
+  'video/x-matroska',
+  'video/quicktime',
+];
+
+export const POST_IMAGE_EXTENSIONS = ['png', 'jpeg', 'png', 'jpg'];
+export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quicktime'];
+
+export const PAGE_SIZE = {
+  FEED: 20,
+  COMMENT: 5,
 };

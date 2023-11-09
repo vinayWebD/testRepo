@@ -1,0 +1,26 @@
+.requestProgress {
+  margin-top: 30px;
+  width: 20%;
+  height: 2px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(90deg, #75b0ca 37%, #60a1c8 54%, #408ac6 75%, #1282c3 88%);
+}
+
+.bar {
+  position: absolute;
+  width: calc(100% * 2 / 7);
+  height: 100%;
+  display: flex;
+  animation: move 2s linear infinite;
+  background-color: white;
+}
+
+@keyframes move {
+  0% {
+    transform: translate(-100%, 0);
+  }
+  100% {
+    transform: translate(calc(7 / 2 * 100%), 0);
+  }
+}

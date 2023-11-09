@@ -91,7 +91,12 @@ const InputProfilePicture = ({ value, profilePic, setCropImageFile, inView = tru
           </div>
         )}
       </div>
-      <Modal isOpen={open} title="Profile Image">
+      <Modal
+        isOpen={open}
+        title="Profile Image"
+        childrenClassNames="md:max-h-5/6 max-h-[500px] flex justify-center"
+        onClose={() => setOpen(false)}
+      >
         <ImageCropper
           getImage={imageFile}
           setCropedImage={setCropedImage}

@@ -9,8 +9,8 @@ const loginDispatcher =
   async (dispatch) => {
     const { status, data } = await loginUser({ email, password, dispatch });
 
-    if (status === 201) {
-      localStorage.setItem('token', data?.token);
+    if (status === 200) {
+      localStorage.setItem('token', data?.data?.token);
       dispatch(login(data));
       // We are calling profile dispatcher so that the profile gets updated - API + Redux
       dispatch(profileDispatcher());
@@ -37,8 +37,10 @@ const logoutDispatcher = () => async (dispatch) => {
  */
 const profileDispatcher = () => async (dispatch) => {
   dispatch(globalLoading(true));
-  const { status, data } = await userProfile(dispatch);
-
+  const {
+    status,
+    data: { data },
+  } = await userProfile(dispatch);
   if (status === 200) {
     dispatch(profile(data));
   }

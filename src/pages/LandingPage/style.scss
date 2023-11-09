@@ -45,7 +45,7 @@
           font-weight: 500;
           line-height: 24px;
           @media screen and (max-width: 600px) {
-          font-size: 12px;
+            font-size: 12px;
           }
         }
         .vertical-divider {
@@ -80,10 +80,10 @@
         font-style: normal;
         font-weight: 600;
         line-height: 60px;
-         @media screen and (max-width: 1000px) {
+        @media screen and (max-width: 1000px) {
           font-size: 32px;
-          }
-         @media screen and (max-width: 600px) {
+        }
+        @media screen and (max-width: 600px) {
           font-size: 28px;
         }
       }
@@ -94,7 +94,7 @@
         font-style: normal;
         font-weight: 500;
         line-height: 24px;
-         @media screen and (max-width: 600px) {
+        @media screen and (max-width: 600px) {
           font-size: 14px;
           line-height: 20px;
         }
@@ -132,7 +132,7 @@
       font-weight: 600;
       line-height: 60px;
       @media screen and (max-width: 1000px) {
-          font-size: 32px;
+        font-size: 32px;
       }
     }
     .content {
@@ -235,9 +235,9 @@
           max-width: 100%;
         }
         @media screen and (max-width: 600px) {
-         font-size: 20px;
-         line-height: 30px;
-         margin-bottom: 1rem;
+          font-size: 20px;
+          line-height: 30px;
+          margin-bottom: 1rem;
         }
       }
       .footer-link-heading {
@@ -288,8 +288,8 @@
     }
     @media screen and (max-width: 600px) {
       opacity: 1;
-        width: 150px;
-        margin-bottom: 72px;
+      width: 150px;
+      margin-bottom: 72px;
     }
   }
   .copyright {
@@ -300,10 +300,10 @@
     font-weight: 400;
     line-height: 30px;
   }
-  .icon-gap{
+  .icon-gap {
     @media screen and (max-width: 600px) {
-          gap: 2.5em !important;
-        }
+      gap: 2.5em !important;
+    }
   }
   .social-links {
     cursor: pointer;
@@ -313,8 +313,8 @@
     height: 2px;
     background: #f2f2f2;
     @media screen and (max-width: 600px) {
-          margin-top: 10px;
-        }
+      margin-top: 10px;
+    }
   }
   .carousel-slider {
     padding-bottom: 18px !important;
@@ -400,7 +400,6 @@
       .card-content {
         font-size: 14px;
         font-weight: 500;
-         
       }
     }
     .work-section {
@@ -411,73 +410,70 @@
         padding-top: 50px;
         font-size: 28px;
         line-height: 34px;
-       
-        @media screen and (max-width: 600px) {
-          padding-top: 30px;
-        }
-      }
-      .content,
-      .card-content {
-        line-height: 17px;
-        font-size: 12px;
-        font-weight: 500;
+        padding-top: 30px;
       }
     }
-    .ourview-section,
-    .about-section {
-      .heading {
+    .content,
+    .card-content {
+      line-height: 17px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+  .ourview-section,
+  .about-section {
+    .heading {
+      font-size: 28px;
+      line-height: 34px;
+    }
+    .content {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .join-section,
+  .ourview-section,
+  .work-section,
+  .weaim-section,
+  .landing-footer,
+  .about-section {
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+  .landing-footer {
+    margin: 0 !important;
+  }
+  .footer-section {
+    padding-top: 1px;
+    .footer-logo {
+      padding: 0 36px;
+    }
+  }
+  .hero-section {
+    height: 420px;
+    .content-box {
+      padding-top: 96px;
+      padding-left: 36px;
+      .title {
         font-size: 28px;
         line-height: 34px;
+        .next-gen {
+          color: #fdc60b;
+        }
       }
-      .content {
-        font-size: 14px;
-        font-weight: 500;
+      .sub-content {
+        .sub-title {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 18px;
+          max-width: 250px;
+        }
       }
     }
   }
-  @media only screen and (min-width: 600px) and (max-width: 1024px) {
-    .join-section,
-    .ourview-section,
-    .work-section,
-    .weaim-section,
-    .landing-footer,
-    .about-section {
-      padding-left: 36px;
-      padding-right: 36px;
-    }
-    .landing-footer {
-      margin: 0 !important;
-    }
-    .footer-section {
-      padding-top: 1px;
-      .footer-logo {
-        padding: 0 36px;
-      }
-    }
-    .hero-section {
-      height: 420px;
-      .content-box {
-        padding-top: 96px;
-        padding-left: 36px;
-        .title {
-          font-size: 28px;
-          line-height: 34px;
-          .next-gen {
-            color: #fdc60b;
-          }
-        }
-        .sub-content {
-          .sub-title {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 18px;
-            max-width: 250px;
-          }
-        }
-      }
-    }
-    .work-section {
-      background-image: url('../../assets/images/expansion_depth_potential 1.svg');
-    }
+  .work-section {
+    background-image: url('../../assets/images/expansion_depth_potential 1.svg');
   }
 }

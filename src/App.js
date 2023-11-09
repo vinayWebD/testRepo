@@ -23,9 +23,9 @@ const App = () => {
   }
 
   if (isAuthenticated) {
-    return <RouterProvider router={privateRoutes} />;
+    return <RouterProvider router={privateRoutes} fallbackElement={() => <MultiColorLoader />} />;
   } else if (isAuthenticated === false) {
-    return <RouterProvider router={publicRoutes} />;
+    return <RouterProvider router={publicRoutes} fallbackElement={() => <MultiColorLoader />} />;
   } else {
     return <MultiColorLoader />;
   }

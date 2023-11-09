@@ -1,41 +1,6 @@
-import { PRIVATE_NAVIGATION_LABELS } from '../../constants/lang';
-import FeedIcon from '../Icons/FeedIcon';
-import MessagesIcon from '../Icons/MessagesIcon';
-import MyNetworkIcon from '../Icons/MyNetworkIcon';
-import NotificationIcon from '../Icons/NotificationIcon';
-import SettingsIcon from '../Icons/SettingsIcon';
+import navigationItems from '../../constants/navigationItems';
 
-const { NAVLBL_FEED, NAVLBL_MY_NETWORK, NAVLBL_MESSAGES, NAVLBL_NOTIFICATIONS, NAVLBL_SETTINGS } =
-  PRIVATE_NAVIGATION_LABELS;
-
-const navbarItems = [
-  {
-    label: NAVLBL_FEED,
-    action: () => {},
-    icon: (props) => <FeedIcon {...props} />,
-  },
-  {
-    label: NAVLBL_MY_NETWORK,
-    action: () => {},
-    icon: (props) => <MyNetworkIcon {...props} />,
-  },
-  {
-    label: NAVLBL_MESSAGES,
-    action: () => {},
-    icon: (props) => <MessagesIcon {...props} />,
-  },
-  {
-    label: NAVLBL_NOTIFICATIONS,
-    action: () => {},
-    icon: (props) => <NotificationIcon {...props} />,
-  },
-
-  {
-    label: NAVLBL_SETTINGS,
-    action: () => {},
-    icon: (props) => <SettingsIcon {...props} />,
-  },
-];
+const navbarItems = navigationItems;
 
 const LeftNavigation = () => {
   return (

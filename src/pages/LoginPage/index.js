@@ -43,7 +43,6 @@ function LoginPage() {
     if (!isLoading) {
       setIsLoading(true);
       const response = await dispatch(loginDispatcher(values));
-
       const { status, data } = response;
       if (!successStatus(status)) {
         const errormsg = getErrorMessage(data);

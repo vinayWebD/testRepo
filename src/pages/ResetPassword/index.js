@@ -59,6 +59,7 @@ function ResetPassword() {
         email,
         code,
         password: values?.password,
+        confirmPassword: values?.confirmPassword,
       });
 
       const { status, data } = response;
