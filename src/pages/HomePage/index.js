@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import { useSelector } from 'react-redux';
 import Avatar from '../../components/common/Avatar';
 import Card from '../../components/common/Card';
@@ -25,6 +23,8 @@ import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 import PostSkeleton from '../../components/common/PostSkeleton';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import debounce from '../../utils/debounce';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -43,6 +43,8 @@ const HomePage = () => {
   const loaderRef = useRef(null);
   const hasUserScrolled = useWindowScrolledDown();
   let isLoadingAPI = false; // This we are using to avoid multiple API calls because of infinite scroll
+  let { id: idFromUrl } = useParams(); // The post id that we want to display in post details
+  const navigate = useNavigate();
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
@@ -66,6 +68,19 @@ const HomePage = () => {
       }
     };
   }, [loaderRef, posts]);
+
+  useEffect(() => {
+    if (idFromUrl) {
+      fetchSinglePostDetails({ postId: idFromUrl });
+      setIsPreviewDetailsPostOpen(true);
+    }
+  }, [idFromUrl]);
+
+  useEffect(() => {
+    if (isPreviewDetailsPostOpen === false) {
+      navigate(PATHS.HOME, { replace: true });
+    }
+  }, [isPreviewDetailsPostOpen]);
 
   // When we reload the posts: maybe after creating new post, editing or deleting one
   const reloadPosts = async () => {
@@ -126,18 +141,24 @@ const HomePage = () => {
     const errormsg = getErrorMessage(data);
     if (!successStatus(status)) {
       ToastNotifyError(errormsg, '');
+      setIsPreviewDetailsPostOpen(false);
     } else {
-      const allPosts = posts.map((post) => {
-        if (activePost?.id === postId) {
-          setActivePost(data?.data);
-        }
-        if (post?.id === postId) {
-          return data?.data;
-        } else {
-          return post;
-        }
-      });
-      setPosts(allPosts);
+      if (posts?.length) {
+        const allPosts = posts.map((post) => {
+          if (activePost?.id === postId) {
+            setActivePost(data?.data);
+          }
+          if (post?.id === postId) {
+            return data?.data;
+          } else {
+            return post;
+          }
+        });
+
+        setPosts(allPosts);
+      } else {
+        setActivePost(data?.data);
+      }
     }
   };
 
@@ -225,6 +246,7 @@ const HomePage = () => {
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
+                        navigate(`${PATHS.HOME}/${post?.id}`, { replace: true });
                         setIsPreviewDetailsPostOpen(true);
                         setActivePost({ ...post });
                         setActiveMediaIndex(customIndex);

@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const timeSpan = (from) => {
+const timeSpan = (from, dateFormat = 'DD MMM YY') => {
   let duration = moment.duration(moment().diff(from));
   let minuteDiff = duration.asMinutes();
   let hoursDiff = duration.asHours();
@@ -13,7 +13,7 @@ const timeSpan = (from) => {
   } else if (hoursDiff < 24) {
     return `${hoursDiff} ${hoursDiff > 1 ? 'hrs' : 'hr'} ago`;
   } else {
-    return moment(from).format('DD MMMM YYYY');
+    return moment(from).format(dateFormat);
   }
 };
 

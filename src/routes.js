@@ -82,6 +82,10 @@ const privateRoutes = createBrowserRouter([
     path: `${OTHER_USER_PROFILE}:id`,
     element: <OtherUserProfile />,
   },
+  {
+    path: `${HOME}/:id`,
+    element: <HomePage />,
+  },
 ]);
 
 export { publicRoutes, privateRoutes };
