@@ -33,6 +33,7 @@ function SuggestedSearch({
 }) {
   const dispatch = useDispatch();
   const [searchResult, setSearchResult] = useState([]);
+  const [isSearching, setIsSearching] = useState(true);
   const isGlobalTransparentLoadingPrivate = useSelector(
     (state) => state?.auth?.globalTransparentLoadingPrivate,
   );
@@ -76,7 +77,9 @@ function SuggestedSearch({
   );
 
   useEffect(() => {
+    setIsSearching(true);
     updateSearchVal(searchValue);
+
     if (!searchValue) {
       setSearchResult([]);
     }
@@ -89,6 +92,7 @@ function SuggestedSearch({
       if (successStatus(status)) {
         setSearchResult(data?.data?.users);
       }
+      setIsSearching(false);
     }
   };
 
@@ -110,12 +114,13 @@ function SuggestedSearch({
                 userFullName={`${result?.firstName} ${result?.lastName}`}
                 userBio=" UiUx Designer | Media Composer | Founder of Lumina"
                 userImg={result?.profilePictureUrl}
+                userId={result?.id}
               />
             );
           })
         ) : (
           <div className="flex gap-2 p-3 cursor-pointer">
-            {!isGlobalTransparentLoadingPrivate ? (
+            {!isGlobalTransparentLoadingPrivate && !isSearching ? (
               <>
                 <div>
                   <SearchIcon color="black" />
@@ -128,7 +133,8 @@ function SuggestedSearch({
                 </div>
               </>
             ) : (
-              <div>
+              <div className="flex flex-col w-full gap-4">
+                <PostSkeleton showCaption={false} showMedia={false} />
                 <PostSkeleton showCaption={false} showMedia={false} />
               </div>
             )}
