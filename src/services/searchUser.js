@@ -9,7 +9,7 @@ const { SEARCH_USER } = NETWORK_CONSTANTS;
  * @returns
  */
 
-const searchUser = async ({ search = '', page = 1, limit = 10 }) => {
+const searchUser = async ({ search = '', page = 1, limit = 20 }) => {
   try {
     const data = await apiUtility(SEARCH_USER, 'GET', { search, page, limit });
     return data;
