@@ -15,6 +15,7 @@ function InputBox({
   labelFontColor = '#333',
   helperText = false,
   maxLength = 100,
+  parentClassName = '',
   ...props
 }) {
   const [value, setValue] = useState(initialValue);
@@ -25,7 +26,7 @@ function InputBox({
   };
 
   return (
-    <div>
+    <div className={parentClassName}>
       <div className="flex gap-[2px]">
         <label style={{ color: labelFontColor }}>{label}</label>
         {isRequired ? <span className="relative top-[-4px]">*</span> : ''}

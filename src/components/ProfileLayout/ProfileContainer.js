@@ -8,7 +8,7 @@ import ThreeDots from '../Icons/ThreeDots';
 import Dropdown from '../common/Dropdown';
 import OutlinedButton from '../common/OutlinedButton';
 import Modal from '../../components/Modal';
-import EditProfile from '../../components';
+import EditProfile from '../../components/EditProfile';
 
 const ProfileContainer = ({ userData, isOtherUser = false }) => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
@@ -83,7 +83,7 @@ const ProfileContainer = ({ userData, isOtherUser = false }) => {
         titleParentClassNames="md:m-3 m-0"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
-        <EditProfile {...userData} />
+        <EditProfile {...userData} onClose={() => setIsEditingModalOpen(false)} />
       </Modal>
     </Card>
   );

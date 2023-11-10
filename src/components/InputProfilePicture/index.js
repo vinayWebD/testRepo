@@ -20,8 +20,6 @@ const InputProfilePicture = ({
   const [open, setOpen] = useState(false);
   const [cropedImage, setCropedImage] = useState('');
   const inputRef = useRef();
-  // const { IMAGE_ACCEPT, IMAGE_TYPE } = IMAGE_FILE;
-  // const { errorToast: { TST_INVALID_IMAGE = '' } = {} } = toastMessages;
 
   const handleChange = (e) => {
     const { files: [file] = [] } = e.target || value;
