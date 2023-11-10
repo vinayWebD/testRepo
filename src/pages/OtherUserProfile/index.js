@@ -12,7 +12,10 @@ import InterestDetail from '../../components/ProfilePage/InterestDetail';
 import WorkDetail from '../../components/ProfilePage/WorkDetail';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import Tabs from '../../components/ProfilePage/Tabs';
-import { fetchOtherUserBasicInfo } from '../../redux/dispatchers/otherUserDispatcher';
+import {
+  fetchOtherUserBasicInfo,
+  fetchOtherUserNetworkingCount,
+} from '../../redux/dispatchers/otherUserDispatcher';
 import { getErrorMessage, successStatus } from '../../common';
 import { PATHS } from '../../constants/urlPaths';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
@@ -23,6 +26,7 @@ const OtherUserProfile = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
+  const [networkingCount, setNetworkingCount] = useState({});
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
@@ -36,6 +40,11 @@ const OtherUserProfile = () => {
 
     if (successStatus(status)) {
       setUserData(data?.data);
+      const { status: countStatus, data: countData } =
+        (await dispatch(fetchOtherUserNetworkingCount({ id }))) || {};
+      if (successStatus(countStatus)) {
+        setNetworkingCount(countData?.data);
+      }
     } else {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
@@ -57,7 +66,7 @@ const OtherUserProfile = () => {
           Back
         </div>
         <ProfileContainer userData={userData} isOtherUser={true} />
-        <FollowerContainer />
+        <FollowerContainer {...networkingCount} />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">
         <div className="grid grid-cols-12 gap-3 feed-page">

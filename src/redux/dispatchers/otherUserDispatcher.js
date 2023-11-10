@@ -1,4 +1,4 @@
-import { otherUserBasicData } from '../../services/otherUser';
+import { otherUserBasicData, otherUserNetworkingCount } from '../../services/otherUser';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 const fetchOtherUserBasicInfo =
@@ -10,4 +10,13 @@ const fetchOtherUserBasicInfo =
     return { status, data };
   };
 
-export { fetchOtherUserBasicInfo };
+const fetchOtherUserNetworkingCount =
+  ({ id }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await otherUserNetworkingCount({ id, dispatch });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+export { fetchOtherUserBasicInfo, fetchOtherUserNetworkingCount };
