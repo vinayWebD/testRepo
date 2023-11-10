@@ -1,5 +1,4 @@
-/* eslint-disable react/no-unescaped-entities */
-import React from 'react';
+import React, { useState } from 'react';
 import Card from '../common/Card';
 import Avatar from '../common/Avatar';
 import location from '../../assets/images/location.svg';
@@ -8,13 +7,20 @@ import edit from '../../assets/images/editIcon.svg';
 import ThreeDots from '../Icons/ThreeDots';
 import Dropdown from '../common/Dropdown';
 import OutlinedButton from '../common/OutlinedButton';
+import Modal from '../../components/Modal';
+import EditProfile from '../../components/EditProfile';
 
 const ProfileContainer = ({ userData, isOtherUser = false }) => {
+  const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+
   return (
     <Card classNames="lg:block py-4 px-2 md:px-4 relative">
       <div className="block gap-4">
         {!isOtherUser ? (
-          <div className="bg-iconBackground p-1 rounded w-fit absolute right-[5%]">
+          <div
+            className="bg-iconBackground p-1 rounded w-fit absolute right-[5%]"
+            onClick={() => setIsEditingModalOpen(true)}
+          >
             <img src={edit} alt="edit" className="cursor-pointer" />
           </div>
         ) : (
@@ -51,10 +57,7 @@ const ProfileContainer = ({ userData, isOtherUser = false }) => {
             <img src={mail} alt="mail" className="pr-1" />
             {userData?.email}
           </h6>
-          <div
-            className="font-medium text-[8px] md:text-[10px] leading-3"
-            style={{ color: '#A1A0A0' }}
-          >
+          <div className="font-medium text-[8px] md:text-[10px] leading-3 text-greylight">
             {userData?.description}
           </div>
           {isOtherUser && (
@@ -68,6 +71,20 @@ const ProfileContainer = ({ userData, isOtherUser = false }) => {
           )}
         </div>
       </div>
+
+      <Modal
+        isOpen={isEditingModalOpen}
+        onClose={() => setIsEditingModalOpen(false)}
+        isTitle={true}
+        title={'Edit Profile'}
+        childrenClassNames=""
+        padding="!p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-0 mt-[121px]"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+      >
+        <EditProfile {...userData} onClose={() => setIsEditingModalOpen(false)} />
+      </Modal>
     </Card>
   );
 };

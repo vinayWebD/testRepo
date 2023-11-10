@@ -20,6 +20,8 @@ const NETWORK_CONSTANTS = {
   GET_COMMENTS: (postId) => `/v1/feeds/posts/comment/${postId}`,
   DELETE_COMMENT: (id) => `/v1//feeds/posts/comment/${id}`,
   EDIT_COMMENT: (id) => `/v1/feeds/posts/comment/${id}`,
+  OTHER_USER_PROFILE: (id) => `/v1/accounts/profile/user/${id}`,
+  OTHER_USER_NETWORKING_COUNT: (id) => `/v1/accounts/follow/network/counts/user/${id}`,
 };
 
 export default NETWORK_CONSTANTS;
