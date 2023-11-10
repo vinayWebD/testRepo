@@ -1,8 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import Card from '../../components/common/Card';
+import Card from '../common/Card';
 import edit from '../../assets/images/editIcon.svg';
-import OutlinedButton from '../../components/common/OutlinedButton';
+import OutlinedButton from '../common/OutlinedButton';
 
 function WorkDetail() {
   return (

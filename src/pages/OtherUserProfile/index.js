@@ -3,21 +3,18 @@ import { useState } from 'react';
 import ProfileLayout from '../../components/ProfileLayout';
 import FollowerContainer from '../../components/ProfileLayout/FollowerContainer';
 import ProfileContainer from '../../components/ProfileLayout/ProfileContainer';
-// import Loader from '../../components/common/Loader';
 import Card from '../../components/common/Card';
 import backIcon from '../../assets/images/backIcon.svg';
 import noWork from '../../assets/images/noWork.svg';
 
 import { useNavigate } from 'react-router-dom';
-import OutlinedButton from '../../components/common/OutlinedButton';
-import useScrollToTop from '../../hooks/useScrollToTop';
 import InterestDetail from '../../components/ProfilePage/InterestDetail';
 import WorkDetail from '../../components/ProfilePage/WorkDetail';
+import useScrollToTop from '../../hooks/useScrollToTop';
 import Tabs from '../../components/ProfilePage/Tabs';
 
-const ProfilePage = () => {
+const OtherUserProfile = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
-  // const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState('work');
   const navigate = useNavigate();
 
@@ -33,9 +30,9 @@ const ProfilePage = () => {
           onClick={() => navigate(-1)}
         >
           <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
-          My Profile
+          Back
         </div>
-        <ProfileContainer userData={userData} />
+        <ProfileContainer userData={userData} isOtherUser={true} />
         <FollowerContainer />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">
@@ -52,12 +49,6 @@ const ProfilePage = () => {
                     <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No work added yet.
                     </h4>
-                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
-                      It helps people quickly identify your many talents.
-                    </h5>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
-                    </div>
                   </Card>
                 </>
               ) : tab === 'interest' ? (
@@ -68,9 +59,6 @@ const ProfilePage = () => {
                     <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No Interests added yet.
                     </h4>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add Interests'} showArrowIcon={false} add />
-                    </div>
                   </Card>
                 </>
               ) : (
@@ -80,12 +68,6 @@ const ProfilePage = () => {
                     <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No work added yet.
                     </h4>
-                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
-                      It helps people quickly identify your many talents.
-                    </h5>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
-                    </div>
                   </Card>
                 </>
               )}
@@ -99,4 +81,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default OtherUserProfile;
