@@ -38,7 +38,7 @@ function InputBox({
         placeholder={placeholder}
         className={`${className} ${
           helperText ? 'haserror' : ''
-        } border border-large border-customGray w-full`}
+        } border border-large border-customGray w-full ${disabled ? 'cursor-not-allowed' : ''}`}
         onChange={handleInputChange}
         onBlur={onBlur}
         onFocus={onFocus}
