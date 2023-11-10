@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
+import OtherUserProfile from './pages/OtherUserProfile';
 
 const {
   LANDING,
@@ -22,6 +23,7 @@ const {
   RESET_PASSWORD,
   PATH_WORK,
   PROFILE,
+  OTHER_USER_PROFILE,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -75,6 +77,14 @@ const privateRoutes = createBrowserRouter([
   {
     path: PROFILE,
     element: <ProfilePage />,
+  },
+  {
+    path: `${OTHER_USER_PROFILE}:id`,
+    element: <OtherUserProfile />,
+  },
+  {
+    path: `${HOME}/:id`,
+    element: <HomePage />,
   },
 ]);
 
