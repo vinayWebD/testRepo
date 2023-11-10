@@ -6,6 +6,10 @@ import { successStatus } from '../../common';
 import SearchIcon from '../Icons/SearchIcon';
 import debounce from '../../utils/debounce';
 import PostSkeleton from '../common/PostSkeleton';
+import SearchInput from '../common/SearchInput';
+import useDeviceType from '../../hooks/useDeviceType';
+import backIcon from '../../assets/images/backIcon.svg';
+import { useNavigate } from 'react-router-dom';
 
 let globalModalCounter = 0;
 
@@ -30,13 +34,16 @@ function SuggestedSearch({
   height = 'h-auto',
   titleParentClassNames = '',
   searchValue = '',
+  onValueChange = () => {},
 }) {
   const dispatch = useDispatch();
   const [searchResult, setSearchResult] = useState([]);
   const [isSearching, setIsSearching] = useState(true);
+  const deviceType = useDeviceType();
   const isGlobalTransparentLoadingPrivate = useSelector(
     (state) => state?.auth?.globalTransparentLoadingPrivate,
   );
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
@@ -95,54 +102,78 @@ function SuggestedSearch({
       setIsSearching(false);
     }
   };
+  const onCloseHandler = () => {
+    if (deviceType !== 'mobile') {
+      onClose();
+    }
+  };
 
   if (!isOpen) return null;
 
   return (
     <div
-      className="bg-white items-start flex-wrap absolute top-[27px] left-0 w-full h-fit flex rounded-md z-50 shadow-lg"
-      onClick={onClose}
+      className="bg-white items-start content-start flex-wrap left-0 fixed md:absolute w-[100vw] h-[calc(100vh-60px)] top-[61px] md:top-[27px] md:w-full md:h-fit flex md:rounded-md z-50 shadow-lg"
+      onClick={onCloseHandler}
     >
-      <div
-        className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 ${width} ${height} ${titleParentClassNames}`}
-      >
-        {searchResult?.length ? (
-          searchResult?.map((result) => {
-            return (
-              <SuggestedUser
-                key={result?.email}
-                userFullName={`${result?.firstName} ${result?.lastName}`}
-                userBio=" UiUx Designer | Media Composer | Founder of Lumina"
-                userImg={result?.profilePictureUrl}
-                userId={result?.id}
-              />
-            );
-          })
-        ) : (
-          <div className="flex gap-2 p-3 cursor-pointer">
-            {!isGlobalTransparentLoadingPrivate && !isSearching ? (
-              <>
-                <div>
-                  <SearchIcon color="black" />
-                </div>
-                <div>
-                  <h4 className="text-bold font-medium leading-4 ">No result found</h4>
-                  <h6 className="text-[10px] leading-4 font-normal text-greydark">
-                    Search another way
-                  </h6>
-                </div>
-              </>
-            ) : (
-              <div className="flex flex-col w-full gap-4">
-                <PostSkeleton showCaption={false} showMedia={false} />
-                <PostSkeleton showCaption={false} showMedia={false} />
-              </div>
-            )}
+      <div className="relative w-full h-full">
+        <div className="flex flex-col gap-1 md:hidden w-full px-[5%]">
+          <div
+            className="flex text-[15px] md:text-[18px] lg:text-[24px] pt-4 pb-2 sticky cursor-pointer font-medium"
+            onClick={() => navigate(-1)}
+          >
+            <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
+            Search
           </div>
-        )}
-      </div>
-      <div className="border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
-        See All
+
+          <SearchInput
+            className="placeholder:text-greylight !text-greylight h-[32px] w-[290px]"
+            onChange={onValueChange}
+            value={searchValue}
+            iconColor="#A1A0A0"
+            bottomBorderColorClass={'border-[#A1A0A0]'}
+          />
+        </div>
+        <div
+          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50] ${width} ${height} ${titleParentClassNames}`}
+        >
+          {searchResult?.length ? (
+            searchResult?.map((result) => {
+              return (
+                <SuggestedUser
+                  key={result?.email}
+                  userFullName={`${result?.firstName} ${result?.lastName}`}
+                  userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+                  userImg={result?.profilePictureUrl}
+                  userId={result?.id}
+                />
+              );
+            })
+          ) : (
+            <div className="flex gap-2 p-3 cursor-pointer">
+              {!isGlobalTransparentLoadingPrivate && !isSearching ? (
+                <>
+                  <div>
+                    <SearchIcon color="black" />
+                  </div>
+                  <div>
+                    <h4 className="text-bold font-medium leading-4 ">No result found</h4>
+                    <h6 className="text-[10px] leading-4 font-normal text-greydark">
+                      Search another way
+                    </h6>
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col w-full gap-4">
+                  <PostSkeleton showCaption={false} showMedia={false} />
+                  <PostSkeleton showCaption={false} showMedia={false} />
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+        <div className="absolute top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+          See All
+        </div>
       </div>
     </div>
   );

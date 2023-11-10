@@ -67,7 +67,7 @@ const PrivateHeader = () => {
           deviceType !== 'mobile' ? (
             <div className="relative">
               <SearchInput
-                className="h-[32px] w-[290px]"
+                className="h-[32px] w-[290px] placeholder:text-white"
                 onChange={searchInputChangeHandler}
                 value={searchValue}
               />
@@ -78,7 +78,20 @@ const PrivateHeader = () => {
               />
             </div>
           ) : (
-            <SearchIcon width={28} height={28} />
+            <>
+              <div className="relative">
+                <span onClick={() => setIsSuggestUser(true)}>
+                  <SearchIcon width={28} height={28} />
+                </span>
+
+                <SuggestedSearch
+                  isOpen={isSuggestUser}
+                  onClose={() => setIsSuggestUser(false)}
+                  searchValue={searchValue}
+                  onValueChange={searchInputChangeHandler}
+                />
+              </div>
+            </>
           )
         }
         <AddFriendIcon />
