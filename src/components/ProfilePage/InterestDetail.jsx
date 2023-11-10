@@ -1,10 +1,10 @@
 /* eslint-disable react/no-unescaped-entities */
 import React from 'react';
-import Card from '../../components/common/Card';
-import OutlinedButton from '../../components/common/OutlinedButton';
+import Card from '../common/Card';
+import OutlinedButton from '../common/OutlinedButton';
 import edit from '../../assets/images/editIcon.svg';
 import dummy from '../../assets/images/dummy.svg';
-import '../../index.css';
+
 function InterestDetail() {
   return (
     <Card classNames="mt-4">
@@ -165,7 +165,7 @@ function InterestDetail() {
           <div className="font-normal text-greydark text-[10px] md:text-[14px] ">
             Photos (10/15)
           </div>
-          <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-11 2xl:grid-cols-12 2xl:grid-cols-12 gap-0 pt-2">
+          <div className="grid grid-cols-3 sm:grid-cols-2 md:grid-cols-8 lg:grid-cols-8 xl:grid-cols-11 2xl:grid-cols-12 gap-0 pt-2">
             <img src={dummy} alt="photo" className="mb-3 w-[70%]" />
             <img src={dummy} alt="photo" className="mb-3 w-[70%]" />
             <img src={dummy} alt="photo" className="mb-3 w-[70%]" />

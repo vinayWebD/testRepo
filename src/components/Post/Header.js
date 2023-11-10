@@ -11,6 +11,9 @@ import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import Modal from '../Modal';
 import CreatePostLayout from '../CreatePost/CreatePostLayout';
 import { LANG } from '../../constants/lang';
+import copyToClipboard from '../../utils/copyToClipboard';
+import { DATE_FORMAT } from '../../constants/constants';
+import { PATHS } from '../../constants/urlPaths';
 
 const { LANG_EDIT_POST } = LANG.PAGES.FEED;
 
@@ -43,7 +46,7 @@ const Header = ({
         },
         {
           name: 'Copy link',
-          action: () => {},
+          action: () => copyLink(`${window.location.origin}${PATHS.HOME}/${postDetails?.id}`),
         },
       ]);
     } else {
@@ -58,11 +61,16 @@ const Header = ({
         },
         {
           name: 'Copy link',
-          action: () => {},
+          action: () => copyLink(`${window.location.origin}${PATHS.HOME}/${postDetails?.id}`),
         },
       ]);
     }
   }, [isCreatedByMe]);
+
+  const copyLink = (text) => {
+    copyToClipboard(text);
+    ToastNotifySuccess('URL copied to clipboard');
+  };
 
   const deletePostHandler = async () => {
     const { data, status } = (await dispatch(deletePostDispatcher({ postId }))) || {};
@@ -87,7 +95,7 @@ const Header = ({
       />
       <div>
         <p className="font-semibold capitalize">{creatorName}</p>
-        <p className="text-[12px] text-greylight">{timeSpan(createdAt)}</p>
+        <p className="text-[12px] text-greylight">{timeSpan(createdAt, DATE_FORMAT.POST)}</p>
       </div>
 
       {showThreeDots && (
@@ -146,7 +154,8 @@ const areEqual = (prevProps, nextProps) => {
       prevProps.creatorName === nextProps.creatorName ||
       prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl ||
       prevProps.showThreeDots === nextProps.showThreeDots) &&
-    JSON.stringify(prevProps.postDetails) === JSON.stringify(nextProps.postDetails)
+    JSON.stringify(prevProps.postDetails) === JSON.stringify(nextProps.postDetails) &&
+    prevProps.postDetails?.id === nextProps.postDetails?.id
   );
 };
 

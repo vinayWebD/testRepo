@@ -11,6 +11,7 @@ import { CloseIcon } from '../Icons/CloseIcon';
 import { Player, BigPlayButton } from 'video-react';
 import 'video-react/dist/video-react.css';
 import { useSelector } from 'react-redux';
+import PostSkeleton from '../common/PostSkeleton';
 
 const PostDetails = ({
   post = {},
@@ -42,12 +43,6 @@ const PostDetails = ({
     initialSlide: customActiveIndex,
     beforeChange: (currentSlide) => handleBeforeChange(currentSlide),
   };
-
-  useEffect(() => {
-    if (post?.id) {
-      reloadPostDetails({ postId: post?.id });
-    }
-  }, [post?.id]);
 
   // The slider should work when the post details component is loaded
   useEffect(() => {
@@ -97,9 +92,17 @@ const PostDetails = ({
         creatorProfilePicUrl={post?.User?.profilePictureUrl}
         showThreeDots={false}
         isCreatedByMe={post?.UserId === userData?.id}
+        postId={post?.postId}
+        reloadPostDetails={reloadPostDetails}
+        postDetails={{
+          caption: post?.caption,
+          media: post?.postMedia,
+          links: post?.links,
+          id: post?.id,
+        }}
       />
     );
-  }, []);
+  }, [post?.id]);
 
   return (
     <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh]  md:min-h-[50vh] md:max-h-[70vh] lg:min-h-[65vh] lg:max-h-[75vh] relative">
@@ -136,7 +139,7 @@ const PostDetails = ({
           })}
         </Slider>
 
-        {post?.postMedia.length > 1 ? (
+        {post?.postMedia?.length > 1 ? (
           <>
             <div className="absolute top-1 left-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
@@ -167,12 +170,20 @@ const PostDetails = ({
 
       <div className="w-full md:w-[47%] lg:w-[35%] flex flex-col py-5 px-[15px] overflow-y-auto">
         <div className="w-full flex justify-between">
-          {postHeader}
-          <div className="cursor-pointer hidden md:block" onClick={onCloseHandler}>
-            <CloseIcon />
-          </div>
+          {/* Means the data is not loaded completely */}
+          {!post?.id ? (
+            <PostSkeleton showMedia={false} />
+          ) : (
+            <>
+              {postHeader}
+              <div className="cursor-pointer hidden md:block" onClick={onCloseHandler}>
+                <CloseIcon />
+              </div>
+            </>
+          )}
         </div>
-        <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+
+        {post?.id ? <CaptionLinkContainer caption={post?.caption} links={post?.links} /> : ''}
 
         <div className="!text-sm">
           <ActionButtons

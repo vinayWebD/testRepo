@@ -1,10 +1,24 @@
 import React from 'react';
 import SearchIcon from '../Icons/SearchIcon';
 import Avatar from '../common/Avatar';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
+import { updateSearch } from '../../redux/slices/appSearchSlice';
+import { useDispatch } from 'react-redux';
 
-const SuggestedUser = ({ userFullName, userImg, userBio }) => {
+const { OTHER_USER_PROFILE } = PATHS;
+
+const SuggestedUser = ({ userFullName, userImg, userBio, userId }) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const onClickHandler = () => {
+    navigate(`${OTHER_USER_PROFILE}${userId}`);
+    dispatch(updateSearch({ searchValue: '' }));
+  };
+
   return (
-    <div className="flex gap-2 p-3 hover:bg-greylighter cursor-pointer">
+    <div className="flex gap-2 p-3 hover:bg-greylighter cursor-pointer" onClick={onClickHandler}>
       <div>
         <SearchIcon color="black" />
       </div>

@@ -10,6 +10,7 @@ import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
 import CommentInput from './CommentInput';
 import HtmlText from '../common/HtmlText';
+import { DATE_FORMAT } from '../../constants/constants';
 
 const CommentLayout = ({
   PostId,
@@ -49,25 +50,30 @@ const CommentLayout = ({
           />
           <div className="relative flex flex-col justify-center gap-1 p-2 bg-whitelight rounded-lg w-full">
             <div className="flex justify-between items-center">
-              <div className="text14 font-semibold text-greydark">
+              <div
+                className="text14 font-semibold text-greydark max-w-[55%] text-ellipsis overflow-hidden"
+                title={`${User?.firstName} ${User?.lastName}`}
+              >
                 {User?.firstName} {User?.lastName}
               </div>
               <div className="flex items-center justify-center gap-4">
-                <p className="text-xs text-greylight">{timeSpan(createdAt)}</p>
-                {User?.id === userData?.id ? (
-                  <div className="w-[20px] relative top-1">
-                    <Dropdown
-                      options={[
-                        { name: 'Edit', action: () => setIsEditing(true) },
-                        { name: 'Delete', action: () => setIsDeleteModalOpen(true) },
-                      ]}
-                      IconComponent={() => <ThreeDots className="w-[4px] h-[20px] rotate-90" />}
-                      optionsClassName="!top-0"
-                    />
-                  </div>
-                ) : (
-                  ''
-                )}
+                <p className="text-[11px] lg:text-xs text-greylight">
+                  {timeSpan(createdAt, DATE_FORMAT.CAPTION)}
+                </p>
+                <div className="w-[20px] relative top-1">
+                  <Dropdown
+                    options={
+                      User?.id === userData?.id
+                        ? [
+                            { name: 'Edit', action: () => setIsEditing(true) },
+                            { name: 'Delete', action: () => setIsDeleteModalOpen(true) },
+                          ]
+                        : []
+                    }
+                    IconComponent={() => <ThreeDots className="w-[4px] h-[20px] rotate-90" />}
+                    optionsClassName="!top-0"
+                  />
+                </div>
               </div>
             </div>
 

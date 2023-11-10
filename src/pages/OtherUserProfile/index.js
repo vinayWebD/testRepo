@@ -1,28 +1,58 @@
-import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useEffect, useState } from 'react';
 import ProfileLayout from '../../components/ProfileLayout';
 import FollowerContainer from '../../components/ProfileLayout/FollowerContainer';
 import ProfileContainer from '../../components/ProfileLayout/ProfileContainer';
-// import Loader from '../../components/common/Loader';
 import Card from '../../components/common/Card';
 import backIcon from '../../assets/images/backIcon.svg';
 import noWork from '../../assets/images/noWork.svg';
 
-import { useNavigate } from 'react-router-dom';
-import OutlinedButton from '../../components/common/OutlinedButton';
-import useScrollToTop from '../../hooks/useScrollToTop';
+import { useNavigate, useParams } from 'react-router-dom';
 import InterestDetail from '../../components/ProfilePage/InterestDetail';
 import WorkDetail from '../../components/ProfilePage/WorkDetail';
+import useScrollToTop from '../../hooks/useScrollToTop';
 import Tabs from '../../components/ProfilePage/Tabs';
+import {
+  fetchOtherUserBasicInfo,
+  fetchOtherUserNetworkingCount,
+} from '../../redux/dispatchers/otherUserDispatcher';
+import { getErrorMessage, successStatus } from '../../common';
+import { PATHS } from '../../constants/urlPaths';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 
-const ProfilePage = () => {
-  const userData = useSelector((state) => state?.auth?.user) || {};
-  // const [isLoading, setIsLoading] = useState(false);
+const OtherUserProfile = () => {
   const [tab, setTab] = useState('work');
   const navigate = useNavigate();
+  const { id } = useParams();
+  const dispatch = useDispatch();
+  const [userData, setUserData] = useState({});
+  const [networkingCount, setNetworkingCount] = useState({});
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
+
+  useEffect(() => {
+    fetchData();
+  }, [id]);
+
+  const fetchData = async () => {
+    const { status, data } = await dispatch(fetchOtherUserBasicInfo({ id }));
+
+    if (successStatus(status)) {
+      setUserData(data?.data);
+      const { status: countStatus, data: countData } =
+        (await dispatch(fetchOtherUserNetworkingCount({ id }))) || {};
+      if (successStatus(countStatus)) {
+        setNetworkingCount(countData?.data);
+      }
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+      navigate(PATHS.HOME);
+    }
+  };
 
   return (
     <ProfileLayout>
@@ -33,10 +63,10 @@ const ProfilePage = () => {
           onClick={() => navigate(-1)}
         >
           <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
-          My Profile
+          Back
         </div>
-        <ProfileContainer userData={userData} />
-        <FollowerContainer />
+        <ProfileContainer userData={userData} isOtherUser={true} />
+        <FollowerContainer {...networkingCount} />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">
         <div className="grid grid-cols-12 gap-3 feed-page">
@@ -52,12 +82,6 @@ const ProfilePage = () => {
                     <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No work added yet.
                     </h4>
-                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
-                      It helps people quickly identify your many talents.
-                    </h5>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
-                    </div>
                   </Card>
                 </>
               ) : tab === 'interest' ? (
@@ -68,9 +92,6 @@ const ProfilePage = () => {
                     <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No Interests added yet.
                     </h4>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add Interests'} showArrowIcon={false} add />
-                    </div>
                   </Card>
                 </>
               ) : (
@@ -80,17 +101,9 @@ const ProfilePage = () => {
                     <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                       No work added yet.
                     </h4>
-                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
-                      It helps people quickly identify your many talents.
-                    </h5>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
-                    </div>
                   </Card>
                 </>
               )}
-
-              {/* {isLoading && <Loader />} */}
             </div>
           </div>
         </div>
@@ -99,4 +112,4 @@ const ProfilePage = () => {
   );
 };
 
-export default ProfilePage;
+export default OtherUserProfile;
