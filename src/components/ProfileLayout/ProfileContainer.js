@@ -80,7 +80,7 @@ const ProfileContainer = ({ userData, isOtherUser = false }) => {
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
-        titleParentClassNames="md:m-3 m-0"
+        titleParentClassNames="md:m-0 mt-[121px]"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
         <EditProfile {...userData} onClose={() => setIsEditingModalOpen(false)} />

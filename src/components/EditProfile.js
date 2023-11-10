@@ -110,7 +110,7 @@ const EditProfile = ({
     <form
       onSubmit={formik.handleSubmit}
       noValidate
-      className="flex justify-center items-center mt-4 flex-col gap-[24px] p-[18px]"
+      className="flex justify-center items-center mt-4 flex-col gap-[12px]"
     >
       <div className="border border-greymedium rounded-full">
         <InputProfilePicture
@@ -122,7 +122,7 @@ const EditProfile = ({
         />
       </div>
 
-      <div className="w-full flex items-center justify-center gap-6">
+      <div className="w-full flex items-center justify-center gap-6 px-[18px]">
         <InputBox
           name="firstName"
           type="text"
@@ -135,7 +135,7 @@ const EditProfile = ({
           helperText={formik.touched.firstName && formik.errors.firstName}
           isRequired
           className="w-full"
-          parentClassName="w-[50%]"
+          parentClassName="w-full lg:w-[50%]"
         />
         <InputBox
           name="lastName"
@@ -149,10 +149,10 @@ const EditProfile = ({
           helperText={formik.touched.lastName && formik.errors.lastName}
           isRequired
           className="w-full"
-          parentClassName="w-[50%]"
+          parentClassName="w-full lg:w-[50%]"
         />
       </div>
-      <div className="w-full">
+      <div className="w-full px-[18px]">
         <InputBox
           name="email"
           type="email"
@@ -168,7 +168,7 @@ const EditProfile = ({
           disabled={true}
         />
       </div>
-      <div className="w-full">
+      <div className="w-full px-[18px]">
         <InputBox
           name="location"
           type="text"
@@ -183,14 +183,16 @@ const EditProfile = ({
           className="w-full"
         />
       </div>
-      <Button
-        type="submit"
-        label="Save"
-        additionalClassNames="capitalize"
-        isLoading={isLoading}
-        showArrowIcon={false}
-        isDisabled={isLoading}
-      />
+      <div className="border-greymedium border-t w-full flex justify-end py-5 px-[18px]">
+        <Button
+          type="submit"
+          label="Save"
+          additionalClassNames="capitalize"
+          isLoading={isLoading}
+          showArrowIcon={false}
+          isDisabled={isLoading}
+        />
+      </div>
     </form>
   );
 };
