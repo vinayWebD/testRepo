@@ -24,6 +24,7 @@ import { PAGE_SIZE } from '../../constants/constants';
 import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 import PostSkeleton from '../../components/common/PostSkeleton';
 import useScrollToTop from '../../hooks/useScrollToTop';
+import debounce from '../../utils/debounce';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -37,10 +38,11 @@ const HomePage = () => {
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(0);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
   const loaderRef = useRef(null);
   const hasUserScrolled = useWindowScrolledDown();
+  let isLoadingAPI = false; // This we are using to avoid multiple API calls because of infinite scroll
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
@@ -51,7 +53,7 @@ const HomePage = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
-      rootMargin: '20px',
+      rootMargin: '0px', // Leaving no margin so that API does not get called before handedly
       threshold: 1,
     });
     if (loaderRef.current) {
@@ -65,41 +67,56 @@ const HomePage = () => {
     };
   }, [loaderRef, posts]);
 
+  // When we reload the posts: maybe after creating new post, editing or deleting one
+  const reloadPosts = async () => {
+    setAllPostsLoaded(false);
+    window.scrollTo(0, 0);
+    await fetchAllPostsAPI(0, true);
+  };
+
+  const fetchAllPostsAPI = async (page, reloadForcefully = false) => {
+    if (!reloadForcefully && allPostsLoaded && !isLoadingAPI && page !== 0) return; // prevent fetching if all posts are loaded
+
+    const response = await fetchPosts({ page: page + 1 });
+
+    const { status, data } = response;
+    const errormsg = getErrorMessage(data);
+
+    if (!successStatus(status) && errormsg) {
+      ToastNotifyError(errormsg, '');
+    } else {
+      setAllPostsLoaded(data?.data?.length < FEED_PAGE_SIZE); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
+
+      if (page === 0) {
+        // For the first time we just need to set the data as is
+        setPosts(data?.data);
+        setCurrentPage(1);
+      } else if (currentPage * FEED_PAGE_SIZE === posts.length) {
+        setPosts((prevPosts) => [...prevPosts, ...data.data]);
+        setCurrentPage((prevPage) => prevPage + 1);
+      }
+
+      setIsLoading(false);
+      isLoadingAPI = false;
+    }
+  };
+
+  const fetchAllPosts = debounce(fetchAllPostsAPI, currentPage === 0 ? 20 : 450); // Added debounce in the API calling so that multiple calls do not go because of inifnite scroll
+
   const handleObserver = (entities) => {
     const target = entities[0];
 
-    if (target.isIntersecting && target.intersectionRatio > 0.9) {
+    if (target.isIntersecting && target.intersectionRatio >= 1) {
+      isLoadingAPI = true;
+      setIsLoading(true);
+
       fetchAllPosts(currentPage);
-      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
   const handleOpenPopup = (type) => {
     setTypeOfPost(type);
     setIsCreatePostModalOpen(true);
-  };
-
-  const fetchAllPosts = async (page) => {
-    //   if (allPostsLoaded) return; // prevent fetching if all posts are loaded
-    //   setIsLoading(true);
-    //   const response = await fetchPosts({ page });
-    //   const { status, data } = response;
-    //   const errormsg = getErrorMessage(data);
-    //   setIsLoading(false);
-    //   if (!successStatus(status) && errormsg) {
-    //     ToastNotifyError(errormsg, '');
-    //   } else {
-    //     if (data?.results?.length < FEED_PAGE_SIZE) {
-    //       setAllPostsLoaded(true); // if anytime the data returned from API is less than FEED_PAGE_SIZE, set all posts as loaded
-    //     } else {
-    //       if (page === 1) {
-    //         // For the first time we just need to set the data as is
-    //         setPosts(data.results);
-    //       } else if ((currentPage - 1) * FEED_PAGE_SIZE === posts.length) {
-    //         setPosts((prevPosts) => [...prevPosts, ...data.results]);
-    //       }
-    //     }
-    //   }
   };
 
   const fetchSinglePostDetails = async ({ postId }) => {
@@ -111,16 +128,16 @@ const HomePage = () => {
       ToastNotifyError(errormsg, '');
     } else {
       const allPosts = posts.map((post) => {
-        if (post?.post_id === postId) {
-          return data;
+        if (activePost?.id === postId) {
+          setActivePost(data?.data);
+        }
+        if (post?.id === postId) {
+          return data?.data;
         } else {
           return post;
         }
       });
       setPosts(allPosts);
-      if (activePost?.post_id === postId) {
-        setActivePost(data);
-      }
     }
   };
 
@@ -185,18 +202,26 @@ const HomePage = () => {
           <div className="mt-3">
             {posts.map((post) => {
               return (
-                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.post_id}>
+                <Card classNames="p-4 mt-[6px] md:mt-4" key={post?.postId}>
                   <Header
-                    createdAt={post?.created_at}
-                    creatorName={post?.created_by}
-                    creatorProfilePicUrl={post?.profile_image_url}
-                    isCreatedByMe={true}
-                    postId={post?.id}
+                    createdAt={post?.createdAt}
+                    creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+                    creatorProfilePicUrl={post?.User?.profilePictureUrl}
+                    isCreatedByMe={post?.UserId === userData?.id}
+                    postId={post?.postId}
+                    reloadData={reloadPosts}
+                    reloadPostDetails={fetchSinglePostDetails}
+                    postDetails={{
+                      caption: post?.caption,
+                      media: post?.media,
+                      links: post?.links,
+                      id: post?.id,
+                    }}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
                     <MediaLayout
-                      media={post?.media}
+                      media={post?.postMedia}
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
@@ -208,11 +233,11 @@ const HomePage = () => {
                   </div>
 
                   <ActionButtons
-                    commentCount={post?.comment_count}
-                    likeCount={post?.like_count}
-                    shareCount={post?.share_count}
-                    isLikedByMe={post?.is_liked_by_me}
-                    postId={post?.post_id}
+                    commentCount={post?.commentCount}
+                    likeCount={post?.likeCount}
+                    shareCount={post?.shareCount}
+                    isLikedByMe={post?.isLikedByMe}
+                    postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
                   />
@@ -261,7 +286,7 @@ const HomePage = () => {
             setTypeOfPost(null);
           }}
           openTypeOfPost={typeOfPost}
-          reloadData={fetchAllPosts}
+          reloadData={reloadPosts}
         />
       </Modal>
 

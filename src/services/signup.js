@@ -49,7 +49,7 @@ const fetchFileUPloadAWS = async (data) => {
     const response = await apiUtility(url, 'PUT', selectedFile, false, () => {}, true);
     return response;
   } catch (err) {
-    return err;
+    return Promise.reject(err);
   }
 };
 
