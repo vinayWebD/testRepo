@@ -134,7 +134,7 @@ function SuggestedSearch({
           />
         </div>
         <div
-          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50] ${width} ${height} ${titleParentClassNames}`}
+          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] ${width} ${height} ${titleParentClassNames}`}
         >
           {searchResult?.length ? (
             searchResult?.map((result) => {
@@ -171,7 +171,7 @@ function SuggestedSearch({
             </div>
           )}
         </div>
-        <div className="absolute top-[80%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        <div className="absolute top-[83%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
           See All
         </div>
       </div>
