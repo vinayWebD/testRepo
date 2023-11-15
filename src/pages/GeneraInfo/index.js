@@ -61,8 +61,8 @@ function GeneralInfo() {
   };
 
   const handleSkip = () => {
-    secureLocalStorage.removeItem('object');
-    navigate(PATH_WORK, { replace: true });
+    secureLocalStorage.setItem('object', { data });
+    navigate(PATH_WORK);
   };
 
   useEffect(() => {
@@ -99,6 +99,7 @@ function GeneralInfo() {
       ToastNotifySuccess('General Info added Successfully', 'location-success');
       dispatch(login(userData));
       // navigate(HOME, { replace: true });
+      navigate(PATH_WORK);
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, 'location-failed');

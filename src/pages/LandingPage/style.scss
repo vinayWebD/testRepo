@@ -13,6 +13,10 @@
     width: 100%;
     background-image: url('../../assets/images/hero.png');
     background-size: 100% 100%;
+    background-size: contain;
+    background-position: right;
+    background-repeat: no-repeat;
+    background-color: #191335;
     .content-box {
       padding-top: 196px;
       padding-left: 100px;
@@ -40,6 +44,9 @@
           font-style: normal;
           font-weight: 500;
           line-height: 24px;
+          @media screen and (max-width: 600px) {
+          font-size: 12px;
+          }
         }
         .vertical-divider {
           width: 2px;
@@ -73,6 +80,12 @@
         font-style: normal;
         font-weight: 600;
         line-height: 60px;
+         @media screen and (max-width: 1000px) {
+          font-size: 32px;
+          }
+         @media screen and (max-width: 600px) {
+          font-size: 28px;
+        }
       }
       .content {
         color: #fff;
@@ -81,6 +94,10 @@
         font-style: normal;
         font-weight: 500;
         line-height: 24px;
+         @media screen and (max-width: 600px) {
+          font-size: 14px;
+          line-height: 20px;
+        }
       }
       .sub-heading {
         margin-top: 12px;
@@ -90,6 +107,10 @@
         font-style: normal;
         font-weight: 700;
         line-height: 36px;
+        @media screen and (max-width: 600px) {
+          line-height: 24px;
+          font-size: 16px;
+        }
       }
     }
   }
@@ -97,6 +118,12 @@
     padding: 0 100px;
     min-height: 506px;
     background-image: url('../../assets/images/expansion_depth_potential 1.svg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; /* Center horizontally and vertically */
+    height: 900px; /* Adjust the desired height */
+    width: 100%; /* Ensure the container takes the full width */
+    padding-top: 7.5%;
     .heading {
       padding-top: 70px;
       color: #fff;
@@ -104,6 +131,9 @@
       font-style: normal;
       font-weight: 600;
       line-height: 60px;
+      @media screen and (max-width: 1000px) {
+          font-size: 32px;
+      }
     }
     .content {
       max-width: 676px;
@@ -125,6 +155,9 @@
       font-style: normal;
       font-weight: 600;
       line-height: 60px; /* 125% */
+      @media screen and (max-width: 1000px) {
+        font-size: 32px;
+      }
     }
     .name {
       color: #fff;
@@ -133,6 +166,10 @@
       font-style: normal;
       font-weight: 600;
       line-height: normal;
+      @media screen and (max-width: 1000px) {
+        margin-top: 10px;
+        font-size: 22px;
+      }
     }
   }
 
@@ -193,6 +230,15 @@
         font-weight: 700;
         line-height: 33px;
         max-width: 424px;
+        margin-bottom: 2.5rem;
+        @media screen and (max-width: 1000px) {
+          max-width: 100%;
+        }
+        @media screen and (max-width: 600px) {
+         font-size: 20px;
+         line-height: 30px;
+         margin-bottom: 1rem;
+        }
       }
       .footer-link-heading {
         color: #fff;
@@ -202,6 +248,10 @@
         font-weight: 700;
         line-height: 30px;
         text-transform: uppercase;
+        @media screen and (max-width: 600px) {
+          margin-top: 20px;
+          font-size: 16px;
+        }
       }
       .footer-links {
         li {
@@ -214,6 +264,9 @@
             font-style: normal;
             font-weight: 400;
             line-height: 30px;
+            @media screen and (max-width: 600px) {
+              font-size: 14px;
+            }
           }
         }
       }
@@ -230,6 +283,14 @@
 
   .landing-footer-img {
     mix-blend-mode: luminosity;
+    @media screen and (max-width: 1000px) {
+      opacity: 0.5;
+    }
+    @media screen and (max-width: 600px) {
+      opacity: 1;
+        width: 150px;
+        margin-bottom: 72px;
+    }
   }
   .copyright {
     color: #fff;
@@ -239,6 +300,11 @@
     font-weight: 400;
     line-height: 30px;
   }
+  .icon-gap{
+    @media screen and (max-width: 600px) {
+          gap: 2.5em !important;
+        }
+  }
   .social-links {
     cursor: pointer;
   }
@@ -246,6 +312,9 @@
     width: 80px;
     height: 2px;
     background: #f2f2f2;
+    @media screen and (max-width: 600px) {
+          margin-top: 10px;
+        }
   }
   .carousel-slider {
     padding-bottom: 18px !important;
@@ -260,6 +329,25 @@
     font-style: normal;
     font-weight: 500;
     line-height: 24px;
+    @media screen and (max-width: 600px) {
+      font-size: 14px;
+    }
+  }
+  @media screen and (max-width: 2500px) {
+    .work-section {
+      padding-top: 10%;
+    }
+  }
+  @media screen and (max-width: 2000px) {
+    .work-section {
+      padding-top: 11%;
+    }
+  }
+  @media screen and (max-width: 1800px) {
+    .work-section {
+      height: auto; /* Adjust the desired height */
+      padding-top: 0%;
+    }
   }
   @media screen and (max-width: 600px) {
     .join-section,
@@ -275,14 +363,16 @@
       margin: 0 !important;
     }
     .footer-section {
+      padding-top: 1px;
       .footer-logo {
+        margin-top: 20px;
         padding: 0 36px;
       }
     }
 
     .hero-section {
       height: 400px;
-      background-image: url('../../assets/images/herosmall.png');
+      background-image: none;
       .content-box {
         padding-top: 53px;
         padding-left: 36px;
@@ -293,6 +383,7 @@
         }
         .sub-content {
           margin-left: 0;
+          max-width: 85%;
         }
       }
     }
@@ -309,20 +400,26 @@
       .card-content {
         font-size: 14px;
         font-weight: 500;
+         
       }
     }
     .work-section {
-      height: auto;
-      height: auto;
-      background-size: cover;
-      background-repeat: round;
+      background-image: url('../../assets/images/expansion_depth_potential 2.svg');
+      height: 542px;
       .heading {
+        max-width: 293px;
+        padding-top: 50px;
         font-size: 28px;
         line-height: 34px;
+       
+        @media screen and (max-width: 600px) {
+          padding-top: 30px;
+        }
       }
       .content,
       .card-content {
-        font-size: 14px;
+        line-height: 17px;
+        font-size: 12px;
         font-weight: 500;
       }
     }
@@ -352,6 +449,7 @@
       margin: 0 !important;
     }
     .footer-section {
+      padding-top: 1px;
       .footer-logo {
         padding: 0 36px;
       }
@@ -370,13 +468,16 @@
         }
         .sub-content {
           .sub-title {
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 500;
             line-height: 18px;
             max-width: 250px;
           }
         }
       }
+    }
+    .work-section {
+      background-image: url('../../assets/images/expansion_depth_potential 1.svg');
     }
   }
 }

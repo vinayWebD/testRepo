@@ -17,6 +17,9 @@ const NETWORK_CONSTANTS = {
   CERTIFICATE: '/v1/accounts/certificates/',
   LINKS: '/v1/accounts/links/',
   SKILLS: '/v1/accounts/skills/',
+  FETCH_POSTS: '/v1/feeds/',
+  LIKE_UNLIKE_POST: (postId) => `/v1/feeds/posts/${postId}/likes/`,
+  FETCH_POST_DETAILS: (postId) => `/v1/feeds/posts/${postId}/`,
 };
 
 export default NETWORK_CONSTANTS;

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Fragment, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -40,11 +41,11 @@ export function EducationContent({ careerId }) {
     }
   };
   useEffect(() => {
-    getEducation();
+    // getEducation();
   }, [editId]);
 
   useEffect(() => {
-    getEducationsList();
+    // getEducationsList();
   }, []);
 
   const educationSubmit = async (values) => {
@@ -209,7 +210,7 @@ export function EducationContent({ careerId }) {
                     helperText={tuc_field_of_study && err_field_of_study}
                   />
                 </div>
-                <div className="grid grid-cols-2 gap-4 pb-4">
+                <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
                   <InputBox
                     name="start_date"
                     type="date"
@@ -301,9 +302,9 @@ export function EducationContent({ careerId }) {
           helperText={tuc_field_of_study && err_field_of_study}
         />
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-4 pb-6">
-        <div className="md:col-span-1 col-span-3 ">
-          <div className="grid grid-cols-2 gap-4">
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-4 lg:pb-6">
+        <div className="lg:col-span-1 col-span-3 ">
+          <div className="grid lg:grid-cols-2 sm:grid-cols-2 gap-4">
             <InputBox
               name="start_date"
               type="date"
@@ -326,10 +327,10 @@ export function EducationContent({ careerId }) {
             />
           </div>
         </div>
-        <div className="md:col-span-2 col-span-3">
+        <div className="lg:col-span-2 col-span-3" style={{ marginTop: '-7px' }}>
           <TextArea
             name="other"
-            height="h-[48px]"
+            height="h-[53px]"
             label="Other (Activities, clubs, organizations and societies)"
             placeholder="Enter here"
             defaultValue={other}
@@ -339,7 +340,7 @@ export function EducationContent({ careerId }) {
           />
         </div>
       </div>
-      <div className="justify-end flex  pb-6">
+      <div className="justify-end flex pb-6 pt-6">
         <OutlinedButton label="save" onClick={handleSubmit} />
       </div>
     </>

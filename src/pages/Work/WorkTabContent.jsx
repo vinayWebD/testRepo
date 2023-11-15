@@ -37,6 +37,10 @@ import { CertificateContent } from './CertificateContent';
 import { EducationContent } from './EducationContent';
 import { ExperienceContent } from './ExperienceContent';
 import { MediaContent } from './MediaContent';
+import check from '../../assets/images/check.png'
+import cross from '../../assets/images/cross.png'
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 export function WorkTabContent() {
   const ref = useRef();
@@ -46,7 +50,9 @@ export function WorkTabContent() {
   const [linksList, setLinksList] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const [careerList, setCareerList] = useState([]);
-  localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
+  const navigate = useNavigate()
+  const { HOME } = PATHS;
+  // localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
 
   const getCareerList = async () => {
     const response = await fetchCareersList();
@@ -60,7 +66,7 @@ export function WorkTabContent() {
   };
 
   useEffect(() => {
-    getCareerList();
+    // getCareerList();
   }, []);
 
   const careerSubmit = async () => {
@@ -160,8 +166,8 @@ export function WorkTabContent() {
   };
 
   useEffect(() => {
-    getSkillsList();
-    getLinksList();
+    // getSkillsList();
+    // getLinksList();
   }, [careerId]);
 
   const initialLink = {
@@ -226,13 +232,13 @@ export function WorkTabContent() {
   } = formikSkills;
 
   return (
-    <div className="py-[36px] px-[70px] bg-bluebg">
+    <div className="py-[36px] lg:px-[70px] md:px-[40px] px-[20px] bg-bluebg">
       <form onSubmit={handleSubmit}>
         <div className="tab-content-title">So far so good. Let’s talk about your work</div>
         <div className="tab-content-subtitle">We use this info for better reach.</div>
 
-        <div className="flex items-center mt-8 mb-5">
-          <div className="w-[170px] form-title">About work</div>
+        <div className="md:flex block items-center mt-8 mb-5">
+          <div className="w-[170px] form-title md:pb-0 pb-2">About work</div>
           <div className="grow">
             <TextArea
               height="h-[160px]"
@@ -246,7 +252,16 @@ export function WorkTabContent() {
             />
           </div>
         </div>
-        <div className="mb-8 flex justify-between">
+        <div className="grid justify-items-end pb-8">
+          <Button
+            isDisabled={work === ''}
+            label="Save"
+            onClick={workSubmit}
+            showArrowIcon={false}
+          />
+        </div>
+        <hr className='pb-8' style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
+        <div className="mb-8 flex justify-between ">
           <div className="step-title">
             Career
             <BlueDivider />
@@ -259,25 +274,29 @@ export function WorkTabContent() {
           />
         </div>
 
-        <div className="flex items-center mt-8 mb-5">
-          <div className="w-[170px] form-title">Career Title</div>
-          <div className="grow">
-            <TextArea
-              name="title"
-              width="w-full md:w-[500px]"
-              placeholder="Enter Title"
-              value={title}
-              onChange={handleChange}
-              onBlur={careerSubmit}
-              error={tuc_title && err_title}
-              helperText={tuc_title && err_title}
-            />
+        <div className="md:flex block items-center mt-8 mb-5">
+          <div className={`w-[170px] form-title  ${tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'} `}>Career Title</div>
+          <div className={`grow ${tuc_title && err_title ? 'des-title-error' : 'des-title'} `}>
+            <div>
+              <TextArea
+                name="title"
+                width="w-full md:w-[500px]"
+                placeholder="Enter Title"
+                value={title}
+                onChange={handleChange}
+                // onBlur={careerSubmit}
+                error={tuc_title && err_title}
+                helperText={tuc_title && err_title}
+              />
+            </div>
+            <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} onClick={careerSubmit} />
+            <img src={cross} alt="cross" style={{ marginLeft: '20px', cursor: 'pointer' }} />
           </div>
         </div>
 
         <div>
           <Accordion
-            disabled={!careerId}
+            // disabled={!careerId}
             items={[
               {
                 icon: <MediaIcon />,
@@ -316,7 +335,7 @@ export function WorkTabContent() {
                   <EditBlueIcon />
                 </span>
               </div>
-              <div className="flex gap-[24px] grow-0 mt-6">
+              <div className="flex gap-[24px] grow-0 mt-6 flex-wrap	">
                 {linksList.map((links, idx) => (
                   <div key={idx}>
                     <div className="detail-label">{links.domain}</div>
@@ -339,14 +358,14 @@ export function WorkTabContent() {
                   <EditBlueIcon />
                 </span>
               </div>
-              <div className="flex gap-[24px] grow-0 mt-6">
+              <div className="flex gap-[24px] grow-0 mt-6 flex-wrap">
                 {skillsList &&
                   skillsList.map(({ name }, idx) => <SkillsChipsBlue label={name} key={idx} />)}
               </div>
             </div>
           )}
 
-          <div className="mt-[36px] flex justify-between flex-wrap">
+          <div className="mt-[36px] flex justify-end md:justify-between flex-wrap">
             <div className="flex gap-4 flex-wrap">
               <div>
                 <OutlinedButton
@@ -363,12 +382,16 @@ export function WorkTabContent() {
                 />
               </div>
             </div>
-            <div className="flex gap-4 flex-wrap items-center">
+            <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
-                <OutlinedButton label="Skip" isSkip={true} />
+                <OutlinedButton label="Skip" isSkip={true} onClick={() => navigate(HOME, { replace: true })} />
               </div>
               <div>
-                <Button type="submit" label="Save" showArrowIcon={false} />
+                <OutlinedButton
+                  label="Next"
+                  style={{ paddingLeft: '25px', paddingRight: '25px' }}
+                />
+                {/* <Button type="submit" label="Save" showArrowIcon={false} /> */}
               </div>
             </div>
           </div>

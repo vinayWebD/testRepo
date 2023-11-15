@@ -16,7 +16,7 @@ const LANG = {
       LANG_HOMEPAGE_OUR_PERPOSE:
         'Helping people find the best opportunities based on the truest and most authentic version of themselves.',
       LANG_HOMEPAGE_WE_ARE:
-        'We are passionate about linking human capital with satisfaction. It is more than merely producing output. It is about attaining fulfillment, discovering purpose, and providing to society while remaining genuine to oneself.',
+        'We believe the desire for meaning, connection and collaboration are inherent in all. It is more than merely producing output. It is about attaining fulfillment, discovering purpose, and providing to society while remaining genuine to oneself.',
       LANG_HOMEPAGE_OUR_VIEW: 'Our View',
       LANG_HOMEPAGE_OUR_VIEW_LONG1:
         'Our view of the workforce is that it comprises people with different abilities, ambitions, and motivations. We trust that everyone reaps the benefits when we encourage people to express themselves fully, locate chances aligned with their values, interests, and skills, and connect with entities and individuals who share their purpose.',
@@ -133,6 +133,7 @@ const LANG = {
     },
     FEED: {
       LANG_WRITE_SOMETHING: 'Write something ...',
+      LANG_CREATE_POST: 'Create Post',
     },
     CREATE_POST: {
       LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',

@@ -9,6 +9,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
+import ProfilePage from './pages/ProfilePage';
 
 const {
   LANDING,
@@ -20,6 +21,7 @@ const {
   FORGOT_PASSWORD,
   RESET_PASSWORD,
   PATH_WORK,
+  PROFILE,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -69,6 +71,11 @@ const privateRoutes = createBrowserRouter([
   {
     path: HOME,
     element: <HomePage />,
+  },
+
+  {
+    path: PROFILE,
+    element: <ProfilePage />,
   },
 ]);
 

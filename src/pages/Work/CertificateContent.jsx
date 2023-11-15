@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useFormik } from 'formik';
 import { Fragment, useEffect, useState } from 'react';
 import { successStatus } from '../../common';
@@ -30,7 +31,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
   };
 
   useEffect(() => {
-    getCertificate();
+    // getCertificate();
   }, [editId]);
 
   const getCertificatesList = async () => {
@@ -45,7 +46,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
   };
 
   useEffect(() => {
-    getCertificatesList();
+    // getCertificatesList();
   }, [editId]);
 
   const certificateSubmit = async (values) => {
@@ -224,7 +225,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
   }
   return (
     <form onSubmit={handleSubmit}>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
         <InputBox
           name="title"
           label="Title"
@@ -243,7 +244,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
           error={tuc_institution && err_institution}
           helperText={tuc_institution && err_institution}
         />
-        <div className="grid grid-cols-2">
+        <div className="grid lg:grid-cols-2 grid-cols-1">
           <div className="col-span-1">
             <InputBox
               name="year"
@@ -258,7 +259,7 @@ export function CertificateContent({ mediaRef, handleFileEvent, careerId }) {
           <div className="col-span-1"></div>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-4 mt-2 pb-6">
+      <div className="grid md:grid-cols-3 grid-cols-1 gap-4 mt-2 pb-6">
         <div>
           <label style={{ color: '#333' }}>Upload Media</label>
           <div

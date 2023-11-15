@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Fragment, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -43,11 +44,11 @@ export function ExperienceContent({ careerId = null }) {
   };
 
   useEffect(() => {
-    getExperiences();
+    // getExperiences();
   }, [editId]);
 
   useEffect(() => {
-    getExperiencesList();
+    // getExperiencesList();
   }, []);
 
   const experienceSubmit = async (values) => {
@@ -105,7 +106,7 @@ export function ExperienceContent({ careerId = null }) {
     },
   } = formik;
 
-  useEffect(() => {}, [experienceList]);
+  useEffect(() => { }, [experienceList]);
 
   const renderExperienceList = () => {
     if (experienceList.length) {
@@ -256,7 +257,7 @@ export function ExperienceContent({ careerId = null }) {
   }
   return (
     <>
-      <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
+      <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
         <InputBox
           name="title"
           label="Title"
@@ -275,7 +276,7 @@ export function ExperienceContent({ careerId = null }) {
           error={tuc_company && err_company}
           helperText={tuc_company && err_company}
         />
-        <div className="grid grid-cols-2 gap-4">
+        <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           <InputBox
             name={'startDate'}
             type="date"
@@ -308,8 +309,8 @@ export function ExperienceContent({ careerId = null }) {
           helperText={tuc_description && err_description}
         />
       </div>
-      <div className="flex items-center justify-between pb-[45px]">
-        <div className="flex gap-[24px] ">
+      <div className="flex md:flex-row flex-col md:items-center items-end justify-between pb-[45px]">
+        <div className="flex md:gap-[24px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
           <Checkbox /> <span>I am currently working on this role.</span>
         </div>
         <OutlinedButton label="save" onClick={handleSubmit} type="button" />

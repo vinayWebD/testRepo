@@ -11,6 +11,7 @@ module.exports = {
       greylight: '#A1A0A0',
       greymedium: '#D1D1D1',
       greydark: '#333333',
+      greylighter: '#E3E6EB',
       red: '#FF0000',
       hyperlink: '#70BAFF',
       bluebg: '#F8FCFF',
@@ -20,6 +21,7 @@ module.exports = {
       lightblue: '#DEF2FF',
       lightbluebg: '#E9F6FF',
       deleteRed: '#E83E39',
+      iconBackground: '#0081CC0D',
     },
     extend: {
       fontFamily: {
@@ -31,7 +33,25 @@ module.exports = {
       borderColor: {
         customGray: 'rgba(161, 160, 160, 0.50)',
       },
+      height: {
+        screenHeight: 'calc(100vh - 300px)',
+      },
     },
   },
-  plugins: [],
+  plugins: [
+    function ({ addUtilities }) {
+      const newUtilities = {
+        '@keyframes scaleBounce': {
+          '0%, 100%': { transform: 'scale(1)', opacity: 1 },
+          '50%': { transform: 'scale(1.2)', opacity: 0.2 },
+        },
+        '.scale-bounce': {
+          animationTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)',
+          animationDuration: '270ms',
+          animationName: 'scaleBounce',
+        },
+      };
+      addUtilities(newUtilities, ['responsive', 'hover']);
+    },
+  ],
 };

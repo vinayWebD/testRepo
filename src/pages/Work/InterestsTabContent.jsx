@@ -9,12 +9,16 @@ import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { fetchWorkInterest } from '../../services/signup';
 import { validationSchemaInterest } from '../../validations';
-
+import check from '../../assets/images/check.png'
+import cross from '../../assets/images/cross.png'
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 export function InterestsTabContent() {
   const ref = useRef();
   const [career, setCareer] = useState('');
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
-
+  const navigate = useNavigate()
+  const { HOME } = PATHS;
   const initialWork = {
     interest: '',
   };
@@ -41,24 +45,32 @@ export function InterestsTabContent() {
   } = formikInterest;
 
   return (
-    <div className="py-[36px] px-[70px] bg-bluebg">
+    <div className="py-[36px] lg:px-[70px] md:px-[40px] px-[20px] bg-bluebg">
       <div className="tab-content-title">So far so good. Let’s talk about your Interests</div>
       <div className="tab-content-subtitle">We use this info for better reach.</div>
 
-      <div className="flex items-center mt-8 mb-5">
-        <div className="w-[170px] form-title">About Interests</div>
+      <div className="md:flex block items-center mt-8 mb-5">
+        <div className="w-[170px] form-title md:pb-0 pb-2">About Interests</div>
         <div className="grow">
           <TextArea
             height="h-[160px]"
             placeholder="Enter Description"
             value={interest}
             onChange={(e) => formikInterest.setFieldValue('interest', e.target.value)}
-            onBlur={interestSubmit}
+            // onBlur={interestSubmit}
             error={tuc_interest && err_interest}
             helperText={tuc_interest && err_interest}
           />
         </div>
       </div>
+      <div className="grid justify-items-end pb-8">
+        <Button
+          label="Save"
+          onClick={interestSubmit}
+          showArrowIcon={false}
+        />
+      </div>
+      <hr className='pb-8' style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
       <div className="mb-8 flex justify-between">
         <div className="step-title">
           Interests
@@ -66,22 +78,25 @@ export function InterestsTabContent() {
         </div>
       </div>
 
-      <div className="flex items-center mt-8 mb-5">
-        <div className="w-[155px] form-title">Title</div>
-        <div className="grow">
+      <div className="md:flex block items-center mt-8 mb-5">
+        <div className="w-[155px] form-title md:pb-0 pb-2">Title</div>
+        <div className={'grow des-title'}>
           <TextArea
             width="w-full md:w-[500px]"
             placeholder="Enter Title"
             value={career}
             onChange={(e) => setCareer(e.target.value)}
           />
+          <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} />
+          <img src={cross} alt="cross" style={{ marginLeft: '20px', cursor: 'pointer' }} />
         </div>
+
       </div>
 
-      <div className="flex items-center mt-8 mb-5">
-        <div className="w-[155px] form-title">Upload Photo</div>
+      <div className="md:flex block items-center mt-8 mb-5">
+        <div className="w-[155px] form-title md:pb-0 pb-2">Upload Photo</div>
         <div
-          className="py-[16px] w-[240px] border-dashed border border-blueprimary rounded-lg cursor-pointer text-center"
+          className="py-[16px] md:w-[240px] border-dashed border border-blueprimary rounded-lg cursor-pointer text-center"
           onClick={() => ref.current.click()}
           label="Attach Document"
         >
@@ -97,14 +112,14 @@ export function InterestsTabContent() {
             multiple
             ref={ref}
             type="file"
-            // onChange={handleFileEvent}
+          // onChange={handleFileEvent}
           />
         </div>
       </div>
-      <div className="flex items-center mt-8 mb-5">
-        <div className="w-[155px] form-title">Upload Video</div>
+      <div className="md:flex block items-center mt-8 mb-5">
+        <div className="w-[155px] form-title md:pb-0 pb-2">Upload Video</div>
         <div
-          className="py-[16px] w-[240px] border-dashed border border-blueprimary rounded-lg cursor-pointer text-center"
+          className="py-[16px] md:w-[240px] border-dashed border border-blueprimary rounded-lg cursor-pointer text-center"
           onClick={() => ref.current.click()}
           label="Attach Document"
         >
@@ -120,15 +135,15 @@ export function InterestsTabContent() {
             multiple
             ref={ref}
             type="file"
-            // onChange={handleFileEvent}
+          // onChange={handleFileEvent}
           />
         </div>
       </div>
-      <div className="grid justify-items-end">
+      <div className="grid justify-end">
         <OutlinedButton label="Save" showArrowIcon={false} />
       </div>
       <div>
-        <div className="mt-[24px] flex justify-between flex-wrap">
+        <div className="mt-[34px] flex justify-between flex-wrap">
           <div className="flex gap-4 flex-wrap">
             <div>
               <OutlinedButton
@@ -140,10 +155,10 @@ export function InterestsTabContent() {
           </div>
           <div className="flex gap-4 flex-wrap items-center">
             <div>
-              <OutlinedButton label="Skip" isSkip={true} />
+              <OutlinedButton label="Skip" isSkip={true} onClick={() => navigate(HOME, { replace: true })} />
             </div>
             <div>
-              <Button label="Save" showArrowIcon={false} />
+              {/* <Button label="Save" showArrowIcon={false} /> */}
             </div>
           </div>
         </div>
@@ -188,7 +203,7 @@ export function InterestsTabContent() {
                 multiple
                 ref={ref}
                 type="file"
-                // onChange={handleFileEvent}
+              // onChange={handleFileEvent}
               />
             </div>
           </div>
@@ -211,7 +226,7 @@ export function InterestsTabContent() {
                 multiple
                 ref={ref}
                 type="file"
-                // onChange={handleFileEvent}
+              // onChange={handleFileEvent}
               />
             </div>
           </div>
