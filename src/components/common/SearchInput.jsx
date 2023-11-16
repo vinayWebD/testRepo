@@ -24,7 +24,6 @@ const SearchInput = ({
           placeholder={placeholder}
           className={` ${className}  pl-2 search bg-[transparent] border-0 text-white text-[12px]`}
           disabled={disabled}
-          autoFocus={true}
         />
       </div>
     </div>

@@ -8,12 +8,19 @@ import { useDispatch } from 'react-redux';
 
 const { OTHER_USER_PROFILE } = PATHS;
 
-const SuggestedUser = ({ userFullName, userImg, userBio, userId }) => {
+const SuggestedUser = ({
+  userFullName,
+  userImg,
+  userBio,
+  userId,
+  closePopupHandler = () => {},
+}) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const onClickHandler = () => {
     navigate(`${OTHER_USER_PROFILE}${userId}`);
+    closePopupHandler();
     dispatch(updateSearch({ searchValue: '' }));
   };
 

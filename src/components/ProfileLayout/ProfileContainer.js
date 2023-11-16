@@ -48,12 +48,12 @@ const ProfileContainer = ({ userData, isOtherUser = false }) => {
             {userData?.designation}
           </h4>
           {userData?.location && (
-            <h6 className="flex font-normal text-greydark text-[8px] md:text-[10px] justify-center items-center">
+            <h6 className="flex font-normal text-greydark text-[10px] justify-center items-center">
               <img src={location} alt="location" className="pr-1" />
               {userData?.location}
             </h6>
           )}
-          <h6 className="flex font-normal text-greydark text-[8px] md:text-[10px] justify-center items-center">
+          <h6 className="flex font-normal text-greydark text-[10px] justify-center items-center">
             <img src={mail} alt="mail" className="pr-1" />
             {userData?.email}
           </h6>
