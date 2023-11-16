@@ -31,6 +31,7 @@ const NETWORK_CONSTANTS = {
   OTHER_USER_NETWORKING_COUNT: (id) => `/v1/accounts/follow/network/counts/user/${id}`,
   OTHER_USER_FOLLOW: (id) => `/v1/accounts/follow/${id}`,
   OTHER_USER_UNFOLLOW: (id) => `/v1/accounts/unfollow/${id}`,
+  NETWORK_COUNT: '/v1/accounts/follow/network/counts',
 };
 
 export default NETWORK_CONSTANTS;
