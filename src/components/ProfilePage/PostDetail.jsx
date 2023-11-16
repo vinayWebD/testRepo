@@ -69,7 +69,6 @@ function PostDetail() {
   useEffect(() => {
     if (isPreviewDetailsPostOpen === false) {
       // navigate(PATHS.HOME, { replace: true });
-      console.log('2345')
     }
   }, [isPreviewDetailsPostOpen]);
 

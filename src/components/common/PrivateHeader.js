@@ -37,10 +37,10 @@ const PrivateHeader = () => {
   const { searchValue = '' } = useSelector((state) => state?.appSearch || {});
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
-  const [isSuggestUser, setIsSuggestUser] = useState(false);
+  const [isSuggestUserOpen, setIsSuggestUserOpen] = useState(false);
 
   const searchInputChangeHandler = (val) => {
-    val ? setIsSuggestUser(true) : setIsSuggestUser(false);
+    deviceType !== 'mobile' ? (val ? setIsSuggestUserOpen(true) : setIsSuggestUserOpen(false)) : {};
     dispatch(updateSearch({ searchValue: val }));
   };
 
@@ -72,21 +72,21 @@ const PrivateHeader = () => {
                 value={searchValue}
               />
               <SuggestedSearch
-                isOpen={isSuggestUser}
-                onClose={() => setIsSuggestUser(false)}
+                isOpen={isSuggestUserOpen}
+                onClose={() => setIsSuggestUserOpen(false)}
                 searchValue={searchValue}
               />
             </div>
           ) : (
             <>
               <div className="relative">
-                <span onClick={() => setIsSuggestUser(true)}>
+                <span onClick={() => setIsSuggestUserOpen(true)}>
                   <SearchIcon width={28} height={28} />
                 </span>
 
                 <SuggestedSearch
-                  isOpen={isSuggestUser}
-                  onClose={() => setIsSuggestUser(false)}
+                  isOpen={isSuggestUserOpen}
+                  onClose={() => setIsSuggestUserOpen(false)}
                   searchValue={searchValue}
                   onValueChange={searchInputChangeHandler}
                 />
