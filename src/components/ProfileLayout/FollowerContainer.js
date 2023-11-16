@@ -2,17 +2,17 @@
 import React from 'react';
 import Card from '../common/Card';
 
-const FollowerContainer = ({ followersCount = 0, followingCount = 0, connectionsCount = 0 }) => {
+const FollowerContainer = ({ followerCount = 0, followingCount = 0, connectionCount = 0 }) => {
   return (
     <Card classNames="lg:block py-6 px-1 md:px-4 my-5">
       <div className="block gap-4">
         <div className="flex justify-around gap-4 overflow-hidden text-center">
           <div className="block">
             <div className="font-normal text-greydark text-[11px] md:text-[12px] xl:text-[13px]">
-              {followersCount}
+              {followerCount}
             </div>
             <div className="font-normal text-greylight text-[11px] md:text-[12px] xl:text-[13px]">
-              {followersCount > 1 ? 'Followers' : 'Follower'}
+              {followerCount > 1 ? 'Followers' : 'Follower'}
             </div>
           </div>
           <div className="block border-r border-greymedium"></div>
@@ -27,10 +27,10 @@ const FollowerContainer = ({ followersCount = 0, followingCount = 0, connections
           <div className="block border-greymedium border-l"></div>
           <div className="block">
             <div className="font-normal text-greydark text-[11px] md:text-[12px] xl:text-[13px]">
-              {connectionsCount}
+              {connectionCount}
             </div>
             <div className="font-normal text-greylight text-[11px] md:text-[12px] xl:text-[13px]">
-              {connectionsCount > 1 ? 'Connections' : 'Connection'}
+              {connectionCount > 1 ? 'Connections' : 'Connection'}
             </div>
           </div>
         </div>

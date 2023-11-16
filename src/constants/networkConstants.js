@@ -29,6 +29,7 @@ const NETWORK_CONSTANTS = {
   EDIT_COMMENT: (id) => `/v1/feeds/posts/comment/${id}`,
   OTHER_USER_PROFILE: (id) => `/v1/accounts/profile/user/${id}`,
   OTHER_USER_NETWORKING_COUNT: (id) => `/v1/accounts/follow/network/counts/user/${id}`,
+  NETWORK_COUNT: '/v1/accounts/follow/network/counts',
 };
 
 export default NETWORK_CONSTANTS;

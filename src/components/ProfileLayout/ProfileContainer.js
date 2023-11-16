@@ -53,10 +53,15 @@ const ProfileContainer = ({ userData, isOtherUser = false }) => {
               {userData?.location}
             </h6>
           )}
-          <h6 className="flex font-normal text-greydark text-[10px] justify-center items-center">
-            <img src={mail} alt="mail" className="pr-1" />
-            {userData?.email}
-          </h6>
+          {!isOtherUser ? (
+            <h6 className="flex font-normal text-greydark text-[10px] justify-center items-center">
+              <img src={mail} alt="mail" className="pr-1" />
+              {userData?.email}
+            </h6>
+          ) : (
+            ''
+          )}
+
           <div className="font-medium text-[8px] md:text-[10px] leading-3 text-greylight">
             {userData?.description}
           </div>
