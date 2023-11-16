@@ -33,17 +33,19 @@ const ProfileContainer = ({
       response = (await dispatch(followOtherUserDispatcher({ id: userData?.id }))) || {};
     }
 
-    const { status, data } = response;
+    if (response) {
+      const { status, data } = response;
 
-    if (successStatus(status)) {
-      if (!data?.data?.isApproved) {
-        ToastNotifySuccess('A follow request has been sent');
-      }
-      await reloadAfterFollowUnfollow();
-    } else {
-      const errormsg = getErrorMessage(data);
-      if (errormsg) {
-        ToastNotifyError(errormsg);
+      if (successStatus(status)) {
+        if (!data?.data?.isApproved) {
+          ToastNotifySuccess('A follow request has been sent');
+        }
+        await reloadAfterFollowUnfollow();
+      } else {
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg);
+        }
       }
     }
   };
