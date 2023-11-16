@@ -35,6 +35,10 @@ const OtherUserProfile = () => {
     fetchData();
   }, [id]);
 
+  const reloadAfterFollowUnfollow = async () => {
+    await fetchData();
+  };
+
   const fetchData = async () => {
     const { status, data } = await dispatch(fetchOtherUserBasicInfo({ id }));
 
@@ -65,7 +69,11 @@ const OtherUserProfile = () => {
           <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
           Back
         </div>
-        <ProfileContainer userData={userData} isOtherUser={true} />
+        <ProfileContainer
+          userData={userData}
+          isOtherUser={true}
+          reloadAfterFollowUnfollow={reloadAfterFollowUnfollow}
+        />
         <FollowerContainer {...networkingCount} />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">

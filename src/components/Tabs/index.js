@@ -11,8 +11,9 @@ const Tabs = ({ tabItems }) => {
           <button
             key={item.label}
             onClick={() => setActiveTab(item.label)}
-            className={`py-[13px] flex justify-center items-center focus:outline-none w-full transition duration-300 ease-in-out transform ${activeTab === item.label ? 'bg-blueprimary tab-title' : 'tab-title-active'
-              }`}
+            className={`py-[13px] flex justify-center items-center focus:outline-none w-full transition duration-300 ease-in-out transform ${
+              activeTab === item.label ? 'bg-blueprimary tab-title' : 'tab-title-active'
+            }`}
           >
             <span className="mr-2">{activeTab === item.label ? item.icon : item.blackicon}</span>
             <span className="hidden md:flex">{item.label}</span>
