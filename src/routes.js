@@ -74,6 +74,7 @@ const privateRoutes = createBrowserRouter([
     path: HOME,
     element: <HomePage />,
   },
+
   {
     path: PROFILE,
     element: <ProfilePage />,
