@@ -14,6 +14,7 @@ import useScrollToTop from '../../hooks/useScrollToTop';
 import InterestDetail from '../../components/ProfilePage/InterestDetail';
 import WorkDetail from '../../components/ProfilePage/WorkDetail';
 import Tabs from '../../components/ProfilePage/Tabs';
+import MyPosts from '../../components/ProfilePage/MyPosts';
 import { networkCount } from '../../services/myProfile';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
@@ -21,7 +22,7 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   // const [isLoading, setIsLoading] = useState(false);
-  const [tab, setTab] = useState('work');
+  const [tab, setTab] = useState('post');
   const [networkCounter, setNetworkCounter] = useState({});
   const navigate = useNavigate();
 
@@ -64,7 +65,11 @@ const ProfilePage = () => {
             <div>
               <Tabs tab={tab} updateTab={setTab} />
 
-              {tab === 'work' ? (
+              {tab === 'post' ? (
+                <>
+                  <MyPosts />
+                </>
+              ) : tab === 'work' ? (
                 <>
                   <WorkDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
