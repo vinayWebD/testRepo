@@ -23,7 +23,7 @@ import CreatePostLayout from '../CreatePost/CreatePostLayout';
 import { LANG } from '../../constants/lang';
 
 const { LANG_CREATE_POST } = LANG.PAGES.FEED;
-function PostDetail() {
+function MyPosts() {
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [posts, setPosts] = useState([]);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
@@ -291,4 +291,4 @@ function PostDetail() {
   )
 }
 
-export default PostDetail
+export default MyPosts
