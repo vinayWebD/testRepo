@@ -14,11 +14,12 @@ import useScrollToTop from '../../hooks/useScrollToTop';
 import InterestDetail from '../../components/ProfilePage/InterestDetail';
 import WorkDetail from '../../components/ProfilePage/WorkDetail';
 import Tabs from '../../components/ProfilePage/Tabs';
+import PostDetail from '../../components/ProfilePage/PostDetail';
 
 const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   // const [isLoading, setIsLoading] = useState(false);
-  const [tab, setTab] = useState('work');
+  const [tab, setTab] = useState('post');
   const navigate = useNavigate();
 
   // Scrolling to top whenever user comes on this page for the first time
@@ -44,7 +45,11 @@ const ProfilePage = () => {
             <div>
               <Tabs tab={tab} updateTab={setTab} />
 
-              {tab === 'work' ? (
+              {tab === 'post' ? (
+                <>
+                  <PostDetail />
+                </>
+              ) : tab === 'work' ? (
                 <>
                   <WorkDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
