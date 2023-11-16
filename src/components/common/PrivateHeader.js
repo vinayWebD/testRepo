@@ -40,7 +40,7 @@ const PrivateHeader = () => {
   const [isSuggestUser, setIsSuggestUser] = useState(false);
 
   const searchInputChangeHandler = (val) => {
-    val ? setIsSuggestUser(true) : setIsSuggestUser(false);
+    deviceType !== 'mobile' ? (val ? setIsSuggestUser(true) : setIsSuggestUser(false)) : {};
     dispatch(updateSearch({ searchValue: val }));
   };
 
