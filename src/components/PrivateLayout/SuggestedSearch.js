@@ -29,7 +29,7 @@ export const getModalCounter = () => {
 
 function SuggestedSearch({
   isOpen,
-  onClose,
+  onClose = () => {},
   width = '',
   height = 'h-auto',
   titleParentClassNames = '',
@@ -119,7 +119,10 @@ function SuggestedSearch({
         <div className="flex flex-col gap-1 md:hidden w-full px-[5%]">
           <div
             className="flex text-[15px] md:text-[18px] lg:text-[24px] pt-4 pb-2 sticky cursor-pointer font-medium"
-            onClick={() => navigate(-1)}
+            onClick={() => {
+              navigate(-1);
+              onClose();
+            }}
           >
             <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
             Search
@@ -145,6 +148,7 @@ function SuggestedSearch({
                   userBio=" UiUx Designer | Media Composer | Founder of Lumina"
                   userImg={result?.profilePictureUrl}
                   userId={result?.id}
+                  closePopupHandler={onClose}
                 />
               );
             })
