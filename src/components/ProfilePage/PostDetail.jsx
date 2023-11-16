@@ -19,6 +19,10 @@ import Modal from '../Modal';
 import PostDetails from '../Post/PostDetails';
 import noWork from '../../assets/images/noWork.svg';
 import OutlinedButton from '../common/OutlinedButton';
+import CreatePostLayout from '../CreatePost/CreatePostLayout';
+import { LANG } from '../../constants/lang';
+
+const { LANG_CREATE_POST } = LANG.PAGES.FEED;
 function PostDetail() {
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [posts, setPosts] = useState([]);
@@ -28,6 +32,8 @@ function PostDetail() {
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+  const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const [typeOfPost, setTypeOfPost] = useState(null);
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
   const navigate = useNavigate();
   let isLoadingAPI = false;
@@ -76,7 +82,7 @@ function PostDetail() {
   const fetchAllPostsAPI = async (page, reloadForcefully = false) => {
     if (!reloadForcefully && allPostsLoaded && !isLoadingAPI && page !== 0) return; // prevent fetching if all posts are loaded
 
-    const response = await fetchPosts({ page: page + 1 });
+    const response = await fetchPosts({ page: page + 1, userId: userData?.id });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -140,7 +146,12 @@ function PostDetail() {
       }
     }
   };
-  console.log('posts?.length', posts?.length)
+
+  const handleOpenPopup = (type) => {
+    setTypeOfPost(type);
+    setIsCreatePostModalOpen(true);
+  };
+
   return (
     <div>
       {posts?.length === 0 &&
@@ -164,7 +175,7 @@ function PostDetail() {
                 It helps people quickly identify your many talents.
               </h5>
               <div className="text-center mx-auto flex mt-2">
-                <OutlinedButton label={'Add'} showArrowIcon={false} add />
+                <OutlinedButton label={'Add'} showArrowIcon={false} add onClick={() => handleOpenPopup('caption')} />
               </div>
             </Card>}</>}
       <div className="mt-3">
@@ -255,6 +266,26 @@ function PostDetail() {
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
+        />
+      </Modal>
+      <Modal
+        isOpen={isCreatePostModalOpen}
+        onClose={() => setIsCreatePostModalOpen(false)}
+        isTitle={true}
+        title={LANG_CREATE_POST}
+        childrenClassNames="overflow-y-auto"
+        padding="p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+      >
+        <CreatePostLayout
+          closePopupHandler={() => {
+            setIsCreatePostModalOpen(false);
+            setTypeOfPost(null);
+          }}
+          openTypeOfPost={typeOfPost}
+          reloadData={reloadPosts}
         />
       </Modal>
     </div>
