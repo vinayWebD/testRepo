@@ -68,7 +68,7 @@ const publicRoutes = createBrowserRouter([
 const privateRoutes = createBrowserRouter([
   {
     path: '*',
-    element: <Navigate to={HOME} replace />,
+    element: <Navigate to={HOME} replace={true} />,
   },
   {
     path: HOME,

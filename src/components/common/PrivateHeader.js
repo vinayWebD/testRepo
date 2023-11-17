@@ -17,7 +17,7 @@ import { useState } from 'react';
 import SuggestedSearch from '../PrivateLayout/SuggestedSearch';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
-const { HOME } = PATHS;
+const { HOME, LOGIN } = PATHS;
 
 const DropDownParent = ({ userData = {} }) => {
   const { firstName = '', lastName = '', profilePictureUrl = '' } = userData;
@@ -103,7 +103,10 @@ const PrivateHeader = () => {
           primaryButtonTitle="No"
           primaryButtonAction={() => setIsLogoutModalOpen(false)}
           secondaryButtonTitle="Yes"
-          secondaryButtonAction={() => dispatch(logoutDispatcher())}
+          secondaryButtonAction={() => {
+            dispatch(logoutDispatcher());
+            navigate(LOGIN, { replace: true });
+          }}
         >
           Are you sure you want to logout?
         </ConfirmationModal>

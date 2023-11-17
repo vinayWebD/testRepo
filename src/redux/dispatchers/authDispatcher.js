@@ -1,4 +1,5 @@
 import { loginUser, logoutUser, sendForgotPasswordOtp, userProfile } from '../../services/auth';
+import { updateSearch } from '../slices/appSearchSlice';
 import { globalLoading, login, logout, profile } from '../slices/authSlice';
 
 /**
@@ -28,6 +29,7 @@ const logoutDispatcher = () => async (dispatch) => {
   if (localStorage.getItem('token')) {
     await logoutUser(dispatch);
   }
+  dispatch(updateSearch({ searchValue: '' }));
   localStorage.removeItem('token');
   dispatch(logout());
 };
