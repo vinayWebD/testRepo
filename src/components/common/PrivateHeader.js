@@ -15,6 +15,7 @@ import SearchIcon from '../Icons/SearchIcon';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import { useState } from 'react';
 import FriendRequestsBar from './FriendRequestsBar';
+import SuggestedSearch from '../PrivateLayout/SuggestedSearch';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
 const { HOME } = PATHS;
@@ -39,8 +40,10 @@ const PrivateHeader = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const [isFriendRequestModalOpen, setIsFriendRequestModalOpen] = useState(false);
+  const [isSuggestUserOpen, setIsSuggestUserOpen] = useState(false);
 
   const searchInputChangeHandler = (val) => {
+    deviceType !== 'mobile' ? (val ? setIsSuggestUserOpen(true) : setIsSuggestUserOpen(false)) : {};
     dispatch(updateSearch({ searchValue: val }));
   };
 
@@ -68,13 +71,33 @@ const PrivateHeader = () => {
         {
           // Hide the search input bar on mobile
           deviceType !== 'mobile' ? (
-            <SearchInput
-              className="h-[32px] w-[290px]"
-              onChange={searchInputChangeHandler}
-              value={searchValue}
-            />
+            <div className="relative">
+              <SearchInput
+                className="h-[32px] w-[290px] placeholder:text-white"
+                onChange={searchInputChangeHandler}
+                value={searchValue}
+              />
+              <SuggestedSearch
+                isOpen={isSuggestUserOpen}
+                onClose={() => setIsSuggestUserOpen(false)}
+                searchValue={searchValue}
+              />
+            </div>
           ) : (
-            <SearchIcon width={28} height={28} />
+            <>
+              <div className="relative">
+                <span onClick={() => setIsSuggestUserOpen(true)}>
+                  <SearchIcon width={28} height={28} />
+                </span>
+
+                <SuggestedSearch
+                  isOpen={isSuggestUserOpen}
+                  onClose={() => setIsSuggestUserOpen(false)}
+                  searchValue={searchValue}
+                  onValueChange={searchInputChangeHandler}
+                />
+              </div>
+            </>
           )
         }
         <div

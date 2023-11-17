@@ -6,17 +6,19 @@ const SearchInput = ({
   placeholder = 'Search',
   onBlur = () => {},
   onFocus = () => {},
-  isFocusIn,
   className = '',
   disabled = false,
+  iconColor = '#ffffff',
   textColor = 'text-white',
-  color = 'white',
+  bottomBorderColorClass = 'border-white',
 }) => {
   return (
-    <div className={`${isFocusIn ? 'min-[320px]:w-full' : ''} flex flex-col`}>
-      <div className="flex relative items-stretch gap-0 border-white border-b-[1px] border-0">
-        <div className="flex items-center px-[5px] text-black">
-          <SearchIcon color={color} />
+    <div className="flex flex-col">
+      <div
+        className={`flex relative items-stretch gap-0 ${bottomBorderColorClass} border-b-[1px] border-0`}
+      >
+        <div className="flex items-center px-[5px]">
+          <SearchIcon color={iconColor} />
         </div>
         <input
           type="text"
@@ -25,7 +27,7 @@ const SearchInput = ({
           placeholder={placeholder}
           onBlur={onBlur}
           onFocus={onFocus}
-          className={`placeholder:text-black pl-2 search bg-[transparent] border-0 ${textColor} text-[12px] ${className}`}
+          className={` ${className} ${textColor}  pl-2 search bg-[transparent] border-0 text-white text-[12px]`}
           disabled={disabled}
         />
       </div>

@@ -46,7 +46,7 @@ const ActionButtons = ({
     if (isCommentSectionOpen) {
       fetchComments();
     }
-  }, [isCommentSectionOpen, commentsPage]);
+  }, [isCommentSectionOpen, commentsPage, postId]);
 
   const commentClickHandler = () => {
     setIsCommentSectionOpen(true);
@@ -72,21 +72,23 @@ const ActionButtons = ({
   };
 
   const fetchComments = async (page = commentsPage) => {
-    setIsCommentLoading(true);
-    const { status, data } = await getComments({ postId, page });
-    if (successStatus(status)) {
-      if (page === 1) {
-        setComments(data?.data);
+    if (postId) {
+      setIsCommentLoading(true);
+      const { status, data } = await getComments({ postId, page });
+      if (successStatus(status)) {
+        if (page === 1) {
+          setComments(data?.data);
+        } else {
+          setComments((prevData) => [...prevData, ...data.data]);
+        }
       } else {
-        setComments((prevData) => [...prevData, ...data.data]);
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg);
+        }
       }
-    } else {
-      const errormsg = getErrorMessage(data);
-      if (errormsg) {
-        ToastNotifyError(errormsg);
-      }
+      setIsCommentLoading(false);
     }
-    setIsCommentLoading(false);
   };
 
   const reloadCommentWithPostDetails = async (postId) => {

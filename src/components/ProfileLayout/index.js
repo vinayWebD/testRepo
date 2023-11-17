@@ -17,7 +17,7 @@ const ProfileLayout = ({ children }) => {
         {/* The header component */}
         <PrivateHeader />
 
-        <div className="px-[3%] md:px-[5%] flex-grow grid md:grid-cols-12 gap-5 mt-[61px]">
+        <div className="add-blur-after-search px-[3%] md:px-[5%] flex-grow grid md:grid-cols-12 gap-5 mt-[61px]">
           {/* This is a common sidebar that should be on all private authenticated pages */}
           {children}
         </div>

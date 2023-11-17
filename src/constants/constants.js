@@ -37,3 +37,8 @@ export const PAGE_SIZE = {
   FEED: 20,
   COMMENT: 5,
 };
+
+export const DATE_FORMAT = {
+  POST: 'DD MMMM YYYY',
+  CAPTION: 'DD MMM YY',
+};

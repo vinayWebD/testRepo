@@ -36,7 +36,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
               } `}
             >
               <SearchInput
-                color={Colors.grayDark}
+                iconColor={Colors.grayDark}
                 onChange={searchInputChangeHandler}
                 value={searchValue}
                 isFocusIn={searchOnFocus}

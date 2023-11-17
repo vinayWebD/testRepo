@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
 import MyNetwork from './pages/MyNetwork';
+import OtherUserProfile from './pages/OtherUserProfile';
 
 const {
   LANDING,
@@ -24,6 +25,7 @@ const {
   PATH_WORK,
   PROFILE,
   MYNETWORK,
+  OTHER_USER_PROFILE,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -74,6 +76,7 @@ const privateRoutes = createBrowserRouter([
     path: HOME,
     element: <HomePage />,
   },
+
   {
     path: PROFILE,
     element: <ProfilePage />,
@@ -81,6 +84,14 @@ const privateRoutes = createBrowserRouter([
   {
     path: MYNETWORK,
     element: <MyNetwork />,
+  },
+  {
+    path: `${OTHER_USER_PROFILE}:id`,
+    element: <OtherUserProfile />,
+  },
+  {
+    path: `${HOME}/:id`,
+    element: <HomePage />,
   },
 ]);
 

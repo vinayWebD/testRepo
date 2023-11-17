@@ -72,13 +72,13 @@ function FriendRequestsBar({
         onClick={(e) => e.stopPropagation()}
       >
         {
-          <div className="flex items-start items-center justify-between p-[18px] bg-white  sticky top-0 z-10">
+          <div className="flex items-center justify-between p-[18px] bg-white  sticky top-0 z-10">
             <div className={`modal-title ${titleClassNames} ${focusOnSearch ? 'hidden' : ''}`}>
               {title}
             </div>
             <div className="w-[85px]">
               <SearchInput
-                color={Colors.grayDark}
+                iconColor={Colors.grayDark}
                 onChange={searchInputChangeHandler}
                 value={friendRequestSearch}
                 isFocusIn={focusOnSearch}

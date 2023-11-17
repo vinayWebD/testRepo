@@ -6,7 +6,7 @@ const Tabs = ({ tabItems }) => {
 
   return (
     <div className="w-full">
-      <div className="flex overflow-x-auto whitespace-nowrap bg-lightbluebg px-[70px]">
+      <div className="flex overflow-x-auto whitespace-nowrap bg-lightbluebg lg:px-[70px]">
         {tabItems.map((item) => (
           <button
             key={item.label}
@@ -16,7 +16,7 @@ const Tabs = ({ tabItems }) => {
             }`}
           >
             <span className="mr-2">{activeTab === item.label ? item.icon : item.blackicon}</span>
-            {item.label}
+            <span className="hidden md:flex">{item.label}</span>
           </button>
         ))}
       </div>

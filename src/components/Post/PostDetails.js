@@ -11,6 +11,7 @@ import { CloseIcon } from '../Icons/CloseIcon';
 import { Player, BigPlayButton } from 'video-react';
 import 'video-react/dist/video-react.css';
 import { useSelector } from 'react-redux';
+import PostSkeleton from '../common/PostSkeleton';
 
 const PostDetails = ({
   post = {},
@@ -20,6 +21,11 @@ const PostDetails = ({
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
   const userData = useSelector((state) => state?.auth?.user) || {};
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = post?.postMedia?.length || 0;
+
+  const showPrevArrow = currentSlide > 0;
+  const showNextArrow = currentSlide < totalSlides - 1;
 
   // Pause video when moving to another slide
   const handleBeforeChange = (currentSlide) => {
@@ -35,19 +41,15 @@ const PostDetails = ({
 
   var settings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: customActiveIndex,
     beforeChange: (currentSlide) => handleBeforeChange(currentSlide),
+    afterChange: (index) => setCurrentSlide(index),
+    swipe: false,
   };
-
-  useEffect(() => {
-    if (post?.id) {
-      reloadPostDetails({ postId: post?.id });
-    }
-  }, [post?.id]);
 
   // The slider should work when the post details component is loaded
   useEffect(() => {
@@ -97,9 +99,17 @@ const PostDetails = ({
         creatorProfilePicUrl={post?.User?.profilePictureUrl}
         showThreeDots={false}
         isCreatedByMe={post?.UserId === userData?.id}
+        postId={post?.postId}
+        reloadPostDetails={reloadPostDetails}
+        postDetails={{
+          caption: post?.caption,
+          media: post?.postMedia,
+          links: post?.links,
+          id: post?.id,
+        }}
       />
     );
-  }, []);
+  }, [post?.id]);
 
   return (
     <div className="post-details flex flex-col md:flex-row h-[100dvh] max-h-[100dvh]  md:min-h-[50vh] md:max-h-[70vh] lg:min-h-[65vh] lg:max-h-[75vh] relative">
@@ -136,26 +146,42 @@ const PostDetails = ({
           })}
         </Slider>
 
-        {post?.postMedia.length > 1 ? (
+        {post?.postMedia?.length > 1 ? (
           <>
             <div className="absolute top-1 left-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
-                className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
+                className={`w-14 h-14 rounded-full flex justify-center items-center ${
+                  showPrevArrow
+                    ? 'bg-[#0000003d] cursor-pointer hover:bg-[#1715153d]'
+                    : 'cursor-not-allowed bg-[#8d8d8d3d]'
+                } `}
                 onClick={sliderRef?.slickPrev}
               >
                 <span className="ml-1">
-                  <LeftChevron fill="#ffffff" width={30} height={30} />
+                  <LeftChevron
+                    fill={showPrevArrow ? '#ffffff' : '#cccccc'}
+                    width={30}
+                    height={30}
+                  />
                 </span>
               </div>
             </div>
 
             <div className="absolute top-1 right-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
-                className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
+                className={`w-14 h-14 rounded-full flex justify-center items-center ${
+                  showNextArrow
+                    ? 'bg-[#0000003d] cursor-pointer hover:bg-[#1715153d]'
+                    : 'cursor-not-allowed bg-[#8d8d8d3d]'
+                }`}
                 onClick={sliderRef?.slickNext}
               >
                 <span className="mr-1">
-                  <RightChevron fill="#ffffff" width={30} height={30} />
+                  <RightChevron
+                    fill={showNextArrow ? '#ffffff' : '#cccccc'}
+                    width={30}
+                    height={30}
+                  />
                 </span>
               </div>
             </div>
@@ -167,12 +193,20 @@ const PostDetails = ({
 
       <div className="w-full md:w-[47%] lg:w-[35%] flex flex-col py-5 px-[15px] overflow-y-auto">
         <div className="w-full flex justify-between">
-          {postHeader}
-          <div className="cursor-pointer hidden md:block" onClick={onCloseHandler}>
-            <CloseIcon />
-          </div>
+          {/* Means the data is not loaded completely */}
+          {!post?.id ? (
+            <PostSkeleton showMedia={false} />
+          ) : (
+            <>
+              {postHeader}
+              <div className="cursor-pointer hidden md:block" onClick={onCloseHandler}>
+                <CloseIcon />
+              </div>
+            </>
+          )}
         </div>
-        <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+
+        {post?.id ? <CaptionLinkContainer caption={post?.caption} links={post?.links} /> : ''}
 
         <div className="!text-sm">
           <ActionButtons
