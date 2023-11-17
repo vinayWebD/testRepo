@@ -10,4 +10,5 @@ export const PATHS = {
   PATH_WORK: '/work',
   PROFILE: '/my-profile',
   OTHER_USER_PROFILE: '/profile/',
+  MY_NOTIFICATION: '/notification'
 };

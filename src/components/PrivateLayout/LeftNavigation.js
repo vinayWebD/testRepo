@@ -2,7 +2,7 @@ import navigationItems from '../../constants/navigationItems';
 
 const navbarItems = navigationItems;
 
-const LeftNavigation = () => {
+const LeftNavigation = ({ activeTab = 0 }) => {
   return (
     <div className="flex flex-col py-4 gap-4 lg:gap-0 md:items-center">
       {navbarItems.map(({ label, action, icon }, _i) => {
@@ -11,7 +11,7 @@ const LeftNavigation = () => {
             label={label}
             onClickHandler={action}
             key={label}
-            isActive={_i === 0}
+            isActive={_i === activeTab}
             Icon={icon}
           />
         );
@@ -23,15 +23,14 @@ const LeftNavigation = () => {
 export default LeftNavigation;
 
 const NavBarItem = ({
-  onClickHandler = () => {},
+  onClickHandler = () => { },
   label = '',
   isActive = false,
   Icon = () => <></>,
 }) => (
   <div
     className={`
-      w-full p-1 lg:p-4 pr-[5px] md:pr-[8px] border-l-[3px] md:border-l-4 lg:border-l-[6px] box-border border-white cursor-pointer flex items-center justify-center lg:justify-normal gap-4 ${
-        isActive ? 'active-nav-left-side-bar bg-whitelight' : ''
+      w-full p-1 lg:p-4 pr-[5px] md:pr-[8px] border-l-[3px] md:border-l-4 lg:border-l-[6px] box-border border-white cursor-pointer flex items-center justify-center lg:justify-normal gap-4 ${isActive ? 'active-nav-left-side-bar bg-whitelight' : ''
       }`}
     onClick={onClickHandler}
   >
