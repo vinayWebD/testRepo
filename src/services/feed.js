@@ -34,9 +34,9 @@ const createPost = async ({ caption, links = [], media = [] }) => {
   }
 };
 
-const fetchPosts = async ({ page = 1 }) => {
+const fetchPosts = async ({ page = 1, userId = '' }) => {
   try {
-    const response = await apiUtility(FETCH_POSTS, 'GET', { page, limit: PAGE_SIZE.FEED });
+    const response = await apiUtility(FETCH_POSTS, 'GET', { page, limit: PAGE_SIZE.FEED, userId });
     return response;
   } catch (error) {
     return error;

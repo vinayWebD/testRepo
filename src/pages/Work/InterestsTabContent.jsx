@@ -9,15 +9,15 @@ import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { fetchWorkInterest } from '../../services/signup';
 import { validationSchemaInterest } from '../../validations';
-import check from '../../assets/images/check.png'
-import cross from '../../assets/images/cross.png'
+import check from '../../assets/images/check.png';
+import cross from '../../assets/images/cross.png';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 export function InterestsTabContent() {
   const ref = useRef();
   const [career, setCareer] = useState('');
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { HOME } = PATHS;
   const initialWork = {
     interest: '',
@@ -64,13 +64,9 @@ export function InterestsTabContent() {
         </div>
       </div>
       <div className="grid justify-items-end pb-8">
-        <Button
-          label="Save"
-          onClick={interestSubmit}
-          showArrowIcon={false}
-        />
+        <Button label="Save" onClick={interestSubmit} showArrowIcon={false} />
       </div>
-      <hr className='pb-8' style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
+      <hr className="pb-8" style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
       <div className="mb-8 flex justify-between">
         <div className="step-title">
           Interests
@@ -90,7 +86,6 @@ export function InterestsTabContent() {
           <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} />
           <img src={cross} alt="cross" style={{ marginLeft: '20px', cursor: 'pointer' }} />
         </div>
-
       </div>
 
       <div className="md:flex block items-center mt-8 mb-5">
@@ -112,7 +107,7 @@ export function InterestsTabContent() {
             multiple
             ref={ref}
             type="file"
-          // onChange={handleFileEvent}
+            // onChange={handleFileEvent}
           />
         </div>
       </div>
@@ -135,7 +130,7 @@ export function InterestsTabContent() {
             multiple
             ref={ref}
             type="file"
-          // onChange={handleFileEvent}
+            // onChange={handleFileEvent}
           />
         </div>
       </div>
@@ -155,11 +150,13 @@ export function InterestsTabContent() {
           </div>
           <div className="flex gap-4 flex-wrap items-center">
             <div>
-              <OutlinedButton label="Skip" isSkip={true} onClick={() => navigate(HOME, { replace: true })} />
+              <OutlinedButton
+                label="Skip"
+                isSkip={true}
+                onClick={() => navigate(HOME, { replace: true })}
+              />
             </div>
-            <div>
-              {/* <Button label="Save" showArrowIcon={false} /> */}
-            </div>
+            <div>{/* <Button label="Save" showArrowIcon={false} /> */}</div>
           </div>
         </div>
       </div>
@@ -203,7 +200,7 @@ export function InterestsTabContent() {
                 multiple
                 ref={ref}
                 type="file"
-              // onChange={handleFileEvent}
+                // onChange={handleFileEvent}
               />
             </div>
           </div>
@@ -226,7 +223,7 @@ export function InterestsTabContent() {
                 multiple
                 ref={ref}
                 type="file"
-              // onChange={handleFileEvent}
+                // onChange={handleFileEvent}
               />
             </div>
           </div>

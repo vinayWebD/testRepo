@@ -329,22 +329,22 @@
 .video-react-bezel.video-react-bezel-animation {
   display: none !important;
 }
-.des-title-error{
+.des-title-error {
   display: flex;
   align-items: center;
 }
-.des-title{
+.des-title {
   display: flex;
   align-items: center;
 }
-.des-title img{
+.des-title img {
   width: 24px;
   height: 24px;
   margin: 10px;
   margin-top: 0;
 }
 
-.des-title-error img{
+.des-title-error img {
   width: 24px;
   height: 24px;
   margin: 10px;
@@ -363,7 +363,7 @@
   .tab-content-subtitle {
     font-size: 15px;
   }
-  .form-title{
+  .form-title {
     font-size: 18px;
   }
 }
@@ -374,7 +374,7 @@
   .tab-content-subtitle {
     font-size: 14px;
   }
-  .form-title{
+  .form-title {
     font-size: 14px;
   }
 }

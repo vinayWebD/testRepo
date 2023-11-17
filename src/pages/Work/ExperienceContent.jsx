@@ -106,7 +106,7 @@ export function ExperienceContent({ careerId = null }) {
     },
   } = formik;
 
-  useEffect(() => { }, [experienceList]);
+  useEffect(() => {}, [experienceList]);
 
   const renderExperienceList = () => {
     if (experienceList.length) {
