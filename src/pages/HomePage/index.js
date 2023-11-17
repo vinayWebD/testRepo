@@ -246,7 +246,7 @@ const HomePage = () => {
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
-                        navigate(`${PATHS.PROFILE}/${post?.id}`);
+                        // navigate(`${PATHS.PROFILE}/${post?.id}`);
                         setIsPreviewDetailsPostOpen(true);
                         setActivePost({ ...post });
                         setActiveMediaIndex(customIndex);
@@ -269,14 +269,14 @@ const HomePage = () => {
 
             {isLoading
               ? ['', ''].map((i, _i) => (
-                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                  <span className="flex gap-2">
-                    <span className="flex gap-2 w-full justify-center items-center">
-                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                    <span className="flex gap-2">
+                      <span className="flex gap-2 w-full justify-center items-center">
+                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                      </span>
                     </span>
-                  </span>
-                </Card>
-              ))
+                  </Card>
+                ))
               : ''}
 
             {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
