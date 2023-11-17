@@ -117,7 +117,6 @@ function MyPosts() {
     }
   };
 
-
   const fetchSinglePostDetails = async ({ postId }) => {
     const response = await fetchPostDetails({ postId });
 
@@ -153,10 +152,10 @@ function MyPosts() {
 
   return (
     <div>
-      {posts?.length === 0 &&
+      {posts?.length === 0 && (
         <>
-          {isLoading
-            ? ['', ''].map((i, _i) => (
+          {isLoading ? (
+            ['', ''].map((i, _i) => (
               <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
                 <span className="flex gap-2">
                   <span className="flex gap-2 w-full justify-center items-center">
@@ -165,7 +164,8 @@ function MyPosts() {
                 </span>
               </Card>
             ))
-            : <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
+          ) : (
+            <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
               <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
               <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                 No posts added yet.
@@ -174,12 +174,19 @@ function MyPosts() {
                 It helps people quickly identify your many talents.
               </h5>
               <div className="text-center mx-auto flex mt-2">
-                <OutlinedButton label={'Add'} showArrowIcon={false} add onClick={() => handleOpenPopup('caption')} />
+                <OutlinedButton
+                  label={'Add'}
+                  showArrowIcon={false}
+                  add
+                  onClick={() => handleOpenPopup('caption')}
+                />
               </div>
-            </Card>}</>}
+            </Card>
+          )}
+        </>
+      )}
       <div className="mt-3">
-        {
-          posts?.length !== 0 &&
+        {posts?.length !== 0 && (
           <>
             {posts.map((post) => {
               return (
@@ -227,17 +234,17 @@ function MyPosts() {
             })}
             {isLoading
               ? ['', ''].map((i, _i) => (
-                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                  <span className="flex gap-2">
-                    <span className="flex gap-2 w-full justify-center items-center">
-                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                    <span className="flex gap-2">
+                      <span className="flex gap-2 w-full justify-center items-center">
+                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                      </span>
                     </span>
-                  </span>
-                </Card>
-              ))
+                  </Card>
+                ))
               : ''}
-          </>}
-
+          </>
+        )}
 
         {/* This below is just to invoke the infinite loader, when this will get intresected, the API will get called */}
         {!allPostsLoaded && (
@@ -287,7 +294,7 @@ function MyPosts() {
         />
       </Modal>
     </div>
-  )
+  );
 }
 
-export default MyPosts
+export default MyPosts;

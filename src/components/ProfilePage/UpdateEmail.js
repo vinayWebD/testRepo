@@ -78,16 +78,11 @@ const UpdateEmail = ({ email }) => {
 
   return (
     <form onSubmit={onSubmit} className="flex flex-col">
-      <div className="flex flex-col pt-3 pb-5 px-[18px] text-greydark ">
-        <div className="text-[14px] mb-4 pb-2 ">
+      <div className="flex flex-col items-center pt-3 pb-5 px-[18px] text-greydark ">
+        <div className="text-[14px] mb-4 pb-2">
           Enter OTP sent to <span className="font-semibold">{email}</span>
         </div>
 
-        <div className="flex gap-[2px] mb-1">
-          <label>
-            OTP <span className="text-red relative">*</span>
-          </label>
-        </div>
         <OTPInput
           inputType="tel"
           value={otp}
