@@ -26,7 +26,7 @@ const {
 } = LANG.PAGES.LOGIN;
 
 const { BTNLBL_LOGIN } = BUTTON_LABELS;
-const { FORGOT_PASSWORD, PATH_SIGNUP } = PATHS;
+const { FORGOT_PASSWORD, PATH_SIGNUP, HOME } = PATHS;
 const { TST_LOGIN_ERROR_ID } = TOASTMESSAGES.toastid;
 
 const initialValues = {
@@ -51,6 +51,7 @@ function LoginPage() {
           setIsLoading(false);
         }
       }
+      navigate(HOME);
     }
   };
 

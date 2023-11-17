@@ -18,7 +18,7 @@ import FriendRequestsBar from './FriendRequestsBar';
 import SuggestedSearch from '../PrivateLayout/SuggestedSearch';
 
 const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
-const { HOME } = PATHS;
+const { HOME, LOGIN } = PATHS;
 const { BTNLBL_FRIEND_REQUESTS } = BUTTON_LABELS;
 
 const DropDownParent = ({ userData = {} }) => {
@@ -114,7 +114,10 @@ const PrivateHeader = () => {
           primaryButtonTitle="No"
           primaryButtonAction={() => setIsLogoutModalOpen(false)}
           secondaryButtonTitle="Yes"
-          secondaryButtonAction={() => dispatch(logoutDispatcher())}
+          secondaryButtonAction={() => {
+            dispatch(logoutDispatcher());
+            navigate(LOGIN, { replace: true });
+          }}
         >
           Are you sure you want to logout?
         </ConfirmationModal>
