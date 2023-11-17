@@ -24,7 +24,6 @@ const ProfileContainer = ({
 }) => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
-
   const dispatch = useDispatch();
 
   const followUnfollowHandler = async () => {
