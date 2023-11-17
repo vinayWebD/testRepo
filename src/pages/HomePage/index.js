@@ -5,7 +5,7 @@ import PrivateLayout from '../../components/PrivateLayout';
 import PhotoIcon from '../../components/Icons/PhotoIcon';
 import VideoIcon from '../../components/Icons/VideoIcon';
 import LinkIcon from '../../components/Icons/LinkIcon';
-import { BUTTON_LABELS, LANG } from '../../constants/lang';
+import { BUTTON_LABELS, LANG, PRIVATE_NAVIGATION_LABELS } from '../../constants/lang';
 import { useEffect, useRef, useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
@@ -28,6 +28,7 @@ import { PATHS } from '../../constants/urlPaths';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
+const { NAVLBL_FEED } = PRIVATE_NAVIGATION_LABELS;
 
 const HomePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
@@ -163,7 +164,7 @@ const HomePage = () => {
   };
 
   return (
-    <PrivateLayout>
+    <PrivateLayout page={NAVLBL_FEED}>
       <div className="grid grid-cols-12 gap-5 feed-page">
         <div className="col-span-12">
           <Card classNames="p-5">

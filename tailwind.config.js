@@ -11,7 +11,9 @@ module.exports = {
       greylight: '#A1A0A0',
       greymedium: '#D1D1D1',
       greydark: '#333333',
+      borderColor: '#33333326',
       greylighter: '#E3E6EB',
+      lightGray: '#A1A0A080',
       red: '#FF0000',
       hyperlink: '#70BAFF',
       bluebg: '#F8FCFF',
@@ -20,8 +22,10 @@ module.exports = {
       gradientto: '#023456',
       lightblue: '#DEF2FF',
       lightbluebg: '#E9F6FF',
+      gray: '#F2F2F2',
       deleteRed: '#E83E39',
       iconBackground: '#0081CC0D',
+      whiteGray: '#EDEDED',
     },
     extend: {
       fontFamily: {

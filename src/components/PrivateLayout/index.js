@@ -13,7 +13,7 @@ import Loader from '../common/Loader';
  * @param {*} param0
  * @returns
  */
-const PrivateLayout = ({ children }) => {
+const PrivateLayout = ({ children, page }) => {
   const isGlobalTransparentLoadingPrivate = useSelector(
     (state) => state?.auth?.globalTransparentLoadingPrivate,
   );
@@ -35,7 +35,7 @@ const PrivateLayout = ({ children }) => {
 
             <Card classNames="lg:mt-6">
               {/* Navigation sidebar */}
-              <LeftNavigation />
+              <LeftNavigation page={page} />
             </Card>
           </div>
           <div className="col-span-12 md:col-span-8 min-h-[calc(100vh-61px)] h-fit overflow-y-auto lg:col-span-6 md:py-[14px] mb-[60px] md:mb-0">
