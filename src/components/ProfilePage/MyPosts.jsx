@@ -206,7 +206,6 @@ function MyPosts() {
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
-                        navigate(`${PATHS.HOME}/${post?.id}`, { replace: true });
                         setIsPreviewDetailsPostOpen(true);
                         setActivePost({ ...post });
                         setActiveMediaIndex(customIndex);
