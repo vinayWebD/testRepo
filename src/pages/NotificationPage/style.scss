@@ -1,0 +1,14 @@
+.dot-icon{
+  width: 10px; 
+  height: 10px; 
+  background: linear-gradient(60deg, #9E1F63 21%, #D91C5C 53%, #ED4663 99%); 
+  border-radius: 50%;
+  position: absolute;
+  left: 2%;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  @media screen and (max-width: 600px) {
+    display: none;
+  }
+}

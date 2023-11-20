@@ -8,7 +8,6 @@ const Notification = () => {
     Sendrequest();
 
     const unsubscribe = onMessager().then((payload) => {
-      console.log('payload', payload)
       setNotification({
         title: payload?.notification?.title,
         body: payload?.notification?.body,
@@ -27,28 +26,28 @@ const Notification = () => {
 
   console.log('notification', notification)
 
-  useEffect(() => {
-    if (notification?.title) {
-      notify();
-    }
-  }, [notification]);
+  // useEffect(() => {
+  //   if (notification?.title) {
+  //     notify();
+  //   }
+  // }, [notification]);
 
-  const notify = () => toast(<ToastDisplay notification={notification} />);
+  // const notify = () => toast(<ToastDisplay notification={notification} />);
 
   return <Toaster />; // The <Toaster /> should be inside the return block.
 
 };
 
-function ToastDisplay({ notification }) {
-  return (
-    <div>
-      <p>
-        <b>{notification?.title}</b>
-      </p>
-      <p>{notification?.body}</p>
-    </div>
-  );
+// function ToastDisplay({ notification }) {
+//   return (
+//     <div>
+//       <p>
+//         <b>{notification?.title}</b>
+//       </p>
+//       <p>{notification?.body}</p>
+//     </div>
+//   );
 
-}
+// }
 
 export default Notification;
