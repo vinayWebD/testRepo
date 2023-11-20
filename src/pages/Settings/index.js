@@ -38,7 +38,7 @@ const Settings = () => {
                     key={_i}
                     className={`flex gap-3 py-4 px-6 bg-[#F5F5F566] rounded-s items-center cursor-pointer hover:opacity-70 ${
                       _i !== 0 ? 'mt-4' : ''
-                    }`}
+                    } `}
                   >
                     <div className="p-1 bg-[#0081CC0D] rounded-s">
                       <img src={section?.iconSrc} />
