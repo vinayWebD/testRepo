@@ -19,9 +19,10 @@ import {
 import { getErrorMessage, successStatus } from '../../common';
 import { PATHS } from '../../constants/urlPaths';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import MyPosts from '../../components/ProfilePage/MyPosts';
 
 const OtherUserProfile = () => {
-  const [tab, setTab] = useState('work');
+  const [tab, setTab] = useState('post');
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -80,9 +81,13 @@ const OtherUserProfile = () => {
         <div className="grid grid-cols-12 gap-3 feed-page">
           <div className="col-span-12">
             <div>
-              <Tabs tab={tab} updateTab={setTab} />
+              <Tabs tab={tab} updateTab={setTab} other={true} />
 
-              {tab === 'work' ? (
+              {tab === 'post' ? (
+                <>
+                  <MyPosts other={true} />
+                </>
+              ) : tab === 'work' ? (
                 <>
                   <WorkDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">

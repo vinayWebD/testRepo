@@ -11,8 +11,7 @@ import CaptionLinkContainer from '../Post/CaptionLinkContainer';
 import MediaLayout from '../MediaLayout';
 import ActionButtons from '../Post/ActionButtons';
 import PostSkeleton from '../common/PostSkeleton';
-import { useNavigate, useParams } from 'react-router-dom';
-import { PATHS } from '../../constants/urlPaths';
+import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import Modal from '../Modal';
@@ -23,7 +22,7 @@ import CreatePostLayout from '../CreatePost/CreatePostLayout';
 import { LANG } from '../../constants/lang';
 
 const { LANG_CREATE_POST } = LANG.PAGES.FEED;
-function MyPosts() {
+function MyPosts({ other = true }) {
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [posts, setPosts] = useState([]);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
@@ -34,8 +33,8 @@ function MyPosts() {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const [typeOfPost, setTypeOfPost] = useState(null);
+  const [otherPeople, setOtherPeople] = useState(other)
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
-  const navigate = useNavigate();
   let isLoadingAPI = false;
   const loaderRef = useRef(null);
   let { id: idFromUrl } = useParams();
@@ -43,7 +42,7 @@ function MyPosts() {
   useScrollToTop();
 
   useEffect(() => {
-    if (idFromUrl) {
+    if (idFromUrl && !otherPeople) {
       fetchSinglePostDetails({ postId: idFromUrl });
       setIsPreviewDetailsPostOpen(true);
     }
@@ -81,7 +80,7 @@ function MyPosts() {
   const fetchAllPostsAPI = async (page, reloadForcefully = false) => {
     if (!reloadForcefully && allPostsLoaded && !isLoadingAPI && page !== 0) return; // prevent fetching if all posts are loaded
 
-    const response = await fetchPosts({ page: page + 1, userId: userData?.id });
+    const response = await fetchPosts({ page: page + 1, userId: idFromUrl ? idFromUrl : userData?.id });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -234,14 +233,14 @@ function MyPosts() {
             })}
             {isLoading
               ? ['', ''].map((i, _i) => (
-                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                    <span className="flex gap-2">
-                      <span className="flex gap-2 w-full justify-center items-center">
-                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
-                      </span>
+                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                  <span className="flex gap-2">
+                    <span className="flex gap-2 w-full justify-center items-center">
+                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
                     </span>
-                  </Card>
-                ))
+                  </span>
+                </Card>
+              ))
               : ''}
           </>
         )}
