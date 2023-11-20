@@ -14,6 +14,7 @@ import { LANG } from '../../constants/lang';
 import copyToClipboard from '../../utils/copyToClipboard';
 import { DATE_FORMAT } from '../../constants/constants';
 import { PATHS } from '../../constants/urlPaths';
+import { useNavigate } from 'react-router-dom';
 
 const { LANG_EDIT_POST } = LANG.PAGES.FEED;
 
@@ -24,15 +25,16 @@ const Header = ({
   creatorProfilePicUrl = '',
   showThreeDots = true,
   isCreatedByMe = true,
-  reloadData = () => {},
+  reloadData = () => { },
   postDetails = {},
-  reloadPostDetails = () => {},
+  reloadPostDetails = () => { },
+  userId = ''
 }) => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
-
+  const navigate = useNavigate()
   useEffect(() => {
     if (isCreatedByMe) {
       setOptions([
@@ -50,14 +52,15 @@ const Header = ({
         },
       ]);
     } else {
+      console.log('1234')
       setOptions([
         {
           name: 'Report',
-          action: () => {},
+          action: () => { },
         },
         {
           name: 'Unfollow',
-          action: () => {},
+          action: () => { },
         },
         {
           name: 'Copy link',
@@ -85,13 +88,20 @@ const Header = ({
     }
     setIsDeleteModalOpen(false);
   };
-
+  console.log('isCreatedByMe', isCreatedByMe)
   return (
     <div className="flex gap-2 items-center">
       <Avatar
         name={creatorName}
         image={creatorProfilePicUrl}
         classNames="w-[50px] h-[50px] bg-greylight border border-greymedium"
+        clickFun={() => {
+          if (!isCreatedByMe) {
+            navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`)
+          } else {
+            navigate(`${PATHS.PROFILE}`)
+          }
+        }}
       />
       <div>
         <p className="font-semibold capitalize">{creatorName}</p>

@@ -67,7 +67,7 @@ const ProfilePage = () => {
 
               {tab === 'post' ? (
                 <>
-                  <MyPosts />
+                  <MyPosts other={false} />
                 </>
               ) : tab === 'work' ? (
                 <>

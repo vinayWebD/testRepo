@@ -1,4 +1,4 @@
-const Avatar = ({ image, name = '', classNames = 'w-[32px] h-[32px]' }) => {
+const Avatar = ({ image, name = '', classNames = 'w-[32px] h-[32px]', clickFun = () => { } }) => {
   // Function to extract initials from the name.
   const getInitials = (name) => {
     if (!name) return '';
@@ -10,10 +10,12 @@ const Avatar = ({ image, name = '', classNames = 'w-[32px] h-[32px]' }) => {
     return firstInitial + lastInitial;
   };
 
+
   return (
     <div
       className={`bg-white aspect-square justify-center uppercase rounded-full p-[10px] text-center flex items-center bg-no-repeat bg-cover bg-center border border-greymedium ${classNames}`}
       style={{ backgroundImage: `url(${image})` || undefined }}
+      onClick={clickFun}
     >
       {!image ? getInitials(name) : ''}
     </div>
