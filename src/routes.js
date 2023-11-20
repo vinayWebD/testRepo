@@ -10,6 +10,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
+import MyNetwork from './pages/MyNetwork';
 import OtherUserProfile from './pages/OtherUserProfile';
 import NotificationPage from './pages/NotificationPage';
 
@@ -24,6 +25,7 @@ const {
   RESET_PASSWORD,
   PATH_WORK,
   PROFILE,
+  MYNETWORK,
   OTHER_USER_PROFILE,
   MY_NOTIFICATION,
 } = PATHS;
@@ -70,7 +72,7 @@ const publicRoutes = createBrowserRouter([
 const privateRoutes = createBrowserRouter([
   {
     path: '*',
-    element: <Navigate to={HOME} replace />,
+    element: <Navigate to={HOME} replace={true} />,
   },
   {
     path: HOME,
@@ -80,6 +82,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: PROFILE,
     element: <ProfilePage />,
+  },
+  {
+    path: MYNETWORK,
+    element: <MyNetwork />,
   },
   {
     path: `${OTHER_USER_PROFILE}:id`,

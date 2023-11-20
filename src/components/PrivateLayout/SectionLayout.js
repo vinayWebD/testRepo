@@ -11,7 +11,7 @@ import Loader from '../common/Loader';
  * @param {*} param0
  * @returns
  */
-const SectionLayout = ({ children, activeTab = 0 }) => {
+const SectionLayout = ({ children, activeTab }) => {
   const isGlobalTransparentLoadingPrivate = useSelector(
     (state) => state?.auth?.globalTransparentLoadingPrivate,
   );

@@ -42,18 +42,18 @@ function ConfirmationModal({
     }
 
     // Set overflow only once when first modal opens or when the last modal closes.
-    if (getModalCounter() === 1 && isOpen) {
+    if ((getModalCounter() === 1 && isOpen) || document.querySelector('.cust-modal-fixed')) {
       document.body.style.overflow = 'hidden';
-    } else if (getModalCounter() === 0 && !isOpen) {
+    } else if (getModalCounter() === 0 && !isOpen && !document.querySelector('.cust-modal-fixed')) {
       document.body.style.overflow = 'auto';
     }
 
     return () => {
       if (isOpen) {
         decrementModalCounter();
-        if (getModalCounter() === 0) {
-          document.body.style.overflow = 'auto';
-        }
+      }
+      if (getModalCounter() === 0 && !isOpen && !document.querySelector('.cust-modal-fixed')) {
+        document.body.style.overflow = 'auto';
       }
     };
   }, [isOpen]);

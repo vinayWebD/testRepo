@@ -46,9 +46,9 @@ function Modal({
     return () => {
       if (isOpen) {
         decrementModalCounter();
-        if (getModalCounter() === 0 && !document.querySelector('.cust-modal-fixed')) {
-          document.body.style.overflow = 'auto';
-        }
+      }
+      if (getModalCounter() === 0 && !isOpen && !document.querySelector('.cust-modal-fixed')) {
+        document.body.style.overflow = 'auto';
       }
     };
   }, [isOpen]);

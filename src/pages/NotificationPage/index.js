@@ -10,6 +10,7 @@ import './style.scss'
 let PageSize = 10;
 let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
 // let data = []
+
 const NotificationPage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [currentPage, setCurrentPage] = useState(1)

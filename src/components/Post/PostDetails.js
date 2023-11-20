@@ -21,6 +21,11 @@ const PostDetails = ({
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
   const userData = useSelector((state) => state?.auth?.user) || {};
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const totalSlides = post?.postMedia?.length || 0;
+
+  const showPrevArrow = currentSlide > 0;
+  const showNextArrow = currentSlide < totalSlides - 1;
 
   // Pause video when moving to another slide
   const handleBeforeChange = (currentSlide) => {
@@ -36,12 +41,14 @@ const PostDetails = ({
 
   var settings = {
     dots: false,
-    infinite: true,
+    infinite: false,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: customActiveIndex,
     beforeChange: (currentSlide) => handleBeforeChange(currentSlide),
+    afterChange: (index) => setCurrentSlide(index),
+    swipe: false,
   };
 
   // The slider should work when the post details component is loaded
@@ -143,22 +150,38 @@ const PostDetails = ({
           <>
             <div className="absolute top-1 left-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
-                className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
+                className={`w-14 h-14 rounded-full flex justify-center items-center ${
+                  showPrevArrow
+                    ? 'bg-[#0000003d] cursor-pointer hover:bg-[#1715153d]'
+                    : 'cursor-not-allowed bg-[#8d8d8d3d]'
+                } `}
                 onClick={sliderRef?.slickPrev}
               >
                 <span className="ml-1">
-                  <LeftChevron fill="#ffffff" width={30} height={30} />
+                  <LeftChevron
+                    fill={showPrevArrow ? '#ffffff' : '#cccccc'}
+                    width={30}
+                    height={30}
+                  />
                 </span>
               </div>
             </div>
 
             <div className="absolute top-1 right-1 flex justify-center items-center h-[90%] mt-[5%]">
               <div
-                className="w-14 h-14 rounded-full flex justify-center items-center bg-[#0000003d] hover:bg-[#1715153d] cursor-pointer"
+                className={`w-14 h-14 rounded-full flex justify-center items-center ${
+                  showNextArrow
+                    ? 'bg-[#0000003d] cursor-pointer hover:bg-[#1715153d]'
+                    : 'cursor-not-allowed bg-[#8d8d8d3d]'
+                }`}
                 onClick={sliderRef?.slickNext}
               >
                 <span className="mr-1">
-                  <RightChevron fill="#ffffff" width={30} height={30} />
+                  <RightChevron
+                    fill={showNextArrow ? '#ffffff' : '#cccccc'}
+                    width={30}
+                    height={30}
+                  />
                 </span>
               </div>
             </div>

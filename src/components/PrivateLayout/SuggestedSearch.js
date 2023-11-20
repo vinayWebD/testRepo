@@ -45,18 +45,32 @@ function SuggestedSearch({
   );
   const navigate = useNavigate();
 
+  const handleClickOutside = (event) => {
+    const suggestedSearchElement = document.getElementById('suggested-search');
+    if (suggestedSearchElement && !suggestedSearchElement.contains(event.target)) {
+      onClose();
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   useEffect(() => {
     if (isOpen) {
       incrementModalCounter();
     }
 
     // Set overflow only once when first modal opens or when the last modal closes.
-    if (getModalCounter() === 1 && isOpen) {
+    if ((getModalCounter() === 1 && isOpen) || document.querySelector('#suggested-search')) {
       document.body.style.overflow = 'hidden';
       document
         ?.querySelector('.add-blur-after-search')
         ?.classList?.add('blur-[1.5px]', 'pointer-events-none');
-    } else if (getModalCounter() === 0 && !isOpen) {
+    } else if (getModalCounter() === 0 && !isOpen && !document.querySelector('#suggested-search')) {
       document.body.style.overflow = 'scroll';
       document
         ?.querySelector('.add-blur-after-search')
@@ -66,7 +80,7 @@ function SuggestedSearch({
     return () => {
       if (isOpen) {
         decrementModalCounter();
-        if (getModalCounter() === 0) {
+        if (getModalCounter() === 0 && !document.querySelector('#suggested-search')) {
           document
             ?.querySelector('.add-blur-after-search')
             ?.classList?.remove('blur-[1.5px]', 'pointer-events-none');
@@ -112,7 +126,8 @@ function SuggestedSearch({
 
   return (
     <div
-      className="bg-white items-start content-start flex-wrap left-0 fixed md:absolute w-[100vw] h-[calc(100vh-60px)] top-[61px] md:top-[27px] md:w-full md:h-fit flex md:rounded-md z-50 shadow-lg"
+      id="suggested-search"
+      className=" bg-white items-start content-start flex-wrap left-0 fixed md:absolute w-[100vw] h-[calc(100vh-60px)] top-[61px] md:top-[27px] md:w-full md:h-fit flex md:rounded-md z-50 shadow-lg"
       onClick={onCloseHandler}
     >
       <div className="relative w-full h-full">
@@ -137,7 +152,7 @@ function SuggestedSearch({
           />
         </div>
         <div
-          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] ${width} ${height} ${titleParentClassNames}`}
+          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] md:pb-3 ${width} ${height} ${titleParentClassNames}`}
         >
           {searchResult?.length ? (
             searchResult?.map((result) => {
@@ -175,7 +190,7 @@ function SuggestedSearch({
             </div>
           )}
         </div>
-        <div className="absolute top-[83%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        <div className="shadow-lg absolute top-[83%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
           See All
         </div>
       </div>

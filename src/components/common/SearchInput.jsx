@@ -4,9 +4,12 @@ const SearchInput = ({
   value = '',
   onChange = () => {},
   placeholder = 'Search',
+  onBlur = () => {},
+  onFocus = () => {},
   className = '',
   disabled = false,
   iconColor = '#ffffff',
+  textColor = 'text-white',
   bottomBorderColorClass = 'border-white',
 }) => {
   return (
@@ -22,7 +25,9 @@ const SearchInput = ({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          className={` ${className}  pl-2 search bg-[transparent] border-0 text-white text-[12px]`}
+          onBlur={onBlur}
+          onFocus={onFocus}
+          className={` ${className} ${textColor}  pl-2 search bg-[transparent] border-0 text-white text-[12px]`}
           disabled={disabled}
         />
       </div>

@@ -23,10 +23,12 @@ const ProfileContainer = ({
   reloadAfterFollowUnfollow = () => {},
 }) => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
+  const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
   const dispatch = useDispatch();
 
   const followUnfollowHandler = async () => {
     let response;
+    setIsLoadingFollowUnfollow(true);
     if (userData?.followStatus?.isApproved) {
       response = (await dispatch(unfollowOtherUserDispatcher({ id: userData?.id }))) || {};
     } else if (userData?.followStatus?.isApproved === undefined) {
@@ -48,6 +50,7 @@ const ProfileContainer = ({
         }
       }
     }
+    setIsLoadingFollowUnfollow(false);
   };
 
   const memoizedAvatar = useMemo(
@@ -125,7 +128,8 @@ const ProfileContainer = ({
               <OutlinedButton
                 onClick={() => followUnfollowHandler()}
                 label={followUnfollowLabel()}
-                additionalClassNames="!bg-blueprimary text-white text-[16px]"
+                additionalClassNames="!bg-blueprimary text-white text-[16px] w-[115px] !justify-center"
+                isLoading={isLoadingFollowUnfollow}
               />
             </div>
           )}
