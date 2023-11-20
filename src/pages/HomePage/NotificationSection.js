@@ -1,8 +1,11 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Card from '../../components/common/Card';
 import AddFriendIcon from '../../components/Icons/AddFriendIcon';
+import { PATHS } from '../../constants/urlPaths';
 
 const NotificationSection = () => {
+  const navigate = useNavigate()
   return (
     <div>
       <Card>
@@ -36,7 +39,10 @@ const NotificationSection = () => {
           <p className="text-greymedium text-xs">2 Hours ago</p>
         </div>
 
-        <div className="pt-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70">
+        <div
+          className="pt-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70"
+          onClick={() => navigate(PATHS.MY_NOTIFICATION)}
+        >
           View All
         </div>
       </Card>

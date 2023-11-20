@@ -6,7 +6,7 @@ import MobileBottomNavigation from '../PrivateLayout/MobileBottomNavigation';
 import LeftNavigation from '../PrivateLayout/LeftNavigation';
 import Card from '../common/Card';
 
-const MyNetworkLayout = ({ children, page }) => {
+const MyNetworkLayout = ({ children, activeTab }) => {
   return (
     <div>
       <div
@@ -21,7 +21,7 @@ const MyNetworkLayout = ({ children, page }) => {
             <div className="hidden lg:block col-span-2  lg:col-span-3 sticky top-[61px] z-40 py-[16px] h-fit">
               <Card classNames="lg:my-2">
                 {/* Navigation sidebar */}
-                <LeftNavigation page={page} />
+                <LeftNavigation activeTab={activeTab} />
               </Card>
             </div>
           </div>
