@@ -1,16 +1,16 @@
 .pagination-container {
   display: flex;
   list-style-type: none;
-  .arr{
-      background-color: white !important;
-    }
+  .arr {
+    background-color: white !important;
+  }
   .pagination-item {
     text-align: center;
     width: 28px;
     height: 28px;
     text-align: center;
     margin: auto 4px;
-    color: #A1A0A0;
+    color: #a1a0a0;
     display: flex;
     box-sizing: border-box;
     align-items: center;
@@ -31,12 +31,11 @@
     }
 
     &.selected {
-      background-color: #0071BC;
-      color: white
+      background-color: #0071bc;
+      color: white;
     }
-    
+
     .arrow {
-      
       &::before {
         position: relative;
         /* top: 3pt; Uncomment this to lower the icons as requested in comments*/

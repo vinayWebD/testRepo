@@ -8,36 +8,37 @@ import { PATHS } from './urlPaths';
 
 const { NAVLBL_FEED, NAVLBL_MY_NETWORK, NAVLBL_MESSAGES, NAVLBL_NOTIFICATIONS, NAVLBL_SETTINGS } =
   PRIVATE_NAVIGATION_LABELS;
-const { MYNETWORK, HOME, MY_NOTIFICATION } = PATHS;
+const { MYNETWORK, HOME, MY_NOTIFICATION, SETTINGS } = PATHS;
 
 const navigationItems = [
   {
     label: NAVLBL_FEED,
-    action: () => { },
+    action: () => {},
     navPath: HOME,
     icon: (props) => <FeedIcon {...props} />,
   },
   {
     label: NAVLBL_MY_NETWORK,
-    action: () => { },
+    action: () => {},
     navPath: MYNETWORK,
     icon: (props) => <MyNetworkIcon {...props} />,
   },
   {
     label: NAVLBL_MESSAGES,
-    action: () => { },
+    action: () => {},
     icon: (props) => <MessagesIcon {...props} />,
   },
   {
     label: NAVLBL_NOTIFICATIONS,
     navPath: MY_NOTIFICATION,
-    action: () => { },
+    action: () => {},
     icon: (props) => <NotificationIcon {...props} />,
   },
 
   {
     label: NAVLBL_SETTINGS,
-    action: () => { },
+    navPath: SETTINGS,
+    action: () => {},
     icon: (props) => <SettingsIcon {...props} />,
   },
 ];

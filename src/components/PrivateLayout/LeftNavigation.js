@@ -26,7 +26,7 @@ const LeftNavigation = ({ activeTab = 0 }) => {
 export default LeftNavigation;
 
 const NavBarItem = ({
-  onClickHandler = () => { },
+  onClickHandler = () => {},
   label = '',
   isActive = false,
   navPath,
@@ -35,8 +35,9 @@ const NavBarItem = ({
   <NavLink to={navPath} className="w-[-webkit-fill-available]">
     <div
       className={`
-      w-full p-1 lg:p-4 pr-[5px] md:pr-[8px] border-l-[3px] md:border-l-4 lg:border-l-[6px] box-border border-white cursor-pointer flex items-center justify-center lg:justify-normal gap-4 ${isActive ? 'active-nav-left-side-bar bg-whitelight' : ''
-        }`}
+      w-full p-1 lg:p-4 pr-[5px] md:pr-[8px] border-l-[3px] md:border-l-4 lg:border-l-[6px] box-border border-white cursor-pointer flex items-center justify-center lg:justify-normal gap-4 ${
+        isActive ? 'active-nav-left-side-bar bg-whitelight' : ''
+      }`}
       onClick={onClickHandler}
     >
       <Icon isActive={isActive} />
