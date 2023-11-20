@@ -5,7 +5,7 @@ import AddFriendIcon from '../../components/Icons/AddFriendIcon';
 import { PATHS } from '../../constants/urlPaths';
 
 const NotificationSection = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <div>
       <Card>
