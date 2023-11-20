@@ -32,6 +32,7 @@ const NETWORK_CONSTANTS = {
   OTHER_USER_FOLLOW: (id) => `/v1/accounts/follow/${id}`,
   OTHER_USER_UNFOLLOW: (id) => `/v1/accounts/unfollow/${id}`,
   NETWORK_COUNT: '/v1/accounts/follow/network/counts',
+  UPDATE_EMAIL_SEND_OTP: '/v1/accounts/update-email',
 };
 
 export default NETWORK_CONSTANTS;
