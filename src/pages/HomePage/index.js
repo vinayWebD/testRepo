@@ -238,6 +238,7 @@ const HomePage = () => {
                       links: post?.links,
                       id: post?.id,
                     }}
+                    userId={post?.UserId}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
