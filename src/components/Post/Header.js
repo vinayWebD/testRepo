@@ -52,7 +52,6 @@ const Header = ({
         },
       ]);
     } else {
-      console.log('1234')
       setOptions([
         {
           name: 'Report',
@@ -88,7 +87,6 @@ const Header = ({
     }
     setIsDeleteModalOpen(false);
   };
-  console.log('isCreatedByMe', isCreatedByMe)
   return (
     <div className="flex gap-2 items-center">
       <Avatar
