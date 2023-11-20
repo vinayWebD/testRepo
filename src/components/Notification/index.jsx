@@ -16,15 +16,14 @@ const Notification = () => {
         duration: 60000,
         position: 'top-right',
       });
-    })
+    });
 
     return () => {
       unsubscribe.catch((err) => console.log('failed: ', err));
-    }
-
+    };
   }, []);
 
-  console.log('notification', notification)
+  console.log('notification', notification);
 
   // useEffect(() => {
   //   if (notification?.title) {
@@ -35,7 +34,6 @@ const Notification = () => {
   // const notify = () => toast(<ToastDisplay notification={notification} />);
 
   return <Toaster />; // The <Toaster /> should be inside the return block.
-
 };
 
 // function ToastDisplay({ notification }) {

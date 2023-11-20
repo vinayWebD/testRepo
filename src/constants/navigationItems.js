@@ -13,31 +13,31 @@ const { MYNETWORK, HOME, MY_NOTIFICATION } = PATHS;
 const navigationItems = [
   {
     label: NAVLBL_FEED,
-    action: () => { },
+    action: () => {},
     navPath: HOME,
     icon: (props) => <FeedIcon {...props} />,
   },
   {
     label: NAVLBL_MY_NETWORK,
-    action: () => { },
+    action: () => {},
     navPath: MYNETWORK,
     icon: (props) => <MyNetworkIcon {...props} />,
   },
   {
     label: NAVLBL_MESSAGES,
-    action: () => { },
+    action: () => {},
     icon: (props) => <MessagesIcon {...props} />,
   },
   {
     label: NAVLBL_NOTIFICATIONS,
     navPath: MY_NOTIFICATION,
-    action: () => { },
+    action: () => {},
     icon: (props) => <NotificationIcon {...props} />,
   },
 
   {
     label: NAVLBL_SETTINGS,
-    action: () => { },
+    action: () => {},
     icon: (props) => <SettingsIcon {...props} />,
   },
 ];

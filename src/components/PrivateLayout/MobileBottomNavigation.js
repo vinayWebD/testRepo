@@ -24,7 +24,7 @@ const MobileBottomNavigation = ({ activeTab = 0 }) => {
 export default MobileBottomNavigation;
 
 const NavBarItem = ({
-  onClickHandler = () => { },
+  onClickHandler = () => {},
   label = '',
   isActive = false,
   Icon = () => <></>,
