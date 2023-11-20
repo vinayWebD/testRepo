@@ -190,7 +190,7 @@ function SuggestedSearch({
             </div>
           )}
         </div>
-        <div className="absolute top-[83%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        <div className="shadow-lg absolute top-[83%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
           See All
         </div>
       </div>
