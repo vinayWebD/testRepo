@@ -8,7 +8,7 @@ import ThreeDots from '../Icons/ThreeDots';
 import Dropdown from '../common/Dropdown';
 import OutlinedButton from '../common/OutlinedButton';
 import Modal from '../../components/Modal';
-import EditProfile from '../../components/EditProfile';
+import EditProfile from '../../components/ProfilePage/EditProfile';
 import { useDispatch } from 'react-redux';
 import {
   followOtherUserDispatcher,
