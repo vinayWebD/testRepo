@@ -13,6 +13,7 @@ import ProfilePage from './pages/ProfilePage';
 import MyNetwork from './pages/MyNetwork';
 import OtherUserProfile from './pages/OtherUserProfile';
 import NotificationPage from './pages/NotificationPage';
+import Settings from './pages/Settings';
 
 const {
   LANDING,
@@ -28,6 +29,7 @@ const {
   MYNETWORK,
   OTHER_USER_PROFILE,
   MY_NOTIFICATION,
+  SETTINGS,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -98,6 +100,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: MY_NOTIFICATION,
     element: <NotificationPage />,
+  },
+  {
+    path: SETTINGS,
+    element: <Settings />,
   },
 ]);
 

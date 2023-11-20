@@ -11,5 +11,6 @@ export const PATHS = {
   PROFILE: '/my-profile',
   MYNETWORK: '/my-network',
   OTHER_USER_PROFILE: '/profile/',
-  MY_NOTIFICATION: '/notification'
+  MY_NOTIFICATION: '/notification',
+  SETTINGS: '/settings',
 };
