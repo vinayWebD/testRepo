@@ -10,6 +10,7 @@ import { Button } from '../common/Button';
 const { LANG_RESEND } = LANG.PAGES.VERIFY_EMAIL;
 
 const UpdateEmail = ({ email }) => {
+  console.log(email);
   const width = useScreenWidth();
   const [otp, setOtp] = useState([]);
   const [counter, setCounter] = useState(59);

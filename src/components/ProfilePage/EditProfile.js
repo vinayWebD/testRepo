@@ -19,6 +19,7 @@ import { profileDispatcher } from '../../redux/dispatchers/authDispatcher';
 import CheckImage from '../../../src/assets/images/check.png';
 import Modal from '../Modal';
 import UpdateEmail from './UpdateEmail';
+import { sendOtpToUpdateEmailDispatcher } from '../../redux/dispatchers/myProfileDispatcher';
 
 const { IS_REQUIRED, EMAIL_INVALID, MSG_FIELD_LENGTH } = MESSAGES;
 const { EMAIL_PATTERN } = REGEX;
@@ -114,6 +115,20 @@ const EditProfile = ({
     onSubmit,
   });
 
+  const onVerifyClickHandler = async () => {
+    const response = await dispatch(sendOtpToUpdateEmailDispatcher());
+    const { status, data } = response;
+    if (!successStatus(status)) {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+        setIsLoading(false);
+      }
+    } else {
+      setIsVerifyEmailPopupOpen(true);
+    }
+  };
+
   return (
     <>
       <form
@@ -182,7 +197,9 @@ const EditProfile = ({
                   ? 'text-blueprimary cursor-pointer font-semibold'
                   : 'text-greydark opacity-40 cursor-not-allowed'
               } `}
-              onClick={() => setIsVerifyEmailPopupOpen(true)}
+              onClick={() => {
+                onVerifyClickHandler();
+              }}
             >
               Verify
             </span>
