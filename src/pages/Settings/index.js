@@ -3,6 +3,7 @@ import BlockedImage from '../../assets/images/blocked.svg';
 import PasswordImage from '../../assets/images/password.svg';
 import DeleteImage from '../../assets/images/delete.svg';
 import PrivacySettingImage from '../../assets/images/privacy-setting.svg';
+import HelpCenterImage from '../../assets/images/help-center.svg';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayout';
 
@@ -22,6 +23,10 @@ const INNER_SECTION = [
   {
     title: 'Delete Account',
     iconSrc: DeleteImage,
+  },
+  {
+    title: 'Help Center',
+    iconSrc: HelpCenterImage,
   },
 ];
 
