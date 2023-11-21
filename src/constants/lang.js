@@ -173,6 +173,7 @@ const TABS_NAME = {
 
 const DROPDOWN_OPTION_LABELS = {
   DDLBL_LOGOUT: 'Log out',
+  DDLBL_MY_PROFILE: 'My Profile',
 };
 
 const PRIVATE_NAVIGATION_LABELS = {

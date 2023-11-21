@@ -29,12 +29,12 @@ export const getModalCounter = () => {
 
 function SuggestedSearch({
   isOpen,
-  onClose = () => {},
+  onClose = () => { },
   width = '',
   height = 'h-auto',
   titleParentClassNames = '',
   searchValue = '',
-  onValueChange = () => {},
+  onValueChange = () => { },
 }) {
   const dispatch = useDispatch();
   const [searchResult, setSearchResult] = useState([]);
@@ -152,7 +152,7 @@ function SuggestedSearch({
           />
         </div>
         <div
-          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] md:pb-3 ${width} ${height} ${titleParentClassNames}`}
+          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] md:pb-3 md:mb-9 ${width} ${height} ${titleParentClassNames}`}
         >
           {searchResult?.length ? (
             searchResult?.map((result) => {
@@ -190,7 +190,7 @@ function SuggestedSearch({
             </div>
           )}
         </div>
-        <div className="shadow-lg absolute top-[83%] md:top-[91%] bg-white left-0 border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        <div className="shadow-lg absolute top-[90%] md:top-[91%] bg-white left-0 rounded-b-lg border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
           See All
         </div>
       </div>

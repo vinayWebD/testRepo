@@ -17,7 +17,7 @@ import { useState } from 'react';
 import FriendRequestsBar from './FriendRequestsBar';
 import SuggestedSearch from '../PrivateLayout/SuggestedSearch';
 
-const { DDLBL_LOGOUT } = DROPDOWN_OPTION_LABELS;
+const { DDLBL_LOGOUT, DDLBL_MY_PROFILE } = DROPDOWN_OPTION_LABELS;
 const { HOME, LOGIN } = PATHS;
 const { BTNLBL_FRIEND_REQUESTS } = BUTTON_LABELS;
 
@@ -48,6 +48,14 @@ const PrivateHeader = () => {
   };
 
   const OPTIONS = [
+    {
+      name: DDLBL_MY_PROFILE,
+      action: () => {
+
+        navigate(PATHS.PROFILE)
+        window.location.reload()
+      },
+    },
     {
       name: DDLBL_LOGOUT,
       action: () => setIsLogoutModalOpen(true),
