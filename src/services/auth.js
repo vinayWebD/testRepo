@@ -14,12 +14,12 @@ const {
  * @param {*} param0
  * @returns
  */
-const loginUser = async ({ email = '', password = '', dispatch }) => {
+const loginUser = async ({ email = '', password = '', fcmToken = '', dispatch }) => {
   try {
     const { status, data } = await apiUtility(
       LOGIN,
       'POST',
-      { email: email.trim()?.toLowerCase(), password: password.trim() },
+      { email: email.trim()?.toLowerCase(), password: password.trim(), fcmToken: fcmToken },
       dispatch,
     );
 

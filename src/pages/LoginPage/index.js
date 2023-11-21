@@ -42,7 +42,12 @@ function LoginPage() {
   const onSubmit = async (values) => {
     if (!isLoading) {
       setIsLoading(true);
-      const response = await dispatch(loginDispatcher(values));
+      const val = {
+        email: values.email,
+        password: values.password,
+        fcmToken: localStorage.getItem('fcm')
+      }
+      const response = await dispatch(loginDispatcher(val));
       const { status, data } = response;
       if (!successStatus(status)) {
         const errormsg = getErrorMessage(data);

@@ -15,7 +15,7 @@ export const Sendrequest = () => {
             'BNEr8fsavW_uQMUS_NnllNCekCYO1_MybA1Cizb5noGiko09Rj96yrbVayebnZ2EEEf3FkF8rIU7p9fug9XSJ-0',
         });
         if (currentToken) {
-          console.log('Client Token: ', currentToken);
+          localStorage.setItem('fcm', currentToken)
         } else {
           console.log('Failed to generate the registration token.');
         }

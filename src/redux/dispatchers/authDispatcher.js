@@ -6,19 +6,19 @@ import { globalLoading, login, logout, profile } from '../slices/authSlice';
  * The dispatcher method to call the login API and do the necessary React related functionalities
  */
 const loginDispatcher =
-  ({ email, password }) =>
-  async (dispatch) => {
-    const { status, data } = await loginUser({ email, password, dispatch });
+  ({ email, password, fcmToken }) =>
+    async (dispatch) => {
+      const { status, data } = await loginUser({ email, password, fcmToken, dispatch });
 
-    if (status === 200) {
-      localStorage.setItem('token', data?.data?.token);
-      dispatch(login(data));
-      // We are calling profile dispatcher so that the profile gets updated - API + Redux
-      dispatch(profileDispatcher());
-    }
+      if (status === 200) {
+        localStorage.setItem('token', data?.data?.token);
+        dispatch(login(data));
+        // We are calling profile dispatcher so that the profile gets updated - API + Redux
+        dispatch(profileDispatcher());
+      }
 
-    return { status, data };
-  };
+      return { status, data };
+    };
 
 /**
  * Logout dispatcher will call logout user API and
@@ -55,10 +55,10 @@ const profileDispatcher = () => async (dispatch) => {
  */
 const forgotPasswordOtpDispatcher =
   ({ email }) =>
-  async (dispatch) => {
-    const { status, data } = await sendForgotPasswordOtp({ email, dispatch });
+    async (dispatch) => {
+      const { status, data } = await sendForgotPasswordOtp({ email, dispatch });
 
-    return { status, data };
-  };
+      return { status, data };
+    };
 
 export { loginDispatcher, logoutDispatcher, profileDispatcher, forgotPasswordOtpDispatcher };
