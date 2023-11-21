@@ -33,7 +33,7 @@ function MyPosts({ other = true }) {
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
   const [typeOfPost, setTypeOfPost] = useState(null);
-  const [otherPeople, setOtherPeople] = useState(other)
+  const [otherPeople, setOtherPeople] = useState(other);
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
   let isLoadingAPI = false;
   const loaderRef = useRef(null);
@@ -80,7 +80,10 @@ function MyPosts({ other = true }) {
   const fetchAllPostsAPI = async (page, reloadForcefully = false) => {
     if (!reloadForcefully && allPostsLoaded && !isLoadingAPI && page !== 0) return; // prevent fetching if all posts are loaded
 
-    const response = await fetchPosts({ page: page + 1, userId: idFromUrl ? idFromUrl : userData?.id });
+    const response = await fetchPosts({
+      page: page + 1,
+      userId: idFromUrl ? idFromUrl : userData?.id,
+    });
 
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
@@ -233,14 +236,14 @@ function MyPosts({ other = true }) {
             })}
             {isLoading
               ? ['', ''].map((i, _i) => (
-                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                  <span className="flex gap-2">
-                    <span className="flex gap-2 w-full justify-center items-center">
-                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                    <span className="flex gap-2">
+                      <span className="flex gap-2 w-full justify-center items-center">
+                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                      </span>
                     </span>
-                  </span>
-                </Card>
-              ))
+                  </Card>
+                ))
               : ''}
           </>
         )}

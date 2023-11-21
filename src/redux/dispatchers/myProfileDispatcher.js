@@ -1,4 +1,4 @@
-import { sendOtpToUpdateEmail } from '../../services/myProfile';
+import { changePassword, sendOtpToUpdateEmail } from '../../services/myProfile';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 const sendOtpToUpdateEmailDispatcher = () => async (dispatch) => {
@@ -8,4 +8,17 @@ const sendOtpToUpdateEmailDispatcher = () => async (dispatch) => {
   return { status, data };
 };
 
-export { sendOtpToUpdateEmailDispatcher };
+const changePasswordDispatcher =
+  ({ currentPassword, newPassword, confirmPassword }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await changePassword({
+      currentPassword,
+      newPassword,
+      confirmPassword,
+    });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+export { sendOtpToUpdateEmailDispatcher, changePasswordDispatcher };
