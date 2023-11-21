@@ -14,6 +14,7 @@ import MyNetwork from './pages/MyNetwork';
 import OtherUserProfile from './pages/OtherUserProfile';
 import NotificationPage from './pages/NotificationPage';
 import Settings from './pages/Settings';
+import ChangePassword from './pages/Settings/ChangePassword';
 
 const {
   LANDING,
@@ -30,6 +31,7 @@ const {
   OTHER_USER_PROFILE,
   MY_NOTIFICATION,
   SETTINGS,
+  SETTINGS_CHANGE_PASSWORD,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -104,6 +106,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: SETTINGS,
     element: <Settings />,
+  },
+  {
+    path: SETTINGS_CHANGE_PASSWORD,
+    element: <ChangePassword />,
   },
 ]);
 

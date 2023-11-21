@@ -25,16 +25,16 @@ const Header = ({
   creatorProfilePicUrl = '',
   showThreeDots = true,
   isCreatedByMe = true,
-  reloadData = () => { },
+  reloadData = () => {},
   postDetails = {},
-  reloadPostDetails = () => { },
-  userId = ''
+  reloadPostDetails = () => {},
+  userId = '',
 }) => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   useEffect(() => {
     if (isCreatedByMe) {
       setOptions([
@@ -55,11 +55,11 @@ const Header = ({
       setOptions([
         {
           name: 'Report',
-          action: () => { },
+          action: () => {},
         },
         {
           name: 'Unfollow',
-          action: () => { },
+          action: () => {},
         },
         {
           name: 'Copy link',
@@ -95,9 +95,9 @@ const Header = ({
         classNames="w-[50px] h-[50px] bg-greylight border border-greymedium"
         clickFun={() => {
           if (!isCreatedByMe) {
-            navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`)
+            navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`);
           } else {
-            navigate(`${PATHS.PROFILE}`)
+            navigate(`${PATHS.PROFILE}`);
           }
         }}
       />

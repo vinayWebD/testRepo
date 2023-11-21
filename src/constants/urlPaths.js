@@ -13,4 +13,5 @@ export const PATHS = {
   OTHER_USER_PROFILE: '/profile/',
   MY_NOTIFICATION: '/notification',
   SETTINGS: '/settings',
+  SETTINGS_CHANGE_PASSWORD: '/settings/change-password',
 };

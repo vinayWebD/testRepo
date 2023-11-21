@@ -35,4 +35,27 @@ const validationResetPwdSchema = yup.object({
     .oneOf([yup.ref('password'), null], CONFIRM_PASSWORD_MISMATCH),
 });
 
-export { validationLoginSchema, validationForgotPwdSchema, validationResetPwdSchema };
+const validationChangePwdSchema = yup.object({
+  oldPassword: yup
+    .string()
+    .trim()
+    .matches(PASSWORD_PATTERN, MSG_PASSWORD_TYPE)
+    .required(IS_REQUIRED('Old Password')),
+  newPassword: yup
+    .string()
+    .trim()
+    .matches(PASSWORD_PATTERN, MSG_PASSWORD_TYPE)
+    .required(IS_REQUIRED('New Password')),
+  repeatPassword: yup
+    .string()
+    .trim()
+    .required(IS_REQUIRED('Repeat Password'))
+    .oneOf([yup.ref('newPassword'), null], CONFIRM_PASSWORD_MISMATCH),
+});
+
+export {
+  validationLoginSchema,
+  validationForgotPwdSchema,
+  validationResetPwdSchema,
+  validationChangePwdSchema,
+};
