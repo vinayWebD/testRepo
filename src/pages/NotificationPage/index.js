@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 import dummy from '../../assets/images/dummy.svg';
 import Pagination from '../../components/Pagination';
@@ -6,19 +6,39 @@ import { useMemo, useState } from 'react';
 import noWork from '../../assets/images/noWork.svg';
 import './style.scss';
 import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayout';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { getErrorMessage, successStatus } from '../../common';
+import { notificationListing } from '../../services/notificationService';
 
 let PageSize = 10;
 let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 const NotificationPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-
   const currentTableData = useMemo(() => {
     const firstPageIndex = (currentPage - 1) * PageSize;
     const lastPageIndex = firstPageIndex + PageSize;
     return data.slice(firstPageIndex, lastPageIndex);
   }, [currentPage]);
 
+  const fetchnotificationList = async () => {
+    const { status, data } = await notificationListing({
+      page: currentPage
+      , limit: 10
+    });
+    if (!successStatus(status)) {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    } else {
+      console.log('data?.data', data?.data)
+    }
+  };
+
+  useEffect(() => {
+    fetchnotificationList();
+  }, [currentPage]);
   return (
     <SectionLayout activeTab={3}>
       <InnerSectionLayout heading={'Notification'}>
