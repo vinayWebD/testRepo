@@ -64,9 +64,7 @@ const ChangePassword = () => {
             <div className="w-full flex justify-center">
               <Card classNames="w-full md:w-[60%] md:p-10 py-6 px-4">
                 <div className="flex flex-col gap-5">
-                  <p className="text-[16px] font-medium w-full">
-                    Create a new password that is at least 8 characters long.
-                  </p>
+                  <p className="text-[16px] font-medium w-full">Create a New Password</p>
 
                   <InputBox
                     label={'Old Password'}
