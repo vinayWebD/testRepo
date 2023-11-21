@@ -143,6 +143,10 @@ const EditProfile = ({
             profilePic={profilePictureUrl}
             width="!w-[100px]"
             height="!h-[100px]"
+            iconWidth="40"
+            iconHeight="40"
+            iconFillColor="#0171bd"
+            isFromEditProfile={true}
           />
         </div>
 
