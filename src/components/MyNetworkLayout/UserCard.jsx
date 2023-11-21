@@ -16,7 +16,7 @@ const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
 const UserCard = ({
   selectedTab,
   className = '',
-  onClick = () => {},
+  onClick = () => { },
   isFriendRequest,
   userName = 'Stev Jobs',
   location = 'San Fransico, CA',
@@ -49,12 +49,12 @@ const UserCard = ({
               <span className="text-xs font-normal">{location}</span>
             </div>
           </div>
-          <div className="font-sm md:font-medium lg:font-medium md:w-[268px] relative text-greydark md:font-light w-[auto] min-[320px]:font-normal min-[320px]:text-xs">
+          <div className="font-sm md:font-medium lg:font-medium xl:w-[268px] lg:w-[150px] md:w-[268px] relative text-greydark md:font-light w-[auto] min-[320px]:font-normal min-[320px]:text-xs">
             <span>{userBio}</span>
           </div>
         </div>
 
-        <div className="flex md:gap-5 lg:gap-x-16 items-center min-[320px]:gap-x-9 ">
+        <div className="flex md:gap-5 xl:gap-x-16 lg:gap-x-6 md:gap-x-16 items-center min-[320px]:gap-x-9 ">
           <div className="cursor-pointer flex items-center">
             {isFriendRequest ? <CrossIcon /> : <ChatIcon />}
           </div>

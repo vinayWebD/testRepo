@@ -2,10 +2,10 @@ import SearchIcon from '../Icons/SearchIcon';
 
 const SearchInput = ({
   value = '',
-  onChange = () => {},
+  onChange = () => { },
   placeholder = 'Search',
-  onBlur = () => {},
-  onFocus = () => {},
+  onBlur = () => { },
+  onFocus = () => { },
   className = '',
   disabled = false,
   iconColor = '#ffffff',
@@ -27,7 +27,7 @@ const SearchInput = ({
           placeholder={placeholder}
           onBlur={onBlur}
           onFocus={onFocus}
-          className={` ${className} ${textColor}  pl-2 search bg-[transparent] border-0 text-white text-[12px]`}
+          className={` ${className} ${textColor} pl-2 search bg-[transparent] border-0 text-black text-[12px]`}
           disabled={disabled}
         />
       </div>
