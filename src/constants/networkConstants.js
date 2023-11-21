@@ -34,6 +34,7 @@ const NETWORK_CONSTANTS = {
   NETWORK_COUNT: '/v1/accounts/follow/network/counts',
   INVITE_PEOPLE: '/v1/accounts/invite/people',
   UPDATE_EMAIL_SEND_OTP: '/v1/accounts/update-email',
+  CHANGE_PASSWORD: '/v1/accounts/change-password',
 };
 
 export default NETWORK_CONSTANTS;
