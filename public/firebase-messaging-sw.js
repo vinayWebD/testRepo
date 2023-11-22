@@ -1,7 +1,7 @@
 import { config } from '../src/firebaseKeys';
 /* eslint-disable no-undef */
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
-importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-app-compat.js');
+importScripts('https://www.gstatic.com/firebasejs/9.14.0/firebase-messaging-compat.js');
 
 firebase.initializeApp(config);
 
