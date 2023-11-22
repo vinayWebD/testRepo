@@ -1,30 +1,25 @@
-import React, { useState, useEffect } from 'react';
-import toast, { Toaster } from 'react-hot-toast';
+import React, { useEffect } from 'react';
+import { Toaster } from 'react-hot-toast';
 import { Sendrequest, onMessager } from '../../firebase';
 import { register } from '../../serviceWorkerRegistration';
+import { ToastNotifyInfo } from '../Toast/ToastNotify';
 const Notification = () => {
-  const [notification, setNotification] = useState({ title: '', body: '' });
   useEffect(() => {
     register();
     Sendrequest();
-
     const unsubscribe = onMessager().then((payload) => {
-      setNotification({
-        title: payload?.notification?.title,
-        body: payload?.notification?.body,
-      });
-      toast.success(`${payload?.notification?.title}: ${payload?.notification?.body}`, {
-        duration: 60000,
-        position: 'top-right',
-      });
+      const data = JSON.parse(payload?.data?.user)
+      ToastNotifyInfo(
+        `${data.firstName} ${data.lastName} 
+        ${payload?.data?.type === 'like' ? 'liked your post' :
+          payload?.data?.type === 'comment' ? 'comment on your post' : 'requested you to follow'
+        }`)
     });
 
     return () => {
       unsubscribe.catch((err) => console.log('failed: ', err));
     };
   }, []);
-
-  console.log('notification', notification);
 
   // useEffect(() => {
   //   if (notification?.title) {

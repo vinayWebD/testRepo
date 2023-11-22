@@ -1,91 +1,147 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
-import dummy from '../../assets/images/dummy.svg';
 import Pagination from '../../components/Pagination';
-import { useMemo, useState } from 'react';
 import noWork from '../../assets/images/noWork.svg';
 import './style.scss';
 import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayout';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { getErrorMessage, successStatus } from '../../common';
-import { notificationListing } from '../../services/notificationService';
-
+// import { notificationListing } from '../../services/notificationService';
+import { markReadDispatcher, notificationListDispatcher } from '../../redux/dispatchers/notificationDispatcher';
+import { useDispatch } from 'react-redux';
+import Avatar from '../../components/common/Avatar';
+import { fetchPostDetails } from '../../services/feed';
+import Modal from '../../components/Modal';
+import PostDetails from '../../components/Post/PostDetails';
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 let PageSize = 10;
-let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
 
 const NotificationPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return data.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
-
+  const [dataList, setDataList] = useState([])
+  const [totalCount, setTotalCount] = useState(0)
+  const dispatch = useDispatch();
+  const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
+  const [activePost, setActivePost] = useState({});
+  const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const fetchnotificationList = async () => {
-    const { status, data } = await notificationListing({
-      page: currentPage,
-      limit: 10,
-    });
+    const { status, data } = await dispatch(notificationListDispatcher({
+      page: currentPage
+    }));
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
         ToastNotifyError(errormsg);
       }
     } else {
-      console.log('data?.data', data?.data);
+      setCurrentPage(data?.data?.page)
+      setDataList(data?.data?.notification)
+      setTotalCount(data?.data?.count)
     }
   };
+
 
   useEffect(() => {
     fetchnotificationList();
   }, [currentPage]);
+
+  const fetchSinglePostDetails = async (postId) => {
+    const response = await fetchPostDetails({ postId });
+    const { status, data } = response;
+    const errormsg = getErrorMessage(data);
+    if (!successStatus(status)) {
+      ToastNotifyError(errormsg, '');
+      setIsPreviewDetailsPostOpen(false);
+    } else {
+      setActivePost(data?.data);
+    }
+  };
+
+  const handleClick = async (postId, notificationId, markAsRead) => {
+    if (postId) {
+      if (!markAsRead) {
+        const { status, data } = await dispatch(markReadDispatcher([Number(notificationId)]));
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
+          if (errormsg) {
+            ToastNotifyError(errormsg);
+          }
+        } else {
+          fetchnotificationList()
+          fetchSinglePostDetails(postId)
+          setActiveMediaIndex(postId);
+          setIsPreviewDetailsPostOpen(true);
+        }
+      } else {
+        fetchSinglePostDetails(postId)
+        setActiveMediaIndex(postId);
+        setIsPreviewDetailsPostOpen(true);
+      }
+
+    }
+  }
+
+  const formatTimeDifference = (timestamp) => {
+    const notificationDate = new Date(timestamp);
+    const formattedDistance = formatDistanceToNow(notificationDate, {
+      addSuffix: true,
+    });
+    return formattedDistance;
+  };
   return (
     <SectionLayout activeTab={3}>
       <InnerSectionLayout heading={'Notification'}>
         <div className="h-auto">
-          {currentTableData?.length > 0 ? (
-            currentTableData.map((item, i) => {
-              if (i % 2 === 0) {
+          {dataList?.length > 0 ? (
+            dataList.map((item, i) => {
+              const userData = JSON.parse(item?.notificationData?.user)
+              if (!item?.markAsRead) {
                 return (
-                  <div key={i} className="px-4 md:pl-10 bg-[#F5FBFF] relative">
+                  <div key={i} className="px-4 md:pl-10 bg-[#F5FBFF] relative" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
                     <div className="dot-icon" />
                     <div className="flex pt-4 pb-4">
                       <div className="mr-2.5">
-                        <img
-                          alt=""
-                          src={dummy}
-                          className="rounded-full w-[45px] h-[40px] object-cover	"
+                        <Avatar
+                          classNames="w-[45px] h-[45px] object-cover"
+                          image={userData?.profilePictureUrl}
+                          name={`${userData?.firstName} ${userData?.lastName}`}
                         />
                       </div>
                       <div className="block w-full">
                         <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">Lex Murphy</span> requested you to follow.
+                          <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>{item?.notificationType === 'like' ? 'liked your post' :
+                            item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
                         </div>
-                        <div className="text-[12px] font-normal text-[#A1A0A0]">Just Now</div>
+                        <div className="text-[12px] font-normal text-[#A1A0A0]">
+                          {formatTimeDifference(item?.createdAt)}
+                        </div>
                       </div>
                     </div>
-                    {i !== data.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
+                    {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
                   </div>
                 );
               } else {
                 return (
-                  <div key={i} className="px-4 md:pl-10">
+                  <div key={i} className="px-4 md:pl-10" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
                     <div className="flex pt-4 pb-4">
                       <div className="mr-2.5">
-                        <img
-                          alt=""
-                          src={dummy}
-                          className="rounded-full w-[45px] h-[40px] object-cover	"
+                        <Avatar
+                          classNames="w-[45px] h-[45px] object-cover"
+                          image={userData?.profilePictureUrl}
+                          name={`${userData?.firstName} ${userData?.lastName}`}
                         />
                       </div>
                       <div className="block w-full">
                         <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">Lex Murphy</span> requested you to follow.
+                          <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>{item?.notificationType === 'like' ? 'liked your post' :
+                            item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
                         </div>
-                        <div className="text-[12px] font-normal text-[#A1A0A0]">Just Now</div>
+                        <div className="text-[12px] font-normal text-[#A1A0A0]">
+                          {formatTimeDifference(item?.createdAt)}
+                        </div>
                       </div>
                     </div>
-                    {i !== data.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
+                    {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
                   </div>
                 );
               }
@@ -106,12 +162,44 @@ const NotificationPage = () => {
           <Pagination
             className="pagination-bar"
             currentPage={currentPage}
-            totalCount={data.length}
+            totalCount={totalCount}
             pageSize={PageSize}
             onPageChange={(page) => setCurrentPage(page)}
           />
         </div>
       </InnerSectionLayout>
+      <Modal
+        isOpen={isPreviewDetailsPostOpen}
+        onClose={() => {
+          setActivePost({})
+          setActiveMediaIndex(0);
+          fetchnotificationList()
+          setIsPreviewDetailsPostOpen(false)
+        }}
+        isTitle={false}
+        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+          } `}
+        childrenClassNames=""
+        padding="!p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height={` ${!activePost?.postMedia?.length
+          ? 'max-h-[100dvh] md:h-auto'
+          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+          } `}
+      >
+        <PostDetails
+          post={activePost}
+          reloadPostDetails={fetchSinglePostDetails}
+          customActiveIndex={activeMediaIndex}
+          onCloseHandler={() => {
+            setActivePost({})
+            setActiveMediaIndex(0);
+            fetchnotificationList()
+            setIsPreviewDetailsPostOpen(false)
+          }}
+        />
+      </Modal>
     </SectionLayout>
   );
 };

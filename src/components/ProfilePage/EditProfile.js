@@ -31,7 +31,7 @@ const EditProfile = ({
   location = '',
   profilePictureUrl = '',
   profilePicture = '',
-  onClose = () => {},
+  onClose = () => { },
 }) => {
   const [cropImageFile, setCropImageFile] = useState(null);
   const dispatch = useDispatch();
@@ -72,7 +72,6 @@ const EditProfile = ({
         const {
           data: { url, key },
         } = data;
-        console.log(data);
         formik.setFieldValue('profilePicture', key);
         await fetchFileUPloadAWS({ url: url, selectedFile: cropImageFile });
       }
@@ -196,11 +195,10 @@ const EditProfile = ({
           />
           <div className="w-[9%] text-[14px] pt-[20px]">
             <span
-              className={`text-center ${
-                formik?.values?.email?.trim() !== email?.trim()
+              className={`text-center ${formik?.values?.email?.trim() !== email?.trim()
                   ? 'text-blueprimary cursor-pointer font-semibold'
                   : 'text-greydark opacity-40 cursor-not-allowed'
-              } `}
+                } `}
               onClick={() => {
                 onVerifyClickHandler();
               }}
