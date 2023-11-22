@@ -57,7 +57,7 @@ function Modal({
 
   return (
     <div
-      className="cust-modal-fixed fixed overflow-y-scroll md:overflow-y-auto top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
+      className="cust-modal-fixed fixed overflow-y-scroll md:overflow-y-auto top-0 left-0 w-full h-full flex items-center justify-center z-[500] bg-[#0000005f] backdrop-blur-[1.5px]"
       onClick={onClose}
     >
       <div
