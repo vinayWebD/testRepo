@@ -1,7 +1,8 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { NETWORK_COUNT, UPDATE_EMAIL_SEND_OTP, CHANGE_PASSWORD } = NETWORK_CONSTANTS;
+const { NETWORK_COUNT, UPDATE_EMAIL_SEND_OTP, CHANGE_PASSWORD, HELP_CENTER_CONTACT_ADMIN } =
+  NETWORK_CONSTANTS;
 
 const networkCount = async () => {
   try {
@@ -34,4 +35,15 @@ const changePassword = async ({ currentPassword, newPassword, confirmPassword })
   }
 };
 
-export { networkCount, sendOtpToUpdateEmail, changePassword };
+const contactAdmin = async ({ userQuery = '' }) => {
+  try {
+    const data = await apiUtility(HELP_CENTER_CONTACT_ADMIN, 'POST', {
+      userQuery,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export { networkCount, sendOtpToUpdateEmail, changePassword, contactAdmin };

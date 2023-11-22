@@ -8,7 +8,6 @@ const messaging = getMessaging(app);
 
 export const Sendrequest = () => {
   Notification.requestPermission().then(async (permission) => {
-    console.log('permission', permission)
     if (permission === 'granted') {
       try {
         const currentToken = await getToken(messaging, {
@@ -16,8 +15,7 @@ export const Sendrequest = () => {
             'BNEr8fsavW_uQMUS_NnllNCekCYO1_MybA1Cizb5noGiko09Rj96yrbVayebnZ2EEEf3FkF8rIU7p9fug9XSJ-0',
         });
         if (currentToken) {
-          localStorage.setItem('fcm', currentToken)
-          console.log('Client Token: ', currentToken);
+          localStorage.setItem('fcm', currentToken);
         } else {
           console.log('Failed to generate the registration token.');
         }

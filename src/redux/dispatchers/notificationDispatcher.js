@@ -1,4 +1,4 @@
-import { notificationListing } from '../../services/notificationService';
+import { markReadApi, notificationListing } from '../../services/notificationService';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 const notificationListDispatcher =
@@ -10,4 +10,14 @@ const notificationListDispatcher =
       return { status, data };
     };
 
-export { notificationListDispatcher };
+const markReadDispatcher =
+  (dataToSend) =>
+    async (dispatch) => {
+      dispatch(globalTransparentLoadingPrivate(true));
+      console.log('dataToSend', dataToSend)
+      const { status, data } = await markReadApi(dataToSend);
+      dispatch(globalTransparentLoadingPrivate(false));
+      return { status, data };
+    };
+
+export { notificationListDispatcher, markReadDispatcher };

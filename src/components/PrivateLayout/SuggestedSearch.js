@@ -29,12 +29,12 @@ export const getModalCounter = () => {
 
 function SuggestedSearch({
   isOpen,
-  onClose = () => { },
+  onClose = () => {},
   width = '',
   height = 'h-auto',
   titleParentClassNames = '',
   searchValue = '',
-  onValueChange = () => { },
+  onValueChange = () => {},
 }) {
   const dispatch = useDispatch();
   const [searchResult, setSearchResult] = useState([]);

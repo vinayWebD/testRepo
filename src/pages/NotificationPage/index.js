@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
-import dummy from '../../assets/images/dummy.svg';
 import Pagination from '../../components/Pagination';
 import noWork from '../../assets/images/noWork.svg';
 import './style.scss';
@@ -8,13 +7,13 @@ import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayou
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { getErrorMessage, successStatus } from '../../common';
 // import { notificationListing } from '../../services/notificationService';
-import { notificationListDispatcher } from '../../redux/dispatchers/notificationDispatcher';
+import { markReadDispatcher, notificationListDispatcher } from '../../redux/dispatchers/notificationDispatcher';
 import { useDispatch } from 'react-redux';
 import Avatar from '../../components/common/Avatar';
 import { fetchPostDetails } from '../../services/feed';
 import Modal from '../../components/Modal';
 import PostDetails from '../../components/Post/PostDetails';
-
+import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 let PageSize = 10;
 
 const NotificationPage = () => {
@@ -41,16 +40,13 @@ const NotificationPage = () => {
     }
   };
 
-  console.log('dataList', dataList, dataList)
 
   useEffect(() => {
     fetchnotificationList();
   }, [currentPage]);
 
   const fetchSinglePostDetails = async (postId) => {
-    console.log('postId---->', postId)
     const response = await fetchPostDetails({ postId });
-
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
     if (!successStatus(status)) {
@@ -61,13 +57,37 @@ const NotificationPage = () => {
     }
   };
 
-  const handleClick = (postId) => {
-    console.log('postId', postId)
-    fetchSinglePostDetails(postId)
-    setActiveMediaIndex(postId);
-    setIsPreviewDetailsPostOpen(true);
-    // setActivePost({ ...post });
+  const handleClick = async (postId, notificationId, markAsRead) => {
+    if (postId) {
+      if (!markAsRead) {
+        const { status, data } = await dispatch(markReadDispatcher([Number(notificationId)]));
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
+          if (errormsg) {
+            ToastNotifyError(errormsg);
+          }
+        } else {
+          fetchnotificationList()
+          fetchSinglePostDetails(postId)
+          setActiveMediaIndex(postId);
+          setIsPreviewDetailsPostOpen(true);
+        }
+      } else {
+        fetchSinglePostDetails(postId)
+        setActiveMediaIndex(postId);
+        setIsPreviewDetailsPostOpen(true);
+      }
+
+    }
   }
+
+  const formatTimeDifference = (timestamp) => {
+    const notificationDate = new Date(timestamp);
+    const formattedDistance = formatDistanceToNow(notificationDate, {
+      addSuffix: true,
+    });
+    return formattedDistance;
+  };
   return (
     <SectionLayout activeTab={3}>
       <InnerSectionLayout heading={'Notification'}>
@@ -75,10 +95,9 @@ const NotificationPage = () => {
           {dataList?.length > 0 ? (
             dataList.map((item, i) => {
               const userData = JSON.parse(item?.notificationData?.user)
-              console.log('item', item, userData)
               if (!item?.markAsRead) {
                 return (
-                  <div key={i} className="px-4 md:pl-10 bg-[#F5FBFF] relative" onClick={() => handleClick(item?.PostId)}>
+                  <div key={i} className="px-4 md:pl-10 bg-[#F5FBFF] relative" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
                     <div className="dot-icon" />
                     <div className="flex pt-4 pb-4">
                       <div className="mr-2.5">
@@ -93,7 +112,9 @@ const NotificationPage = () => {
                           <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>{item?.notificationType === 'like' ? 'liked your post' :
                             item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
                         </div>
-                        <div className="text-[12px] font-normal text-[#A1A0A0]">Just Now</div>
+                        <div className="text-[12px] font-normal text-[#A1A0A0]">
+                          {formatTimeDifference(item?.createdAt)}
+                        </div>
                       </div>
                     </div>
                     {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
@@ -101,20 +122,23 @@ const NotificationPage = () => {
                 );
               } else {
                 return (
-                  <div key={i} className="px-4 md:pl-10">
+                  <div key={i} className="px-4 md:pl-10" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
                     <div className="flex pt-4 pb-4">
                       <div className="mr-2.5">
-                        <img
-                          alt=""
-                          src={dummy}
-                          className="rounded-full w-[45px] h-[40px] object-cover	"
+                        <Avatar
+                          classNames="w-[45px] h-[45px] object-cover"
+                          image={userData?.profilePictureUrl}
+                          name={`${userData?.firstName} ${userData?.lastName}`}
                         />
                       </div>
                       <div className="block w-full">
                         <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">Lex Murphy</span> requested you to follow.
+                          <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>{item?.notificationType === 'like' ? 'liked your post' :
+                            item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
                         </div>
-                        <div className="text-[12px] font-normal text-[#A1A0A0]">Just Now</div>
+                        <div className="text-[12px] font-normal text-[#A1A0A0]">
+                          {formatTimeDifference(item?.createdAt)}
+                        </div>
                       </div>
                     </div>
                     {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
@@ -146,20 +170,34 @@ const NotificationPage = () => {
       </InnerSectionLayout>
       <Modal
         isOpen={isPreviewDetailsPostOpen}
-        onClose={() => setIsPreviewDetailsPostOpen(false)}
+        onClose={() => {
+          setActivePost({})
+          setActiveMediaIndex(0);
+          fetchnotificationList()
+          setIsPreviewDetailsPostOpen(false)
+        }}
         isTitle={false}
-        width="!w-[100vw] md:!w-[75vw]"
+        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+          } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+        height={` ${!activePost?.postMedia?.length
+          ? 'max-h-[100dvh] md:h-auto'
+          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+          } `}
       >
         <PostDetails
           post={activePost}
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
-          onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
+          onCloseHandler={() => {
+            setActivePost({})
+            setActiveMediaIndex(0);
+            fetchnotificationList()
+            setIsPreviewDetailsPostOpen(false)
+          }}
         />
       </Modal>
     </SectionLayout>

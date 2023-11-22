@@ -51,9 +51,8 @@ const PrivateHeader = () => {
     {
       name: DDLBL_MY_PROFILE,
       action: () => {
-
-        navigate(PATHS.PROFILE)
-        window.location.reload()
+        navigate(PATHS.PROFILE);
+        window.location.reload();
       },
     },
     {

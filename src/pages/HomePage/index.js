@@ -317,12 +317,18 @@ const HomePage = () => {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width="!w-[100vw] md:!w-[75vw]"
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+        height={` ${
+          !activePost?.postMedia?.length
+            ? 'max-h-[100dvh] md:h-auto'
+            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+        } `}
       >
         <PostDetails
           post={activePost}
