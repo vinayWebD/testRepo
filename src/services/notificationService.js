@@ -9,7 +9,7 @@ const { NOTIFICATION_LIST } = NETWORK_CONSTANTS;
  * @returns
  */
 
-const notificationListing = async ({ page = 1, limit = 20 }) => {
+const notificationListing = async ({ page = 1, limit = 10 }) => {
   try {
     const data = await apiUtility(NOTIFICATION_LIST, 'GET', { page, limit });
     return data;

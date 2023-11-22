@@ -32,6 +32,7 @@ export const Sendrequest = () => {
 
 export const onMessager = () =>
   new Promise((resolve) => {
+    console.log('messaging', messaging)
     onMessage(messaging, (payload) => {
       resolve(payload);
     });
