@@ -36,17 +36,24 @@ const MyNetworkTabSection = ({ selectedTab }) => {
             {selectedTab} (100)
           </div>
           <div className="flex justify-between items-center sm:gap-4 min-[320px]:gap-0">
-            {
-              (searchValue === '' || searchValue === null) && !searchOnFocus ? <div className="flex items-center px-[5px]" onClick={() => setSearchOnFocus(true)} onBlur={() => setSearchOnFocus(false)}>
-                <div className="flex items-center px-[5px]" >
+            {(searchValue === '' || searchValue === null) && !searchOnFocus ? (
+              <div
+                className="flex items-center px-[5px]"
+                onClick={() => setSearchOnFocus(true)}
+                onBlur={() => setSearchOnFocus(false)}
+              >
+                <div className="flex items-center px-[5px]">
                   <SearchIcon color={'black'} />
                 </div>
-                <div className='text-[14px] text-[#A1A0A0] ml-2'>Search</div>
-              </div> : <div
-                className={`${searchOnFocus
-                  ? 'border-[darkgray] flex border-b-[1px] border-0 min-[320px]:w-full md:w-[197.7px]'
-                  : ''
-                  } `}
+                <div className="text-[14px] text-[#A1A0A0] ml-2">Search</div>
+              </div>
+            ) : (
+              <div
+                className={`${
+                  searchOnFocus
+                    ? 'border-[darkgray] flex border-b-[1px] border-0 min-[320px]:w-full md:w-[197.7px]'
+                    : ''
+                } `}
               >
                 <SearchInput
                   iconColor={Colors.grayDark}
@@ -56,8 +63,9 @@ const MyNetworkTabSection = ({ selectedTab }) => {
                   onBlur={() => setSearchOnFocus(false)}
                   onFocus={() => setSearchOnFocus(true)}
                   textColor="text-black"
-                  className={` md:w-[100%] min-[320px]:w-[100px]  min-[300px]:w-[0px] ${searchOnFocus ? 'py-1 min-[320px]:w-[100px] md:w-[100%] ' : ''
-                    } `}
+                  className={` md:w-[100%] min-[320px]:w-[100px]  min-[300px]:w-[0px] ${
+                    searchOnFocus ? 'py-1 min-[320px]:w-[100px] md:w-[100%] ' : ''
+                  } `}
                 />
                 {searchOnFocus && (
                   <div
@@ -68,16 +76,15 @@ const MyNetworkTabSection = ({ selectedTab }) => {
                   </div>
                 )}
               </div>
-            }
-
-
+            )}
 
             <Button
               label={BTNLBL_INVITE_PEOPLE}
-              additionalClassNames={` md:px-[24px] sm:h-[0px] md:h-[50px] md:py-[14px] items-center text-xs min-[320px]:p-4 ${searchOnFocus
-                ? 'min-[320px]:hidden  md:px-[24px] md:py-[15px] items-center text-xs sm:block'
-                : ''
-                } `}
+              additionalClassNames={` md:px-[24px] sm:h-[0px] md:h-[50px] md:py-[14px] items-center text-xs min-[320px]:p-4 ${
+                searchOnFocus
+                  ? 'min-[320px]:hidden  md:px-[24px] md:py-[15px] items-center text-xs sm:block'
+                  : ''
+              } `}
               showArrowIcon={false}
               onClick={() => setIsInvitePeopleModalOpen(true)}
             />

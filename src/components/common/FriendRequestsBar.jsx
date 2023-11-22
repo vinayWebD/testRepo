@@ -77,13 +77,19 @@ function FriendRequestsBar({
             <div className={`modal-title ${titleClassNames} ${focusOnSearch ? 'hidden' : ''}`}>
               {title}
             </div>
-            {
-              (friendRequestSearch === '' || friendRequestSearch === null) && !focusOnSearch ? <div className="flex items-center px-[5px]" onClick={() => setFocusOnSearch(true)} onBlur={() => setFocusOnSearch(false)}>
-                <div className="flex items-center px-[5px]" >
+            {(friendRequestSearch === '' || friendRequestSearch === null) && !focusOnSearch ? (
+              <div
+                className="flex items-center px-[5px]"
+                onClick={() => setFocusOnSearch(true)}
+                onBlur={() => setFocusOnSearch(false)}
+              >
+                <div className="flex items-center px-[5px]">
                   <SearchIcon color={'black'} />
                 </div>
-                <div className='text-[14px] text-[#A1A0A0] ml-2'>Search</div>
-              </div> : <div className="">
+                <div className="text-[14px] text-[#A1A0A0] ml-2">Search</div>
+              </div>
+            ) : (
+              <div className="">
                 <SearchInput
                   iconColor={Colors.grayDark}
                   onChange={searchInputChangeHandler}
@@ -95,7 +101,7 @@ function FriendRequestsBar({
                   className=""
                 />
               </div>
-            }
+            )}
           </div>
         }
         <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] max-h-96 overflow-scroll">
@@ -103,7 +109,7 @@ function FriendRequestsBar({
             <UserCard key={item} isFriendRequest={true} />
           ))}
         </div>
-        <div className='h-[10px]'></div>
+        <div className="h-[10px]"></div>
       </div>
     </div>
   );

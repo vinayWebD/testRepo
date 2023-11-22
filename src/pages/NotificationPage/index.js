@@ -23,8 +23,8 @@ const NotificationPage = () => {
 
   const fetchnotificationList = async () => {
     const { status, data } = await notificationListing({
-      page: currentPage
-      , limit: 10
+      page: currentPage,
+      limit: 10,
     });
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
@@ -32,7 +32,7 @@ const NotificationPage = () => {
         ToastNotifyError(errormsg);
       }
     } else {
-      console.log('data?.data', data?.data)
+      console.log('data?.data', data?.data);
     }
   };
 

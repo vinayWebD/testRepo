@@ -2,10 +2,10 @@ import SearchIcon from '../Icons/SearchIcon';
 
 const SearchInput = ({
   value = '',
-  onChange = () => { },
+  onChange = () => {},
   placeholder = 'Search',
-  onBlur = () => { },
-  onFocus = () => { },
+  onBlur = () => {},
+  onFocus = () => {},
   className = '',
   disabled = false,
   iconColor = '#ffffff',
