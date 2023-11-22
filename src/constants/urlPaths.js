@@ -14,4 +14,5 @@ export const PATHS = {
   MY_NOTIFICATION: '/notification',
   SETTINGS: '/settings',
   SETTINGS_CHANGE_PASSWORD: '/settings/change-password',
+  SETTINGS_HELP_CENTER: '/settings/help-center',
 };

@@ -3,10 +3,8 @@ import toast, { Toaster } from 'react-hot-toast';
 import { Sendrequest, onMessager } from '../../firebase';
 import { register } from '../../serviceWorkerRegistration';
 const Notification = () => {
-
   const [notification, setNotification] = useState({ title: '', body: '' });
   useEffect(() => {
-
     register();
     Sendrequest();
 
