@@ -9,7 +9,7 @@ import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayou
 import { PATHS } from '../../constants/urlPaths';
 import { useNavigate } from 'react-router-dom';
 
-const { SETTINGS_CHANGE_PASSWORD } = PATHS;
+const { SETTINGS_CHANGE_PASSWORD, SETTINGS_HELP_CENTER } = PATHS;
 
 const INNER_SECTION = [
   {
@@ -32,6 +32,7 @@ const INNER_SECTION = [
   {
     title: 'Help Center',
     iconSrc: HelpCenterImage,
+    path: SETTINGS_HELP_CENTER,
   },
 ];
 

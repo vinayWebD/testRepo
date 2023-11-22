@@ -36,6 +36,7 @@ const NETWORK_CONSTANTS = {
   UPDATE_EMAIL_SEND_OTP: '/v1/accounts/update-email',
   NOTIFICATION_LIST: '/v1/notifications/',
   CHANGE_PASSWORD: '/v1/accounts/change-password',
+  HELP_CENTER_CONTACT_ADMIN: '/v1/accounts/help-center/query',
 };
 
 export default NETWORK_CONSTANTS;

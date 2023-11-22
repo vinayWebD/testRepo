@@ -1,4 +1,4 @@
-import { changePassword, sendOtpToUpdateEmail } from '../../services/myProfile';
+import { changePassword, contactAdmin, sendOtpToUpdateEmail } from '../../services/myProfile';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 const sendOtpToUpdateEmailDispatcher = () => async (dispatch) => {
@@ -21,4 +21,15 @@ const changePasswordDispatcher =
     return { status, data };
   };
 
-export { sendOtpToUpdateEmailDispatcher, changePasswordDispatcher };
+const contactAdminDispatcher =
+  ({ userQuery }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await contactAdmin({
+      userQuery,
+    });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+export { sendOtpToUpdateEmailDispatcher, changePasswordDispatcher, contactAdminDispatcher };
