@@ -14,7 +14,6 @@ const markReadDispatcher =
   (dataToSend) =>
     async (dispatch) => {
       dispatch(globalTransparentLoadingPrivate(true));
-      console.log('dataToSend', dataToSend)
       const { status, data } = await markReadApi(dataToSend);
       dispatch(globalTransparentLoadingPrivate(false));
       return { status, data };
