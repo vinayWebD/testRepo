@@ -262,7 +262,7 @@ function MyPosts({ other = true }) {
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
         width={` ${
-          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[50vw]' : '!w-[100vw] md:!w-[75vw]'
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
         } `}
         childrenClassNames=""
         padding="!p-0"
