@@ -95,8 +95,9 @@ const UpdateEmail = ({ email }) => {
         <span className="mt-1 error">{error && 'Verification Code is required'}</span>
 
         <div
-          className={`flex gap-2 text-greydark items-center justify-center mt-4 ${counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
-            }`}
+          className={`flex gap-2 text-greydark items-center justify-center mt-4 ${
+            counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
+          }`}
           onClick={() => (counter > 0 ? null : resendHandler())}
         >
           <span className="underline">

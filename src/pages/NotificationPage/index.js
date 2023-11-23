@@ -7,7 +7,10 @@ import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayou
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { getErrorMessage, successStatus } from '../../common';
 // import { notificationListing } from '../../services/notificationService';
-import { markReadDispatcher, notificationListDispatcher } from '../../redux/dispatchers/notificationDispatcher';
+import {
+  markReadDispatcher,
+  notificationListDispatcher,
+} from '../../redux/dispatchers/notificationDispatcher';
 import { useDispatch } from 'react-redux';
 import Avatar from '../../components/common/Avatar';
 import { fetchPostDetails } from '../../services/feed';
@@ -18,28 +21,29 @@ let PageSize = 10;
 
 const NotificationPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataList, setDataList] = useState([])
-  const [totalCount, setTotalCount] = useState(0)
+  const [dataList, setDataList] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const dispatch = useDispatch();
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const fetchnotificationList = async () => {
-    const { status, data } = await dispatch(notificationListDispatcher({
-      page: currentPage
-    }));
+    const { status, data } = await dispatch(
+      notificationListDispatcher({
+        page: currentPage,
+      }),
+    );
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
         ToastNotifyError(errormsg);
       }
     } else {
-      setCurrentPage(data?.data?.page)
-      setDataList(data?.data?.notification)
-      setTotalCount(data?.data?.count)
+      setCurrentPage(data?.data?.page);
+      setDataList(data?.data?.notification);
+      setTotalCount(data?.data?.count);
     }
   };
-
 
   useEffect(() => {
     fetchnotificationList();
@@ -67,19 +71,18 @@ const NotificationPage = () => {
             ToastNotifyError(errormsg);
           }
         } else {
-          fetchnotificationList()
-          fetchSinglePostDetails(postId)
+          fetchnotificationList();
+          fetchSinglePostDetails(postId);
           setActiveMediaIndex(postId);
           setIsPreviewDetailsPostOpen(true);
         }
       } else {
-        fetchSinglePostDetails(postId)
+        fetchSinglePostDetails(postId);
         setActiveMediaIndex(postId);
         setIsPreviewDetailsPostOpen(true);
       }
-
     }
-  }
+  };
 
   const formatTimeDifference = (timestamp) => {
     const notificationDate = new Date(timestamp);
@@ -94,10 +97,14 @@ const NotificationPage = () => {
         <div className="h-auto">
           {dataList?.length > 0 ? (
             dataList.map((item, i) => {
-              const userData = JSON.parse(item?.notificationData?.user)
+              const userData = JSON.parse(item?.notificationData?.user);
               if (!item?.markAsRead) {
                 return (
-                  <div key={i} className="px-4 md:pl-10 bg-[#F5FBFF] relative" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
+                  <div
+                    key={i}
+                    className="px-4 md:pl-10 bg-[#F5FBFF] relative"
+                    onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}
+                  >
                     <div className="dot-icon" />
                     <div className="flex pt-4 pb-4">
                       <div className="mr-2.5">
@@ -109,8 +116,14 @@ const NotificationPage = () => {
                       </div>
                       <div className="block w-full">
                         <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>{item?.notificationType === 'like' ? 'liked your post' :
-                            item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
+                          <span className="font-medium">
+                            {userData?.firstName} {userData?.lastName}{' '}
+                          </span>
+                          {item?.notificationType === 'like'
+                            ? 'liked your post'
+                            : item?.notificationType === 'comment'
+                            ? 'comment on your post'
+                            : 'requested you to follow'}
                         </div>
                         <div className="text-[12px] font-normal text-[#A1A0A0]">
                           {formatTimeDifference(item?.createdAt)}
@@ -122,7 +135,11 @@ const NotificationPage = () => {
                 );
               } else {
                 return (
-                  <div key={i} className="px-4 md:pl-10" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
+                  <div
+                    key={i}
+                    className="px-4 md:pl-10"
+                    onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}
+                  >
                     <div className="flex pt-4 pb-4">
                       <div className="mr-2.5">
                         <Avatar
@@ -133,8 +150,14 @@ const NotificationPage = () => {
                       </div>
                       <div className="block w-full">
                         <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>{item?.notificationType === 'like' ? 'liked your post' :
-                            item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
+                          <span className="font-medium">
+                            {userData?.firstName} {userData?.lastName}{' '}
+                          </span>
+                          {item?.notificationType === 'like'
+                            ? 'liked your post'
+                            : item?.notificationType === 'comment'
+                            ? 'comment on your post'
+                            : 'requested you to follow'}
                         </div>
                         <div className="text-[12px] font-normal text-[#A1A0A0]">
                           {formatTimeDifference(item?.createdAt)}
@@ -171,32 +194,34 @@ const NotificationPage = () => {
       <Modal
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => {
-          setActivePost({})
+          setActivePost({});
           setActiveMediaIndex(0);
-          fetchnotificationList()
-          setIsPreviewDetailsPostOpen(false)
+          fetchnotificationList();
+          setIsPreviewDetailsPostOpen(false);
         }}
         isTitle={false}
-        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-          } `}
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${!activePost?.postMedia?.length
-          ? 'max-h-[100dvh] md:h-auto'
-          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-          } `}
+        height={` ${
+          !activePost?.postMedia?.length
+            ? 'max-h-[100dvh] md:h-auto'
+            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+        } `}
       >
         <PostDetails
           post={activePost}
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => {
-            setActivePost({})
+            setActivePost({});
             setActiveMediaIndex(0);
-            fetchnotificationList()
-            setIsPreviewDetailsPostOpen(false)
+            fetchnotificationList();
+            setIsPreviewDetailsPostOpen(false);
           }}
         />
       </Modal>
