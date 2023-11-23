@@ -56,7 +56,7 @@ const EditProfile = ({
       .string()
       .required(IS_REQUIRED('Last Name'))
       .max(50, MSG_FIELD_LENGTH('First Name')),
-    location: yup.string(),
+    location: yup.string().nullable(true),
     profilePicture: yup.string(),
   });
 
@@ -222,7 +222,6 @@ const EditProfile = ({
             labelFontColor={'#333333'}
             error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
-            isRequired
             className="w-full"
           />
         </div>

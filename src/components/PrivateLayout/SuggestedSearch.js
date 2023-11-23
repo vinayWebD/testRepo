@@ -127,7 +127,7 @@ function SuggestedSearch({
   return (
     <div
       id="suggested-search"
-      className=" bg-white items-start content-start flex-wrap left-0 fixed md:absolute w-[100vw] h-[calc(100vh-60px)] top-[61px] md:top-[27px] md:w-full md:h-fit flex md:rounded-md z-50 shadow-lg"
+      className=" bg-white items-start content-start flex-wrap left-0 fixed md:absolute w-[100vw] h-[calc(100vh-60px)] top-[61px] md:top-[33px] md:w-full md:h-fit flex md:rounded-md z-50 shadow-lg"
       onClick={onCloseHandler}
     >
       <div className="relative w-full h-full">
