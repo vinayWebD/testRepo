@@ -138,7 +138,7 @@ function VerifyEmail() {
         const dataToSend = {
           code: otp,
           email: email,
-          fcmToken: localStorage.getItem('fcm')
+          fcmToken: localStorage.getItem('fcm'),
         };
         const { data, status } = await verifyEmail(dataToSend);
         setIsLoading(false);
@@ -166,8 +166,9 @@ function VerifyEmail() {
           </span>
           <h1 className="text-white pr-2">{LANG_VERIFY_EMAIL}</h1>
         </div>
-        <h4 className="text-white mt-2 mb-4 pr-2">{`${historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
-          } ${email || ''}`}</h4>
+        <h4 className="text-white mt-2 mb-4 pr-2">{`${
+          historyType === FORGOT_PWD ? LANG_OTP_EMAIL : LANG_CODE_EMAIL
+        } ${email || ''}`}</h4>
       </div>
       <form onSubmit={onSubmit} className="flex flex-col gap-[24px] max-w-[400px] mt-[24px]">
         <div className="mb-4">
@@ -197,8 +198,9 @@ function VerifyEmail() {
           additionalClassNames="capitalize"
         />
         <div
-          className={`flex gap-2 text-white items-center justify-center para-normal ${counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
-            }`}
+          className={`flex gap-2 text-white items-center justify-center para-normal ${
+            counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
+          }`}
           onClick={() => (counter > 0 ? null : resendHandler())}
         >
           <span className="underline">

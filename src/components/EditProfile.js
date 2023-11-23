@@ -23,7 +23,7 @@ const EditProfile = ({
   location = '',
   profilePictureUrl = '',
   profilePicture = '',
-  onClose = () => { },
+  onClose = () => {},
 }) => {
   const [cropImageFile, setCropImageFile] = useState(null);
   const dispatch = useDispatch();

@@ -8,7 +8,10 @@ import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayou
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { getErrorMessage, successStatus } from '../../common';
 // import { notificationListing } from '../../services/notificationService';
-import { markReadDispatcher, notificationListDispatcher } from '../../redux/dispatchers/notificationDispatcher';
+import {
+  markReadDispatcher,
+  notificationListDispatcher,
+} from '../../redux/dispatchers/notificationDispatcher';
 import { useDispatch } from 'react-redux';
 import Avatar from '../../components/common/Avatar';
 import { fetchPostDetails } from '../../services/feed';
@@ -19,29 +22,29 @@ let PageSize = 10;
 
 const NotificationPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
-  const [dataList, setDataList] = useState([])
-  const [totalCount, setTotalCount] = useState(0)
+  const [dataList, setDataList] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const dispatch = useDispatch();
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
   const fetchnotificationList = async () => {
-    const { status, data } = await dispatch(notificationListDispatcher({
-      page: currentPage
-    }));
+    const { status, data } = await dispatch(
+      notificationListDispatcher({
+        page: currentPage,
+      }),
+    );
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
         ToastNotifyError(errormsg);
       }
     } else {
-      console.log('data', data)
       setCurrentPage(data?.data?.page)
       setDataList(data?.data?.notifications)
       setTotalCount(data?.data?.count)
     }
   };
-
 
   useEffect(() => {
     fetchnotificationList();
@@ -69,19 +72,18 @@ const NotificationPage = () => {
             ToastNotifyError(errormsg);
           }
         } else {
-          fetchnotificationList()
-          fetchSinglePostDetails(postId)
+          fetchnotificationList();
+          fetchSinglePostDetails(postId);
           setActiveMediaIndex(postId);
           setIsPreviewDetailsPostOpen(true);
         }
       } else {
-        fetchSinglePostDetails(postId)
+        fetchSinglePostDetails(postId);
         setActiveMediaIndex(postId);
         setIsPreviewDetailsPostOpen(true);
       }
-
     }
-  }
+  };
 
   const formatTimeDifference = (timestamp) => {
     const notificationDate = new Date(timestamp);
@@ -193,10 +195,10 @@ const NotificationPage = () => {
       <Modal
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => {
-          setActivePost({})
+          setActivePost({});
           setActiveMediaIndex(0);
-          fetchnotificationList()
-          setIsPreviewDetailsPostOpen(false)
+          fetchnotificationList();
+          setIsPreviewDetailsPostOpen(false);
         }}
         isTitle={false}
         width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
@@ -215,10 +217,10 @@ const NotificationPage = () => {
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => {
-            setActivePost({})
+            setActivePost({});
             setActiveMediaIndex(0);
-            fetchnotificationList()
-            setIsPreviewDetailsPostOpen(false)
+            fetchnotificationList();
+            setIsPreviewDetailsPostOpen(false);
           }}
         />
       </Modal>

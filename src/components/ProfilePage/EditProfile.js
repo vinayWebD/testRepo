@@ -31,7 +31,7 @@ const EditProfile = ({
   location = '',
   profilePictureUrl = '',
   profilePicture = '',
-  onClose = () => { },
+  onClose = () => {},
 }) => {
   const [cropImageFile, setCropImageFile] = useState(null);
   const dispatch = useDispatch();
@@ -56,7 +56,7 @@ const EditProfile = ({
       .string()
       .required(IS_REQUIRED('Last Name'))
       .max(50, MSG_FIELD_LENGTH('First Name')),
-    location: yup.string(),
+    location: yup.string().nullable(true),
     profilePicture: yup.string(),
   });
 
@@ -195,10 +195,11 @@ const EditProfile = ({
           />
           <div className="w-[9%] text-[14px] pt-[20px]">
             <span
-              className={`text-center ${formik?.values?.email?.trim() !== email?.trim()
+              className={`text-center ${
+                formik?.values?.email?.trim() !== email?.trim()
                   ? 'text-blueprimary cursor-pointer font-semibold'
                   : 'text-greydark opacity-40 cursor-not-allowed'
-                } `}
+              } `}
               onClick={() => {
                 onVerifyClickHandler();
               }}
@@ -220,7 +221,6 @@ const EditProfile = ({
             labelFontColor={'#333333'}
             error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
-            isRequired
             className="w-full"
           />
         </div>

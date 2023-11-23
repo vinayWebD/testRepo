@@ -83,6 +83,7 @@ const PrivateHeader = () => {
                 className="h-[32px] w-[290px] placeholder:text-white"
                 onChange={searchInputChangeHandler}
                 value={searchValue}
+                bottomBorderColorClass={isSuggestUserOpen ? '!border-b-0' : 'border-white'}
               />
               <SuggestedSearch
                 isOpen={isSuggestUserOpen}
