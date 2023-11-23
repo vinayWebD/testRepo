@@ -316,26 +316,11 @@ body {
 .post-details .slick-track div {
   height: 100%;
 }
-/* width */
-/* ::-webkit-scrollbar {
-  width: 10px;
+
+/* width of scrollbar in search */
+#suggested-search ::-webkit-scrollbar {
+  width: 0;
 }
-
-/* Track */
-/* ::-webkit-scrollbar-track {
-  background: #f1f1f1;
-} */
-
-/* Handle */
-/* ::-webkit-scrollbar-thumb {
-  background: #c4c4c4;
-  border-radius: 5px;
-} */
-
-/* Handle on hover */
-/* ::-webkit-scrollbar-thumb:hover {
-  background: #e4dada;
-}  */
 
 .post-details .slick-slider img,
 .post-details .slick-slider video {
