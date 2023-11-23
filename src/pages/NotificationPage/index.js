@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 import Pagination from '../../components/Pagination';
@@ -39,9 +40,9 @@ const NotificationPage = () => {
         ToastNotifyError(errormsg);
       }
     } else {
-      setCurrentPage(data?.data?.page);
-      setDataList(data?.data?.notification);
-      setTotalCount(data?.data?.count);
+      setCurrentPage(data?.data?.page)
+      setDataList(data?.data?.notifications)
+      setTotalCount(data?.data?.count)
     }
   };
 
@@ -64,7 +65,7 @@ const NotificationPage = () => {
   const handleClick = async (postId, notificationId, markAsRead) => {
     if (postId) {
       if (!markAsRead) {
-        const { status, data } = await dispatch(markReadDispatcher([Number(notificationId)]));
+        const { status, data } = await dispatch(markReadDispatcher({ 'NotificationId': Number(notificationId) }));
         if (!successStatus(status)) {
           const errormsg = getErrorMessage(data);
           if (errormsg) {
@@ -91,82 +92,82 @@ const NotificationPage = () => {
     });
     return formattedDistance;
   };
+
+  const notificationData = (item, i, count = 0) => {
+
+    const userData = item?.notificationData
+    if (!item?.markAsRead) {
+      return (
+        <div className="px-4 md:pl-10 bg-[#F5FBFF] relative" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
+          <div className="dot-icon" />
+          <div className="flex pt-4 pb-4">
+            <div className="mr-2.5">
+              <Avatar
+                classNames="w-[45px] h-[45px] object-cover"
+                image={userData?.profilePictureUrl}
+                name={`${userData?.firstName} ${userData?.lastName}`}
+              />
+            </div>
+            <div className="block w-full">
+              <div className="text-[14px] font-normal text-[#333333]">
+                <span className="font-medium">{userData?.firstName} {userData?.lastName}
+                </span>
+                {count > 0 && item?.notificationType === 'like' ?
+                  ` and ${count - 1} others liked your post` :
+                  count > 0 && item?.notificationType === 'comment' ?
+                    ` and ${count - 1} others commented on your post` :
+                    item?.notificationType === 'like' ? 'liked your post' :
+                      item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
+              </div>
+              <div className="text-[12px] font-normal text-[#A1A0A0]">
+                {formatTimeDifference(item?.createdAt)}
+              </div>
+            </div>
+          </div>
+          {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
+        </div>
+      )
+    } else {
+      return (
+        <div className="px-4 md:pl-10" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
+          <div className="flex pt-4 pb-4">
+            <div className="mr-2.5">
+              <Avatar
+                classNames="w-[45px] h-[45px] object-cover"
+                image={userData?.profilePictureUrl}
+                name={`${userData?.firstName} ${userData?.lastName}`}
+              />
+            </div>
+            <div className="block w-full">
+              <div className="text-[14px] font-normal text-[#333333]">
+                <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>
+                {count > 0 && item?.notificationType === 'like' ?
+                  ` and ${count - 1} others liked your post` :
+                  count > 0 && item?.notificationType === 'comment' ?
+                    ` and ${count - 1} others commented on your post` :
+                    item?.notificationType === 'like' ? 'liked your post' :
+                      item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
+              </div>
+              <div className="text-[12px] font-normal text-[#A1A0A0]">
+                {formatTimeDifference(item?.createdAt)}
+              </div>
+            </div>
+          </div>
+          {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
+        </div>
+      );
+    }
+  }
   return (
     <SectionLayout activeTab={3}>
       <InnerSectionLayout heading={'Notification'}>
         <div className="h-auto">
           {dataList?.length > 0 ? (
             dataList.map((item, i) => {
-              const userData = JSON.parse(item?.notificationData?.user);
-              if (!item?.markAsRead) {
-                return (
-                  <div
-                    key={i}
-                    className="px-4 md:pl-10 bg-[#F5FBFF] relative"
-                    onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}
-                  >
-                    <div className="dot-icon" />
-                    <div className="flex pt-4 pb-4">
-                      <div className="mr-2.5">
-                        <Avatar
-                          classNames="w-[45px] h-[45px] object-cover"
-                          image={userData?.profilePictureUrl}
-                          name={`${userData?.firstName} ${userData?.lastName}`}
-                        />
-                      </div>
-                      <div className="block w-full">
-                        <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">
-                            {userData?.firstName} {userData?.lastName}{' '}
-                          </span>
-                          {item?.notificationType === 'like'
-                            ? 'liked your post'
-                            : item?.notificationType === 'comment'
-                            ? 'comment on your post'
-                            : 'requested you to follow'}
-                        </div>
-                        <div className="text-[12px] font-normal text-[#A1A0A0]">
-                          {formatTimeDifference(item?.createdAt)}
-                        </div>
-                      </div>
-                    </div>
-                    {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
-                  </div>
-                );
+              if (item?.count) {
+                return notificationData(item?.data, i, item?.count)
               } else {
-                return (
-                  <div
-                    key={i}
-                    className="px-4 md:pl-10"
-                    onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}
-                  >
-                    <div className="flex pt-4 pb-4">
-                      <div className="mr-2.5">
-                        <Avatar
-                          classNames="w-[45px] h-[45px] object-cover"
-                          image={userData?.profilePictureUrl}
-                          name={`${userData?.firstName} ${userData?.lastName}`}
-                        />
-                      </div>
-                      <div className="block w-full">
-                        <div className="text-[14px] font-normal text-[#333333]">
-                          <span className="font-medium">
-                            {userData?.firstName} {userData?.lastName}{' '}
-                          </span>
-                          {item?.notificationType === 'like'
-                            ? 'liked your post'
-                            : item?.notificationType === 'comment'
-                            ? 'comment on your post'
-                            : 'requested you to follow'}
-                        </div>
-                        <div className="text-[12px] font-normal text-[#A1A0A0]">
-                          {formatTimeDifference(item?.createdAt)}
-                        </div>
-                      </div>
-                    </div>
-                    {i !== dataList.length - 1 && <hr style={{ color: '#E8E8E8' }} />}
-                  </div>
-                );
+                return notificationData(item, i)
               }
             })
           ) : (
@@ -200,18 +201,16 @@ const NotificationPage = () => {
           setIsPreviewDetailsPostOpen(false);
         }}
         isTitle={false}
-        width={` ${
-          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-        } `}
+        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+          } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${
-          !activePost?.postMedia?.length
-            ? 'max-h-[100dvh] md:h-auto'
-            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-        } `}
+        height={` ${!activePost?.postMedia?.length
+          ? 'max-h-[100dvh] md:h-auto'
+          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+          } `}
       >
         <PostDetails
           post={activePost}
@@ -225,7 +224,7 @@ const NotificationPage = () => {
           }}
         />
       </Modal>
-    </SectionLayout>
+    </SectionLayout >
   );
 };
 
