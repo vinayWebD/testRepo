@@ -13,7 +13,7 @@
     @apply text-[14px] font-medium;
   }
   label {
-    @apply text-[11px] font-semibold;
+    @apply text-[12px] font-semibold;
   }
   input {
     @apply box-border	rounded-[8px] px-[16px] py-[13px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
