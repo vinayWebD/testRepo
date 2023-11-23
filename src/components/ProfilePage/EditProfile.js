@@ -16,7 +16,6 @@ import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import { getFileExtension } from '../../utils/helper';
 import { useDispatch } from 'react-redux';
 import { profileDispatcher } from '../../redux/dispatchers/authDispatcher';
-import CheckImage from '../../../src/assets/images/check.png';
 import Modal from '../Modal';
 import UpdateEmail from './UpdateEmail';
 import { sendOtpToUpdateEmailDispatcher } from '../../redux/dispatchers/myProfileDispatcher';
@@ -181,7 +180,7 @@ const EditProfile = ({
             parentClassName="w-full lg:w-[50%]"
           />
         </div>
-        <div className="flex gap-2 items-center w-full px-[18px]">
+        <div className="flex items-center w-full px-[18px] relative">
           <InputBox
             name="email"
             type="email"
@@ -193,28 +192,24 @@ const EditProfile = ({
             error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
             isRequired
-            parentClassName="w-[91%]"
+            className="pr-13"
+            parentClassName="w-full"
           />
-          <div className="w-[9%] text-[14px] pt-[20px]">
-            {!isEmailVerified ? (
-              <span
-                className={`text-center ${
-                  formik?.values?.email?.trim() !== email?.trim()
-                    ? 'text-blueprimary cursor-pointer font-semibold'
-                    : 'text-greydark opacity-40 cursor-not-allowed'
-                } `}
-                onClick={() => {
-                  if (formik?.values?.email?.trim() !== email?.trim()) {
-                    onVerifyClickHandler();
-                  }
-                }}
-              >
-                Verify
-              </span>
-            ) : (
-              ''
-            )}
-            {isEmailVerified && <img src={CheckImage} width={30} title="Verified" />}
+          <div className="absolute right-[30px] top-[40px] text-[12px] bg-white">
+            <span
+              className={`text-center ${
+                formik?.values?.email?.trim() !== email?.trim()
+                  ? 'text-blueprimary cursor-pointer font-semibold'
+                  : 'text-greydark opacity-40 cursor-not-allowed'
+              } ${isEmailVerified ? '!cursor-default text-[#0FBC00]' : ''} `}
+              onClick={() => {
+                if (!isEmailVerified && formik?.values?.email?.trim() !== email?.trim()) {
+                  onVerifyClickHandler();
+                }
+              }}
+            >
+              {isEmailVerified ? 'Verified' : 'Verify'}
+            </span>
           </div>
         </div>
         <div className="w-full px-[18px]">
