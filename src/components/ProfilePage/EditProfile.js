@@ -37,6 +37,7 @@ const EditProfile = ({
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifyEmailPopupOpen, setIsVerifyEmailPopupOpen] = useState(false);
+  const [isEmailVerified] = useState(false);
 
   const initialValues = {
     firstName,
@@ -115,7 +116,8 @@ const EditProfile = ({
   });
 
   const onVerifyClickHandler = async () => {
-    const response = await dispatch(sendOtpToUpdateEmailDispatcher());
+    console.log(formik.errors.email);
+    const response = await dispatch(sendOtpToUpdateEmailDispatcher({ email: formik.values.email }));
     const { status, data } = response;
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
@@ -194,20 +196,25 @@ const EditProfile = ({
             parentClassName="w-[91%]"
           />
           <div className="w-[9%] text-[14px] pt-[20px]">
-            <span
-              className={`text-center ${
-                formik?.values?.email?.trim() !== email?.trim()
-                  ? 'text-blueprimary cursor-pointer font-semibold'
-                  : 'text-greydark opacity-40 cursor-not-allowed'
-              } `}
-              onClick={() => {
-                onVerifyClickHandler();
-              }}
-            >
-              Verify
-            </span>
-
-            <img src={CheckImage} width={30} title="Verified" />
+            {!isEmailVerified ? (
+              <span
+                className={`text-center ${
+                  formik?.values?.email?.trim() !== email?.trim()
+                    ? 'text-blueprimary cursor-pointer font-semibold'
+                    : 'text-greydark opacity-40 cursor-not-allowed'
+                } `}
+                onClick={() => {
+                  if (formik?.values?.email?.trim() !== email?.trim()) {
+                    onVerifyClickHandler();
+                  }
+                }}
+              >
+                Verify
+              </span>
+            ) : (
+              ''
+            )}
+            {isEmailVerified && <img src={CheckImage} width={30} title="Verified" />}
           </div>
         </div>
         <div className="w-full px-[18px]">

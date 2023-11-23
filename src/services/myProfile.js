@@ -13,9 +13,9 @@ const networkCount = async () => {
   }
 };
 
-const sendOtpToUpdateEmail = async () => {
+const sendOtpToUpdateEmail = async ({ email }) => {
   try {
-    const data = await apiUtility(UPDATE_EMAIL_SEND_OTP, 'PATCH');
+    const data = await apiUtility(UPDATE_EMAIL_SEND_OTP, 'PATCH', { email });
     return data;
   } catch (error) {
     return error;
