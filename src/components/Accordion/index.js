@@ -11,6 +11,7 @@ const AccordionItem = ({
   titleClassName = 'text-blueprimary text-[20px] font-medium',
   childClassName = 'px-6',
   mainIcon = () => <ChevronDownIcon />,
+  iconWhenOpen = () => <ChevronDownIcon />,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -28,7 +29,7 @@ const AccordionItem = ({
         <div
           className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         >
-          {mainIcon()}
+          {!isOpen ? mainIcon() : iconWhenOpen()}
         </div>
       </button>
       <Transition
@@ -52,6 +53,7 @@ const Accordion = ({
   titleClassName,
   childClassName,
   mainIcon,
+  iconWhenOpen,
 }) => {
   return (
     <div>
@@ -65,6 +67,7 @@ const Accordion = ({
           titleClassName={titleClassName}
           childClassName={childClassName}
           mainIcon={mainIcon}
+          iconWhenOpen={iconWhenOpen}
         >
           {item.content}
         </AccordionItem>

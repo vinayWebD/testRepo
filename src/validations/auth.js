@@ -46,10 +46,10 @@ const validationChangePwdSchema = yup.object({
     .trim()
     .matches(PASSWORD_PATTERN, MSG_PASSWORD_TYPE)
     .required(IS_REQUIRED('New Password')),
-  repeatPassword: yup
+  confirmPassword: yup
     .string()
     .trim()
-    .required(IS_REQUIRED('Repeat Password'))
+    .required(IS_REQUIRED('Confirm Password'))
     .oneOf([yup.ref('newPassword'), null], CONFIRM_PASSWORD_MISMATCH),
 });
 

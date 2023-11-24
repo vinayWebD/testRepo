@@ -74,14 +74,6 @@ const AddImageCrop = ({ getImage, setCropedImage, setModal, setCropImageFile }) 
     setModal(false);
   };
 
-  const handleDone = async () => {
-    setResultImage(null);
-  };
-
-  const handleClose = () => {
-    setModal(false);
-  };
-
   return (
     <div className="croper-wrap">
       <div className="crop-box">
@@ -109,13 +101,7 @@ const AddImageCrop = ({ getImage, setCropedImage, setModal, setCropImageFile }) 
           )}
         </div>
       </div>
-      <div className="flex items-center justify-between px-9">
-        <Button
-          className
-          onClick={resultImage ? handleDone : handleClose}
-          label="Cancel"
-          showArrowIcon={false}
-        />
+      <div className="flex items-center justify-center px-9 w-full">
         <Button
           showArrowIcon={false}
           onClick={() => (resultImage ? handleUpload() : canvasPreviewData())}
