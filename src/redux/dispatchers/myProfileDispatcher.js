@@ -1,4 +1,10 @@
-import { changePassword, contactAdmin, sendOtpToUpdateEmail } from '../../services/myProfile';
+import {
+  changePassword,
+  contactAdmin,
+  sendOtpToUpdateEmail,
+  verifyNewEmail,
+  verifyOldEmail,
+} from '../../services/myProfile';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 const sendOtpToUpdateEmailDispatcher =
@@ -36,4 +42,34 @@ const contactAdminDispatcher =
     return { status, data };
   };
 
-export { sendOtpToUpdateEmailDispatcher, changePasswordDispatcher, contactAdminDispatcher };
+const verifyOldEmailDispatcher =
+  ({ email, code }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await verifyOldEmail({
+      email,
+      code,
+    });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const verifyNewEmailDispatcher =
+  ({ email, code }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await verifyNewEmail({
+      email,
+      code,
+    });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+export {
+  sendOtpToUpdateEmailDispatcher,
+  changePasswordDispatcher,
+  contactAdminDispatcher,
+  verifyOldEmailDispatcher,
+  verifyNewEmailDispatcher,
+};
