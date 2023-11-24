@@ -56,8 +56,8 @@ const EditProfile = ({
       .string()
       .required(IS_REQUIRED('Last Name'))
       .max(50, MSG_FIELD_LENGTH('First Name')),
-    location: yup.string().nullable(true),
-    profilePicture: yup.string(),
+    location: yup.string().nullable().optional(),
+    profilePicture: yup.string().nullable().optional(),
   });
 
   const getPreSignedUrl = async () => {
@@ -84,16 +84,16 @@ const EditProfile = ({
   }, [cropImageFile]);
 
   const onSubmit = async (values) => {
+    console.log('sdfsdff');
     if (!isLoading) {
       setIsLoading(true);
 
-      console.log('------>>>', isVerifyEmailPopupOpen);
       const { firstName = '', lastName = '', location = '', profilePicture = '' } = values;
       const response = await fetchProfileEdit({
         firstName: firstName?.trim(),
         lastName: lastName?.trim(),
         location: location?.trim(),
-        profilePicture,
+        profilePicture: profilePicture || '',
         email: isEmailVerified === 2 ? values?.email?.trim() : email,
       });
       const { status, data } = response;
@@ -143,8 +143,8 @@ const EditProfile = ({
   return (
     <>
       <form
-        onSubmit={formik.handleSubmit}
         noValidate
+        onSubmit={formik.handleSubmit}
         className="flex justify-center items-center mt-4 flex-col gap-[12px]"
       >
         <div className="border border-greymedium rounded-full">
@@ -170,7 +170,6 @@ const EditProfile = ({
             initialValue={formik?.values?.firstName}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
             helperText={formik.touched.firstName && formik.errors.firstName}
             isRequired
             className="w-full"
@@ -184,7 +183,6 @@ const EditProfile = ({
             initialValue={formik?.values?.lastName}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
             helperText={formik.touched.lastName && formik.errors.lastName}
             isRequired
             className="w-full"
@@ -200,19 +198,19 @@ const EditProfile = ({
             initialValue={formik?.values?.email}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
             isRequired
+            disabled={isEmailVerified === 2}
             className="pr-13"
             parentClassName="w-full"
           />
-          <div className="absolute right-[30px] top-[40px] text-[12px] bg-white">
+          <div className="absolute right-[30px] top-[40px] text-[12px]">
             <span
               className={`text-center ${
                 formik?.values?.email?.trim() !== email?.trim()
                   ? 'text-blueprimary cursor-pointer font-semibold'
                   : 'text-greydark opacity-40 cursor-not-allowed'
-              } ${isEmailVerified === 2 ? '!cursor-default text-[#0FBC00]' : ''} `}
+              } ${isEmailVerified === 2 ? '!cursor-default !text-[#0FBC00]' : ''} `}
               onClick={() => {
                 if (isEmailVerified !== 2 && formik?.values?.email?.trim() !== email?.trim()) {
                   onVerifyClickHandler();
@@ -232,7 +230,6 @@ const EditProfile = ({
             initialValue={formik?.values?.location}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
             className="w-full"
           />

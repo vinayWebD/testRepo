@@ -18,10 +18,10 @@ function InputBox({
   parentClassName = '',
   ...props
 }) {
-  const [value, setValue] = useState(initialValue);
+  const [value, setValue] = useState(initialValue || '');
 
   useEffect(() => {
-    setValue(props?.value);
+    setValue(props?.value || '');
   }, [props?.value]);
 
   useEffect(() => {
