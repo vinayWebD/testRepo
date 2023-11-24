@@ -233,7 +233,11 @@ const EditProfile = ({
             additionalClassNames="capitalize"
             isLoading={isLoading}
             showArrowIcon={false}
-            isDisabled={isLoading}
+            isDisabled={
+              isLoading ||
+              JSON.stringify(formik?.values) ===
+                JSON.stringify({ firstName, lastName, email, location, profilePicture })
+            }
           />
         </div>
       </form>
