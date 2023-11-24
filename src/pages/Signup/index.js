@@ -194,9 +194,9 @@ function Signup() {
           type="submit"
           additionalClassNames="capitalize"
         />
-        <div className="text-white text-center cursor-pointer mb-9" onClick={() => navigate(LOGIN)}>
+        <div className="text-white text-center mb-9">
           {LANG_SIGNUP_HAVE_ACC}
-          <span className="">
+          <span className="cursor-pointer" onClick={() => navigate(LOGIN)}>
             <strong>{LANG_SIGNUP_SIGN_IN}</strong>
           </span>
         </div>

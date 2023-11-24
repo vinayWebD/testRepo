@@ -124,11 +124,11 @@ const ProfileContainer = ({
           </div>
           {isOtherUser && (
             <div className="flex gap-[7%] justify-center mt-2">
-              <OutlinedButton label={'Message'} />
+              <OutlinedButton label={'Message'} additionalClassNames="!text-[16px]" />
               <OutlinedButton
                 onClick={() => followUnfollowHandler()}
                 label={followUnfollowLabel()}
-                additionalClassNames="!bg-blueprimary text-white text-[16px] w-[115px] !justify-center"
+                additionalClassNames="!bg-blueprimary text-white !text-[16px] w-[115px] !justify-center"
                 isLoading={isLoadingFollowUnfollow}
               />
             </div>
