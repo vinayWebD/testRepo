@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { PasswordClosedIcon, PasswordOpenedIcon } from '../Icons/PasswordToggleIcon';
 
 function Input({
@@ -15,12 +15,17 @@ function Input({
   label = '',
   isRequired = false,
   labelFontColor = '#ffffff',
+  borderClasses = '',
   helperText = false, // This indicates if there is an error
   maxLength = 100,
 }) {
   const [value, setValue] = useState(initialValue);
   const [showPassword, setShowPassword] = useState(false);
   const typeOfInput = type === 'password' ? (showPassword ? 'text' : 'password') : type;
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const handleInputChange = (event) => {
     setValue(event.target.value);
@@ -32,7 +37,7 @@ function Input({
       return (
         <div
           className={`px-3 ml-[-1px] flex items-center cursor-pointer bg-white rounded-r-[8px] ${
-            helperText ? 'border-solid border-[1px] border-red border-l-0' : ''
+            helperText ? 'border-solid border-[1px] border-red border-l-0' : borderClasses
           }`}
           onClick={() => setShowPassword((prev) => !prev)}
         >
@@ -56,7 +61,7 @@ function Input({
           placeholder={placeholder}
           className={`${className} ${type === 'password' ? 'border-r-0 rounded-r-none' : ''} ${
             helperText ? 'haserror' : ''
-          }`}
+          } ${borderClasses}`}
           onChange={handleInputChange}
           onBlur={onBlur}
           onFocus={onFocus}
