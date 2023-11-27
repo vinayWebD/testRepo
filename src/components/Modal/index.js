@@ -37,18 +37,18 @@ function Modal({
     }
 
     // Set overflow only once when first modal opens or when the last modal closes.
-    if (getModalCounter() === 1 && isOpen) {
+    if ((getModalCounter() === 1 && isOpen) || document.querySelector('.cust-modal-fixed')) {
       document.body.style.overflow = 'hidden';
-    } else if (getModalCounter() === 0 && !isOpen) {
+    } else if (getModalCounter() === 0 && !isOpen && !document.querySelector('.cust-modal-fixed')) {
       document.body.style.overflow = 'auto';
     }
 
     return () => {
       if (isOpen) {
         decrementModalCounter();
-        if (getModalCounter() === 0) {
-          document.body.style.overflow = 'auto';
-        }
+      }
+      if (getModalCounter() === 0 && !isOpen && !document.querySelector('.cust-modal-fixed')) {
+        document.body.style.overflow = 'auto';
       }
     };
   }, [isOpen]);
@@ -57,7 +57,7 @@ function Modal({
 
   return (
     <div
-      className="cust-modal-fixed fixed overflow-y-scroll md:overflow-y-auto top-0 left-0 w-full h-full flex items-center justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
+      className="cust-modal-fixed fixed overflow-y-scroll md:overflow-y-auto top-0 left-0 w-full h-full flex items-center justify-center z-[500] bg-[#0000005f] backdrop-blur-[1.5px]"
       onClick={onClose}
     >
       <div

@@ -29,6 +29,15 @@ const NETWORK_CONSTANTS = {
   EDIT_COMMENT: (id) => `/v1/feeds/posts/comment/${id}`,
   OTHER_USER_PROFILE: (id) => `/v1/accounts/profile/user/${id}`,
   OTHER_USER_NETWORKING_COUNT: (id) => `/v1/accounts/follow/network/counts/user/${id}`,
+  OTHER_USER_FOLLOW: (id) => `/v1/accounts/follow/${id}`,
+  OTHER_USER_UNFOLLOW: (id) => `/v1/accounts/unfollow/${id}`,
+  NETWORK_COUNT: '/v1/accounts/follow/network/counts',
+  INVITE_PEOPLE: '/v1/accounts/invite/people',
+  UPDATE_EMAIL_SEND_OTP: '/v1/accounts/update-email',
+  NOTIFICATION_LIST: '/v1/notifications/',
+  CHANGE_PASSWORD: '/v1/accounts/change-password',
+  HELP_CENTER_CONTACT_ADMIN: '/v1/accounts/help-center/query',
+  MARK_READ_PATH: '/v1/notifications/mark-as-read',
 };
 
 export default NETWORK_CONSTANTS;

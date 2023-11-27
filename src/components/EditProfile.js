@@ -63,7 +63,6 @@ const EditProfile = ({
         const {
           data: { url, key },
         } = data;
-        console.log(data);
         formik.setFieldValue('profilePicture', key);
         await fetchFileUPloadAWS({ url: url, selectedFile: cropImageFile });
       }

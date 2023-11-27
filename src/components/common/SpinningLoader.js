@@ -1,7 +1,13 @@
-const SpinningLoader = ({ fill = '#ffffff' }) => {
+const SpinningLoader = ({
+  fill = '#ffffff',
+  width = 'w-5',
+  height = 'h-5',
+  marginLeft = '-ml-1',
+  marginRight = 'mr-3',
+}) => {
   return (
     <svg
-      className={`animate-spin -ml-1 mr-3 h-5 w-5 text-${fill}`}
+      className={`animate-spin ${marginLeft} ${marginRight} text-${fill} ${width} ${height}`}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

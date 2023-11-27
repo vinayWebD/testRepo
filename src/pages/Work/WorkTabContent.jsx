@@ -37,8 +37,8 @@ import { CertificateContent } from './CertificateContent';
 import { EducationContent } from './EducationContent';
 import { ExperienceContent } from './ExperienceContent';
 import { MediaContent } from './MediaContent';
-import check from '../../assets/images/check.png'
-import cross from '../../assets/images/cross.png'
+import check from '../../assets/images/check.png';
+import cross from '../../assets/images/cross.png';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 
@@ -50,7 +50,7 @@ export function WorkTabContent() {
   const [linksList, setLinksList] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const [careerList, setCareerList] = useState([]);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { HOME } = PATHS;
   // localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
 
@@ -260,11 +260,11 @@ export function WorkTabContent() {
             showArrowIcon={false}
           />
         </div>
-        <hr className='pb-8' style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
+        <hr className="pb-8" style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
         <div className="mb-8 flex justify-between ">
           <div className="step-title">
             Career
-            <BlueDivider />
+            <BlueDivider width={'60%'} />
           </div>
           <OutlinedButton
             disabled={!careerList.length}
@@ -275,7 +275,13 @@ export function WorkTabContent() {
         </div>
 
         <div className="md:flex block items-center mt-8 mb-5">
-          <div className={`w-[170px] form-title  ${tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'} `}>Career Title</div>
+          <div
+            className={`w-[170px] form-title  ${
+              tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
+            } `}
+          >
+            Career Title
+          </div>
           <div className={`grow ${tuc_title && err_title ? 'des-title-error' : 'des-title'} `}>
             <div>
               <TextArea
@@ -289,7 +295,12 @@ export function WorkTabContent() {
                 helperText={tuc_title && err_title}
               />
             </div>
-            <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} onClick={careerSubmit} />
+            <img
+              src={check}
+              alt="check"
+              style={{ marginLeft: '20px', cursor: 'pointer' }}
+              onClick={careerSubmit}
+            />
             <img src={cross} alt="cross" style={{ marginLeft: '20px', cursor: 'pointer' }} />
           </div>
         </div>
@@ -384,7 +395,11 @@ export function WorkTabContent() {
             </div>
             <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
-                <OutlinedButton label="Skip" isSkip={true} onClick={() => navigate(HOME, { replace: true })} />
+                <OutlinedButton
+                  label="Skip"
+                  isSkip={true}
+                  onClick={() => navigate(HOME, { replace: true })}
+                />
               </div>
               <div>
                 <OutlinedButton

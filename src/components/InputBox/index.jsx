@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function InputBox({
   name = '',
@@ -20,6 +20,14 @@ function InputBox({
 }) {
   const [value, setValue] = useState(initialValue);
 
+  useEffect(() => {
+    setValue(props?.value);
+  }, [props?.value]);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
+
   const handleInputChange = (event) => {
     setValue(event.target.value);
     if (onChange) onChange(event);
@@ -29,7 +37,7 @@ function InputBox({
     <div className={parentClassName}>
       <div className="flex gap-[2px]">
         <label style={{ color: labelFontColor }}>{label}</label>
-        {isRequired ? <span className="relative top-[-4px]">*</span> : ''}
+        {isRequired ? <span className="text-red relative top-[-4px]">*</span> : ''}
       </div>
       <input
         {...props}
@@ -47,7 +55,7 @@ function InputBox({
         autoComplete={'true'}
         maxLength={maxLength}
       />
-      {helperText && <p className={'mt-1 error'}>{helperText}</p>}
+      <p className={'mt-1 error min-h-[18px]'}>{helperText}</p>
     </div>
   );
 }

@@ -15,6 +15,10 @@ const InputProfilePicture = ({
   inView = true,
   height = 'h-[86px]',
   width = 'w-[86px]',
+  iconWidth,
+  iconHeight,
+  iconFillColor,
+  isFromEditProfile = false,
 }) => {
   const [imageFile, setImageFile] = useState(false);
   const [open, setOpen] = useState(false);
@@ -66,8 +70,12 @@ const InputProfilePicture = ({
       return <img src={profilePic} alt="" className={`image_preview ${height} ${width}`} />;
     }
     return (
-      <div className="flex items-center justify-center image_preview">
-        <UserIcon />
+      <div
+        className={`flex items-center justify-center image_preview ${
+          isFromEditProfile ? `border-${iconFillColor} ${width} ${height}` : ''
+        }`}
+      >
+        <UserIcon width={iconWidth} height={iconHeight} fill={iconFillColor} />
       </div>
     );
   };

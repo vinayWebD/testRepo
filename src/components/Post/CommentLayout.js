@@ -68,7 +68,7 @@ const CommentLayout = ({
                             { name: 'Edit', action: () => setIsEditing(true) },
                             { name: 'Delete', action: () => setIsDeleteModalOpen(true) },
                           ]
-                        : []
+                        : [{ name: 'Report', action: () => {} }]
                     }
                     IconComponent={() => <ThreeDots className="w-[4px] h-[20px] rotate-90" />}
                     optionsClassName="!top-0"

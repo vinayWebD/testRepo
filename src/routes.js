@@ -10,8 +10,13 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
+import MyNetwork from './pages/MyNetwork';
 import OtherUserProfile from './pages/OtherUserProfile';
 import Messages from './pages/Messages';
+import NotificationPage from './pages/NotificationPage';
+import Settings from './pages/Settings';
+import ChangePassword from './pages/Settings/ChangePassword';
+import HelpCenter from './pages/Settings/HelpCenter';
 
 const {
   LANDING,
@@ -24,8 +29,13 @@ const {
   RESET_PASSWORD,
   PATH_WORK,
   PROFILE,
+  MYNETWORK,
   OTHER_USER_PROFILE,
   MESSAGES,
+  MY_NOTIFICATION,
+  SETTINGS,
+  SETTINGS_CHANGE_PASSWORD,
+  SETTINGS_HELP_CENTER,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -70,7 +80,7 @@ const publicRoutes = createBrowserRouter([
 const privateRoutes = createBrowserRouter([
   {
     path: '*',
-    element: <Navigate to={HOME} replace />,
+    element: <Navigate to={HOME} replace={true} />,
   },
   {
     path: HOME,
@@ -80,6 +90,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: PROFILE,
     element: <ProfilePage />,
+  },
+  {
+    path: MYNETWORK,
+    element: <MyNetwork />,
   },
   {
     path: `${OTHER_USER_PROFILE}:id`,
@@ -92,6 +106,22 @@ const privateRoutes = createBrowserRouter([
   {
     path: MESSAGES,
     element: <Messages />,
+  },
+  {
+    path: MY_NOTIFICATION,
+    element: <NotificationPage />,
+  },
+  {
+    path: SETTINGS,
+    element: <Settings />,
+  },
+  {
+    path: SETTINGS_CHANGE_PASSWORD,
+    element: <ChangePassword />,
+  },
+  {
+    path: SETTINGS_HELP_CENTER,
+    element: <HelpCenter />,
   },
 ]);
 

@@ -19,9 +19,10 @@ import {
 import { getErrorMessage, successStatus } from '../../common';
 import { PATHS } from '../../constants/urlPaths';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import MyPosts from '../../components/ProfilePage/MyPosts';
 
 const OtherUserProfile = () => {
-  const [tab, setTab] = useState('work');
+  const [tab, setTab] = useState('post');
   const navigate = useNavigate();
   const { id } = useParams();
   const dispatch = useDispatch();
@@ -35,13 +36,17 @@ const OtherUserProfile = () => {
     fetchData();
   }, [id]);
 
+  const reloadAfterFollowUnfollow = async () => {
+    await fetchData();
+  };
+
   const fetchData = async () => {
-    const { status, data } = await dispatch(fetchOtherUserBasicInfo({ id }));
+    const { status, data } = await dispatch(fetchOtherUserBasicInfo({ id, showLoader: false }));
 
     if (successStatus(status)) {
       setUserData(data?.data);
       const { status: countStatus, data: countData } =
-        (await dispatch(fetchOtherUserNetworkingCount({ id }))) || {};
+        (await dispatch(fetchOtherUserNetworkingCount({ id, showLoader: false }))) || {};
       if (successStatus(countStatus)) {
         setNetworkingCount(countData?.data);
       }
@@ -65,16 +70,24 @@ const OtherUserProfile = () => {
           <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
           Back
         </div>
-        <ProfileContainer userData={userData} isOtherUser={true} />
+        <ProfileContainer
+          userData={userData}
+          isOtherUser={true}
+          reloadAfterFollowUnfollow={reloadAfterFollowUnfollow}
+        />
         <FollowerContainer {...networkingCount} />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">
         <div className="grid grid-cols-12 gap-3 feed-page">
           <div className="col-span-12">
             <div>
-              <Tabs tab={tab} updateTab={setTab} />
+              <Tabs tab={tab} updateTab={setTab} other={true} />
 
-              {tab === 'work' ? (
+              {tab === 'post' ? (
+                <>
+                  <MyPosts other={true} />
+                </>
+              ) : tab === 'work' ? (
                 <>
                   <WorkDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">

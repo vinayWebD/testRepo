@@ -78,7 +78,7 @@ const HomePage = () => {
 
   useEffect(() => {
     if (isPreviewDetailsPostOpen === false) {
-      navigate(PATHS.HOME, { replace: true });
+      navigate(PATHS.HOME);
     }
   }, [isPreviewDetailsPostOpen]);
 
@@ -163,7 +163,7 @@ const HomePage = () => {
   };
 
   return (
-    <PrivateLayout>
+    <PrivateLayout activeTab={0}>
       <div className="grid grid-cols-12 gap-5 feed-page">
         <div className="col-span-12">
           <Card classNames="p-5">
@@ -238,6 +238,7 @@ const HomePage = () => {
                       links: post?.links,
                       id: post?.id,
                     }}
+                    userId={post?.UserId}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
@@ -246,7 +247,7 @@ const HomePage = () => {
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
-                        navigate(`${PATHS.HOME}/${post?.id}`, { replace: true });
+                        // navigate(`${PATHS.PROFILE}/${post?.id}`);
                         setIsPreviewDetailsPostOpen(true);
                         setActivePost({ ...post });
                         setActiveMediaIndex(customIndex);
@@ -316,12 +317,18 @@ const HomePage = () => {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width="!w-[100vw] md:!w-[75vw]"
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+        height={` ${
+          !activePost?.postMedia?.length
+            ? 'max-h-[100dvh] md:h-auto'
+            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+        } `}
       >
         <PostDetails
           post={activePost}

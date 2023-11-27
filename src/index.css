@@ -18,7 +18,7 @@
   }
 
   label {
-    @apply text-[11px] font-semibold;
+    @apply text-[12px] font-semibold;
   }
 
   input {
@@ -55,6 +55,10 @@
 
 * {
   font-family: 'Montserrat';
+}
+
+body {
+  overflow-x: hidden !important;
 }
 
 .bg-gradient-button {
@@ -357,6 +361,13 @@
   height: 100%;
 }
 
+/* width of scrollbar in search */
+#suggested-search::-webkit-scrollbar,
+.textarea-with-emojie::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;
+}
+
 .post-details .slick-slider img,
 .post-details .slick-slider video {
   max-width: 100%;
@@ -375,8 +386,10 @@
 }
 
 .des-title-error {
-  display: flex;
-  align-items: center;
+  .des-title-error {
+    display: flex;
+    align-items: center;
+  }
 }
 
 .des-title {

@@ -26,7 +26,7 @@ const {
 } = LANG.PAGES.LOGIN;
 
 const { BTNLBL_LOGIN } = BUTTON_LABELS;
-const { FORGOT_PASSWORD, PATH_SIGNUP } = PATHS;
+const { FORGOT_PASSWORD, PATH_SIGNUP, HOME } = PATHS;
 const { TST_LOGIN_ERROR_ID } = TOASTMESSAGES.toastid;
 
 const initialValues = {
@@ -42,7 +42,12 @@ function LoginPage() {
   const onSubmit = async (values) => {
     if (!isLoading) {
       setIsLoading(true);
-      const response = await dispatch(loginDispatcher(values));
+      const val = {
+        email: values.email,
+        password: values.password,
+        fcmToken: localStorage.getItem('fcm'),
+      };
+      const response = await dispatch(loginDispatcher(val));
       const { status, data } = response;
       if (!successStatus(status)) {
         const errormsg = getErrorMessage(data);
@@ -51,6 +56,7 @@ function LoginPage() {
           setIsLoading(false);
         }
       }
+      navigate(HOME);
     }
   };
 

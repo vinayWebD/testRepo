@@ -137,7 +137,7 @@ const LANG = {
       LANG_EDIT_POST: 'Edit Post',
     },
     CREATE_POST: {
-      LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',
+      LANG_TEXT_AREA_PLACEHOLDER: 'Share a content',
       LANG_URL: 'URL',
       LANG_HTTPS: 'https://',
       LANG_ADD_NEW: '+ Add New',
@@ -155,11 +155,25 @@ const BUTTON_LABELS = {
   BTNLBL_PHOTO: 'Photo',
   BTNLBL_VIDEO: 'Video',
   BTNLBL_LINK: 'Link',
+  BTNLBL_FOLLOW: 'Follow',
+  BTNLBL_UNFOLLOW: 'UnFollow',
+  BTNLBL_INVITE_PEOPLE: 'Invite People',
+  BTNLBL_SEND_INVITE: 'Send Invite',
+  BTNLBL_FRIEND_REQUESTS: 'Friend Requests',
+  BTNLBL_REJECT: 'Reject',
+  BTNLBL_ACCEPT: 'Accept',
+};
+
+const TABS_NAME = {
+  FOLLOWERS: 'Followers',
+  FOLLOWING: 'Following',
+  CONNECTIONS: 'Connections',
   BTNLBL_UPDATE: 'Update',
 };
 
 const DROPDOWN_OPTION_LABELS = {
   DDLBL_LOGOUT: 'Log out',
+  DDLBL_MY_PROFILE: 'My Profile',
 };
 
 const PRIVATE_NAVIGATION_LABELS = {
@@ -170,4 +184,4 @@ const PRIVATE_NAVIGATION_LABELS = {
   NAVLBL_SETTINGS: 'Settings',
 };
 
-export { LANG, BUTTON_LABELS, DROPDOWN_OPTION_LABELS, PRIVATE_NAVIGATION_LABELS };
+export { LANG, BUTTON_LABELS, DROPDOWN_OPTION_LABELS, PRIVATE_NAVIGATION_LABELS, TABS_NAME };
