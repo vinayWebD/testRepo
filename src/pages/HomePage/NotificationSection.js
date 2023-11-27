@@ -21,7 +21,7 @@ const NotificationSection = () => {
             <AddFriendIcon />
             <p className="font-semibold text-xl">{BTNLBL_INVITE_PEOPLE}</p>
           </div>
-          <p className="text-sm">Lorem ipsum dolor sit amet consectetur.</p>
+          <p className="text-sm">Please invite your friends and family to join PurDriven.</p>
         </div>
         <div
           className="p-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70"
