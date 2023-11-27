@@ -3,7 +3,7 @@ import navigationItems from '../../constants/navigationItems';
 
 const navbarItems = navigationItems;
 
-const MobileBottomNavigation = () => {
+const MobileBottomNavigation = ({ activeTab = 0 }) => {
   return (
     <div className="fixed bottom-0 left-0 w-full z-49  md:hidden h-[60px] bg-darkblue flex py-4 gap-4 lg:gap-0 md:items-center">
       {navbarItems.map(({ label, action, icon }, _i) => {
@@ -12,7 +12,7 @@ const MobileBottomNavigation = () => {
             label={label}
             onClickHandler={action}
             key={label}
-            isActive={_i === 0}
+            isActive={_i === activeTab}
             Icon={icon}
           />
         );

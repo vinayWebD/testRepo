@@ -22,6 +22,10 @@ module.exports = {
       lightbluebg: '#E9F6FF',
       deleteRed: '#E83E39',
       iconBackground: '#0081CC0D',
+      lightgrey: '#A1A0A080',
+      buttongradientfrom: '#9E1F63',
+      buttongradientto: '#ED4663',
+      whitemedium: '#F4F4F4',
     },
     extend: {
       fontFamily: {

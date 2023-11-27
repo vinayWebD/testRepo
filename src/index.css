@@ -1,38 +1,50 @@
 @import 'tailwindcss/base';
+
 @layer base {
   h1 {
     @apply text-[24px] md:text-[30px] font-semibold;
   }
+
   h2 {
     @apply text-[26px] font-bold;
   }
+
   h3 {
     @apply text-lg;
   }
+
   h4 {
     @apply text-[14px] font-medium;
   }
+
   label {
     @apply text-[11px] font-semibold;
   }
+
   input {
-    @apply box-border	rounded-[8px] px-[16px] py-[13px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
+    @apply box-border rounded-[8px] px-[16px] py-[13px] focus:outline-none text-[16px] placeholder:font-light placeholder:text-greylight;
   }
+
   .error {
     @apply text-red text-[12px] font-medium;
   }
+
   input.haserror {
     @apply border-solid border-[1px] border-red;
   }
+
   input[type='password'].haserror {
     @apply border-r-0;
   }
+
   textarea {
     @apply border border-greymedium p-4 rounded-lg resize-none;
   }
+
   .text16 {
     @apply text-[14px] lg:text-[16px];
   }
+
   .text14 {
     @apply text-[12px] lg:text-[14px];
   }
@@ -52,6 +64,7 @@
 .bg-gradient-button-button {
   background: linear-gradient(90deg, #75b0ca 37%, #60a1c8 54%, #408ac6 75%, #1282c3 88%);
 }
+
 .para-normal {
   color: #fff;
   font-family: Montserrat;
@@ -60,6 +73,7 @@
   font-weight: 400;
   line-height: normal;
 }
+
 .para-sm {
   color: #f2f2f2;
   font-family: Montserrat;
@@ -68,6 +82,7 @@
   font-weight: 500;
   line-height: 18px;
 }
+
 .link-sm {
   color: #70baff;
   font-family: Montserrat;
@@ -78,6 +93,7 @@
   text-decoration-line: underline;
   cursor: pointer;
 }
+
 .modal-title {
   color: #0071bc;
   font-family: Montserrat;
@@ -86,6 +102,7 @@
   font-weight: 500;
   line-height: normal;
 }
+
 .image_preview {
   position: absolute;
   width: 86px;
@@ -94,6 +111,7 @@
   border: 2px solid #fff;
   cursor: auto;
 }
+
 .profile-image {
   width: 86px;
   height: 86px;
@@ -103,6 +121,10 @@
 .active-nav-left-side-bar {
   border-image: linear-gradient(5deg, #9e1f63 22.38%, #d91c5c 45.85%, #ed4663 80.16%);
   border-image-slice: 1;
+}
+
+.active-message-left-side-bar {
+  border-left-color: #0071BC;
 }
 
 .active-nav-left-side-bar p {
@@ -150,15 +172,18 @@
   max-height: 70vh;
   border-radius: 6px !important;
 }
+
 /* Global CSS override for carosul */
 
 .carousel .control-dots .dot {
   opacity: 1 !important;
   background: #fff;
 }
+
 .carousel .control-dots .dot.selected {
   background: #d91c5c;
 }
+
 .tab-title {
   color: #fff;
   font-size: 20px;
@@ -166,6 +191,7 @@
   font-weight: 600;
   line-height: normal;
 }
+
 .tab-title-active {
   color: #333;
   font-size: 20px;
@@ -173,6 +199,7 @@
   font-style: normal;
   line-height: normal;
 }
+
 .tab-content-title {
   color: #333;
   font-size: 24px;
@@ -181,6 +208,7 @@
   font-weight: 500;
   line-height: normal;
 }
+
 .tab-content-subtitle {
   color: #a1a0a0;
   font-family: Montserrat;
@@ -190,6 +218,7 @@
   line-height: normal;
   margin-top: 10px;
 }
+
 .tab- {
   color: #0071bc;
   font-family: Montserrat;
@@ -198,14 +227,17 @@
   font-weight: 500;
   line-height: normal;
 }
+
 .text-area-input {
   color: #333;
   font-family: Montserrat;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 137.5% */
+  line-height: 22px;
+  /* 137.5% */
 }
+
 .form-title {
   color: #333;
   font-family: Montserrat;
@@ -215,6 +247,7 @@
   line-height: normal;
   text-transform: capitalize;
 }
+
 .form-title-blue {
   color: #0071bc;
   font-family: Montserrat;
@@ -223,6 +256,7 @@
   font-weight: 500;
   line-height: normal;
 }
+
 .step-title {
   color: #0071bc;
   font-family: Montserrat;
@@ -231,6 +265,7 @@
   font-weight: 600;
   line-height: normal;
 }
+
 .upload-btn {
   color: #0071bc;
   font-family: Montserrat;
@@ -240,6 +275,7 @@
   font-weight: 400;
   line-height: normal;
 }
+
 .upload-btn-gray {
   color: rgba(43, 39, 36, 0.5);
   font-family: Montserrat;
@@ -248,24 +284,29 @@
   font-weight: 400;
   line-height: normal;
 }
+
 .outlined-btn {
   font-size: 14px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
 }
+
 .accordion-open {
   border-radius: 4px;
   background: #fff;
   box-shadow: 0px 4px 4px 0px rgba(51, 51, 51, 0.05);
 }
+
 .para-checkbox {
   color: #333;
   font-size: 14px;
   font-style: normal;
   font-weight: 400;
-  line-height: 18px; /* 128.571% */
+  line-height: 18px;
+  /* 128.571% */
 }
+
 .detail-label {
   color: #333;
   font-family: Montserrat;
@@ -274,6 +315,7 @@
   font-weight: 500;
   line-height: normal;
 }
+
 .detail-heading {
   color: #333;
   font-family: Montserrat;
@@ -294,9 +336,11 @@
 .post-details .video-preview .video-react-controls-enabled .video-react-video {
   height: inherit !important;
 }
+
 .post-details .video-preview .video-react-controls-enabled .video-react-control-bar {
   height: auto !important;
 }
+
 .post-details .video-preview .video-react-progress-control {
   top: 14px !important;
 }
@@ -329,52 +373,76 @@
 .video-react-bezel.video-react-bezel-animation {
   display: none !important;
 }
-.des-title-error{
+
+.des-title-error {
   display: flex;
   align-items: center;
 }
-.des-title{
+
+.des-title {
   display: flex;
   align-items: center;
 }
-.des-title img{
+
+.des-title img {
   width: 24px;
   height: 24px;
   margin: 10px;
   margin-top: 0;
 }
 
-.des-title-error img{
+.des-title-error img {
   width: 24px;
   height: 24px;
   margin: 10px;
   margin-top: -22px;
 }
+
+.scrollbar-custom {
+  scrollbar-width: thin;
+}
+
+.scrollbar-custom::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-custom::-webkit-scrollbar-thumb {
+  background-color: #F2F2F2;
+  border-radius: 4px;
+}
+
 @media screen and (max-width: 1000px) {
   .tab-title {
     font-size: 16px;
   }
+
   .tab-title-active {
     font-size: 16px;
   }
+
   .tab-content-title {
     font-size: 20px;
   }
+
   .tab-content-subtitle {
     font-size: 15px;
   }
-  .form-title{
+
+  .form-title {
     font-size: 18px;
   }
 }
+
 @media screen and (max-width: 600px) {
   .tab-content-title {
     font-size: 18px;
   }
+
   .tab-content-subtitle {
     font-size: 14px;
   }
-  .form-title{
+
+  .form-title {
     font-size: 14px;
   }
 }

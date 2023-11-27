@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword';
 import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
 import OtherUserProfile from './pages/OtherUserProfile';
+import Messages from './pages/Messages';
 
 const {
   LANDING,
@@ -24,6 +25,7 @@ const {
   PATH_WORK,
   PROFILE,
   OTHER_USER_PROFILE,
+  MESSAGES,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -86,6 +88,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: `${HOME}/:id`,
     element: <HomePage />,
+  },
+  {
+    path: MESSAGES,
+    element: <Messages />,
   },
 ]);
 
