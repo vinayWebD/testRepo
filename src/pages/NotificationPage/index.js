@@ -116,8 +116,8 @@ const NotificationPage = () => {
                   ` and ${count - 1} others liked your post` :
                   count > 0 && item?.notificationType === 'comment' ?
                     ` and ${count - 1} others commented on your post` :
-                    item?.notificationType === 'like' ? 'liked your post' :
-                      item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
+                    item?.notificationType === 'like' ? `${' '}liked your post` :
+                      item?.notificationType === 'comment' ? `${' '}comment on your post` : `${' '}followed you`}
               </div>
               <div className="text-[12px] font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -145,8 +145,8 @@ const NotificationPage = () => {
                   ` and ${count - 1} others liked your post` :
                   count > 0 && item?.notificationType === 'comment' ?
                     ` and ${count - 1} others commented on your post` :
-                    item?.notificationType === 'like' ? 'liked your post' :
-                      item?.notificationType === 'comment' ? 'comment on your post' : 'requested you to follow'}
+                    item?.notificationType === 'like' ? `${' '}liked your post` :
+                      item?.notificationType === 'comment' ? `${' '}comment on your post` : `${' '}followed you`}
               </div>
               <div className="text-[12px] font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
