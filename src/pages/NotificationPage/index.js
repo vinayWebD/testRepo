@@ -18,9 +18,12 @@ import { fetchPostDetails } from '../../services/feed';
 import Modal from '../../components/Modal';
 import PostDetails from '../../components/Post/PostDetails';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 let PageSize = 10;
 
 const NotificationPage = () => {
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1);
   const [dataList, setDataList] = useState([]);
   const [totalCount, setTotalCount] = useState(0);
@@ -62,7 +65,7 @@ const NotificationPage = () => {
     }
   };
 
-  const handleClick = async (postId, notificationId, markAsRead) => {
+  const handleClick = async (postId, notificationId, markAsRead, userId) => {
     if (postId) {
       if (!markAsRead) {
         const { status, data } = await dispatch(
@@ -85,7 +88,7 @@ const NotificationPage = () => {
         setIsPreviewDetailsPostOpen(true);
       }
     } else {
-      if (!markAsRead) {
+      if (userId) {
         const { status, data } = await dispatch(
           markReadDispatcher({ NotificationId: Number(notificationId) }),
         );
@@ -95,7 +98,7 @@ const NotificationPage = () => {
             ToastNotifyError(errormsg);
           }
         } else {
-          fetchnotificationList();
+          navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`)
         }
       }
     }
@@ -114,8 +117,8 @@ const NotificationPage = () => {
     if (!item?.markAsRead) {
       return (
         <div
-          className="px-4 md:pl-10 bg-[#F5FBFF] relative"
-          onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}
+          className="px-4 md:pl-10 bg-[#F5FBFF] relative cursor-pointer"
+          onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
         >
           <div className="dot-icon" />
           <div className="flex pt-4 pb-4">
@@ -149,8 +152,8 @@ const NotificationPage = () => {
     } else {
       return (
         <div
-          className="px-4 md:pl-10"
-          onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}
+          className="px-4 md:pl-10 cursor-pointer"
+          onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
         >
           <div className="flex pt-4 pb-4">
             <div className="mr-2.5">
