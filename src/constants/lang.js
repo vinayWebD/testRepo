@@ -156,7 +156,7 @@ const BUTTON_LABELS = {
   BTNLBL_VIDEO: 'Video',
   BTNLBL_LINK: 'Link',
   BTNLBL_FOLLOW: 'Follow',
-  BTNLBL_UNFOLLOW: 'UnFollow',
+  BTNLBL_UNFOLLOW: 'Unfollow',
   BTNLBL_INVITE_PEOPLE: 'Invite People',
   BTNLBL_SEND_INVITE: 'Send Invite',
   BTNLBL_FRIEND_REQUESTS: 'Friend Requests',
