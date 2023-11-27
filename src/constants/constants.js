@@ -42,3 +42,18 @@ export const DATE_FORMAT = {
   POST: 'DD MMMM YYYY',
   CAPTION: 'DD MMM YY',
 };
+
+export const RESPONSE_FOR_NETWORK = {
+  Following: {
+    type: 'Following',
+    innerType: 'FollowingUser',
+  },
+  Followers: {
+    type: 'Followers',
+    innerType: 'User',
+  },
+  Connections: {
+    type: 'Connections',
+    innerType: 'User',
+  },
+};

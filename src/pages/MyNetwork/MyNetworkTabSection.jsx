@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '../../components/common/Card';
 import SearchInput from '../../components/common/SearchInput';
 import { Button } from '../../components/common/Button';
@@ -6,24 +6,62 @@ import { Colors } from '../../constants/colors';
 import CrossIcon from '../../components/Icons/Cross';
 import UserCard from '../../components/MyNetworkLayout/UserCard';
 import Modal from '../../components/Modal';
-import { BUTTON_LABELS } from '../../constants/lang';
+import { BUTTON_LABELS, TABS_NAME } from '../../constants/lang';
 import InvitePeopleLayout from './InvitePeopleLayout';
-import Pagination from '../../components/Pagination';
 import SearchIcon from '../../components/Icons/SearchIcon';
+import { useDispatch } from 'react-redux';
+import {
+  fetchMyConnectionsDispatcher,
+  fetchMyFollowersDispatcher,
+  fetchMyFollowingsDispatcher,
+} from '../../redux/dispatchers/myNetworkDispatcher';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { RESPONSE_FOR_NETWORK } from '../../constants/constants';
+
 const { BTNLBL_INVITE_PEOPLE } = BUTTON_LABELS;
-let PageSize = 10;
-let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+const { FOLLOWERS, FOLLOWING, CONNECTIONS } = TABS_NAME;
+
 const MyNetworkTabSection = ({ selectedTab }) => {
+  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
   const [searchOnFocus, setSearchOnFocus] = useState(false);
   const [isInvitePeopleModalOpen, setIsInvitePeopleModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
+  const [usersList, setUsersList] = useState([]);
+  let setResponse = RESPONSE_FOR_NETWORK?.[selectedTab];
 
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return data.slice(firstPageIndex, lastPageIndex);
-  }, [currentPage]);
+  useEffect(() => {
+    setUsersList([]);
+    getData();
+  }, [selectedTab]);
+
+  const getData = async () => {
+    let response;
+
+    switch (selectedTab) {
+      case FOLLOWERS:
+        response = await dispatch(fetchMyFollowersDispatcher());
+        break;
+      case FOLLOWING:
+        response = await dispatch(fetchMyFollowingsDispatcher());
+        break;
+      case CONNECTIONS:
+        response = await dispatch(fetchMyConnectionsDispatcher());
+        break;
+    }
+
+    const { status, data } = response;
+
+    if (!successStatus(status)) {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    } else {
+      setUsersList(data || []);
+    }
+  };
+
   const searchInputChangeHandler = (value) => {
     setSearchValue(value);
   };
@@ -93,17 +131,29 @@ const MyNetworkTabSection = ({ selectedTab }) => {
       </div>
 
       <div className="my-5 mx-6 mb-4">
-        {currentTableData.map((item) => (
-          <UserCard key={item} selectedTab={selectedTab} />
+        {usersList?.map((item) => (
+          <UserCard
+            key={item?.id}
+            id={item?.[setResponse.innerType]?.id}
+            selectedTab={selectedTab}
+            userName={`${item?.[setResponse.innerType]?.firstName} ${
+              item?.[setResponse.innerType]?.lastName
+            }`}
+            location={item?.[setResponse.innerType]?.location}
+            userBio={item?.[setResponse.innerType]?.aboutMyself}
+            userImage={item?.[setResponse.innerType]?.profilePicture}
+            isApproved={item?.isApproved}
+            reloadData={getData}
+          />
         ))}
         <div className="py-4 flex items-center justify-end mt-auto">
-          <Pagination
+          {/* {<Pagination
             className="pagination-bar"
             currentPage={currentPage}
             totalCount={data.length}
             pageSize={PageSize}
             onPageChange={(page) => setCurrentPage(page)}
-          />
+          />} */}
         </div>
       </div>
       <Modal

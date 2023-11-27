@@ -38,6 +38,9 @@ const NETWORK_CONSTANTS = {
   CHANGE_PASSWORD: '/v1/accounts/change-password',
   HELP_CENTER_CONTACT_ADMIN: '/v1/accounts/help-center/query',
   MARK_READ_PATH: '/v1/notifications/mark-as-read',
+  MY_FOLLOWERS: '/v1/accounts/follow/followers',
+  MY_FOLLOWINGS: '/v1/accounts/follow/following',
+  MY_CONNECTIONS: '/v1/accounts/connections',
 };
 
 export default NETWORK_CONSTANTS;
