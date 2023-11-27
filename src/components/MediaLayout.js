@@ -92,6 +92,9 @@ const MediaLayout = ({
                 className="w-full cursor-pointer max-h-[inherit] rounded-[7px]"
                 controls={false}
                 onClick={() => handleClick(customActiveIndex)}
+                preload="metadata"
+                type="video/mp4"
+                playsInline={true}
               />
             </div>
           )}
@@ -276,6 +279,9 @@ const MediaItem = ({
             controls={false}
             height={'100%'}
             onClick={() => onClick(index)}
+            preload="metadata"
+            type="video/mp4"
+            playsInline={true}
           />
         </div>
         {showMoreOverlay ? (

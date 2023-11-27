@@ -41,12 +41,12 @@ const OtherUserProfile = () => {
   };
 
   const fetchData = async () => {
-    const { status, data } = await dispatch(fetchOtherUserBasicInfo({ id }));
+    const { status, data } = await dispatch(fetchOtherUserBasicInfo({ id, showLoader: false }));
 
     if (successStatus(status)) {
       setUserData(data?.data);
       const { status: countStatus, data: countData } =
-        (await dispatch(fetchOtherUserNetworkingCount({ id }))) || {};
+        (await dispatch(fetchOtherUserNetworkingCount({ id, showLoader: false }))) || {};
       if (successStatus(countStatus)) {
         setNetworkingCount(countData?.data);
       }

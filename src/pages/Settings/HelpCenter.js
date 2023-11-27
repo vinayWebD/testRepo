@@ -50,6 +50,7 @@ const HelpCenter = () => {
           childClassName={'bg-white text-[16px] text-[#2A3039] p-6 font-normal'}
           titleClassName={'text-[#2A3039] text-[16px] font-medium'}
           mainIcon={() => <span className="text-blueprimary text-[20px] font-medium">+</span>}
+          iconWhenOpen={() => <span className="text-blueprimary text-[24px] font-medium">-</span>}
           items={[
             {
               title: 'Lorem ipsum dolor sit amet consectetur.',

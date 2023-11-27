@@ -50,6 +50,9 @@ const CreatePostMediaPreview = ({
                     className="w-full min-h-full min-w-full"
                     controls={true}
                     height={'100%'}
+                    preload="metadata"
+                    type="video/mp4"
+                    playsInline={true}
                   />
                 )}
                 <div

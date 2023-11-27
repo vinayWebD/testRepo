@@ -152,7 +152,9 @@ function SuggestedSearch({
           />
         </div>
         <div
-          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] md:pb-3 md:mb-9 ${width} ${height} ${titleParentClassNames}`}
+          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] pl-2 md:px-0 md:pb-3 ${
+            searchResult?.length ? 'md:mb-9' : ''
+          } ${width} ${height} ${titleParentClassNames}`}
         >
           {searchResult?.length ? (
             searchResult?.map((result) => {
@@ -175,7 +177,7 @@ function SuggestedSearch({
                     <SearchIcon color="black" />
                   </div>
                   <div>
-                    <h4 className="text-bold font-medium leading-4 ">No result found</h4>
+                    <h4 className="text-[16px] font-medium leading-4 ">No result found</h4>
                     <h6 className="text-[10px] leading-4 font-normal text-greydark">
                       Search another way
                     </h6>
@@ -190,7 +192,7 @@ function SuggestedSearch({
             </div>
           )}
         </div>
-        <div className="shadow-lg absolute top-[90%] md:top-[91%] bg-white left-0 rounded-b-lg border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        <div className="md:shadow-lg absolute top-[85%] md:top-[91%] bg-white left-0 rounded-b-lg border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
           See All
         </div>
       </div>
