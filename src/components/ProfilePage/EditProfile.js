@@ -134,7 +134,7 @@ const EditProfile = ({
       <form
         onSubmit={formik.handleSubmit}
         noValidate
-        className="flex justify-center items-center mt-4 flex-col gap-[12px]"
+        className="flex justify-center items-center mt-4 flex-col"
       >
         <div className="border border-greymedium rounded-full">
           <InputProfilePicture
@@ -150,7 +150,7 @@ const EditProfile = ({
           />
         </div>
 
-        <div className="w-full flex items-center justify-center gap-6 px-[18px]">
+        <div className="w-full flex items-center justify-center gap-6 px-[18px] mt-3">
           <InputBox
             name="firstName"
             type="text"

@@ -318,8 +318,10 @@ body {
 }
 
 /* width of scrollbar in search */
-#suggested-search ::-webkit-scrollbar {
-  width: 0;
+#suggested-search::-webkit-scrollbar,
+.textarea-with-emojie::-webkit-scrollbar {
+  width: 0 !important;
+  display: none;
 }
 
 .post-details .slick-slider img,

@@ -229,7 +229,7 @@ const CreatePostLayout = ({
   return (
     <div className="relative">
       <div
-        className={`modal-internal h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
+        className={`modal-internal h-[75dvh] max-h-[75dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
           isEditing ? '!overflow-visible' : ''
         }`}
       >

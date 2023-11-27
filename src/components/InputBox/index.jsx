@@ -55,7 +55,7 @@ function InputBox({
         autoComplete={'true'}
         maxLength={maxLength}
       />
-      {helperText && <p className={'mt-1 error'}>{helperText}</p>}
+      <p className={'mt-1 error min-h-[18px]'}>{helperText}</p>
     </div>
   );
 }
