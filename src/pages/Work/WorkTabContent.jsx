@@ -276,8 +276,9 @@ export function WorkTabContent() {
 
         <div className="md:flex block items-center mt-8 mb-5">
           <div
-            className={`w-[170px] form-title  ${tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
-              } `}
+            className={`w-[170px] form-title  ${
+              tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
+            } `}
           >
             Career Title
           </div>

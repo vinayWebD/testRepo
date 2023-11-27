@@ -94,6 +94,7 @@ const MediaLayout = ({
                 onClick={() => handleClick(customActiveIndex)}
                 preload="metadata"
                 type="video/mp4"
+                playsInline={true}
               />
             </div>
           )}
@@ -280,6 +281,7 @@ const MediaItem = ({
             onClick={() => onClick(index)}
             preload="metadata"
             type="video/mp4"
+            playsInline={true}
           />
         </div>
         {showMoreOverlay ? (

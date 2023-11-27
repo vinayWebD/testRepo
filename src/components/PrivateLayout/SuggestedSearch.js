@@ -152,7 +152,7 @@ function SuggestedSearch({
           />
         </div>
         <div
-          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] px-2 md:px-0 md:pb-3 ${
+          className={`overflow-x-hidden overflow-y-auto max-h-[70vh] lg:max-h-[60vh] py-3 pb-[50px] pl-2 md:px-0 md:pb-3 ${
             searchResult?.length ? 'md:mb-9' : ''
           } ${width} ${height} ${titleParentClassNames}`}
         >

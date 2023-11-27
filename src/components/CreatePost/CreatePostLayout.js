@@ -123,7 +123,11 @@ const CreatePostLayout = ({
     }
 
     if (failedFiles?.length) {
-      ToastNotifyError(TST_POST_UPLOAD_INVALID_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
+      ToastNotifyError(
+        TST_POST_UPLOAD_INVALID_MEDIA,
+        TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID,
+        false,
+      );
     }
 
     // Upload the files on AWS
