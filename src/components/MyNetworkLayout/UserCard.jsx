@@ -16,7 +16,7 @@ const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
 const UserCard = ({
   selectedTab,
   className = '',
-  onClick = () => {},
+  onClick = () => { },
   isFriendRequest,
   userName = 'Stev Jobs',
   location = 'San Fransico, CA',
@@ -43,7 +43,7 @@ const UserCard = ({
           onClick={handleRedirect}
         >
           <div>
-            <h3 className="text-base text-gray-950  font-medium">{userName}</h3>
+            <h3 className="text-base text-gray-950 font-medium">{userName}</h3>
             <div className="flex gap-1">
               <LocationIcon />
               <span className="text-xs font-normal">{location}</span>

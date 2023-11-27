@@ -14,7 +14,7 @@ const Notification = () => {
         ${payload?.data?.type === 'like'
           ? 'liked your post'
           : payload?.data?.type === 'comment'
-            ? 'comment on your post'
+            ? 'commented on your post'
             : 'followed you'
         }`,
       );

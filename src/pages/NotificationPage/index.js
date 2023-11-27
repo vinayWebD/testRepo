@@ -84,6 +84,20 @@ const NotificationPage = () => {
         setActiveMediaIndex(postId);
         setIsPreviewDetailsPostOpen(true);
       }
+    } else {
+      if (!markAsRead) {
+        const { status, data } = await dispatch(
+          markReadDispatcher({ NotificationId: Number(notificationId) }),
+        );
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
+          if (errormsg) {
+            ToastNotifyError(errormsg);
+          }
+        } else {
+          fetchnotificationList();
+        }
+      }
     }
   };
 

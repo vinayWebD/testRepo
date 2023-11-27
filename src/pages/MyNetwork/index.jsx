@@ -7,7 +7,7 @@ import { TABS_NAME } from '../../constants/lang';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 const { FOLLOWERS, FOLLOWING, CONNECTIONS } = TABS_NAME;
 const MyNetwork = () => {
-  const [selectedTab, setSelectedTab] = useState('Following');
+  const [selectedTab, setSelectedTab] = useState('Followers');
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
