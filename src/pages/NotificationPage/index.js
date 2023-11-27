@@ -134,9 +134,9 @@ const NotificationPage = () => {
                 <span className="font-medium">
                   {userData?.firstName} {userData?.lastName}
                 </span>
-                {count > 0 && item?.notificationType === 'like' ?
+                {count > 1 && item?.notificationType === 'like' ?
                   ` and ${count - 1} others liked your post` :
-                  count > 0 && item?.notificationType === 'comment' ?
+                  count > 1 && item?.notificationType === 'comment' ?
                     ` and ${count - 1} others commented on your post` :
                     item?.notificationType === 'like' ? `${' '}liked your post` :
                       item?.notificationType === 'comment' ? `${' '}comment on your post` : `${' '}followed you`}
@@ -167,9 +167,9 @@ const NotificationPage = () => {
               <div className="text-[14px] font-normal text-[#333333]">
                 <span className="font-medium">{userData?.firstName} {userData?.lastName} </span>
                 {
-                  count > 0 && item?.notificationType === 'like' ?
+                  count > 1 && item?.notificationType === 'like' ?
                     ` and ${count - 1} others liked your post` :
-                    count > 0 && item?.notificationType === 'comment' ?
+                    count > 1 && item?.notificationType === 'comment' ?
                       ` and ${count - 1} others commented on your post` :
                       item?.notificationType === 'like' ? `${' '}liked your post` :
                         item?.notificationType === 'comment' ? `${' '}comment on your post` : `${' '}followed you`
