@@ -73,7 +73,7 @@ const NotificationSection = () => {
     const userData = item?.notificationData
     if (!item?.markAsRead) {
       return (
-        <div className="px-1 bg-[#F5FBFF] relative cursor-pointer" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
+        <div className="px-1 bg-[#F5FBFF] relative cursor-pointer" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}>
           <div className="flex py-2 pt-3">
             <div className="block w-full">
               <div className="text-sm font-normal text-[#333333]">
@@ -96,7 +96,7 @@ const NotificationSection = () => {
       )
     } else {
       return (
-        <div className="px-1 cursor-pointer" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead)}>
+        <div className="px-1 cursor-pointer" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}>
           <div className="flex py-2 pt-3">
             <div className="block w-full">
               <div className="text-sm font-normal text-[#333333]">
@@ -119,7 +119,7 @@ const NotificationSection = () => {
     }
   }
 
-  const handleClick = async (postId, notificationId, markAsRead) => {
+  const handleClick = async (postId, notificationId, markAsRead, userId) => {
     if (postId) {
       if (!markAsRead) {
         const { status, data } = await dispatch(markReadDispatcher({ 'NotificationId': Number(notificationId) }));
@@ -138,6 +138,20 @@ const NotificationSection = () => {
         fetchSinglePostDetails(postId);
         setActiveMediaIndex(postId);
         setIsPreviewDetailsPostOpen(true);
+      }
+    } else {
+      if (userId) {
+        const { status, data } = await dispatch(
+          markReadDispatcher({ NotificationId: Number(notificationId) }),
+        );
+        if (!successStatus(status)) {
+          const errormsg = getErrorMessage(data);
+          if (errormsg) {
+            ToastNotifyError(errormsg);
+          }
+        } else {
+          navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`)
+        }
       }
     }
   };
