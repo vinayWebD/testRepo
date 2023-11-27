@@ -239,6 +239,7 @@ const HomePage = () => {
                       id: post?.id,
                     }}
                     userId={post?.UserId}
+                    isFollowed={post?.isFollowed}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">

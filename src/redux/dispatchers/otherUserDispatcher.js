@@ -25,16 +25,20 @@ const fetchOtherUserNetworkingCount =
   };
 
 const followOtherUserDispatcher =
-  ({ id }) =>
+  ({ id, showLoader = false }) =>
   async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(showLoader));
     const { status, data } = await followOtherUser({ id, dispatch });
+    dispatch(globalTransparentLoadingPrivate(false));
     return { status, data };
   };
 
 const unfollowOtherUserDispatcher =
-  ({ id }) =>
+  ({ id, showLoader = false }) =>
   async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(showLoader));
     const { status, data } = await unfollowOtherUser({ id, dispatch });
+    dispatch(globalTransparentLoadingPrivate(false));
     return { status, data };
   };
 

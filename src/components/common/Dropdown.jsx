@@ -7,6 +7,7 @@ const Dropdown = ({
   parentClassName = '',
   optionsClassName = '',
   optionItemClassName = '',
+  closeAfterClick = false,
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -39,13 +40,18 @@ const Dropdown = ({
           tabIndex="-1"
         >
           <div className="py-1" role="none">
-            {options.map(({ name, action }, index) => (
+            {options.map(({ name, action = () => {} }, index) => (
               <button
                 key={index}
                 className={`border-b-[1px] border-greymedium border-opacity-50 last:border-0 text-left block px-6 py-3 text-sm font-medium text-greydark hover:bg-gray-100 hover:text-gray-900 w-full ${optionItemClassName}`}
                 role="menuitem"
                 tabIndex="-1"
-                onClick={action}
+                onClick={() => {
+                  action();
+                  if (closeAfterClick) {
+                    setIsOpen(false);
+                  }
+                }}
               >
                 {name}
               </button>
