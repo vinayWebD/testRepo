@@ -137,7 +137,8 @@ const LANG = {
       LANG_EDIT_POST: 'Edit Post',
     },
     CREATE_POST: {
-      LANG_TEXT_AREA_PLACEHOLDER: 'Share a content',
+      LANG_TEXT_AREA_PLACEHOLDER: 'Share a content, media or link',
+      LANG_TEXT_AREA_PLACEHOLDER_EDIT: 'Share a content',
       LANG_URL: 'URL',
       LANG_HTTPS: 'https://',
       LANG_ADD_NEW: '+ Add New',
