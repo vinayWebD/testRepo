@@ -57,7 +57,7 @@ const EditProfile = ({
       .required(IS_REQUIRED('Last Name'))
       .max(50, MSG_FIELD_LENGTH('First Name')),
     location: yup.string().nullable(true),
-    profilePicture: yup.string(),
+    profilePicture: yup.string().nullable(true).optional(),
   });
 
   const getPreSignedUrl = async () => {
