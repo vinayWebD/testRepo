@@ -37,7 +37,7 @@ const AccordionItem = ({
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        leave="transition-opacity duration-300"
+        leave="transition-opacity duration-0"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
