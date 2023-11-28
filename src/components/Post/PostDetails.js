@@ -232,6 +232,7 @@ const PostDetails = ({
             isCommentSectionOpenDefault={true}
             postId={post?.id}
             reloadPostDetails={reloadPostDetails}
+            completePostData={post}
           />
         </div>
       </div>
