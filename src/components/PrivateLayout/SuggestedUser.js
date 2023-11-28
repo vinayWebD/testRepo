@@ -13,15 +13,16 @@ const SuggestedUser = ({
   userImg,
   userBio,
   userId,
-  closePopupHandler = () => {},
+  closePopupHandler = () => { },
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const onClickHandler = () => {
-    navigate(`${OTHER_USER_PROFILE}${userId}`);
-    closePopupHandler();
-    dispatch(updateSearch({ searchValue: '' }));
+  const onClickHandler = async () => {
+    await navigate(`${OTHER_USER_PROFILE}${userId}`);
+    await closePopupHandler();
+    await dispatch(updateSearch({ searchValue: '' }));
+    await window.location.reload()
   };
 
   return (
