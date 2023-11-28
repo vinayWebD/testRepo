@@ -19,7 +19,7 @@ import { Button } from '../common/Button';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 const { POST_PATTERN, LINK_PATTERN } = REGEX;
-const { LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
+const { LANG_TEXT_AREA_PLACEHOLDER, LANG_TEXT_AREA_PLACEHOLDER_EDIT } = LANG.PAGES.CREATE_POST;
 const {
   successToast: { TST_POST_CREATED_SUCCESSFULLY = '', TST_POST_UPDATED_SUCCESSFULLY = '' },
   errorToast: {
@@ -123,7 +123,11 @@ const CreatePostLayout = ({
     }
 
     if (failedFiles?.length) {
-      ToastNotifyError(TST_POST_UPLOAD_INVALID_MEDIA, TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID);
+      ToastNotifyError(
+        TST_POST_UPLOAD_INVALID_MEDIA,
+        TST_POST_UPLOAD_MEDIA_VALIDATION_FAILED_ID,
+        false,
+      );
     }
 
     // Upload the files on AWS
@@ -229,13 +233,13 @@ const CreatePostLayout = ({
   return (
     <div className="relative">
       <div
-        className={`modal-internal h-[83dvh] max-h-[83dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
+        className={`modal-internal h-[75dvh] max-h-[75dvh] md:h-auto md:max-h-[70vh] overflow-y-auto ${
           isEditing ? '!overflow-visible' : ''
         }`}
       >
         <div className={`relative px-[18px] flex flex-col gap-2 ${isEditing ? 'pb-2' : ''}`}>
           <EmojiTextarea
-            placeholder={LANG_TEXT_AREA_PLACEHOLDER}
+            placeholder={!isEditing ? LANG_TEXT_AREA_PLACEHOLDER : LANG_TEXT_AREA_PLACEHOLDER_EDIT}
             value={text}
             handleChange={(val) => setText(val)}
           />

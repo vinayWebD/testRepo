@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 function InputBox({
   name = '',
@@ -15,9 +15,18 @@ function InputBox({
   labelFontColor = '#333',
   helperText = false,
   maxLength = 100,
+  parentClassName = '',
   ...props
 }) {
   const [value, setValue] = useState(initialValue);
+
+  useEffect(() => {
+    setValue(props?.value);
+  }, [props?.value]);
+
+  useEffect(() => {
+    setValue(initialValue);
+  }, [initialValue]);
 
   const handleInputChange = (event) => {
     setValue(event.target.value);
@@ -25,10 +34,10 @@ function InputBox({
   };
 
   return (
-    <div>
+    <div className={parentClassName}>
       <div className="flex gap-[2px]">
         <label style={{ color: labelFontColor }}>{label}</label>
-        {isRequired ? <span className="relative top-[-4px]">*</span> : ''}
+        {isRequired ? <span className="text-red relative top-[-4px]">*</span> : ''}
       </div>
       <input
         {...props}
@@ -37,7 +46,7 @@ function InputBox({
         placeholder={placeholder}
         className={`${className} ${
           helperText ? 'haserror' : ''
-        } border border-large border-customGray w-full`}
+        } border border-large border-customGray w-full ${disabled ? 'cursor-not-allowed' : ''}`}
         onChange={handleInputChange}
         onBlur={onBlur}
         onFocus={onFocus}
@@ -46,7 +55,7 @@ function InputBox({
         autoComplete={'true'}
         maxLength={maxLength}
       />
-      {helperText && <p className={'mt-1 error'}>{helperText}</p>}
+      <p className={'mt-1 error min-h-[18px]'}>{helperText}</p>
     </div>
   );
 }

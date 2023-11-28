@@ -13,7 +13,7 @@ import Loader from '../common/Loader';
  * @param {*} param0
  * @returns
  */
-const PrivateLayout = ({ children }) => {
+const PrivateLayout = ({ children, activeTab }) => {
   const isGlobalTransparentLoadingPrivate = useSelector(
     (state) => state?.auth?.globalTransparentLoadingPrivate,
   );
@@ -27,7 +27,7 @@ const PrivateLayout = ({ children }) => {
         {/* The header component */}
         <PrivateHeader />
 
-        <div className="px-0 md:px-[5%] mt-[61px] flex-grow grid grid-cols-12 gap-5 ">
+        <div className="add-blur-after-search px-0 md:px-[5%] mt-[61px] flex-grow grid grid-cols-12 gap-5 ">
           {/* This is a common sidebar that should be on all private authenticated pages */}
           <div className="hidden md:block col-span-2 md:col-span-1 lg:col-span-3 sticky top-[61px] z-40 py-[14px] h-fit">
             {/* The profile info - image, name etc. */}
@@ -35,7 +35,7 @@ const PrivateLayout = ({ children }) => {
 
             <Card classNames="lg:mt-6">
               {/* Navigation sidebar */}
-              <LeftNavigation />
+              <LeftNavigation activeTab={activeTab} />
             </Card>
           </div>
           <div className="col-span-12 md:col-span-8 min-h-[calc(100vh-61px)] h-fit overflow-y-auto lg:col-span-6 md:py-[14px] mb-[60px] md:mb-0">

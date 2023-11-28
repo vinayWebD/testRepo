@@ -2,23 +2,34 @@ import React, { useState } from 'react';
 import { Transition } from '@headlessui/react';
 import { ChevronDownIcon } from '../Icons/ChevronDownIcon';
 
-const AccordionItem = ({ title, children, icon }) => {
+const AccordionItem = ({
+  title,
+  children,
+  icon,
+  disabled,
+  parentClassName = 'bg-white',
+  titleClassName = 'text-blueprimary text-[20px] font-medium',
+  childClassName = 'px-6',
+  mainIcon = () => <ChevronDownIcon />,
+  iconWhenOpen = () => <ChevronDownIcon />,
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className={`bg-white mb-4 ${isOpen ? 'accordion-open' : ''}`}>
+    <div className={`mb-4 ${isOpen ? `rounded-s ${parentClassName} shadow-md` : parentClassName}`}>
       <button
+        disabled={disabled}
         onClick={() => setIsOpen(!isOpen)}
         className="w-full text-left py-[17px] px-[24px] focus:outline-none focus:bg-gray-200 flex items-center justify-between"
       >
         <div className="flex items-center">
           {icon ? <span className="mr-4">{icon}</span> : null}
-          <span className="form-title-blue">{title}</span>
+          <span className={titleClassName}>{title}</span>
         </div>
         <div
           className={`transform transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
         >
-          <ChevronDownIcon />
+          {!isOpen ? mainIcon() : iconWhenOpen()}
         </div>
       </button>
       <Transition
@@ -26,20 +37,38 @@ const AccordionItem = ({ title, children, icon }) => {
         enter="transition-opacity duration-300"
         enterFrom="opacity-0"
         enterTo="opacity-100"
-        leave="transition-opacity duration-300"
+        leave="transition-opacity duration-0"
         leaveFrom="opacity-100"
         leaveTo="opacity-0"
       >
-        <div className="px-6">{children}</div>
+        <div className={`${childClassName}`}>{children}</div>
       </Transition>
     </div>
   );
 };
-const Accordion = ({ items }) => {
+const Accordion = ({
+  items,
+  disabled,
+  parentClassName,
+  titleClassName,
+  childClassName,
+  mainIcon,
+  iconWhenOpen,
+}) => {
   return (
     <div>
       {items.map((item, index) => (
-        <AccordionItem key={index} title={item.title} icon={item.icon}>
+        <AccordionItem
+          key={index}
+          title={item.title}
+          icon={item.icon}
+          disabled={disabled}
+          parentClassName={parentClassName}
+          titleClassName={titleClassName}
+          childClassName={childClassName}
+          mainIcon={mainIcon}
+          iconWhenOpen={iconWhenOpen}
+        >
           {item.content}
         </AccordionItem>
       ))}

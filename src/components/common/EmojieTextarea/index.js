@@ -42,20 +42,20 @@ const EmojiTextarea = ({
     <div className="relative">
       <textarea
         value={value}
-        className="min-h-[120px] w-full pr-6"
+        className="min-h-[120px] w-full pr-6 textarea-with-emojie"
         placeholder={placeholder}
         onChange={(e) => handleChange(e.target.value)}
         maxLength={maxLength}
       />
 
       <span
-        className="absolute top-5 right-3 cursor-pointer"
+        className="absolute top-5 right-2 cursor-pointer"
         onClick={() => setShowEmojiPicker(!showEmojiPicker)}
       >
         <EmojieIcon />
       </span>
 
-      <div className="absolute right-3 bottom-3 text-xs text-greylight">
+      <div className="w-full text-right text-xs text-greylight">
         {value.length}/{maxLength}
       </div>
 

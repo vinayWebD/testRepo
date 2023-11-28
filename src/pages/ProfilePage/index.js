@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import ProfileLayout from '../../components/ProfileLayout';
@@ -10,19 +9,41 @@ import backIcon from '../../assets/images/backIcon.svg';
 import noWork from '../../assets/images/noWork.svg';
 
 import { useNavigate } from 'react-router-dom';
-import WorkDetail from './WorkDetail';
 import OutlinedButton from '../../components/common/OutlinedButton';
-import InterestDetail from './InterestDetail';
 import useScrollToTop from '../../hooks/useScrollToTop';
+import InterestDetail from '../../components/ProfilePage/InterestDetail';
+import WorkDetail from '../../components/ProfilePage/WorkDetail';
+import Tabs from '../../components/ProfilePage/Tabs';
+import MyPosts from '../../components/ProfilePage/MyPosts';
+import { networkCount } from '../../services/myProfile';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 
 const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
   // const [isLoading, setIsLoading] = useState(false);
-  const [tab, setTab] = useState('work');
+  const [tab, setTab] = useState('post');
+  const [networkCounter, setNetworkCounter] = useState({});
   const navigate = useNavigate();
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
+
+  const fetchNetworkCount = async () => {
+    const { status, data } = await networkCount();
+    if (!successStatus(status)) {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    } else {
+      setNetworkCounter(data?.data);
+    }
+  };
+
+  useEffect(() => {
+    fetchNetworkCount();
+  }, []);
 
   return (
     <ProfileLayout>
@@ -36,46 +57,19 @@ const ProfilePage = () => {
           My Profile
         </div>
         <ProfileContainer userData={userData} />
-        <FollowerContainer />
+        <FollowerContainer {...networkCounter} />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">
         <div className="grid grid-cols-12 gap-3 feed-page">
           <div className="col-span-12">
             <div>
-              <Card
-                classNames="flex justify-around overflow-hidden text-center"
-                bottomNotRound={true}
-              >
-                <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${
-                    tab === 'work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                  }`}
-                  onClick={() => setTab('work')}
-                  style={{ fontWeight: '500' }}
-                >
-                  Work
-                </div>
-                <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${
-                    tab === 'interest' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                  }`}
-                  onClick={() => setTab('interest')}
-                  style={{ fontWeight: '500' }}
-                >
-                  Interests
-                </div>
-                <div
-                  className={`w-[33.3%] p-4 cursor-pointer ${
-                    tab === 'myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
-                  }`}
-                  onClick={() => setTab('myself')}
-                  style={{ fontWeight: '500' }}
-                >
-                  Myself
-                </div>
-              </Card>
+              <Tabs tab={tab} updateTab={setTab} />
 
-              {tab === 'work' ? (
+              {tab === 'post' ? (
+                <>
+                  <MyPosts other={false} />
+                </>
+              ) : tab === 'work' ? (
                 <>
                   <WorkDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">

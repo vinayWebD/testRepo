@@ -11,6 +11,14 @@ import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import Modal from '../Modal';
 import CreatePostLayout from '../CreatePost/CreatePostLayout';
 import { LANG } from '../../constants/lang';
+import copyToClipboard from '../../utils/copyToClipboard';
+import { DATE_FORMAT } from '../../constants/constants';
+import { PATHS } from '../../constants/urlPaths';
+import { useNavigate } from 'react-router-dom';
+import {
+  followOtherUserDispatcher,
+  unfollowOtherUserDispatcher,
+} from '../../redux/dispatchers/otherUserDispatcher';
 
 const { LANG_EDIT_POST } = LANG.PAGES.FEED;
 
@@ -24,11 +32,14 @@ const Header = ({
   reloadData = () => {},
   postDetails = {},
   reloadPostDetails = () => {},
+  userId = '',
+  isFollowed = false,
 }) => {
   const dispatch = useDispatch();
   const [options, setOptions] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (isCreatedByMe) {
@@ -43,7 +54,7 @@ const Header = ({
         },
         {
           name: 'Copy link',
-          action: () => {},
+          action: () => copyLink(`${window.location.origin}${PATHS.HOME}/${postDetails?.id}`),
         },
       ]);
     } else {
@@ -53,16 +64,21 @@ const Header = ({
           action: () => {},
         },
         {
-          name: 'Unfollow',
-          action: () => {},
+          name: isFollowed ? 'Unfollow' : 'Follow',
+          action: () => followUnfollowHandler(),
         },
         {
           name: 'Copy link',
-          action: () => {},
+          action: () => copyLink(`${window.location.origin}${PATHS.HOME}/${postDetails?.id}`),
         },
       ]);
     }
-  }, [isCreatedByMe]);
+  }, [isCreatedByMe, isFollowed]);
+
+  const copyLink = (text) => {
+    copyToClipboard(text);
+    ToastNotifySuccess('URL copied to clipboard');
+  };
 
   const deletePostHandler = async () => {
     const { data, status } = (await dispatch(deletePostDispatcher({ postId }))) || {};
@@ -78,21 +94,57 @@ const Header = ({
     setIsDeleteModalOpen(false);
   };
 
+  const followUnfollowHandler = async () => {
+    let response;
+    if (isFollowed) {
+      response =
+        (await dispatch(unfollowOtherUserDispatcher({ id: userId, showLoader: true }))) || {};
+    } else if (!isFollowed) {
+      response =
+        (await dispatch(followOtherUserDispatcher({ id: userId, showLoader: true }))) || {};
+    }
+
+    if (response) {
+      const { status, data } = response;
+
+      if (successStatus(status)) {
+        if (!data?.data?.isApproved) {
+          ToastNotifySuccess('A follow request has been sent');
+        }
+        await reloadPostDetails({ postId: postDetails?.id });
+      } else {
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg);
+        }
+      }
+    }
+    document.body.click();
+  };
+
   return (
     <div className="flex gap-2 items-center">
       <Avatar
         name={creatorName}
         image={creatorProfilePicUrl}
         classNames="w-[50px] h-[50px] bg-greylight border border-greymedium"
+        clickFun={() => {
+          if (!isCreatedByMe) {
+            navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`);
+          } else {
+            navigate(`${PATHS.PROFILE}`);
+          }
+        }}
       />
       <div>
         <p className="font-semibold capitalize">{creatorName}</p>
-        <p className="text-[12px] text-greylight">{timeSpan(createdAt)}</p>
+        <p className="text-[12px] text-greylight">{timeSpan(createdAt, DATE_FORMAT.POST)}</p>
       </div>
 
       {showThreeDots && (
         <div className="ml-auto cursor-pointer">
           <Dropdown
+            closeAfterClick={true}
             options={options}
             IconComponent={() => <ThreeDots className="w-[18px] h-[18px]" />}
           />
@@ -146,7 +198,9 @@ const areEqual = (prevProps, nextProps) => {
       prevProps.creatorName === nextProps.creatorName ||
       prevProps.creatorProfilePicUrl === nextProps.creatorProfilePicUrl ||
       prevProps.showThreeDots === nextProps.showThreeDots) &&
-    JSON.stringify(prevProps.postDetails) === JSON.stringify(nextProps.postDetails)
+    JSON.stringify(prevProps.postDetails) === JSON.stringify(nextProps.postDetails) &&
+    prevProps.postDetails?.id === nextProps.postDetails?.id &&
+    prevProps.isFollowed === nextProps.isFollowed
   );
 };
 

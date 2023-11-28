@@ -1,13 +1,14 @@
 import { loginUser, logoutUser, sendForgotPasswordOtp, userProfile } from '../../services/auth';
+import { updateSearch } from '../slices/appSearchSlice';
 import { globalLoading, login, logout, profile } from '../slices/authSlice';
 
 /**
  * The dispatcher method to call the login API and do the necessary React related functionalities
  */
 const loginDispatcher =
-  ({ email, password }) =>
+  ({ email, password, fcmToken }) =>
   async (dispatch) => {
-    const { status, data } = await loginUser({ email, password, dispatch });
+    const { status, data } = await loginUser({ email, password, fcmToken, dispatch });
 
     if (status === 200) {
       localStorage.setItem('token', data?.data?.token);
@@ -28,6 +29,7 @@ const logoutDispatcher = () => async (dispatch) => {
   if (localStorage.getItem('token')) {
     await logoutUser(dispatch);
   }
+  dispatch(updateSearch({ searchValue: '' }));
   localStorage.removeItem('token');
   dispatch(logout());
 };

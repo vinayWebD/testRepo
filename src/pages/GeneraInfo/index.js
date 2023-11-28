@@ -21,7 +21,7 @@ import {
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import { getFileExtension } from '../../utils/helper';
 
-const { HOME, PATH_SIGNUP } = PATHS;
+const { PATH_SIGNUP, PATH_WORK } = PATHS;
 const {
   LANG_GEN_INFO,
   LANG_PROVIDE_INFO,
@@ -61,9 +61,8 @@ function GeneralInfo() {
   };
 
   const handleSkip = () => {
-    dispatch(login(userData));
-    secureLocalStorage.removeItem('object');
-    navigate(HOME, { replace: true });
+    secureLocalStorage.setItem('object', { data });
+    navigate(PATH_WORK);
   };
 
   useEffect(() => {
@@ -99,7 +98,8 @@ function GeneralInfo() {
     if (successStatus(status)) {
       ToastNotifySuccess('General Info added Successfully', 'location-success');
       dispatch(login(userData));
-      navigate(HOME, { replace: true });
+      // navigate(HOME, { replace: true });
+      navigate(PATH_WORK);
     } else {
       if (errormsg) {
         ToastNotifyError(errormsg, 'location-failed');

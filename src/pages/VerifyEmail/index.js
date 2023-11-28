@@ -138,6 +138,7 @@ function VerifyEmail() {
         const dataToSend = {
           code: otp,
           email: email,
+          fcmToken: localStorage.getItem('fcm'),
         };
         const { data, status } = await verifyEmail(dataToSend);
         setIsLoading(false);

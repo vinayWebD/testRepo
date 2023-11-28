@@ -6,6 +6,7 @@ const TextArea = ({
   helperText = false,
   className = '',
   label = '',
+  handleChange = () => {},
   labelFontColor = '#333',
   ...props
 }) => {
@@ -13,11 +14,12 @@ const TextArea = ({
     <>
       {label && <label style={{ color: labelFontColor }}>{label}</label>}
       <textarea
+        onChange={(e) => handleChange(e.target.value)}
         {...props}
         className={`${className} border border-customGray rounded-[8px] px-[15px] py-[12px] text-area-input resize-none ${width} ${height} focus:border-blue-500 focus:outline-none${
           helperText ? 'haserror' : ''
         }`}
-      ></textarea>
+      />
       {helperText && <p className={'mt-1 error'}>{helperText}</p>}
     </>
   );

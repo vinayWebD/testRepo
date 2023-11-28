@@ -1,5 +1,3 @@
-/* eslint-disable no-undef */
-/* eslint-disable no-unused-vars */
 import { useSelector } from 'react-redux';
 import Avatar from '../../components/common/Avatar';
 import Card from '../../components/common/Card';
@@ -25,6 +23,8 @@ import useWindowScrolledDown from '../../hooks/useWindowScrolledDown';
 import PostSkeleton from '../../components/common/PostSkeleton';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import debounce from '../../utils/debounce';
+import { useNavigate, useParams } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 const { LANG_WRITE_SOMETHING, LANG_CREATE_POST } = LANG.PAGES.FEED;
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
@@ -43,6 +43,8 @@ const HomePage = () => {
   const loaderRef = useRef(null);
   const hasUserScrolled = useWindowScrolledDown();
   let isLoadingAPI = false; // This we are using to avoid multiple API calls because of infinite scroll
+  let { id: idFromUrl } = useParams(); // The post id that we want to display in post details
+  const navigate = useNavigate();
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
@@ -66,6 +68,19 @@ const HomePage = () => {
       }
     };
   }, [loaderRef, posts]);
+
+  useEffect(() => {
+    if (idFromUrl) {
+      fetchSinglePostDetails({ postId: idFromUrl });
+      setIsPreviewDetailsPostOpen(true);
+    }
+  }, [idFromUrl]);
+
+  useEffect(() => {
+    if (isPreviewDetailsPostOpen === false) {
+      navigate(PATHS.HOME);
+    }
+  }, [isPreviewDetailsPostOpen]);
 
   // When we reload the posts: maybe after creating new post, editing or deleting one
   const reloadPosts = async () => {
@@ -126,23 +141,29 @@ const HomePage = () => {
     const errormsg = getErrorMessage(data);
     if (!successStatus(status)) {
       ToastNotifyError(errormsg, '');
+      setIsPreviewDetailsPostOpen(false);
     } else {
-      const allPosts = posts.map((post) => {
-        if (activePost?.id === postId) {
-          setActivePost(data?.data);
-        }
-        if (post?.id === postId) {
-          return data?.data;
-        } else {
-          return post;
-        }
-      });
-      setPosts(allPosts);
+      if (posts?.length) {
+        const allPosts = posts.map((post) => {
+          if (activePost?.id === postId) {
+            setActivePost(data?.data);
+          }
+          if (post?.id === postId) {
+            return data?.data;
+          } else {
+            return post;
+          }
+        });
+
+        setPosts(allPosts);
+      } else {
+        setActivePost(data?.data);
+      }
     }
   };
 
   return (
-    <PrivateLayout>
+    <PrivateLayout activeTab={0}>
       <div className="grid grid-cols-12 gap-5 feed-page">
         <div className="col-span-12">
           <Card classNames="p-5">
@@ -217,6 +238,8 @@ const HomePage = () => {
                       links: post?.links,
                       id: post?.id,
                     }}
+                    userId={post?.UserId}
+                    isFollowed={post?.isFollowed}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
                   <div className="mt-3">
@@ -225,6 +248,7 @@ const HomePage = () => {
                       allowOnlyView={true}
                       origin="feed"
                       onMediaClickHandler={(customIndex) => {
+                        // navigate(`${PATHS.PROFILE}/${post?.id}`);
                         setIsPreviewDetailsPostOpen(true);
                         setActivePost({ ...post });
                         setActiveMediaIndex(customIndex);
@@ -294,12 +318,18 @@ const HomePage = () => {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width="!w-[100vw] md:!w-[75vw]"
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+        height={` ${
+          !activePost?.postMedia?.length
+            ? 'max-h-[100dvh] md:h-auto'
+            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+        } `}
       >
         <PostDetails
           post={activePost}
