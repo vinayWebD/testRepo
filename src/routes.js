@@ -16,6 +16,7 @@ import NotificationPage from './pages/NotificationPage';
 import Settings from './pages/Settings';
 import ChangePassword from './pages/Settings/ChangePassword';
 import HelpCenter from './pages/Settings/HelpCenter';
+import PrivacySetting from './pages/Settings/PrivacySetting';
 
 const {
   LANDING,
@@ -34,6 +35,7 @@ const {
   SETTINGS,
   SETTINGS_CHANGE_PASSWORD,
   SETTINGS_HELP_CENTER,
+  SETTINGS_PRIVACY_SETTING,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -116,6 +118,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: SETTINGS_HELP_CENTER,
     element: <HelpCenter />,
+  },
+  {
+    path: SETTINGS_PRIVACY_SETTING,
+    element: <PrivacySetting />,
   },
 ]);
 
