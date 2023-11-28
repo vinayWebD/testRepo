@@ -38,6 +38,8 @@ const NETWORK_CONSTANTS = {
   CHANGE_PASSWORD: '/v1/accounts/change-password',
   HELP_CENTER_CONTACT_ADMIN: '/v1/accounts/help-center/query',
   MARK_READ_PATH: '/v1/notifications/mark-as-read',
+  UPDATE_EMAIL_VERIFY_OLD_EMAIL: '/v1/accounts/verify-email/old',
+  UPDATE_EMAIL_VERIFY_NEW_EMAIL: '/v1/accounts/verify-email/new',
 };
 
 export default NETWORK_CONSTANTS;

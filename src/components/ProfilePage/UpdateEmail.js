@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useScreenWidth } from '../../hooks';
-import { forgotPasswordOtpValidation, sendForgotPasswordOtp } from '../../services/auth';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import OTPInput from 'react-otp-input';
 import { LANG } from '../../constants/lang';
 import { Button } from '../common/Button';
+import { useDispatch } from 'react-redux';
+import {
+  sendOtpToUpdateEmailDispatcher,
+  verifyNewEmailDispatcher,
+  verifyOldEmailDispatcher,
+} from '../../redux/dispatchers/myProfileDispatcher';
 
 const { LANG_RESEND } = LANG.PAGES.VERIFY_EMAIL;
 
-const UpdateEmail = ({ email }) => {
+const UpdateEmail = ({
+  newEmail,
+  verificationStep = 0,
+  updateVerificationStep = () => {},
+  currentEmail = '',
+  closeHandler = () => {},
+}) => {
   const width = useScreenWidth();
+  const dispatch = useDispatch();
   const [otp, setOtp] = useState([]);
   const [counter, setCounter] = useState(59);
   const [isLoading, setIsLoading] = useState(false);
@@ -41,8 +53,12 @@ const UpdateEmail = ({ email }) => {
 
   const resendHandler = async () => {
     setCounter(59);
-    let response;
-    response = await sendForgotPasswordOtp({ email });
+
+    const response = await dispatch(
+      sendOtpToUpdateEmailDispatcher({
+        email: newEmail?.trim(),
+      }),
+    );
     const { status, data } = response;
 
     const errormsg = getErrorMessage(data);
@@ -62,16 +78,34 @@ const UpdateEmail = ({ email }) => {
     } else {
       setIsLoading(true);
 
-      const response = await forgotPasswordOtpValidation({ email, code: otp });
-      setIsLoading(false);
-      const { status, data } = response;
-      if (!successStatus(status)) {
-        const errormsg = getErrorMessage(data);
+      let response = {};
 
+      if (verificationStep === 0) {
+        response = await dispatch(verifyOldEmailDispatcher({ email: newEmail, code: otp }));
+      } else if (verificationStep === 1) {
+        response = await dispatch(verifyNewEmailDispatcher({ email: newEmail, code: otp }));
+      }
+
+      const { status, data } = response;
+
+      const errormsg = getErrorMessage(data);
+      if (successStatus(status)) {
+        ToastNotifySuccess(
+          verificationStep === 0
+            ? 'Current email has been verified'
+            : 'New email has been verified',
+        );
+        updateVerificationStep(() => (verificationStep === 0 ? 1 : 2));
+        setOtp('');
+        if (verificationStep !== 0) {
+          closeHandler();
+        }
+      } else {
         if (errormsg) {
-          ToastNotifyError(errormsg, '');
+          ToastNotifyError(errormsg);
         }
       }
+      setIsLoading(false);
     }
   };
 
@@ -79,7 +113,8 @@ const UpdateEmail = ({ email }) => {
     <form onSubmit={onSubmit} className="flex flex-col">
       <div className="flex flex-col items-center pt-3 pb-5 px-[18px] text-greydark ">
         <div className="text-[14px] mb-4 pb-2">
-          Enter OTP sent to <span className="font-semibold">{email}</span>
+          Enter OTP sent to{' '}
+          <span className="font-semibold">{verificationStep === 0 ? currentEmail : newEmail}</span>
         </div>
 
         <OTPInput
@@ -94,17 +129,21 @@ const UpdateEmail = ({ email }) => {
         />
         <span className="mt-1 error">{error && 'Verification Code is required'}</span>
 
-        <div
-          className={`flex gap-2 text-greydark items-center justify-center mt-4 ${
-            counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
-          }`}
-          onClick={() => (counter > 0 ? null : resendHandler())}
-        >
-          <span className="underline">
-            <strong>{LANG_RESEND}</strong>
-          </span>
-          {counter > 0 && <div>in {`0:${counter}`} sec</div>}
-        </div>
+        {verificationStep === 0 ? (
+          <div
+            className={`flex gap-2 text-greydark items-center justify-center mt-4 ${
+              counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
+            }`}
+            onClick={() => (counter > 0 ? null : resendHandler())}
+          >
+            <span className="underline">
+              <strong>{LANG_RESEND}</strong>
+            </span>
+            {counter > 0 && <div>in {`0:${counter}`} sec</div>}
+          </div>
+        ) : (
+          ''
+        )}
       </div>
       <div className="border-greymedium border-t w-full flex justify-end py-5 px-[18px]">
         <Button
