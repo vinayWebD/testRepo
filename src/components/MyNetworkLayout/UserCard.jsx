@@ -16,7 +16,7 @@ const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
 const UserCard = ({
   selectedTab,
   className = '',
-  onClick = () => { },
+  onClick = () => {},
   isFriendRequest,
   userName = 'Stev Jobs',
   location = 'San Fransico, CA',

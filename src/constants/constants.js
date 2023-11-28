@@ -44,5 +44,5 @@ export const DATE_FORMAT = {
 };
 
 export const FIREBASE_CONSTANT = {
-  KEY: 'BNEr8fsavW_uQMUS_NnllNCekCYO1_MybA1Cizb5noGiko09Rj96yrbVayebnZ2EEEf3FkF8rIU7p9fug9XSJ-0'
-}
+  KEY: 'BNEr8fsavW_uQMUS_NnllNCekCYO1_MybA1Cizb5noGiko09Rj96yrbVayebnZ2EEEf3FkF8rIU7p9fug9XSJ-0',
+};

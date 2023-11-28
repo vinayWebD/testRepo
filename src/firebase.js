@@ -9,13 +9,12 @@ const messaging = getMessaging(app);
 
 export const Sendrequest = () => {
   if (typeof Notification === 'function') {
-    console.log('notification')
+    console.log('notification');
     Notification.requestPermission().then(async (permission) => {
       if (permission === 'granted') {
         try {
           const currentToken = await getToken(messaging, {
-            vapidKey:
-              FIREBASE_CONSTANT.KEY,
+            vapidKey: FIREBASE_CONSTANT.KEY,
           });
           if (currentToken) {
             localStorage.setItem('fcm', currentToken);

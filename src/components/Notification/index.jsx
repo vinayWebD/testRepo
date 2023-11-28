@@ -11,9 +11,10 @@ const Notification = () => {
       const data = JSON.parse(payload?.data?.user);
       ToastNotifyInfo(
         `${data.firstName} ${data.lastName} 
-        ${payload?.data?.type === 'like'
-          ? 'liked your post'
-          : payload?.data?.type === 'comment'
+        ${
+          payload?.data?.type === 'like'
+            ? 'liked your post'
+            : payload?.data?.type === 'comment'
             ? 'commented on your post'
             : 'followed you'
         }`,

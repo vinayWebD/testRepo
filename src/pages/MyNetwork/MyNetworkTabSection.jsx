@@ -53,7 +53,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
                 // searchOnFocus
                 'border-[darkgray] flex border-b-[1px] border-0 min-[320px]:w-full md:w-[197.7px]'
                 // : ''
-                } `}
+              } `}
             >
               <SearchInput
                 iconColor={Colors.grayDark}
@@ -78,10 +78,11 @@ const MyNetworkTabSection = ({ selectedTab }) => {
 
             <Button
               label={BTNLBL_INVITE_PEOPLE}
-              additionalClassNames={` md:px-[24px] sm:h-[0px] md:h-[50px] md:py-[14px] items-center text-xs min-[320px]:p-4 ${searchOnFocus
-                ? 'min-[320px]:hidden  md:px-[24px] md:py-[15px] items-center text-xs sm:block'
-                : ''
-                } `}
+              additionalClassNames={` md:px-[24px] sm:h-[0px] md:h-[50px] md:py-[14px] items-center text-xs min-[320px]:p-4 ${
+                searchOnFocus
+                  ? 'min-[320px]:hidden  md:px-[24px] md:py-[15px] items-center text-xs sm:block'
+                  : ''
+              } `}
               showArrowIcon={false}
               onClick={() => setIsInvitePeopleModalOpen(true)}
             />

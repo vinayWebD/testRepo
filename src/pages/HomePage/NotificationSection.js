@@ -21,7 +21,7 @@ const { BTNLBL_INVITE_PEOPLE } = BUTTON_LABELS;
 const NotificationSection = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [dataList, setDataList] = useState([])
+  const [dataList, setDataList] = useState([]);
   const [isInvitePeopleModalOpen, setIsInvitePeopleModalOpen] = useState(false);
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
@@ -38,8 +38,8 @@ const NotificationSection = () => {
     }
   };
   useEffect(() => {
-    fetchnotificationList()
-  }, [])
+    fetchnotificationList();
+  }, []);
   const fetchnotificationList = async () => {
     const { status, data } = await dispatch(
       notificationListDispatcher({
@@ -53,9 +53,9 @@ const NotificationSection = () => {
         ToastNotifyError(errormsg);
       }
     } else {
-      setDataList(data?.data?.notifications)
+      setDataList(data?.data?.notifications);
       if (data?.data?.notifications?.length > 0) {
-        localStorage.setItem('newNotification', true)
+        localStorage.setItem('newNotification', true);
       }
     }
   };
@@ -69,22 +69,28 @@ const NotificationSection = () => {
   };
 
   const notificationData = (item, i, count = 0) => {
-
-    const userData = item?.notificationData
+    const userData = item?.notificationData;
     if (!item?.markAsRead) {
       return (
-        <div className="px-1 bg-[#F5FBFF] relative cursor-pointer" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}>
+        <div
+          className="px-1 bg-[#F5FBFF] relative cursor-pointer"
+          onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
+        >
           <div className="flex py-2 pt-3">
             <div className="block w-full">
               <div className="text-sm font-normal text-[#333333]">
-                <span className="font-medium">{userData?.firstName} {userData?.lastName}
+                <span className="font-medium">
+                  {userData?.firstName} {userData?.lastName}
                 </span>
-                {count > 1 && item?.notificationType === 'like' ?
-                  ` and ${count - 1} others liked your post` :
-                  count > 1 && item?.notificationType === 'comment' ?
-                    ` and ${count - 1} others commented on your post` :
-                    item?.notificationType === 'like' ? `${' '}liked your post` :
-                      item?.notificationType === 'comment' ? `${' '}comment on your post` : `${' '}followed you`}
+                {count > 1 && item?.notificationType === 'like'
+                  ? ` and ${count - 1} others liked your post`
+                  : count > 1 && item?.notificationType === 'comment'
+                  ? ` and ${count - 1} others commented on your post`
+                  : item?.notificationType === 'like'
+                  ? `${' '}liked your post`
+                  : item?.notificationType === 'comment'
+                  ? `${' '}comment on your post`
+                  : `${' '}followed you`}
               </div>
               <div className="text-xs font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -93,20 +99,28 @@ const NotificationSection = () => {
           </div>
           <hr style={{ color: '#E8E8E8' }} />
         </div>
-      )
+      );
     } else {
       return (
-        <div className="px-1 cursor-pointer" onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}>
+        <div
+          className="px-1 cursor-pointer"
+          onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
+        >
           <div className="flex py-2 pt-3">
             <div className="block w-full">
               <div className="text-sm font-normal text-[#333333]">
-                <span className="font-medium">{userData?.firstName} {userData?.lastName}</span>
-                {count > 1 && item?.notificationType === 'like' ?
-                  ` and ${count - 1} others liked your post` :
-                  count > 1 && item?.notificationType === 'comment' ?
-                    ` and ${count - 1} others commented on your post` :
-                    item?.notificationType === 'like' ? `${' '}liked your post` :
-                      item?.notificationType === 'comment' ? `${' '}comment on your post` : `${' '}followed you`}
+                <span className="font-medium">
+                  {userData?.firstName} {userData?.lastName}
+                </span>
+                {count > 1 && item?.notificationType === 'like'
+                  ? ` and ${count - 1} others liked your post`
+                  : count > 1 && item?.notificationType === 'comment'
+                  ? ` and ${count - 1} others commented on your post`
+                  : item?.notificationType === 'like'
+                  ? `${' '}liked your post`
+                  : item?.notificationType === 'comment'
+                  ? `${' '}comment on your post`
+                  : `${' '}followed you`}
               </div>
               <div className="text-xs font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -117,12 +131,14 @@ const NotificationSection = () => {
         </div>
       );
     }
-  }
+  };
 
   const handleClick = async (postId, notificationId, markAsRead, userId) => {
     if (postId) {
       if (!markAsRead) {
-        const { status, data } = await dispatch(markReadDispatcher({ 'NotificationId': Number(notificationId) }));
+        const { status, data } = await dispatch(
+          markReadDispatcher({ NotificationId: Number(notificationId) }),
+        );
         if (!successStatus(status)) {
           const errormsg = getErrorMessage(data);
           if (errormsg) {
@@ -150,7 +166,7 @@ const NotificationSection = () => {
             ToastNotifyError(errormsg);
           }
         } else {
-          navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`)
+          navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`);
         }
       }
     }
@@ -174,21 +190,18 @@ const NotificationSection = () => {
         </div>
       </Card>
 
-
       <div className="h-auto">
         {dataList?.length > 0 ? (
           <>
             <Card classNames="p-3 mt-[14px]">
               <p className="font-semibold text-base">Notification</p>
-              {
-                dataList.map((item, i) => {
-                  if (item?.count) {
-                    return notificationData(item?.data, i, item?.count)
-                  } else {
-                    return notificationData(item, i)
-                  }
-                })
-              }
+              {dataList.map((item, i) => {
+                if (item?.count) {
+                  return notificationData(item?.data, i, item?.count);
+                } else {
+                  return notificationData(item, i);
+                }
+              })}
 
               <div
                 className="pt-3 text-blueprimary text-base font-semibold text-center cursor-pointer hover:opacity-70"
@@ -198,7 +211,6 @@ const NotificationSection = () => {
               </div>
             </Card>
           </>
-
         ) : (
           <div></div>
         )}
@@ -226,16 +238,18 @@ const NotificationSection = () => {
           setIsPreviewDetailsPostOpen(false);
         }}
         isTitle={false}
-        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-          } `}
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${!activePost?.postMedia?.length
-          ? 'max-h-[100dvh] md:h-auto'
-          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-          } `}
+        height={` ${
+          !activePost?.postMedia?.length
+            ? 'max-h-[100dvh] md:h-auto'
+            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+        } `}
       >
         <PostDetails
           post={activePost}
