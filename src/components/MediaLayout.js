@@ -88,7 +88,7 @@ const MediaLayout = ({
                 className="absolute w-11 h-11 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
               />
               <video
-                src={media[0].key}
+                src={`${media[0].key}#t=0.001`}
                 className="w-full cursor-pointer max-h-[inherit] rounded-[7px]"
                 controls={false}
                 onClick={() => handleClick(customActiveIndex)}
@@ -274,7 +274,7 @@ const MediaItem = ({
             className="absolute w-11 h-11 top-[50%] left-[50%] translate-y-[-50%] translate-x-[-50%]"
           />
           <video
-            src={url}
+            src={`${url}#t=0.001`}
             className={`w-full min-h-full min-w-full rounded-lg ${className} cursor-pointer max-h-[500px] md:max-h-[400px]`}
             controls={false}
             height={'100%'}

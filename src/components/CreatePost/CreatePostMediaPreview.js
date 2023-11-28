@@ -46,7 +46,7 @@ const CreatePostMediaPreview = ({
                   <img src={key} />
                 ) : (
                   <video
-                    src={key}
+                    src={`${key}#t=0.001`}
                     className="w-full min-h-full min-w-full"
                     controls={true}
                     height={'100%'}

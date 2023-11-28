@@ -19,7 +19,7 @@ import { Button } from '../common/Button';
 
 const { BTNLBL_LINK, BTNLBL_VIDEO, BTNLBL_PHOTO } = BUTTON_LABELS;
 const { POST_PATTERN, LINK_PATTERN } = REGEX;
-const { LANG_TEXT_AREA_PLACEHOLDER } = LANG.PAGES.CREATE_POST;
+const { LANG_TEXT_AREA_PLACEHOLDER, LANG_TEXT_AREA_PLACEHOLDER_EDIT } = LANG.PAGES.CREATE_POST;
 const {
   successToast: { TST_POST_CREATED_SUCCESSFULLY = '', TST_POST_UPDATED_SUCCESSFULLY = '' },
   errorToast: {
@@ -239,7 +239,7 @@ const CreatePostLayout = ({
       >
         <div className={`relative px-[18px] flex flex-col gap-2 ${isEditing ? 'pb-2' : ''}`}>
           <EmojiTextarea
-            placeholder={LANG_TEXT_AREA_PLACEHOLDER}
+            placeholder={!isEditing ? LANG_TEXT_AREA_PLACEHOLDER : LANG_TEXT_AREA_PLACEHOLDER_EDIT}
             value={text}
             handleChange={(val) => setText(val)}
           />
