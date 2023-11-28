@@ -20,6 +20,7 @@ import PostDetails from '../../components/Post/PostDetails';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import useScrollToTop from '../../hooks/useScrollToTop';
 let PageSize = 10;
 
 const NotificationPage = () => {
@@ -31,6 +32,9 @@ const NotificationPage = () => {
   const [isPreviewDetailsPostOpen, setIsPreviewDetailsPostOpen] = useState(false);
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
+
+  useScrollToTop()
+
   const fetchnotificationList = async () => {
     const { status, data } = await dispatch(
       notificationListDispatcher({
@@ -137,12 +141,12 @@ const NotificationPage = () => {
                 {count > 1 && item?.notificationType === 'like'
                   ? ` and ${count - 1} others liked your post`
                   : count > 1 && item?.notificationType === 'comment'
-                  ? ` and ${count - 1} others commented on your post`
-                  : item?.notificationType === 'like'
-                  ? `${' '}liked your post`
-                  : item?.notificationType === 'comment'
-                  ? `${' '}comment on your post`
-                  : `${' '}followed you`}
+                    ? ` and ${count - 1} others commented on your post`
+                    : item?.notificationType === 'like'
+                      ? `${' '}liked your post`
+                      : item?.notificationType === 'comment'
+                        ? `${' '}comment on your post`
+                        : `${' '}followed you`}
               </div>
               <div className="text-[12px] font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -174,12 +178,12 @@ const NotificationPage = () => {
                 {count > 1 && item?.notificationType === 'like'
                   ? ` and ${count - 1} others liked your post`
                   : count > 1 && item?.notificationType === 'comment'
-                  ? ` and ${count - 1} others commented on your post`
-                  : item?.notificationType === 'like'
-                  ? `${' '}liked your post`
-                  : item?.notificationType === 'comment'
-                  ? `${' '}comment on your post`
-                  : `${' '}followed you`}
+                    ? ` and ${count - 1} others commented on your post`
+                    : item?.notificationType === 'like'
+                      ? `${' '}liked your post`
+                      : item?.notificationType === 'comment'
+                        ? `${' '}comment on your post`
+                        : `${' '}followed you`}
               </div>
               <div className="text-[12px] font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -234,18 +238,16 @@ const NotificationPage = () => {
           setIsPreviewDetailsPostOpen(false);
         }}
         isTitle={false}
-        width={` ${
-          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-        } `}
+        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+          } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${
-          !activePost?.postMedia?.length
-            ? 'max-h-[100dvh] md:h-auto'
-            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-        } `}
+        height={` ${!activePost?.postMedia?.length
+          ? 'max-h-[100dvh] md:h-auto'
+          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+          } `}
       >
         <PostDetails
           post={activePost}
