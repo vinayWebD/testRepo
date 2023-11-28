@@ -1,6 +1,10 @@
 import React from 'react';
+// import { PRIVATE_NAVIGATION_LABELS } from '../../constants/lang';
 import navigationItems from '../../constants/navigationItems';
 import { NavLink } from 'react-router-dom';
+
+// const { NAVLBL_NOTIFICATIONS } =
+//   PRIVATE_NAVIGATION_LABELS;
 
 const navbarItems = navigationItems;
 
@@ -26,7 +30,7 @@ const MobileBottomNavigation = ({ activeTab = 0 }) => {
 export default MobileBottomNavigation;
 
 const NavBarItem = ({
-  onClickHandler = () => {},
+  onClickHandler = () => { },
   label = '',
   isActive = false,
   navPath,
@@ -38,7 +42,9 @@ const NavBarItem = ({
       w-full p-1 lg:p-4 pr-[5px] md:pr-[8px] box-border cursor-pointer flex items-center justify-center lg:justify-normal gap-4`}
       onClick={onClickHandler}
     >
-      <Icon isActive={isActive} isMobile={true} />
+      <Icon isActive={isActive} isMobile={true}
+      // pending={label === NAVLBL_NOTIFICATIONS && localStorage.getItem('newNotification') === 'true'} 
+      />
       <p className="text-sm font-semibold hidden lg:block">{label}</p>
     </div>
   </NavLink>
