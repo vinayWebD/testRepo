@@ -30,6 +30,17 @@ export const POST_VIDEO_TYPES = [
   'video/quicktime',
 ];
 
+export const POST_DOCUMENT_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'text/plain',
+];
+
 export const POST_IMAGE_EXTENSIONS = ['png', 'jpeg', 'png', 'jpg'];
 export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quicktime'];
 

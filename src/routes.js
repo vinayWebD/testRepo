@@ -12,6 +12,7 @@ import Work from './pages/Work';
 import ProfilePage from './pages/ProfilePage';
 import MyNetwork from './pages/MyNetwork';
 import OtherUserProfile from './pages/OtherUserProfile';
+import Messages from './pages/Messages';
 import NotificationPage from './pages/NotificationPage';
 import Settings from './pages/Settings';
 import ChangePassword from './pages/Settings/ChangePassword';
@@ -31,6 +32,7 @@ const {
   PROFILE,
   MYNETWORK,
   OTHER_USER_PROFILE,
+  MESSAGES,
   MY_NOTIFICATION,
   SETTINGS,
   SETTINGS_CHANGE_PASSWORD,
@@ -102,6 +104,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: `${HOME}/:id`,
     element: <HomePage />,
+  },
+  {
+    path: MESSAGES,
+    element: <Messages />,
   },
   {
     path: MY_NOTIFICATION,
