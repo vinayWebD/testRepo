@@ -264,6 +264,7 @@ const HomePage = () => {
                     postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
+                    completePostData={post}
                   />
                 </Card>
               );
