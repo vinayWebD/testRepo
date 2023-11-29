@@ -128,7 +128,7 @@ body {
 }
 
 .active-message-left-side-bar {
-  border-left-color: #0071BC;
+  border-left-color: #0071bc;
 }
 
 .active-nav-left-side-bar p {
@@ -386,10 +386,8 @@ body {
 }
 
 .des-title-error {
-  .des-title-error {
-    display: flex;
-    align-items: center;
-  }
+  display: flex;
+  align-items: center;
 }
 
 .des-title {
@@ -420,7 +418,7 @@ body {
 }
 
 .scrollbar-custom::-webkit-scrollbar-thumb {
-  background-color: #F2F2F2;
+  background-color: #f2f2f2;
   border-radius: 4px;
 }
 
