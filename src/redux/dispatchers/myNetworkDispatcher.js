@@ -1,4 +1,9 @@
-import { invitePeople } from '../../services/myNetwork';
+import {
+  fetchMyConnections,
+  fetchMyFollowers,
+  fetchMyFollowings,
+  invitePeople,
+} from '../../services/myNetwork';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 const invitePeopleDispatcher =
@@ -10,4 +15,36 @@ const invitePeopleDispatcher =
     return { status, data };
   };
 
-export { invitePeopleDispatcher };
+const fetchMyFollowersDispatcher =
+  ({ page = 1, limit = 10, search = '' }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await fetchMyFollowers({ page, limit, search });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data: data?.data };
+  };
+
+const fetchMyFollowingsDispatcher =
+  ({ page = 1, limit = 10, search = '' }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await fetchMyFollowings({ page, limit, search });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data: data?.data };
+  };
+
+const fetchMyConnectionsDispatcher =
+  ({ page = 1, limit = 10, search = '' }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await fetchMyConnections({ page, limit, search });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data: data?.data };
+  };
+
+export {
+  invitePeopleDispatcher,
+  fetchMyConnectionsDispatcher,
+  fetchMyFollowersDispatcher,
+  fetchMyFollowingsDispatcher,
+};

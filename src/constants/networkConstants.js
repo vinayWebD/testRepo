@@ -40,6 +40,9 @@ const NETWORK_CONSTANTS = {
   MARK_READ_PATH: '/v1/notifications/mark-as-read',
   UPDATE_EMAIL_VERIFY_OLD_EMAIL: '/v1/accounts/verify-email/old',
   UPDATE_EMAIL_VERIFY_NEW_EMAIL: '/v1/accounts/verify-email/new',
+  MY_FOLLOWERS: '/v1/accounts/follow/followers',
+  MY_FOLLOWINGS: '/v1/accounts/follow/following',
+  MY_CONNECTIONS: '/v1/accounts/connections',
 };
 
 export default NETWORK_CONSTANTS;

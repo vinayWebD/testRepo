@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Card from '../../components/common/Card';
 import SearchInput from '../../components/common/SearchInput';
 import { Button } from '../../components/common/Button';
@@ -6,24 +6,94 @@ import { Colors } from '../../constants/colors';
 import CrossIcon from '../../components/Icons/Cross';
 import UserCard from '../../components/MyNetworkLayout/UserCard';
 import Modal from '../../components/Modal';
-import { BUTTON_LABELS } from '../../constants/lang';
+import { BUTTON_LABELS, TABS_NAME } from '../../constants/lang';
 import InvitePeopleLayout from './InvitePeopleLayout';
+import { useDispatch } from 'react-redux';
+import {
+  fetchMyConnectionsDispatcher,
+  fetchMyFollowersDispatcher,
+  fetchMyFollowingsDispatcher,
+} from '../../redux/dispatchers/myNetworkDispatcher';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { RESPONSE_FOR_NETWORK } from '../../constants/constants';
 import Pagination from '../../components/Pagination';
-// import SearchIcon from '../../components/Icons/SearchIcon';
+import debounce from '../../utils/debounce';
+
 const { BTNLBL_INVITE_PEOPLE } = BUTTON_LABELS;
-let PageSize = 10;
-let data = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+const { FOLLOWERS, FOLLOWING, CONNECTIONS } = TABS_NAME;
+const pageSize = 10;
+
 const MyNetworkTabSection = ({ selectedTab }) => {
+  const dispatch = useDispatch();
   const [searchValue, setSearchValue] = useState('');
   const [searchOnFocus, setSearchOnFocus] = useState(false);
   const [isInvitePeopleModalOpen, setIsInvitePeopleModalOpen] = useState(false);
+  const [usersList, setUsersList] = useState([]);
+  const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
+  let setResponse = RESPONSE_FOR_NETWORK?.[selectedTab];
 
-  const currentTableData = useMemo(() => {
-    const firstPageIndex = (currentPage - 1) * PageSize;
-    const lastPageIndex = firstPageIndex + PageSize;
-    return data.slice(firstPageIndex, lastPageIndex);
+  useEffect(() => {
+    setUsersList([]);
+    setTotalCount(0);
+    setSearchValue('');
+    getData();
+  }, [selectedTab]);
+
+  useEffect(() => {
+    if (currentPage) {
+      getData();
+    }
   }, [currentPage]);
+
+  useEffect(() => {
+    updateSearchVal(searchValue);
+  }, [searchValue]);
+
+  const updateSearchVal = useCallback(
+    debounce((val) => {
+      getData(val, 1);
+    }, 400),
+    [],
+  );
+
+  const getData = async (searchVal = '', page = currentPage || 1) => {
+    let response;
+
+    switch (selectedTab) {
+      case FOLLOWERS:
+        response = await dispatch(
+          fetchMyFollowersDispatcher({ page, limit: pageSize, search: searchVal }),
+        );
+        break;
+      case FOLLOWING:
+        response = await dispatch(
+          fetchMyFollowingsDispatcher({ page, limit: pageSize, search: searchVal }),
+        );
+
+        break;
+      case CONNECTIONS:
+        response = await dispatch(
+          fetchMyConnectionsDispatcher({ page, limit: pageSize, search: searchVal }),
+        );
+        break;
+    }
+
+    const { status, data } = response;
+
+    if (!successStatus(status)) {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    } else {
+      setUsersList(data?.[setResponse?.type] || []);
+      setTotalCount(data?.count);
+      setCurrentPage(data?.page);
+    }
+  };
+
   const searchInputChangeHandler = (value) => {
     setSearchValue(value);
   };
@@ -33,7 +103,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
       <div className=" w-[100%] ">
         <div className="lg:flex  md:flex md:justify-between lg:justify-between mx-9 items-center">
           <div className="font-medium lg:block md:block min-[320px]:hidden ">
-            {selectedTab} (100)
+            {selectedTab} ({totalCount})
           </div>
           <div className="flex justify-between items-center sm:gap-4 min-[320px]:gap-0">
             {/* {(searchValue === '' || searchValue === null) && !searchOnFocus ? (
@@ -91,16 +161,31 @@ const MyNetworkTabSection = ({ selectedTab }) => {
       </div>
 
       <div className="my-5 mx-6 mb-4">
-        {currentTableData.map((item) => (
-          <UserCard key={item} selectedTab={selectedTab} />
+        {usersList?.map((item) => (
+          <UserCard
+            key={item?.id}
+            id={item?.[setResponse.innerType]?.id}
+            selectedTab={selectedTab}
+            userName={`${item?.[setResponse.innerType]?.firstName} ${
+              item?.[setResponse.innerType]?.lastName
+            }`}
+            location={item?.[setResponse.innerType]?.location}
+            userBio={item?.[setResponse.innerType]?.aboutMyself}
+            userImage={item?.[setResponse.innerType]?.profilePicture}
+            isApproved={item?.isApproved}
+            reloadData={getData}
+          />
         ))}
         <div className="py-4 flex items-center justify-end mt-auto">
           <Pagination
             className="pagination-bar"
             currentPage={currentPage}
-            totalCount={data.length}
-            pageSize={PageSize}
-            onPageChange={(page) => setCurrentPage(page)}
+            totalCount={totalCount}
+            pageSize={pageSize}
+            onPageChange={(page) => {
+              setCurrentPage(page);
+              window.scroll(0, 0);
+            }}
           />
         </div>
       </div>
