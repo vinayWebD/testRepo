@@ -11,7 +11,7 @@ import Chats from './chats';
 import ThreeDots from '../../components/Icons/ThreeDots';
 import Dropdown from '../../components/common/Dropdown';
 import BackAvatar from '../../assets/images/Back-vector.svg';
-import InputTextaria from './InputTextaria';
+import InputTextarea from './InputTextarea';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 
 const Messages = () => {
@@ -271,7 +271,7 @@ const Messages = () => {
               <div className=" overflow-auto scrollbar-custom h-full">
                 <Chats fileData={fileData} />
               </div>
-              <InputTextaria onFileInputChange={handleFileInputChange} />
+              <InputTextarea onFileInputChange={handleFileInputChange} />
             </div>
           ) : (
             <div className="flex items-center justify-center w-full h-full">

@@ -5,18 +5,16 @@ import TestSeen from '../../components/Icons/TestSeen';
 import DocumentIcon from '../../components/Icons/DocumentIcon';
 import { Link } from 'react-router-dom';
 
-const MeadiaMsg = ({ element }) => {
+const MediaMsg = ({ element }) => {
   return (
     <div
       className={`flex items-center flex-row ml-2 mt-4 m-6 ${
-        element.incoming === false ? 'flex-row-reverse' : 'justify-start'
+        !element.incoming ? 'flex-row-reverse' : 'justify-start'
       }`}
     >
       <div>
         <div
-          className={`flex items-end ${
-            element.incoming === false ? 'flex-row-reverse' : 'justify-start'
-          }`}
+          className={`flex items-end ${!element.incoming ? 'flex-row-reverse' : 'justify-start'}`}
         >
           <Avatar image={ludgi} />
           <div className="ml-2 mr-2">
@@ -31,7 +29,7 @@ const MeadiaMsg = ({ element }) => {
                 src={element.img}
                 alt=""
                 className={`max-h-[210px] ${
-                  element.incoming === false
+                  !element.incoming
                     ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
                     : 'rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
                 } `}
@@ -45,7 +43,7 @@ const MeadiaMsg = ({ element }) => {
             element.incoming === true ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{element.incoming === false ? <TestSeen seen /> : ''}</div>
+          <div>{!element.incoming ? <TestSeen seen /> : ''}</div>
           <div className="text-[12px] text-greydark ml-1">{element.time}</div>
         </div>
       </div>
@@ -56,14 +54,12 @@ const VideoMsg = ({ element }) => {
   return (
     <div
       className={`flex items-center flex-row ml-2 mt-4 m-6 ${
-        element.incoming === false ? 'flex-row-reverse' : 'justify-start'
+        !element.incoming ? 'flex-row-reverse' : 'justify-start'
       }`}
     >
       <div>
         <div
-          className={`flex items-end ${
-            element.incoming === false ? 'flex-row-reverse' : 'justify-start'
-          }`}
+          className={`flex items-end ${!element.incoming ? 'flex-row-reverse' : 'justify-start'}`}
         >
           <Avatar image={ludgi} />
           <div className="ml-2 mr-2">
@@ -78,7 +74,7 @@ const VideoMsg = ({ element }) => {
                 src={element.video}
                 alt=""
                 className={`max-h-[210px] ${
-                  element.incoming === false
+                  !element.incoming
                     ? 'rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
                     : 'rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
                 } `}
@@ -93,7 +89,7 @@ const VideoMsg = ({ element }) => {
             element.incoming === true ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{element.incoming === false ? <TestSeen seen /> : ''}</div>
+          <div>{!element.incoming ? <TestSeen seen /> : ''}</div>
           <div className="text-[12px] text-greydark ml-1">{element.time}</div>
         </div>
       </div>
@@ -105,14 +101,12 @@ const TextMsg = ({ element }) => {
   return (
     <div
       className={`flex items-center flex-row ml-2 mt-4 m-6 ${
-        element.incoming === false ? 'flex-row-reverse' : 'justify-start'
+        !element.incoming ? 'flex-row-reverse' : 'justify-start'
       }`}
     >
       <div>
         <div
-          className={`flex items-end ${
-            element.incoming === false ? 'flex-row-reverse' : 'justify-start'
-          }`}
+          className={`flex items-end ${!element.incoming ? 'flex-row-reverse' : 'justify-start'}`}
         >
           <Avatar image={ludgi} />
           <div className="ml-2 mr-2">
@@ -138,7 +132,7 @@ const TextMsg = ({ element }) => {
             element.incoming === true ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{element.incoming === false ? <TestSeen seen /> : ''}</div>
+          <div>{!element.incoming ? <TestSeen seen /> : ''}</div>
           <div className="text-[12px] text-greydark ml-1">{element.time}</div>
         </div>
       </div>
@@ -168,14 +162,12 @@ const Document = ({ element }) => {
   return (
     <div
       className={`flex items-center flex-row ml-2 mt-4 m-6 ${
-        element.incoming === false ? 'flex-row-reverse' : 'justify-start'
+        !element.incoming ? 'flex-row-reverse' : 'justify-start'
       }`}
     >
       <div>
         <div
-          className={`flex items-end ${
-            element.incoming === false ? 'flex-row-reverse' : 'justify-start'
-          }`}
+          className={`flex items-end ${!element.incoming ? 'flex-row-reverse' : 'justify-start'}`}
         >
           <Avatar image={ludgi} />
           <div className="ml-2 mr-2">
@@ -216,7 +208,7 @@ const Document = ({ element }) => {
             element.incoming === true ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{element.incoming === false ? <TestSeen seen /> : ''}</div>
+          <div>{!element.incoming ? <TestSeen seen /> : ''}</div>
           <div className="text-[12px] text-greydark ml-1">{element.time}</div>
         </div>
       </div>
@@ -227,14 +219,12 @@ const SharedLink = ({ element }) => {
   return (
     <div
       className={`flex items-center flex-row ml-2 mt-4 m-6 ${
-        element.incoming === false ? 'flex-row-reverse' : 'justify-start'
+        !element.incoming ? 'flex-row-reverse' : 'justify-start'
       }`}
     >
       <div>
         <div
-          className={`flex items-end ${
-            element.incoming === false ? 'flex-row-reverse' : 'justify-start'
-          }`}
+          className={`flex items-end ${!element.incoming ? 'flex-row-reverse' : 'justify-start'}`}
         >
           <Avatar image={ludgi} />
           <div className="ml-2 mr-2">
@@ -259,7 +249,7 @@ const SharedLink = ({ element }) => {
             element.incoming === true ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{element.incoming === false ? <TestSeen seen /> : ''}</div>
+          <div>{!element.incoming ? <TestSeen seen /> : ''}</div>
           <div className="text-[12px] text-greydark ml-1">{element.time}</div>
         </div>
       </div>
@@ -267,4 +257,4 @@ const SharedLink = ({ element }) => {
   );
 };
 
-export { Timestamp, TextMsg, MeadiaMsg, SharedLink, Divider, Document, VideoMsg };
+export { Timestamp, TextMsg, MediaMsg, SharedLink, Divider, Document, VideoMsg };

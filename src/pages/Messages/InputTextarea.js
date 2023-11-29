@@ -8,7 +8,7 @@ import VideoIcon from '../../components/Icons/VideoIcon';
 import DocumentIcon from '../../components/Icons/DocumentIcon';
 import { POST_IMAGE_TYPES, POST_VIDEO_TYPES, POST_DOCUMENT_TYPES } from '../../constants/constants';
 
-const InputTextaria = ({ onFileInputChange }) => {
+const InputTextarea = ({ onFileInputChange }) => {
   const [emojiToggle, setEmojiToggle] = useState(false);
   const [attachmentToggle, setAttachmentToggle] = useState(false);
   const [mediaTypeToUpload, setMediaTypeToUpload] = useState('photo');
@@ -185,4 +185,4 @@ const InputTextaria = ({ onFileInputChange }) => {
   );
 };
 
-export default InputTextaria;
+export default InputTextarea;

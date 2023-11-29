@@ -1,13 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {
-  Divider,
-  SharedLink,
-  MeadiaMsg,
-  TextMsg,
-  Timestamp,
-  Document,
-  VideoMsg,
-} from './chatTypes';
+import { Divider, SharedLink, MediaMsg, TextMsg, Timestamp, Document, VideoMsg } from './chatTypes';
 import ludgi from '../../assets/images/ludgi.svg';
 import cross from '../../assets/images/cross.svg';
 import documentAttachment from '../../assets/images/document-attachment.svg';
@@ -140,12 +132,12 @@ const chats = (props) => {
   }, [props.fileData]);
   return (
     <div className="h-full">
-      {openPopup === true ? (
+      {openPopup ? (
         <div className="h-full overflow-hidden">
           <div className="pt-2 pr-4 pl-4 pb-2 h-full">
             <div className="flex justify-between">
               <div></div>
-              {dataType === 3 ? <div>Document</div> : <div></div>}
+              {dataType === 3 ? <div>Document</div> : ''}
               <img
                 src={cross}
                 alt=""
@@ -181,7 +173,7 @@ const chats = (props) => {
               case 'msg':
                 switch (element.subType) {
                   case 'img':
-                    return <MeadiaMsg element={element} />;
+                    return <MediaMsg element={element} />;
                   case 'doc':
                     return <Document element={element} />;
                   case 'link':
