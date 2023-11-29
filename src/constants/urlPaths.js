@@ -15,4 +15,5 @@ export const PATHS = {
   SETTINGS: '/settings',
   SETTINGS_CHANGE_PASSWORD: '/settings/change-password',
   SETTINGS_HELP_CENTER: '/settings/help-center',
+  SETTINGS_PRIVACY_SETTING: '/settings/privacy-setting',
 };
