@@ -110,6 +110,8 @@ const Header = ({
       if (successStatus(status)) {
         if (!data?.data?.isApproved) {
           ToastNotifySuccess('A follow request has been sent');
+        } else {
+          ToastNotifySuccess(`User ${isFollowed ? 'unfollowed' : 'followed'} successfully`);
         }
         await reloadPostDetails({ postId: postDetails?.id });
       } else {
