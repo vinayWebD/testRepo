@@ -9,6 +9,8 @@ import {
 import { successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
 import { LIMITS } from '../../constants/constants';
+import EmojieIcon from '../Icons/EmojieIcon';
+import EmojiPicker from 'emoji-picker-react';
 
 const CommentInput = ({
   postId,
@@ -23,6 +25,19 @@ const CommentInput = ({
   const userData = useSelector((state) => state?.auth?.user) || {};
   const textareaRef = useRef(null);
   const { globalTransparentLoadingPrivate } = useSelector((state) => state.auth || {});
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const emojieContainerRef = useRef(null);
+
+  const onEmojiClick = (emojiObject) => {
+    setValue((prevText) => {
+      // We need to allow the input of emojies only when the max length of textarea has not reached
+      if (prevText.length + emojiObject.emoji?.length <= 10000) {
+        return prevText + emojiObject.emoji;
+      } else {
+        return prevText;
+      }
+    });
+  };
 
   useEffect(() => {
     if (isEditing && commentDetails?.description !== value) {
@@ -32,6 +47,19 @@ const CommentInput = ({
       autoExpand();
     }
   }, [isEditing, commentDetails?.description]);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (emojieContainerRef.current && !emojieContainerRef.current.contains(event.target)) {
+        setShowEmojiPicker(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   const onChangeHandler = (e) => {
     setValue(e.target.value);
@@ -113,17 +141,42 @@ const CommentInput = ({
             onInput={autoExpand}
             ref={textareaRef}
           />
+
           <div
             className={`px-3 ml-[-1px] flex items-center cursor-pointer rounded-r-[8px] border-l-0 border-2 border-greylighter ${
               !isValid() ? 'cursor-not-allowed' : 'cursor-pointer'
             } ${isEditing ? 'bg-whitelight' : 'bg-white'}`}
             onClick={() => {}}
           >
+            <span
+              className="mr-1 cursor-pointer"
+              onClick={() => setShowEmojiPicker(!showEmojiPicker)}
+            >
+              <EmojieIcon />
+            </span>
+
             <div className={`${!isValid() ? 'opacity-60' : ''}`} onClick={submitCommentHandler}>
               <SendIcon />
             </div>
           </div>
         </div>
+
+        {showEmojiPicker && (
+          <div className="absolute top-10 right-2 z-[1000] max-h-[320px]" ref={emojieContainerRef}>
+            <EmojiPicker
+              onEmojiClick={onEmojiClick}
+              searchDisabled={true}
+              skinTonesDisabled={true}
+              previewConfig={{
+                showPreview: false,
+                defaultEmoji: '1f60a',
+              }}
+              height={320}
+              width={280}
+            />
+          </div>
+        )}
+
         {isEditing ? (
           <div
             className=""
