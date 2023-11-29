@@ -69,10 +69,7 @@ const publicRoutes = createBrowserRouter([
     path: RESET_PASSWORD,
     element: <ResetPassword />,
   },
-  {
-    path: PATH_WORK,
-    element: <Work />,
-  },
+
 ]);
 
 const privateRoutes = createBrowserRouter([
@@ -116,6 +113,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: SETTINGS_HELP_CENTER,
     element: <HelpCenter />,
+  },
+  {
+    path: PATH_WORK,
+    element: <Work />,
   },
 ]);
 

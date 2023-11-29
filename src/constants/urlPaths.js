@@ -7,7 +7,7 @@ export const PATHS = {
   PATH_GENERAL_INFO: '/general-info',
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
-  PATH_WORK: '/work',
+  PATH_WORK: '/personal-info',
   PROFILE: '/my-profile',
   MYNETWORK: '/my-network',
   OTHER_USER_PROFILE: '/profile/',

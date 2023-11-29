@@ -1,6 +1,7 @@
+/* eslint-disable no-unused-vars */
 import { useFormik } from 'formik';
-import { Fragment, useEffect, useRef, useState } from 'react';
-import { successStatus } from '../../common';
+import { useEffect, useRef, useState } from 'react';
+import { getErrorMessage, successStatus } from '../../common';
 import Accordion from '../../components/Accordion';
 import { SkillsChips, SkillsChipsBlue } from '../../components/Chips';
 import BlueDivider from '../../components/common/BlueDivider';
@@ -24,8 +25,9 @@ import {
   fetchCareerSkillslist,
   fetchCareersList,
   fetchCareerTitle,
+  fetchProfileEdit,
   fetchUpdateCareer,
-  fetchWorkInterest,
+  // fetchWorkInterest,
 } from '../../services/signup';
 import {
   validationSchemaTitle,
@@ -41,6 +43,9 @@ import check from '../../assets/images/check.png';
 import cross from '../../assets/images/cross.png';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+// import { profileDispatcher } from '../../redux/dispatchers/authDispatcher';
+import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
+// import { useDispatch } from 'react-redux';
 
 export function WorkTabContent() {
   const ref = useRef();
@@ -50,7 +55,10 @@ export function WorkTabContent() {
   const [linksList, setLinksList] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const [careerList, setCareerList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const [isEdit, setIsEdit] = useState(false)
+  // const dispatch = useDispatch()
   const { HOME } = PATHS;
   // localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
 
@@ -66,7 +74,7 @@ export function WorkTabContent() {
   };
 
   useEffect(() => {
-    // getCareerList();
+    getCareerList();
   }, []);
 
   const careerSubmit = async () => {
@@ -84,6 +92,7 @@ export function WorkTabContent() {
       } = response;
       if (successStatus(status)) {
         setCareerId(career_id);
+        setIsEdit(true)
       }
     } else {
       let dataToUpdate = {
@@ -96,6 +105,7 @@ export function WorkTabContent() {
       const { status } = response;
       if (successStatus(status)) {
         getCareerList();
+        setIsEdit(true)
       }
     }
   };
@@ -123,12 +133,22 @@ export function WorkTabContent() {
   };
 
   const workSubmit = async () => {
-    let dataToSend = {
-      work: formikWork.values.work,
-      interest: '',
-    };
-
-    await fetchWorkInterest(dataToSend);
+    if (!isLoading) {
+      setIsLoading(true);
+      const response = await fetchProfileEdit({
+        work: work,
+      });
+      const { status, data } = response;
+      const errormsg = getErrorMessage(data);
+      if (successStatus(status)) {
+        ToastNotifySuccess('Description added successfully', 'location-success');
+      } else {
+        if (errormsg) {
+          ToastNotifyError(errormsg, 'location-failed');
+        }
+      }
+      setIsLoading(false);
+    }
   };
 
   const formikWork = useFormik({
@@ -246,7 +266,6 @@ export function WorkTabContent() {
               name="work"
               value={work}
               onChange={(e) => formikWork.setFieldValue('work', e.target.value)}
-              onBlur={workSubmit}
               error={tuc_work && err_work}
               helperText={tuc_work && err_work}
             />
@@ -276,9 +295,8 @@ export function WorkTabContent() {
 
         <div className="md:flex block items-center mt-8 mb-5">
           <div
-            className={`w-[170px] form-title  ${
-              tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
-            } `}
+            className={`w-[170px] form-title  ${tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
+              } `}
           >
             Career Title
           </div>
@@ -295,13 +313,19 @@ export function WorkTabContent() {
                 helperText={tuc_title && err_title}
               />
             </div>
-            <img
-              src={check}
-              alt="check"
-              style={{ marginLeft: '20px', cursor: 'pointer' }}
-              onClick={careerSubmit}
-            />
-            <img src={cross} alt="cross" style={{ marginLeft: '20px', cursor: 'pointer' }} />
+            {
+              title === '' || !isEdit ? <><img
+                src={check}
+                alt="check"
+                style={{ marginLeft: '20px', cursor: 'pointer' }}
+                onClick={careerSubmit}
+              />
+                <img src={cross} alt="cross" style={{ marginLeft: '20px', cursor: 'pointer' }} /></> :
+                <><EditBlueIcon
+                  onClick={() => setIsEdit(false)}
+                /></>
+            }
+
           </div>
         </div>
 
@@ -415,7 +439,8 @@ export function WorkTabContent() {
       <Modal
         isTitle={true}
         title="Add Links"
-        isOpen={careerId && isLinksModalOpen}
+        // isOpen={careerId && isLinksModalOpen}
+        isOpen={isLinksModalOpen}
         onClose={() => setIsLinksModalOpen(false)}
         width="max-w-[472px]"
         padding={0}
@@ -458,7 +483,8 @@ export function WorkTabContent() {
       <Modal
         isTitle={true}
         title="Add Skills"
-        isOpen={careerId && isSkillModalOpen}
+        // isOpen={careerId && isSkillModalOpen}
+        isOpen={isSkillModalOpen}
         onClose={() => setIsSkillModalOpen(false)}
         width="max-w-[472px]"
         padding={0}
