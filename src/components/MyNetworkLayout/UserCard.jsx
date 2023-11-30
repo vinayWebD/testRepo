@@ -30,8 +30,8 @@ const UserCard = ({
   className = '',
   onClick = () => {},
   isFriendRequest, // If we are referring to a friend request, probably friend request section
-  userName = 'Stev Jobs',
-  location = 'San Fransico, CA',
+  userName = '',
+  location = '',
   userImage = userimg,
   career = '',
   reloadData = () => {},
@@ -111,7 +111,7 @@ const UserCard = ({
           {isFriendRequest ? (
             <Button
               label={BTNLBL_ACCEPT}
-              additionalClassNames=" sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] md:h-[37px] items-center text-xs min-[320px]:p-4"
+              additionalClassNames=" sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] md:h-[37px] items-center text-xs min-[320px]:p-4 !text-[14px]"
               showArrowIcon={false}
               onClick={onClick}
             />

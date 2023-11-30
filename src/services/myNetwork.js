@@ -1,7 +1,8 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { INVITE_PEOPLE, MY_FOLLOWERS, MY_FOLLOWINGS, MY_CONNECTIONS } = NETWORK_CONSTANTS;
+const { INVITE_PEOPLE, MY_FOLLOWERS, MY_FOLLOWINGS, MY_CONNECTIONS, FETCH_FOLLOW_REQUEST } =
+  NETWORK_CONSTANTS;
 
 const invitePeople = async ({ email, description }) => {
   try {
@@ -39,4 +40,19 @@ const fetchMyConnections = async ({ page = 1, limit = 10, search = '' }) => {
   }
 };
 
-export { invitePeople, fetchMyFollowers, fetchMyFollowings, fetchMyConnections };
+const fetchFollowRequests = async ({ page = 1, limit = 10, search = '' }) => {
+  try {
+    const data = await apiUtility(FETCH_FOLLOW_REQUEST, 'GET', { page, limit, search });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {
+  invitePeople,
+  fetchMyFollowers,
+  fetchMyFollowings,
+  fetchMyConnections,
+  fetchFollowRequests,
+};

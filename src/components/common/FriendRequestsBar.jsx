@@ -4,6 +4,10 @@ import UserCard from '../MyNetworkLayout/UserCard';
 import SearchInput from './SearchInput';
 import { Colors } from '../../constants/colors';
 import SearchIcon from '../Icons/SearchIcon';
+import { useDispatch } from 'react-redux';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError } from '../Toast/ToastNotify';
+import { fetchFollowRequestsDispatcher } from '../../redux/dispatchers/myNetworkDispatcher';
 
 // globalModalCounter.js
 let globalModalCounter = 0;
@@ -33,6 +37,9 @@ function FriendRequestsBar({
 }) {
   const [focusOnSearch, setFocusOnSearch] = useState(false);
   const [friendRequestSearch, setFriendRequestSearch] = useState('');
+  const [requests, setRequests] = useState([]);
+  const [count, setCount] = useState(0);
+  const dispatch = useDispatch();
 
   const searchInputChangeHandler = (value) => {
     setFriendRequestSearch(value);
@@ -40,6 +47,7 @@ function FriendRequestsBar({
 
   useEffect(() => {
     if (isOpen) {
+      getFollowRequests();
       incrementModalCounter();
     }
 
@@ -60,6 +68,20 @@ function FriendRequestsBar({
     };
   }, [isOpen]);
 
+  const getFollowRequests = async () => {
+    const { status, data } = await dispatch(fetchFollowRequestsDispatcher({}));
+
+    if (successStatus(status)) {
+      setRequests(data?.data?.FollowRequests || []);
+      setCount(data?.data?.count);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -75,7 +97,7 @@ function FriendRequestsBar({
         {
           <div className="flex items-center justify-between p-[12px] bg-white  sticky top-0 z-10">
             <div className={`modal-title ${titleClassNames} ${focusOnSearch ? 'hidden' : ''}`}>
-              {title}
+              {title} ({count})
             </div>
             {(friendRequestSearch === '' || friendRequestSearch === null) && !focusOnSearch ? (
               <div
@@ -105,8 +127,20 @@ function FriendRequestsBar({
           </div>
         }
         <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] max-h-96 overflow-scroll">
-          {[0, 1, 2, 3, 4, 5, 6, 7].map((item) => (
-            <UserCard key={item} isFriendRequest={true} />
+          {requests.map((item) => (
+            <UserCard
+              key={item?.id}
+              id={item?.User?.id}
+              selectedTab={'selectedTab'}
+              userName={`${item?.User?.firstName} ${item?.User?.lastName}`}
+              location={item?.User?.location}
+              career={item?.User?.Careers?.[0]?.title}
+              userImage={item?.User?.profilePicture}
+              isApproved={item?.isApproved}
+              reloadData={getFollowRequests}
+              isRequestedByYou={!!item?.User?.Requested?.length}
+              isFriendRequest={true}
+            />
           ))}
         </div>
         <div className="h-[10px]"></div>

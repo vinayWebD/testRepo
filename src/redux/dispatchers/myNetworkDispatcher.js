@@ -1,4 +1,5 @@
 import {
+  fetchFollowRequests,
   fetchMyConnections,
   fetchMyFollowers,
   fetchMyFollowings,
@@ -42,9 +43,19 @@ const fetchMyConnectionsDispatcher =
     return { status, data: data?.data };
   };
 
+const fetchFollowRequestsDispatcher =
+  ({ page = 1, limit = 10, search = '', showLoader = false }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(showLoader));
+    const { status, data } = await fetchFollowRequests({ page, limit, search });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   invitePeopleDispatcher,
   fetchMyConnectionsDispatcher,
   fetchMyFollowersDispatcher,
   fetchMyFollowingsDispatcher,
+  fetchFollowRequestsDispatcher,
 };
