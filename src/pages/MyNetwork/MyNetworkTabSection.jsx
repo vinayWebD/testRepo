@@ -35,10 +35,13 @@ const MyNetworkTabSection = ({ selectedTab }) => {
   let setResponse = RESPONSE_FOR_NETWORK?.[selectedTab];
 
   useEffect(() => {
-    setUsersList([]);
-    setTotalCount(0);
-    setSearchValue('');
-    getData();
+    if (selectedTab) {
+      setUsersList([]);
+      setTotalCount(0);
+      setSearchValue('');
+      setCurrentPage(1);
+      getData();
+    }
   }, [selectedTab]);
 
   useEffect(() => {
@@ -51,11 +54,12 @@ const MyNetworkTabSection = ({ selectedTab }) => {
     updateSearchVal(searchValue);
   }, [searchValue]);
 
+  // Added debounce in the search to avoid multiple API calls
   const updateSearchVal = useCallback(
     debounce((val) => {
       getData(val, 1);
     }, 400),
-    [],
+    [selectedTab],
   );
 
   const getData = async (searchVal = '', page = currentPage || 1) => {
@@ -90,7 +94,6 @@ const MyNetworkTabSection = ({ selectedTab }) => {
     } else {
       setUsersList(data?.[setResponse?.type] || []);
       setTotalCount(data?.count);
-      setCurrentPage(data?.page);
     }
   };
 
@@ -170,10 +173,11 @@ const MyNetworkTabSection = ({ selectedTab }) => {
               item?.[setResponse.innerType]?.lastName
             }`}
             location={item?.[setResponse.innerType]?.location}
-            userBio={item?.[setResponse.innerType]?.aboutMyself}
+            career={item?.[setResponse.innerType]?.Careers?.[0]?.title}
             userImage={item?.[setResponse.innerType]?.profilePicture}
             isApproved={item?.isApproved}
             reloadData={getData}
+            isRequestedByYou={!!item?.[setResponse.innerType]?.Requested?.length}
           />
         ))}
         <div className="py-4 flex items-center justify-end mt-auto">

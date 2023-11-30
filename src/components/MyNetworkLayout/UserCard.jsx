@@ -5,7 +5,7 @@ import userimg from '../../assets/images/user.png';
 import LocationIcon from '../Icons/LocationIcon';
 import ChatIcon from '../Icons/ChatIcon';
 import { Button } from '../common/Button';
-import { BUTTON_LABELS } from '../../constants/lang';
+import { BUTTON_LABELS, TABS_NAME } from '../../constants/lang';
 import CrossIcon from '../Icons/Cross';
 import { useDispatch } from 'react-redux';
 import {
@@ -16,6 +16,8 @@ import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 
 const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
+const { FOLLOWERS } = TABS_NAME;
+
 /**
  * isApproved = true: means you are following that person
  * isApproved = false: request sent
@@ -27,13 +29,14 @@ const UserCard = ({
   selectedTab,
   className = '',
   onClick = () => {},
-  isFriendRequest,
+  isFriendRequest, // If we are referring to a friend request, probably friend request section
   userName = 'Stev Jobs',
   location = 'San Fransico, CA',
   userImage = userimg,
-  userBio = 'UiUx Designer| Media Composer | Founder of Lumina',
+  career = '',
   isApproved = false,
   reloadData = () => {},
+  isRequestedByYou = false, // This means if the current user has requested
 }) => {
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
   const dispatch = useDispatch();
@@ -96,8 +99,8 @@ const UserCard = ({
               ''
             )}
           </div>
-          <div className="font-sm md:font-medium lg:font-medium xl:w-[268px] lg:w-[150px] md:w-[268px] relative text-greydark md:font-light w-[auto] min-[320px]:font-normal min-[320px]:text-xs">
-            <span>{userBio}</span>
+          <div className="font-sm md:font-medium lg:font-medium xl:w-[268px] lg:w-[150px] md:w-[268px] relative text-greydark w-[auto] min-[320px]:font-normal min-[320px]:text-xs">
+            <span>{career}</span>
           </div>
         </div>
 
@@ -112,7 +115,7 @@ const UserCard = ({
               showArrowIcon={false}
               onClick={onClick}
             />
-          ) : isApproved === false ? (
+          ) : isRequestedByYou ? (
             <OutlinedButton
               isIcon={false}
               label={'Request Sent'}
@@ -120,7 +123,7 @@ const UserCard = ({
               onClick={followUnfollowHandler}
               isLoading={isLoadingFollowUnfollow}
             />
-          ) : selectedTab === 'Followers' ? (
+          ) : selectedTab === FOLLOWERS ? (
             <Button
               label={BTNLBL_FOLLOW}
               additionalClassNames="sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] items-center text-xs min-[320px]:p-4 w-[101px]"
