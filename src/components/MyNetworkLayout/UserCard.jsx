@@ -85,7 +85,7 @@ const UserCard = ({
       </div>
       <div className="flex justify-between   md:w-[-webkit-fill-available] md:flex-row sm:flex-col  lg:gap-x-10 relative xl:w-[-webkit-fill-available] min-[320px]:flex-col min-[320px]:gap-y-3 ">
         <div
-          className="flex justify-between cursor-pointer gap-9 md:flex-row sm:flex-col sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 items-center"
+          className="flex justify-between cursor-pointer gap-9 md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 items-center"
           onClick={handleRedirect}
         >
           <div>
@@ -119,14 +119,14 @@ const UserCard = ({
             <OutlinedButton
               isIcon={false}
               label={'Request Sent'}
-              additionalClassNames=" sm:h-[37px] sm:p-[15px] min-[320px]:px-2 "
+              additionalClassNames=" sm:h-[37px] sm:p-[15px] min-[320px]:px-2 !text-[14px]"
               onClick={followUnfollowHandler}
               isLoading={isLoadingFollowUnfollow}
             />
           ) : selectedTab === FOLLOWERS ? (
             <Button
               label={BTNLBL_FOLLOW}
-              additionalClassNames="sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] items-center text-xs min-[320px]:p-4 w-[101px]"
+              additionalClassNames="sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] items-center text-xs min-[320px]:p-4 w-[101px] !text-[14px]"
               showArrowIcon={false}
               onClick={followUnfollowHandler}
               isLoading={isLoadingFollowUnfollow}
@@ -136,7 +136,7 @@ const UserCard = ({
             <OutlinedButton
               isIcon={false}
               label={BTNLBL_UNFOLLOW}
-              additionalClassNames="sm:h-[37px] sm:p-[15px] min-[320px]:px-2 w-[115px] !justify-center"
+              additionalClassNames="sm:h-[37px] sm:p-[15px] min-[320px]:px-2 w-[115px] !justify-center !text-[14px]"
               onClick={followUnfollowHandler}
               isLoading={isLoadingFollowUnfollow}
             />

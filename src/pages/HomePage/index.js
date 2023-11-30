@@ -6,7 +6,7 @@ import PhotoIcon from '../../components/Icons/PhotoIcon';
 import VideoIcon from '../../components/Icons/VideoIcon';
 import LinkIcon from '../../components/Icons/LinkIcon';
 import { BUTTON_LABELS, LANG } from '../../constants/lang';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import CreatePostLayout from '../../components/CreatePost/CreatePostLayout';
 import Modal from '../../components/Modal';
 import { fetchPostDetails, fetchPosts } from '../../services/feed';
@@ -162,6 +162,49 @@ const HomePage = () => {
     }
   };
 
+  const sharedPostParent = useCallback((post) => {
+    if (post?.id) {
+      return (
+        <div className="border border-greylighter rounded-lg px-3 py-4 mt-7">
+          <Header
+            createdAt={post?.createdAt}
+            creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+            creatorProfilePicUrl={post?.User?.profilePictureUrl}
+            isCreatedByMe={post?.UserId === userData?.id}
+            postId={post?.postId}
+            reloadData={reloadPosts}
+            reloadPostDetails={fetchSinglePostDetails}
+            postDetails={{
+              caption: post?.caption,
+              media: post?.media,
+              links: post?.links,
+              id: post?.id,
+              parentPostId: post?.parentPostId,
+            }}
+            userId={post?.UserId}
+            isFollowed={post?.isFollowed}
+            showThreeDots={false}
+          />
+          <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+          <div className="mt-3">
+            <MediaLayout
+              media={post?.postMedia}
+              allowOnlyView={true}
+              origin="feed"
+              onMediaClickHandler={(customIndex) => {
+                // navigate(`${PATHS.PROFILE}/${post?.id}`);
+                setIsPreviewDetailsPostOpen(true);
+                setActivePost({ ...post });
+                setActiveMediaIndex(customIndex);
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }, []);
+
   return (
     <PrivateLayout activeTab={0}>
       <div className="grid grid-cols-12 gap-5 feed-page">
@@ -244,45 +287,7 @@ const HomePage = () => {
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
 
-                  {post?.type === 'Shared' ? (
-                    <div className="border border-greylighter rounded-lg px-3 py-4 mt-7">
-                      <Header
-                        createdAt={post?.createdAt}
-                        creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
-                        creatorProfilePicUrl={post?.User?.profilePictureUrl}
-                        isCreatedByMe={post?.UserId === userData?.id}
-                        postId={post?.postId}
-                        reloadData={reloadPosts}
-                        reloadPostDetails={fetchSinglePostDetails}
-                        postDetails={{
-                          caption: post?.caption,
-                          media: post?.media,
-                          links: post?.links,
-                          id: post?.id,
-                          parentPostId: post?.parentPostId,
-                        }}
-                        userId={post?.UserId}
-                        isFollowed={post?.isFollowed}
-                        showThreeDots={false}
-                      />
-                      <CaptionLinkContainer caption={post?.caption} links={post?.links} />
-                      <div className="mt-3">
-                        <MediaLayout
-                          media={post?.postMedia}
-                          allowOnlyView={true}
-                          origin="feed"
-                          onMediaClickHandler={(customIndex) => {
-                            // navigate(`${PATHS.PROFILE}/${post?.id}`);
-                            setIsPreviewDetailsPostOpen(true);
-                            setActivePost({ ...post });
-                            setActiveMediaIndex(customIndex);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ''
-                  )}
+                  {post?.type === 'Shared' ? sharedPostParent(post?.parentPostDetails || {}) : ''}
 
                   <div className="mt-3">
                     <MediaLayout

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPostDetails, fetchPosts } from '../../services/feed';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
@@ -153,6 +153,49 @@ function MyPosts({ other = true }) {
     setIsCreatePostModalOpen(true);
   };
 
+  const sharedPostParent = useCallback((post) => {
+    if (post?.id) {
+      return (
+        <div className="border border-greylighter rounded-lg px-3 py-4 mt-7">
+          <Header
+            createdAt={post?.createdAt}
+            creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+            creatorProfilePicUrl={post?.User?.profilePictureUrl}
+            isCreatedByMe={post?.UserId === userData?.id}
+            postId={post?.postId}
+            reloadData={reloadPosts}
+            reloadPostDetails={fetchSinglePostDetails}
+            postDetails={{
+              caption: post?.caption,
+              media: post?.media,
+              links: post?.links,
+              id: post?.id,
+              parentPostId: post?.parentPostId,
+            }}
+            userId={post?.UserId}
+            isFollowed={post?.isFollowed}
+            showThreeDots={false}
+          />
+          <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+          <div className="mt-3">
+            <MediaLayout
+              media={post?.postMedia}
+              allowOnlyView={true}
+              origin="feed"
+              onMediaClickHandler={(customIndex) => {
+                // navigate(`${PATHS.PROFILE}/${post?.id}`);
+                setIsPreviewDetailsPostOpen(true);
+                setActivePost({ ...post });
+                setActiveMediaIndex(customIndex);
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }, []);
+
   return (
     <div>
       {posts?.length === 0 && (
@@ -218,45 +261,7 @@ function MyPosts({ other = true }) {
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
 
-                  {post?.type === 'Shared' ? (
-                    <div className="border border-greylighter rounded-lg px-3 py-4 mt-7">
-                      <Header
-                        createdAt={post?.createdAt}
-                        creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
-                        creatorProfilePicUrl={post?.User?.profilePictureUrl}
-                        isCreatedByMe={post?.UserId === userData?.id}
-                        postId={post?.postId}
-                        reloadData={reloadPosts}
-                        reloadPostDetails={fetchSinglePostDetails}
-                        postDetails={{
-                          caption: post?.caption,
-                          media: post?.media,
-                          links: post?.links,
-                          id: post?.id,
-                          parentPostId: post?.parentPostId,
-                        }}
-                        userId={post?.UserId}
-                        isFollowed={post?.isFollowed}
-                        showThreeDots={false}
-                      />
-                      <CaptionLinkContainer caption={post?.caption} links={post?.links} />
-                      <div className="mt-3">
-                        <MediaLayout
-                          media={post?.postMedia}
-                          allowOnlyView={true}
-                          origin="feed"
-                          onMediaClickHandler={(customIndex) => {
-                            // navigate(`${PATHS.PROFILE}/${post?.id}`);
-                            setIsPreviewDetailsPostOpen(true);
-                            setActivePost({ ...post });
-                            setActiveMediaIndex(customIndex);
-                          }}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    ''
-                  )}
+                  {post?.type === 'Shared' ? sharedPostParent() : ''}
 
                   <div className="mt-3">
                     <MediaLayout
