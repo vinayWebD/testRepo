@@ -238,6 +238,7 @@ function MyPosts({ other = true }) {
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
                     completePostData={post}
+                    reloadData={reloadPosts}
                   />
                 </Card>
               );
@@ -287,6 +288,7 @@ function MyPosts({ other = true }) {
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
+          reloadData={reloadPosts}
         />
       </Modal>
       <Modal

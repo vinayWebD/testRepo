@@ -1,15 +1,40 @@
 import React, { useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '../common/Avatar';
 import EmojiTextarea from '../common/EmojieTextarea';
 import Header from '../Post/Header';
 import MediaLayout from '../MediaLayout';
 import CaptionLinkContainer from '../Post/CaptionLinkContainer';
 import { Button } from '../common/Button';
+import { repostDispatcher } from '../../redux/dispatchers/feedDispatcher';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 
-const RepostLayout = ({ post = {} }) => {
+const RepostLayout = ({ post = {}, closePopup = () => {}, reloadData = () => {} }) => {
   const userData = useSelector((state) => state?.auth?.user) || {};
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
   const [text, setText] = useState('');
+
+  const repostHandler = async () => {
+    if (!isLoading) {
+      setIsLoading(true);
+      const { status, data } = await dispatch(
+        repostDispatcher({ postId: post?.id, caption: text }),
+      );
+
+      if (!successStatus(status)) {
+        const errormsg = getErrorMessage(data);
+        if (errormsg) {
+          ToastNotifyError(errormsg);
+        }
+      } else {
+        ToastNotifySuccess('Post reposted successfully!');
+        closePopup();
+        await reloadData();
+      }
+    }
+  };
 
   return (
     <>
@@ -56,9 +81,10 @@ const RepostLayout = ({ post = {} }) => {
       <div className="flex justify-end px-[18px] pt-5">
         <Button
           label={'Repost'}
-          // isDisabled={isPostButtonDisabled()}
-          onClick={() => {}}
+          onClick={() => repostHandler()}
           showArrowIcon={false}
+          isLoading={isLoading}
+          onlyShowLoaderWhenLoading={true}
         />
       </div>
     </>

@@ -18,6 +18,7 @@ const PostDetails = ({
   reloadPostDetails = () => {},
   customActiveIndex = 0,
   onCloseHandler = () => {},
+  reloadPosts = () => {},
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
   const userData = useSelector((state) => state?.auth?.user) || {};
@@ -233,6 +234,7 @@ const PostDetails = ({
             postId={post?.id}
             reloadPostDetails={reloadPostDetails}
             completePostData={post}
+            reloadData={reloadPosts}
           />
         </div>
       </div>
