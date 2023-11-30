@@ -20,7 +20,7 @@ const RepostLayout = ({ post = {}, closePopup = () => {}, reloadData = () => {} 
     if (!isLoading) {
       setIsLoading(true);
       const { status, data } = await dispatch(
-        repostDispatcher({ postId: post?.id, caption: text }),
+        repostDispatcher({ postId: post?.parentPostId || post?.id, caption: text }),
       );
 
       if (!successStatus(status)) {
@@ -67,6 +67,7 @@ const RepostLayout = ({ post = {}, closePopup = () => {}, reloadData = () => {} 
               media: post?.media,
               links: post?.links,
               id: post?.id,
+              parentPostId: post?.parentPostId,
             }}
             userId={post?.UserId}
             isFollowed={post?.isFollowed}

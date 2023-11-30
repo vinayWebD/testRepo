@@ -107,6 +107,7 @@ const PostDetails = ({
           media: post?.postMedia,
           links: post?.links,
           id: post?.id,
+          parentPostId: post?.parentPostId,
         }}
       />
     );

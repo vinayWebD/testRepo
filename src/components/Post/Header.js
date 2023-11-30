@@ -54,7 +54,12 @@ const Header = ({
         },
         {
           name: 'Copy link',
-          action: () => copyLink(`${window.location.origin}${PATHS.HOME}/${postDetails?.id}`),
+          action: () =>
+            copyLink(
+              `${window.location.origin}${PATHS.HOME}/${
+                postDetails?.parentPostId || postDetails?.id
+              }`,
+            ),
         },
       ]);
     } else {

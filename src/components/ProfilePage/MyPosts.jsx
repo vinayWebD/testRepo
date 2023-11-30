@@ -213,9 +213,51 @@ function MyPosts({ other = true }) {
                       media: post?.media,
                       links: post?.links,
                       id: post?.id,
+                      parentPostId: post?.parentPostId,
                     }}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+
+                  {post?.type === 'Shared' ? (
+                    <div className="border border-greylighter rounded-lg px-3 py-4 mt-7">
+                      <Header
+                        createdAt={post?.createdAt}
+                        creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+                        creatorProfilePicUrl={post?.User?.profilePictureUrl}
+                        isCreatedByMe={post?.UserId === userData?.id}
+                        postId={post?.postId}
+                        reloadData={reloadPosts}
+                        reloadPostDetails={fetchSinglePostDetails}
+                        postDetails={{
+                          caption: post?.caption,
+                          media: post?.media,
+                          links: post?.links,
+                          id: post?.id,
+                          parentPostId: post?.parentPostId,
+                        }}
+                        userId={post?.UserId}
+                        isFollowed={post?.isFollowed}
+                        showThreeDots={false}
+                      />
+                      <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+                      <div className="mt-3">
+                        <MediaLayout
+                          media={post?.postMedia}
+                          allowOnlyView={true}
+                          origin="feed"
+                          onMediaClickHandler={(customIndex) => {
+                            // navigate(`${PATHS.PROFILE}/${post?.id}`);
+                            setIsPreviewDetailsPostOpen(true);
+                            setActivePost({ ...post });
+                            setActiveMediaIndex(customIndex);
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
                   <div className="mt-3">
                     <MediaLayout
                       media={post?.postMedia}
