@@ -34,7 +34,6 @@ const UserCard = ({
   location = 'San Fransico, CA',
   userImage = userimg,
   career = '',
-  isApproved = false,
   reloadData = () => {},
   isRequestedByYou = false, // This means if the current user has requested
 }) => {
@@ -48,8 +47,9 @@ const UserCard = ({
   const followUnfollowHandler = async () => {
     let response;
     setIsLoadingFollowUnfollow(true);
-    if (isApproved === false) {
-      // request sent
+    // This means we have sent a request, and now we are cancelling it
+    if (isRequestedByYou) {
+      response = (await dispatch(unfollowOtherUserDispatcher({ id }))) || {};
     } else {
       if (selectedTab === 'Followers') {
         response = (await dispatch(followOtherUserDispatcher({ id }))) || {};
