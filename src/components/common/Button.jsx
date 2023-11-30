@@ -9,6 +9,7 @@ export const Button = ({
   additionalClassNames = '',
   isLoading = false,
   onClick = () => {},
+  onlyShowLoaderWhenLoading = false,
 }) => {
   return (
     <button
@@ -19,13 +20,17 @@ export const Button = ({
         isDisabled ? 'bg-greymedium' : 'bg-gradient-button'
       } ${additionalClassNames}`}
     >
-      {isLoading && <SpinningLoader />}
-      <span className="font-semibold">{label}</span>
+      {isLoading && !onlyShowLoaderWhenLoading && <SpinningLoader />}
+      {!isLoading && <span className="font-semibold">{label}</span>}
 
       {!isDisabled && showArrowIcon && (
         <span className="ml-2 arrow-icon transform -translate-x-2 w-0 opacity-0 group-hover:translate-x-0 group-hover:block group-hover:opacity-100 transition-transform duration-300">
           <ArrowIcon />
         </span>
+      )}
+
+      {onlyShowLoaderWhenLoading && isLoading && (
+        <SpinningLoader height="h-[14px]" width="w-[14px]" marginLeft="ml-0" marginRight="mr-0" />
       )}
     </button>
   );

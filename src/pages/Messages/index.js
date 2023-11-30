@@ -242,8 +242,8 @@ const Messages = () => {
                         ? isActive !== null && searchedContacts[isActive]
                           ? searchedContacts[isActive].name
                           : isActive !== null && searchedFollwers[isActive]
-                            ? searchedFollwers[isActive].name
-                            : 'Name'
+                          ? searchedFollwers[isActive].name
+                          : 'Name'
                         : searchedFollwers[isActive].name}
                     </span>
                     <div className="flex items-center">
@@ -329,8 +329,8 @@ const Messages = () => {
             ? isActive !== null && searchedContacts[isActive]
               ? searchedContacts[isActive]?.name || 'Name'
               : isActive !== null && searchedFollwers[isActive]
-                ? searchedFollwers[isActive]?.name || 'Name'
-                : 'Name'
+              ? searchedFollwers[isActive]?.name || 'Name'
+              : 'Name'
             : searchedFollwers[isActive]?.name || 'Name'}
           ”?
         </ConfirmationModal>
