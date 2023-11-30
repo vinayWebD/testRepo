@@ -8,7 +8,7 @@ import { PATHS } from './urlPaths';
 
 const { NAVLBL_FEED, NAVLBL_MY_NETWORK, NAVLBL_MESSAGES, NAVLBL_NOTIFICATIONS, NAVLBL_SETTINGS } =
   PRIVATE_NAVIGATION_LABELS;
-const { MYNETWORK, HOME, MY_NOTIFICATION, SETTINGS } = PATHS;
+const { MYNETWORK, HOME, MY_NOTIFICATION, SETTINGS, MESSAGES } = PATHS;
 
 const navigationItems = [
   {
@@ -26,6 +26,7 @@ const navigationItems = [
   {
     label: NAVLBL_MESSAGES,
     action: () => {},
+    navPath: MESSAGES,
     icon: (props) => <MessagesIcon {...props} />,
   },
   {
