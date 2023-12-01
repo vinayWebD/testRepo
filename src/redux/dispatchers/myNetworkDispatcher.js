@@ -1,9 +1,12 @@
+import { PAGE_SIZE } from '../../constants/constants';
 import {
+  acceptFollowRequest,
   fetchFollowRequests,
   fetchMyConnections,
   fetchMyFollowers,
   fetchMyFollowings,
   invitePeople,
+  rejectFollowRequest,
 } from '../../services/myNetwork';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
@@ -44,11 +47,25 @@ const fetchMyConnectionsDispatcher =
   };
 
 const fetchFollowRequestsDispatcher =
-  ({ page = 1, limit = 10, search = '', showLoader = false }) =>
+  ({ page = 1, limit = PAGE_SIZE.FOLLOW_REQUESTS, search = '', showLoader = false }) =>
   async (dispatch) => {
     dispatch(globalTransparentLoadingPrivate(showLoader));
     const { status, data } = await fetchFollowRequests({ page, limit, search });
     dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const acceptFollowRequestDispatcher =
+  ({ id }) =>
+  async () => {
+    const { status, data } = await acceptFollowRequest({ id });
+    return { status, data };
+  };
+
+const rejectFollowRequestDispatcher =
+  ({ id }) =>
+  async () => {
+    const { status, data } = await rejectFollowRequest({ id });
     return { status, data };
   };
 
@@ -58,4 +75,6 @@ export {
   fetchMyFollowersDispatcher,
   fetchMyFollowingsDispatcher,
   fetchFollowRequestsDispatcher,
+  acceptFollowRequestDispatcher,
+  rejectFollowRequestDispatcher,
 };
