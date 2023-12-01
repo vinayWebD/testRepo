@@ -261,6 +261,9 @@ const NotificationPage = () => {
             fetchnotificationList();
             setIsPreviewDetailsPostOpen(false);
           }}
+          reloadPosts={() => {
+            // Not required here as we dont have to reload the posts being on Notif page
+          }}
         />
       </Modal>
     </SectionLayout>
