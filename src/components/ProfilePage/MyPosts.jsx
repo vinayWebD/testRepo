@@ -261,7 +261,7 @@ function MyPosts({ other = true }) {
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
 
-                  {post?.type === 'Shared' ? sharedPostParent() : ''}
+                  {post?.type === 'Shared' ? sharedPostParent(post?.parentPostDetails || {}) : ''}
 
                   <div className="mt-3">
                     <MediaLayout
@@ -284,7 +284,7 @@ function MyPosts({ other = true }) {
                     postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
-                    completePostData={post}
+                    completePostData={post?.parentPostDetails || post}
                     reloadData={reloadPosts}
                   />
                 </Card>
@@ -335,7 +335,7 @@ function MyPosts({ other = true }) {
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
-          reloadData={reloadPosts}
+          reloadPosts={reloadPosts}
         />
       </Modal>
       <Modal

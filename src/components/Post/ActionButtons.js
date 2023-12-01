@@ -23,7 +23,7 @@ const ActionButtons = ({
   isCommentSectionOpenDefault = false,
   postId = '',
   reloadPostDetails = () => {},
-  completePostData = {},
+  completePostData = {}, // Using currently for reposting UI
   reloadData = () => {},
 }) => {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(isCommentSectionOpenDefault);
