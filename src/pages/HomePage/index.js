@@ -311,7 +311,7 @@ const HomePage = () => {
                     postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
-                    completePostData={post}
+                    completePostData={post?.parentPostDetails || post}
                     reloadData={reloadPosts}
                   />
                 </Card>
@@ -385,7 +385,7 @@ const HomePage = () => {
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
-          reloadData={reloadPosts}
+          reloadPosts={reloadPosts}
         />
       </Modal>
     </PrivateLayout>
