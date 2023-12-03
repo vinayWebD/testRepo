@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import UserCard from '../MyNetworkLayout/UserCard';
 import SearchInput from './SearchInput';
 import { Colors } from '../../constants/colors';
@@ -7,12 +7,11 @@ import { useDispatch } from 'react-redux';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
 import { fetchFollowRequestsDispatcher } from '../../redux/dispatchers/myNetworkDispatcher';
-// import debounce from '../../utils/debounce';
 import SpinningLoader from './SpinningLoader';
 import debounce from '../../utils/debounce';
 import { PAGE_SIZE } from '../../constants/constants';
+import InfiniteScroll from 'react-infinite-scroller';
 
-// globalModalCounter.js
 let globalModalCounter = 0;
 
 export const incrementModalCounter = () => {
@@ -38,45 +37,19 @@ function FriendRequestsBar({
   titleClassNames = 'pl-[18px]',
   titleParentClassNames = 'm-3',
 }) {
-  const loaderRef = useRef(null);
   const [focusOnSearch, setFocusOnSearch] = useState(false);
   const [friendRequestSearchValue, setFriendRequestSearchValue] = useState('');
   const [requests, setRequests] = useState([]);
   const [count, setCount] = useState(0);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
-  const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  let isLoadingAPI = false;
 
   const searchInputChangeHandler = (value) => {
     setFriendRequestSearchValue(value);
   };
-
-  // This is for the infinite scroll pagination
-  useEffect(() => {
-    const observer = new IntersectionObserver(handleObserver, {
-      root: null,
-      rootMargin: '20px',
-      threshold: 1.0,
-    });
-
-    if (loaderRef.current) {
-      observer.observe(loaderRef.current);
-    }
-
-    return () => observer.disconnect();
-  }, [isOpen]);
-
-  const handleObserver = useCallback(
-    (entities) => {
-      const target = entities[0];
-      if (target.isIntersecting && !allPostsLoaded && !isLoading) {
-        setIsLoading(true);
-        getFollowRequests(friendRequestSearchValue, currentPage).then(() => setIsLoading(false));
-      }
-    },
-    [currentPage, allPostsLoaded, isLoading, friendRequestSearchValue, isOpen],
-  );
 
   useEffect(() => {
     if (isOpen) {
@@ -103,46 +76,63 @@ function FriendRequestsBar({
 
   useEffect(() => {
     updateSearchVal(friendRequestSearchValue);
+    setAllPostsLoaded(false);
+    setRequests([]);
+    setCurrentPage(1);
   }, [friendRequestSearchValue]);
 
   // Added debounce in the search to avoid multiple API calls
   const updateSearchVal = useCallback(
     debounce((val) => {
-      getFollowRequests(val, 0);
+      if (isOpen) {
+        setCurrentPage(1);
+        setRequests([]);
+        setAllPostsLoaded(false);
+        getFollowRequests(1, val);
+      }
     }, 400),
-    [],
+    [isOpen],
   );
 
-  const getFollowRequests = async (searchVal = '', page = currentPage || 0) => {
-    if (allPostsLoaded) {
+  const getFollowRequests = async (
+    page = currentPage || 1,
+    searchVal = friendRequestSearchValue,
+  ) => {
+    if (isLoading || allPostsLoaded || isLoadingAPI) {
       return;
     }
 
+    console.log(currentPage, requests.length);
+
+    setIsLoading(true);
     const { status, data } = await dispatch(
       fetchFollowRequestsDispatcher({
-        page: page + 1,
+        page: currentPage || page,
         search: searchVal,
       }),
     );
 
     if (successStatus(status)) {
-      setAllPostsLoaded(data?.data?.FollowRequests?.length < PAGE_SIZE.FOLLOW_REQUESTS);
-      setCount(data?.data?.count);
+      if (data?.data?.page === currentPage) {
+        setAllPostsLoaded(data?.data?.FollowRequests?.length < PAGE_SIZE.FOLLOW_REQUESTS);
+        setCount(data?.data?.count);
+        if (currentPage === 1) {
+          // For the first time we just need to set the data as is
+          setRequests(data?.data?.FollowRequests);
+        } else if ((currentPage - 1) * PAGE_SIZE.FOLLOW_REQUESTS === requests.length) {
+          setRequests((prevPosts) => [...prevPosts, ...(data?.data?.FollowRequests || [])]);
+        }
 
-      if (page === 0) {
-        // For the first time we just need to set the data as is
-        setRequests(data?.data?.FollowRequests);
-      } else if (currentPage * PAGE_SIZE.FOLLOW_REQUESTS === requests.length) {
-        setRequests((prevPosts) => [...prevPosts, ...(data?.data?.FollowRequests || [])]);
+        setCurrentPage(data?.data?.page + 1);
       }
-
-      setCurrentPage(data?.data?.page);
     } else {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
         ToastNotifyError(errormsg);
       }
     }
+    setIsLoading(false);
+    isLoadingAPI = false;
   };
 
   if (!isOpen) return null;
@@ -195,28 +185,36 @@ function FriendRequestsBar({
           </div>
         }
         <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] max-h-96 overflow-scroll">
-          {requests.map((item) => (
-            <UserCard
-              key={item?.id}
-              id={item?.id}
-              selectedTab={'selectedTab'}
-              userName={`${item?.User?.firstName} ${item?.User?.lastName}`}
-              location={item?.User?.location}
-              career={item?.User?.Careers?.[0]?.title}
-              userImage={item?.User?.profilePicture}
-              isApproved={item?.isApproved}
-              reloadData={getFollowRequests}
-              isRequestedByYou={!!item?.User?.Requested?.length}
-              isFriendRequest={true}
-            />
-          ))}
-
-          {!allPostsLoaded && (
-            <div className="flex justify-center items-center" ref={loaderRef}>
-              <SpinningLoader width="w-6" height="h-6" color="#0171bc" />
-            </div>
-          )}
+          <InfiniteScroll
+            threshold={10}
+            dataLength={requests.length || 0}
+            loadMore={getFollowRequests}
+            hasMore={!allPostsLoaded}
+            useWindow={false}
+            loader={
+              <div className="flex w-full justify-center items-center">
+                <SpinningLoader width="w-6" height="h-6" color="#0171bc" key={0} />
+              </div>
+            }
+          >
+            {requests?.map((item) => (
+              <UserCard
+                key={item?.id}
+                id={item?.id}
+                selectedTab={'selectedTab'}
+                userName={`${item?.User?.firstName} ${item?.User?.lastName}`}
+                location={item?.User?.location}
+                career={item?.User?.Careers?.[0]?.title}
+                userImage={item?.User?.profilePicture}
+                isApproved={item?.isApproved}
+                reloadData={getFollowRequests}
+                isRequestedByYou={!!item?.User?.Requested?.length}
+                isFriendRequest={true}
+              />
+            ))}
+          </InfiniteScroll>
         </div>
+        {isLoading && <></>}
         <div className="h-[10px]"></div>
       </div>
     </div>
