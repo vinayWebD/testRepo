@@ -57,6 +57,8 @@ function FriendRequestsBar({
   useEffect(() => {
     if (isOpen) {
       setAllPostsLoaded(false);
+      setFriendRequestSearchValue('');
+      setFocusOnSearch(false);
       incrementModalCounter();
     }
 
@@ -140,12 +142,12 @@ function FriendRequestsBar({
 
   return (
     <div
-      className="cust-modal-fixed items-start fixed overflow-hidden top-0 left-0 w-full h-full mt-14 flex justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
+      className="cust-modal-fixed items-start fixed overflow-hidden top-0 left-0 w-full h-full mt-14 flex justify-center z-9 bg-[#0000005f] backdrop-blur-[1.5px]"
       onClick={onClose}
     >
       <div
         style={{ marginTop: '0px' }}
-        className={`bg-white overflow-x-hidden w-full md:w-[65%] min-[320px]:ml-0 lg:ml-[22rem] pb-[12px] ${width} ${height} rounded-md shadow-lg z-50  ${titleParentClassNames}`}
+        className={`bg-white overflow-x-hidden w-full md:w-[65%] min-[320px]:ml-0 lg:ml-[22rem] pb-[12px] ${width} ${height} rounded-md shadow-lg z-9  ${titleParentClassNames}`}
         onClick={(e) => e.stopPropagation()}
       >
         {
@@ -170,7 +172,7 @@ function FriendRequestsBar({
             {(friendRequestSearchValue === '' || friendRequestSearchValue === null) &&
             !focusOnSearch ? (
               <div
-                className="flex items-center px-[5px] pr-[26px]"
+                className="flex items-center px-[5px] pr-[26px] h-[66px] max-h-[66px]"
                 onClick={() => setFocusOnSearch(true)}
                 onBlur={() => setFocusOnSearch(false)}
               >
@@ -181,7 +183,7 @@ function FriendRequestsBar({
               </div>
             ) : (
               <div
-                className={`pl-[10px] md:pl-[25px] pr-[26px] ${
+                className={`pl-[10px] md:pl-[25px] pr-[26px] h-[67px] max-h-[67px] ${
                   focusOnSearch ? '!pl-[25px] w-full' : ''
                 }`}
               >
@@ -193,7 +195,7 @@ function FriendRequestsBar({
                   textColor="text-black"
                   onBlur={() => setFocusOnSearch(false)}
                   onFocus={() => setFocusOnSearch(true)}
-                  className={`text-[16px] h-[66px] ${
+                  className={`text-[16px] ${
                     !focusOnSearch
                       ? 'max-w-[40px] p-0 md:max-w-[120px] text-ellipsis overflow-hidden'
                       : 'w-full'
@@ -234,7 +236,6 @@ function FriendRequestsBar({
             ))}
           </InfiniteScroll>
         </div>
-        {isLoading && <></>}
       </div>
     </div>
   );

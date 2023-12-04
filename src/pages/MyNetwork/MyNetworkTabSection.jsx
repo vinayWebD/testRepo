@@ -189,7 +189,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
         ) : (
           <div className="flex w-full justify-center items-center">
             <div className="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
-              <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
+              <h5 className="font-medium text-greydark text-[14px] mb-2">
                 {NO_RESULTS_DATA_TITLE[selectedTab]}
               </h5>
             </div>

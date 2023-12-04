@@ -139,7 +139,7 @@ const UserCard = ({
           </div>
         </div>
 
-        <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex md:items-center gap-[7%] justify-between items-center md:justify-end">
+        <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex md:items-center md:gap-[7%] gap-[15%] items-center md:justify-end">
           {!isFriendRequest && (
             <div className="cursor-pointer flex items-center">
               <ChatIcon />
