@@ -139,7 +139,7 @@ const UserCard = ({
           </div>
         </div>
 
-        <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex md:items-center gap-[7%] justify-between md:justify-end">
+        <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex md:items-center gap-[7%] justify-between items-center md:justify-end">
           {!isFriendRequest && (
             <div className="cursor-pointer flex items-center">
               <ChatIcon />
@@ -154,7 +154,7 @@ const UserCard = ({
                 onClick={acceptRequestHandler}
               />
 
-              <span onClick={rejectRequestHandler}>
+              <span onClick={rejectRequestHandler} className="text-[#999999] text-sm font-medium">
                 {deviceType === 'mobile' ? 'Reject' : <CrossIcon />}
               </span>
             </>
