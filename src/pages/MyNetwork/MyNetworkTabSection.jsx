@@ -94,6 +94,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
     } else {
       setUsersList(data?.[setResponse?.type] || []);
       setTotalCount(data?.count);
+      setCurrentPage(data?.page);
     }
   };
 

@@ -44,6 +44,9 @@ const NETWORK_CONSTANTS = {
   MY_FOLLOWINGS: '/v1/accounts/follow/following',
   MY_CONNECTIONS: '/v1/accounts/connections',
   REPOST: '/v1/feeds/posts/share',
+  FETCH_FOLLOW_REQUEST: '/v1/accounts/follow/requests',
+  ACCEPT_FOLLOW_REQUEST: (id) => `/v1/accounts/follow/request/accept/${id}`,
+  REJECT_FOLLOW_REQUEST: (id) => `/v1/accounts/follow/request/reject/${id}`,
 };
 
 export default NETWORK_CONSTANTS;

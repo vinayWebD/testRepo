@@ -14,6 +14,10 @@ import {
 } from '../../redux/dispatchers/otherUserDispatcher';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
+import {
+  acceptFollowRequestDispatcher,
+  rejectFollowRequestDispatcher,
+} from '../../redux/dispatchers/myNetworkDispatcher';
 
 const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
 const { FOLLOWERS } = TABS_NAME;
@@ -28,10 +32,9 @@ const UserCard = ({
   id,
   selectedTab,
   className = '',
-  onClick = () => {},
   isFriendRequest, // If we are referring to a friend request, probably friend request section
-  userName = 'Stev Jobs',
-  location = 'San Fransico, CA',
+  userName = '',
+  location = '',
   userImage = userimg,
   career = '',
   reloadData = () => {},
@@ -76,6 +79,36 @@ const UserCard = ({
     setIsLoadingFollowUnfollow(false);
   };
 
+  const acceptRequestHandler = async () => {
+    let response = await dispatch(acceptFollowRequestDispatcher({ id }));
+    const { status, data } = response;
+
+    if (successStatus(status)) {
+      ToastNotifySuccess('Request accepted successfully!');
+      await reloadData();
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+  };
+
+  const rejectRequestHandler = async () => {
+    let response = await dispatch(rejectFollowRequestDispatcher({ id }));
+    const { status, data } = response;
+
+    if (successStatus(status)) {
+      ToastNotifySuccess('Request has been rejected');
+      await reloadData();
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+  };
+
   return (
     <div
       className={`${className} mb-3 flex sm:justify-start min-[320px]:items-start sm:items-start gap-2 relative w-[100%] border border-borderColor rounded-lg p-2 py-5 pr-6 !items-center`}
@@ -106,14 +139,20 @@ const UserCard = ({
 
         <div className="flex md:gap-5 xl:gap-x-16 lg:gap-x-6 md:gap-x-16 items-center min-[320px]:gap-x-9 ">
           <div className="cursor-pointer flex items-center">
-            {isFriendRequest ? <CrossIcon /> : <ChatIcon />}
+            {isFriendRequest ? (
+              <span onClick={rejectRequestHandler}>
+                <CrossIcon />{' '}
+              </span>
+            ) : (
+              <ChatIcon />
+            )}
           </div>
           {isFriendRequest ? (
             <Button
               label={BTNLBL_ACCEPT}
-              additionalClassNames=" sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] md:h-[37px] items-center text-xs min-[320px]:p-4"
+              additionalClassNames=" sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] md:h-[37px] items-center text-xs min-[320px]:p-4 !text-[14px]"
               showArrowIcon={false}
-              onClick={onClick}
+              onClick={acceptRequestHandler}
             />
           ) : isRequestedByYou ? (
             <OutlinedButton
