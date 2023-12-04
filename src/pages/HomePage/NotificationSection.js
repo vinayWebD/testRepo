@@ -73,6 +73,7 @@ const NotificationSection = () => {
     if (!item?.markAsRead) {
       return (
         <div
+          key={item?.id}
           className="px-1 bg-[#F5FBFF] relative cursor-pointer"
           onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
         >
@@ -103,6 +104,7 @@ const NotificationSection = () => {
     } else {
       return (
         <div
+          key={item?.id}
           className="px-1 cursor-pointer"
           onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
         >

@@ -18,6 +18,7 @@ import {
   acceptFollowRequestDispatcher,
   rejectFollowRequestDispatcher,
 } from '../../redux/dispatchers/myNetworkDispatcher';
+import useDeviceType from '../../hooks/useDeviceType';
 
 const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
 const { FOLLOWERS } = TABS_NAME;
@@ -41,6 +42,7 @@ const UserCard = ({
   isRequestedByYou = false, // This means if the current user has requested
 }) => {
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
+  const deviceType = useDeviceType();
   const dispatch = useDispatch();
 
   const handleRedirect = () => {
@@ -111,17 +113,17 @@ const UserCard = ({
 
   return (
     <div
-      className={`${className} mb-3 flex sm:justify-start min-[320px]:items-start sm:items-start gap-2 relative w-[100%] border border-borderColor rounded-lg p-2 py-5 pr-6 !items-center`}
+      className={`${className} overflow-hidden  mb-3 flex justify-start min-[320px]:items-start sm:items-start gap-2 relative w-[100%] border border-borderColor rounded-lg p-2 py-5 pr-6 md:!items-center`}
     >
       <div className=" sm:flex sm:justify-start sm:items-start ">
         <Avatar name={userName} image={userImage} classNames="h-[52px] w-[52px] " />
       </div>
-      <div className="flex justify-between   md:w-[-webkit-fill-available] md:flex-row sm:flex-col  lg:gap-x-10 relative xl:w-[-webkit-fill-available] min-[320px]:flex-col min-[320px]:gap-y-3 ">
+      <div className="w-full flex md:justify-between md:flex-row sm:flex-col gap-3 relative min-[320px]:flex-col min-[320px]:gap-y-3 ">
         <div
-          className="flex justify-between cursor-pointer gap-9 md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 items-center"
+          className="w-full md:w-[60%] md:max-w-[60%] lg:w-[65%] lg:max-w-[65%] gap-3 flex justify-between cursor-pointer md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 md:items-center"
           onClick={handleRedirect}
         >
-          <div>
+          <div className="w-full md:w-[70%] md:max-w-[70%] lg:w-[70%] lg:max-w-[70%]">
             <h3 className="text-base text-gray-950  font-medium">{userName}</h3>
             {location ? (
               <div className="flex gap-1">
@@ -132,33 +134,35 @@ const UserCard = ({
               ''
             )}
           </div>
-          <div className="font-sm md:font-medium lg:font-medium xl:w-[268px] lg:w-[150px] md:w-[268px] relative text-greydark w-[auto] min-[320px]:font-normal min-[320px]:text-xs">
+          <div className="w-full md:w-[30%] md:max-w-[30%] lg:w-[35%] lg:max-w-[35%] font-sm md:font-medium lg:font-medium relative text-greydark min-[320px]:font-normal min-[320px]:text-xs">
             <span>{career}</span>
           </div>
         </div>
 
-        <div className="flex md:gap-5 xl:gap-x-16 lg:gap-x-6 md:gap-x-16 items-center min-[320px]:gap-x-9 ">
-          <div className="cursor-pointer flex items-center">
-            {isFriendRequest ? (
-              <span onClick={rejectRequestHandler}>
-                <CrossIcon />{' '}
-              </span>
-            ) : (
+        <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex md:items-center gap-[7%] justify-between md:justify-end">
+          {!isFriendRequest && (
+            <div className="cursor-pointer flex items-center">
               <ChatIcon />
-            )}
-          </div>
+            </div>
+          )}
           {isFriendRequest ? (
-            <Button
-              label={BTNLBL_ACCEPT}
-              additionalClassNames=" sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] md:h-[37px] items-center text-xs min-[320px]:p-4 !text-[14px]"
-              showArrowIcon={false}
-              onClick={acceptRequestHandler}
-            />
+            <>
+              <Button
+                label={BTNLBL_ACCEPT}
+                additionalClassNames=" sm:px-[30px] sm:h-[0px] md:h-[0px] sm:py-[19px] md:h-[37px] items-center text-xs min-[320px]:p-4 !text-[14px]"
+                showArrowIcon={false}
+                onClick={acceptRequestHandler}
+              />
+
+              <span onClick={rejectRequestHandler}>
+                {deviceType === 'mobile' ? 'Reject' : <CrossIcon />}
+              </span>
+            </>
           ) : isRequestedByYou ? (
             <OutlinedButton
               isIcon={false}
               label={'Request Sent'}
-              additionalClassNames=" sm:h-[37px] sm:p-[15px] min-[320px]:px-2 !text-[14px]"
+              additionalClassNames=" sm:h-[37px] min-[320px]:px-2 !text-[14px]"
               onClick={followUnfollowHandler}
               isLoading={isLoadingFollowUnfollow}
             />

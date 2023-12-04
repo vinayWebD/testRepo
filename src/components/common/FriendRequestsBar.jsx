@@ -166,7 +166,7 @@ function FriendRequestsBar({
                 <div className="flex items-center px-[5px]">
                   <SearchIcon color={'black'} />
                 </div>
-                <div className="text-[14px] text-[#A1A0A0] ml-2">Search</div>
+                <div className="text-[16px] text-[#A1A0A0] ml-2">Search</div>
               </div>
             ) : (
               <div className="pl-[25px] pr-[26px]">
@@ -178,7 +178,7 @@ function FriendRequestsBar({
                   textColor="text-black"
                   onBlur={() => setFocusOnSearch(false)}
                   onFocus={() => setFocusOnSearch(true)}
-                  className=""
+                  className="text-[16px]"
                 />
               </div>
             )}
@@ -187,7 +187,6 @@ function FriendRequestsBar({
         <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] max-h-96 overflow-scroll">
           <InfiniteScroll
             threshold={10}
-            dataLength={requests.length || 0}
             loadMore={getFollowRequests}
             hasMore={!allPostsLoaded}
             useWindow={false}
