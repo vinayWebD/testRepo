@@ -7,10 +7,12 @@ import { useDispatch } from 'react-redux';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
 import { fetchFollowRequestsDispatcher } from '../../redux/dispatchers/myNetworkDispatcher';
-import SpinningLoader from './SpinningLoader';
 import debounce from '../../utils/debounce';
 import { PAGE_SIZE } from '../../constants/constants';
 import InfiniteScroll from 'react-infinite-scroller';
+import { useNavigate } from 'react-router-dom';
+import { BackArrowIcon } from '../Icons/BackArrowIcon';
+import PostSkeleton from './PostSkeleton';
 
 let globalModalCounter = 0;
 
@@ -45,6 +47,7 @@ function FriendRequestsBar({
   const [allPostsLoaded, setAllPostsLoaded] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   let isLoadingAPI = false;
 
   const searchInputChangeHandler = (value) => {
@@ -90,7 +93,7 @@ function FriendRequestsBar({
         setAllPostsLoaded(false);
         getFollowRequests(1, val);
       }
-    }, 400),
+    }, 500),
     [isOpen],
   );
 
@@ -101,8 +104,6 @@ function FriendRequestsBar({
     if (isLoading || allPostsLoaded || isLoadingAPI) {
       return;
     }
-
-    console.log(currentPage, requests.length);
 
     setIsLoading(true);
     const { status, data } = await dispatch(
@@ -139,23 +140,33 @@ function FriendRequestsBar({
 
   return (
     <div
-      className="cust-modal-fixed items-start fixed top-0 left-0 w-full h-full mt-14 flex justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
+      className="cust-modal-fixed items-start fixed overflow-hidden top-0 left-0 w-full h-full mt-14 flex justify-center z-50 bg-[#0000005f] backdrop-blur-[1.5px]"
       onClick={onClose}
     >
       <div
         style={{ marginTop: '0px' }}
-        className={`bg-white min-[320px]:w-11/12 overflow-x-hidden lg:w-[65%] min-[320px]:ml-0 lg:ml-[22rem] pb-[12px] ${width} ${height} rounded-md shadow-lg z-50  ${titleParentClassNames}`}
+        className={`bg-white overflow-x-hidden w-full md:w-[65%] min-[320px]:ml-0 lg:ml-[22rem] pb-[12px] ${width} ${height} rounded-md shadow-lg z-50  ${titleParentClassNames}`}
         onClick={(e) => e.stopPropagation()}
       >
         {
           <div className="flex items-center justify-between bg-white  sticky top-0 z-10">
             <div
-              className={`text-[20px] font-semibold text-blueprimary ${titleClassNames} ${
+              className={`flex gap-1 justify-center items-center text-[18px] md:text-[20px] font-semibold text-blueprimary ${titleClassNames} ${
                 focusOnSearch ? 'hidden' : ''
               } pl-[25px] py-5`}
             >
+              <div
+                className="block md:hidden"
+                onClick={() => {
+                  navigate(-1);
+                  onClose();
+                }}
+              >
+                <BackArrowIcon color="#0071BC" />
+              </div>
               {title} ({count})
             </div>
+
             {(friendRequestSearchValue === '' || friendRequestSearchValue === null) &&
             !focusOnSearch ? (
               <div
@@ -169,7 +180,11 @@ function FriendRequestsBar({
                 <div className="text-[16px] text-[#A1A0A0] ml-2">Search</div>
               </div>
             ) : (
-              <div className="pl-[25px] pr-[26px]">
+              <div
+                className={`pl-[10px] md:pl-[25px] pr-[26px] ${
+                  focusOnSearch ? '!pl-[25px] w-full' : ''
+                }`}
+              >
                 <SearchInput
                   iconColor={Colors.grayDark}
                   onChange={searchInputChangeHandler}
@@ -178,21 +193,27 @@ function FriendRequestsBar({
                   textColor="text-black"
                   onBlur={() => setFocusOnSearch(false)}
                   onFocus={() => setFocusOnSearch(true)}
-                  className="text-[16px]"
+                  className={`text-[16px] h-[66px] ${
+                    !focusOnSearch
+                      ? 'max-w-[40px] p-0 md:max-w-[120px] text-ellipsis overflow-hidden'
+                      : 'w-full'
+                  }`}
+                  isAutoFocus={true}
+                  bottomBorderColorClass={focusOnSearch ? 'border-[#A1A0A0]' : '!border-0'}
                 />
               </div>
             )}
           </div>
         }
-        <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] max-h-96 overflow-scroll">
+        <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] min-h-[85%] md:min-h-[90%] max-h-[85%] md:max-h-[90%] overflow-scroll mt-2">
           <InfiniteScroll
             threshold={10}
             loadMore={getFollowRequests}
             hasMore={!allPostsLoaded}
             useWindow={false}
             loader={
-              <div className="flex w-full justify-center items-center">
-                <SpinningLoader width="w-6" height="h-6" color="#0171bc" key={0} />
+              <div className="flex w-full h-full justify-center items-center">
+                <PostSkeleton showMedia={false} />
               </div>
             }
           >
@@ -214,7 +235,6 @@ function FriendRequestsBar({
           </InfiniteScroll>
         </div>
         {isLoading && <></>}
-        <div className="h-[10px]"></div>
       </div>
     </div>
   );
