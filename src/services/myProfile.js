@@ -8,6 +8,8 @@ const {
   HELP_CENTER_CONTACT_ADMIN,
   UPDATE_EMAIL_VERIFY_OLD_EMAIL,
   UPDATE_EMAIL_VERIFY_NEW_EMAIL,
+  GET_PRIVACY_SETTINGS,
+  UPDATE_PRIVACY_SETTINGS,
 } = NETWORK_CONSTANTS;
 
 const networkCount = async () => {
@@ -76,6 +78,24 @@ const verifyNewEmail = async ({ email = '', code }) => {
   }
 };
 
+const getPrivacySettings = async () => {
+  try {
+    const data = await apiUtility(GET_PRIVACY_SETTINGS, 'GET');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const updatePrivacySettings = async (dataToSend = {}) => {
+  try {
+    const data = await apiUtility(UPDATE_PRIVACY_SETTINGS, 'POST', dataToSend);
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   networkCount,
   sendOtpToUpdateEmail,
@@ -83,4 +103,6 @@ export {
   contactAdmin,
   verifyOldEmail,
   verifyNewEmail,
+  getPrivacySettings,
+  updatePrivacySettings,
 };

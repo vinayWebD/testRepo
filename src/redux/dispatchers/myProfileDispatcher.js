@@ -1,7 +1,9 @@
 import {
   changePassword,
   contactAdmin,
+  getPrivacySettings,
   sendOtpToUpdateEmail,
+  updatePrivacySettings,
   verifyNewEmail,
   verifyOldEmail,
 } from '../../services/myProfile';
@@ -66,10 +68,28 @@ const verifyNewEmailDispatcher =
     return { status, data };
   };
 
+const getPrivacySettingsDispatcher = () => async (dispatch) => {
+  dispatch(globalTransparentLoadingPrivate(true));
+  const { status, data } = await getPrivacySettings();
+  dispatch(globalTransparentLoadingPrivate(false));
+  return { status, data };
+};
+
+const updatePrivacySettingsDispatcher =
+  (dataToSend = {}) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await updatePrivacySettings(dataToSend);
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   sendOtpToUpdateEmailDispatcher,
   changePasswordDispatcher,
   contactAdminDispatcher,
   verifyOldEmailDispatcher,
   verifyNewEmailDispatcher,
+  getPrivacySettingsDispatcher,
+  updatePrivacySettingsDispatcher,
 };

@@ -47,6 +47,8 @@ const NETWORK_CONSTANTS = {
   FETCH_FOLLOW_REQUEST: '/v1/accounts/follow/requests',
   ACCEPT_FOLLOW_REQUEST: (id) => `/v1/accounts/follow/request/accept/${id}`,
   REJECT_FOLLOW_REQUEST: (id) => `/v1/accounts/follow/request/reject/${id}`,
+  GET_PRIVACY_SETTINGS: '/v1/settings/privacy-setting',
+  UPDATE_PRIVACY_SETTINGS: '/v1/settings/privacy-setting/',
 };
 
 export default NETWORK_CONSTANTS;
