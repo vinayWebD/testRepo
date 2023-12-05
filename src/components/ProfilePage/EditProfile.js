@@ -84,11 +84,11 @@ const EditProfile = ({
   }, [cropImageFile]);
 
   const onSubmit = async (values) => {
-    console.log('sdfsdff');
     if (!isLoading) {
       setIsLoading(true);
 
       const { firstName = '', lastName = '', location = '', profilePicture = '' } = values;
+
       const response = await fetchProfileEdit({
         firstName: firstName?.trim(),
         lastName: lastName?.trim(),
@@ -142,7 +142,11 @@ const EditProfile = ({
 
   return (
     <>
-      <form noValidate className="flex justify-center items-center mt-4 flex-col gap-2">
+      <form
+        onSubmit={formik.handleSubmit}
+        noValidate
+        className="flex justify-center items-center mt-4 flex-col gap-2"
+      >
         <div className="border border-greymedium rounded-full">
           <InputProfilePicture
             setCropImageFile={setCropImageFile}
@@ -237,6 +241,7 @@ const EditProfile = ({
             additionalClassNames="capitalize"
             isLoading={isLoading}
             showArrowIcon={false}
+            onlyShowLoaderWhenLoading
             isDisabled={
               isLoading ||
               JSON.stringify(formik?.values) ===
