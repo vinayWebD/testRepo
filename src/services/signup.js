@@ -36,8 +36,9 @@ const signupUser = async (dataToSend) => {
  */
 const verifyEmail = async (dataToSend) => {
   try {
-    const data = await apiUtility(VERIFY_EMAIL, 'POST', dataToSend);
-    return data;
+    const { data, status } = await apiUtility(VERIFY_EMAIL, 'POST', dataToSend);
+
+    return { data, status };
   } catch (error) {
     return error;
   }
@@ -58,7 +59,7 @@ const fetchGenratePreSignedUrl = async (extension = 'jpeg', type) => {
 const fetchFileUPloadAWS = async (data) => {
   const { url, selectedFile } = data;
   try {
-    const response = await apiUtility(url, 'PUT', selectedFile, false, () => { }, true);
+    const response = await apiUtility(url, 'PUT', selectedFile, false, () => {}, true);
     return response;
   } catch (err) {
     return Promise.reject(err);

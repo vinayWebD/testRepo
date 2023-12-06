@@ -39,7 +39,7 @@ const {
   SETTINGS_HELP_CENTER,
   PATH_INTERESTS,
   PATH_MYSELF,
-  PATH_ADD_CAREER
+  PATH_ADD_CAREER,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -64,10 +64,6 @@ const publicRoutes = createBrowserRouter([
     element: <VerifyEmail />,
   },
   {
-    path: PATH_GENERAL_INFO,
-    element: <GeneralInfo />,
-  },
-  {
     path: FORGOT_PASSWORD,
     element: <ForgotPassword />,
   },
@@ -75,10 +71,25 @@ const publicRoutes = createBrowserRouter([
     path: RESET_PASSWORD,
     element: <ResetPassword />,
   },
+]);
 
+// If the origin is signup, then we need to redirect the user to a signup page
+const signupRoutes = createBrowserRouter([
+  {
+    path: '*',
+    element: <Navigate to={PATH_GENERAL_INFO} replace={true} />,
+  },
+  {
+    path: PATH_GENERAL_INFO,
+    element: <GeneralInfo />,
+  },
 ]);
 
 const privateRoutes = createBrowserRouter([
+  {
+    path: PATH_GENERAL_INFO,
+    element: <GeneralInfo />,
+  },
   {
     path: '*',
     element: <Navigate to={HOME} replace={true} />,
@@ -138,4 +149,4 @@ const privateRoutes = createBrowserRouter([
   },
 ]);
 
-export { publicRoutes, privateRoutes };
+export { publicRoutes, privateRoutes, signupRoutes };

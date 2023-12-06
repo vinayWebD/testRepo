@@ -62,7 +62,7 @@ function GeneralInfo() {
 
   const handleSkip = () => {
     secureLocalStorage.setItem('object', { data });
-    navigate(PATH_WORK);
+    navigate(PATH_WORK, { replace: true });
   };
 
   useEffect(() => {
