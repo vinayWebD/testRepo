@@ -59,29 +59,35 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
 
     const { status, data } = await dispatch(
       getSpecificUsersForPrivacySettingsDispatcher({
-        search: search,
+        search,
         type: valueKey,
-        page: page,
+        page,
       }),
     );
 
     if (successStatus(status)) {
-      // Append new users to the existing list
-      if (page === 1) {
-        setUsers(data?.data?.Networks || []);
-      } else {
-        setUsers((prevUsers) => [...prevUsers, ...(data?.data?.Networks || [])]);
-      }
+      if (data?.data?.page === currentPage) {
+        // We have to keep adding selected users to this array because we need to store the currently selected and the APIs ones together
+        setSelectedUsers((prev) => [...prev, ...(data?.data?.SpecificUsers?.specificUsers || [])]);
 
-      // Update the pagination and loading state
-      setCurrentPage((prevPage) => prevPage + 1);
-      setAllPostsLoaded(data?.data?.Networks?.length < PAGE_SIZE.PRIVACY_SETTING_SELECT_USERS);
+        // Update the pagination and loading state
+        setCurrentPage(data?.data?.page + 1);
+        setAllPostsLoaded(data?.data?.Networks?.length < PAGE_SIZE.PRIVACY_SETTING_SELECT_USERS);
+
+        // Append new users to the existing list
+        if (page === 1) {
+          setUsers(data?.data?.Networks || []);
+        } else {
+          setUsers((prevUsers) => [...prevUsers, ...(data?.data?.Networks || [])]);
+        }
+      }
     } else {
       const errorMsg = getErrorMessage(data);
       if (errorMsg) {
         ToastNotifyError(errorMsg);
       }
     }
+    isLoadingAPI = false;
     setIsLoading(false);
   };
 
@@ -106,7 +112,7 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
 
   return (
     <div className="w-full">
-      <div className="px-[18px] modal-internal min-h-[75dvh] max-h-[75dvh] md:h-auto md:min-h-[70vh] md:max-h-[70vh] overflow-y-auto">
+      <div className="px-[18px] modal-internal">
         <SearchInput
           iconColor={'#A1A0A0'}
           onChange={(value) => setSearchValue(value)}
@@ -117,15 +123,19 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
           bottomBorderColorClass="border-[#A1A0A0]"
         />
 
-        <div className="py-3 flex gap-3 flex-col">
+        <div className="py-3 flex gap-3 flex-col w-full  min-h-[70dvh] max-h-[70dvh] md:h-auto md:min-h-[65vh] md:max-h-[65vh] overflow-y-auto show-no-scrollbar">
           <InfiniteScroll
-            threshold={-24.5}
+            threshold={10}
             loadMore={() => fetchUserList(currentPage)}
             hasMore={!allPostsLoaded}
             useWindow={false}
             loader={
-              <div className="flex w-full h-full justify-center items-center" key={0}>
-                <PostSkeleton />
+              <div
+                className="flex flex-col gap-2 w-full h-full justify-center items-center"
+                key={0}
+              >
+                <PostSkeleton showMedia={false} showCaption={false} />
+                <PostSkeleton showMedia={false} showCaption={false} />
               </div>
             }
           >
