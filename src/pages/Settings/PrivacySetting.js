@@ -121,7 +121,7 @@ const PrivacySetting = () => {
         title={`${currentlySelectedSpecificUsersKey?.title} - Add specific users `}
         childrenClassNames="overflow-y-auto"
         padding="p-0"
-        titleClassNames=""
+        titleClassNames="pr-4"
         titleParentClassNames="md:m-3 m-0"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >

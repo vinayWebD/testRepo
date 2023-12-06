@@ -11,9 +11,9 @@ import {
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import debounce from '../../utils/debounce';
-import PostSkeleton from '../../components/common/PostSkeleton';
 import InfiniteScroll from 'react-infinite-scroller';
 import { PAGE_SIZE } from '../../constants/constants';
+import PostSkeleton from '../../components/common/PostSkeleton';
 
 const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
   const dispatch = useDispatch();
@@ -34,67 +34,55 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
   const updateSearchVal = useCallback(
     debounce((val) => {
       setUsers([]);
+      setCurrentPage(1);
+      setAllPostsLoaded(false);
       fetchUserList(1, val);
     }, 400),
     [valueKey],
   );
 
-  useEffect(() => {
-    if (valueKey) {
-      fetchUserList();
-    }
-  }, [valueKey]);
-
   const onSelectHandler = (id) => {
-    if (selectedUsers?.includes(id)) {
-      let filteredUsers = selectedUsers?.filter((userId) => userId !== id);
-      setSelectedUsers([...new Set(filteredUsers)]);
-    } else {
-      setSelectedUsers((prev) => [...prev, id]);
-    }
+    setSelectedUsers((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter((userId) => userId !== id);
+      } else {
+        return [...prevSelected, id];
+      }
+    });
   };
 
-  const fetchUserList = async (page = 1, search = searchValue || '') => {
-    if (isLoading || allPostsLoaded || isLoadingAPI) {
-      return;
-    }
-    isLoadingAPI = true;
+  const fetchUserList = async (page = currentPage, search = searchValue || '') => {
+    if (isLoading || allPostsLoaded || isLoadingAPI) return;
 
+    isLoadingAPI = true;
     setIsLoading(true);
 
     const { status, data } = await dispatch(
       getSpecificUsersForPrivacySettingsDispatcher({
         search: search,
         type: valueKey,
-        page,
+        page: page,
       }),
     );
 
-    if (!successStatus(status)) {
-      const errormsg = getErrorMessage(data);
-      if (errormsg) {
-        ToastNotifyError(errormsg);
+    if (successStatus(status)) {
+      // Append new users to the existing list
+      if (page === 1) {
+        setUsers(data?.data?.Networks || []);
+      } else {
+        setUsers((prevUsers) => [...prevUsers, ...(data?.data?.Networks || [])]);
       }
+
+      // Update the pagination and loading state
+      setCurrentPage((prevPage) => prevPage + 1);
+      setAllPostsLoaded(data?.data?.Networks?.length < PAGE_SIZE.PRIVACY_SETTING_SELECT_USERS);
     } else {
-      setUsers(data?.data?.Networks || []);
-      setSelectedUsers((prev) => [...prev, data?.data?.SpecificUsers?.specificUsers || []]);
-
-      if (data?.data?.page === currentPage) {
-        setAllPostsLoaded(
-          (data?.data?.Networks || [])?.length < PAGE_SIZE.PRIVACY_SETTING_SELECT_USERS,
-        );
-        if (currentPage === 1) {
-          // For the first time we just need to set the data as is
-          setUsers(data?.data?.Networks || []);
-        } else if ((currentPage - 1) * PAGE_SIZE.FOLLOW_REQUESTS === users.length) {
-          setUsers((prevPosts) => [...prevPosts, ...(data?.data?.Networks || [])]);
-        }
-
-        setCurrentPage(data?.data?.page + 1);
+      const errorMsg = getErrorMessage(data);
+      if (errorMsg) {
+        ToastNotifyError(errorMsg);
       }
     }
     setIsLoading(false);
-    isLoadingAPI = false;
   };
 
   const onAddHandler = async () => {
@@ -118,7 +106,7 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
 
   return (
     <div className="w-full">
-      <div className="px-[18px] modal-internal h-[75dvh] max-h-[75dvh] md:h-auto md:max-h-[70vh] overflow-y-auto">
+      <div className="px-[18px] modal-internal min-h-[75dvh] max-h-[75dvh] md:h-auto md:min-h-[70vh] md:max-h-[70vh] overflow-y-auto">
         <SearchInput
           iconColor={'#A1A0A0'}
           onChange={(value) => setSearchValue(value)}
@@ -131,20 +119,20 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
 
         <div className="py-3 flex gap-3 flex-col">
           <InfiniteScroll
-            threshold={5}
-            loadMore={fetchUserList}
+            threshold={-24.5}
+            loadMore={() => fetchUserList(currentPage)}
             hasMore={!allPostsLoaded}
             useWindow={false}
             loader={
-              <div className="flex w-full h-full justify-center items-center">
-                <PostSkeleton showMedia={false} />
+              <div className="flex w-full h-full justify-center items-center" key={0}>
+                <PostSkeleton />
               </div>
             }
           >
             {users?.map((user, _i) => {
               return (
                 <div
-                  key={_i}
+                  key={`${user?.FollowingUserId}_${_i}_${user?.id}`}
                   className="flex justify-between items-center border-b border-whitelight py-3"
                 >
                   <div className="w-[70%] flex gap-2 items-center">
