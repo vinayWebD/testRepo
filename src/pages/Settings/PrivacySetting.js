@@ -74,6 +74,7 @@ const PrivacySetting = () => {
       }
     } else {
       ToastNotifySuccess('Privacy Settings Updated successfully!');
+      window.scroll(0, 0);
     }
   };
 

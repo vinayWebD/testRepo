@@ -92,6 +92,7 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
   };
 
   const onAddHandler = async () => {
+    setIsLoading(true);
     const { status, data } = await dispatch(
       updateSpecificUsersForPrivacySettingsDispatcher({
         specificUserType: valueKey,
@@ -108,6 +109,7 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
       ToastNotifySuccess('Specific users updated successfully!');
       popupCloseHandler();
     }
+    setIsLoading(false);
   };
 
   return (
@@ -125,13 +127,14 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
 
         <div className="py-3 flex gap-3 flex-col w-full  min-h-[70dvh] max-h-[70dvh] md:h-auto md:min-h-[65vh] md:max-h-[65vh] overflow-y-auto show-no-scrollbar">
           <InfiniteScroll
-            threshold={10}
+            initialLoad={false}
+            threshold={0.01}
             loadMore={() => fetchUserList(currentPage)}
             hasMore={!allPostsLoaded}
             useWindow={false}
             loader={
               <div
-                className="flex flex-col gap-2 w-full h-full justify-center items-center"
+                className="flex flex-col gap-2 mt-1 w-full h-full justify-center items-center"
                 key={0}
               >
                 <PostSkeleton showMedia={false} showCaption={false} />
@@ -195,9 +198,11 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
           label={'Add'}
-          isDisabled={!selectedUsers?.length}
+          isDisabled={!selectedUsers?.length || isLoading}
           onClick={() => onAddHandler()}
           showArrowIcon={false}
+          isLoading={isLoading}
+          onlyShowLoaderWhenLoading={true}
         />
       </div>
     </div>
