@@ -12,13 +12,13 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <React.StrictMode>
-      <>
-        <Notification />
-        <App />
-        <ToastContainer limit={1} />
-      </>
-    </React.StrictMode>
+    {/* <React.StrictMode> */}
+    <>
+      <Notification />
+      <App />
+      <ToastContainer limit={1} />
+    </>
+    {/* </React.StrictMode> */}
   </Provider>,
 );
 

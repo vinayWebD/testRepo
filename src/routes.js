@@ -16,6 +16,9 @@ import NotificationPage from './pages/NotificationPage';
 import Settings from './pages/Settings';
 import ChangePassword from './pages/Settings/ChangePassword';
 import HelpCenter from './pages/Settings/HelpCenter';
+import Interest from './pages/Interests';
+import Myself from './pages/Myself';
+import { AddCareer } from './pages/Work/AddNewCareer';
 
 const {
   LANDING,
@@ -34,6 +37,9 @@ const {
   SETTINGS,
   SETTINGS_CHANGE_PASSWORD,
   SETTINGS_HELP_CENTER,
+  PATH_INTERESTS,
+  PATH_MYSELF,
+  PATH_ADD_CAREER
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -117,6 +123,18 @@ const privateRoutes = createBrowserRouter([
   {
     path: PATH_WORK,
     element: <Work />,
+  },
+  {
+    path: PATH_INTERESTS,
+    element: <Interest />,
+  },
+  {
+    path: PATH_MYSELF,
+    element: <Myself />,
+  },
+  {
+    path: PATH_ADD_CAREER,
+    element: <AddCareer />,
   },
 ]);
 

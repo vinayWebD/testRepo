@@ -58,7 +58,7 @@ const fetchGenratePreSignedUrl = async (extension = 'jpeg', type) => {
 const fetchFileUPloadAWS = async (data) => {
   const { url, selectedFile } = data;
   try {
-    const response = await apiUtility(url, 'PUT', selectedFile, false, () => {}, true);
+    const response = await apiUtility(url, 'PUT', selectedFile, false, () => { }, true);
     return response;
   } catch (err) {
     return Promise.reject(err);
@@ -144,7 +144,7 @@ const fetchUpdateExperience = async (dataToSend) => {
 
 const fetchExperienceSingle = async (id) => {
   try {
-    const response = await apiUtility(`${EXPERIENCES}${id}/`, 'GET');
+    const response = await apiUtility(`${CARRERS}/${id}/experiences/`, 'GET');
     return response;
   } catch (err) {
     return err;
@@ -211,7 +211,7 @@ const fetchCareerCertificate = async (dataTosend) => {
 
 const fetchCareerExperienceList = async (id) => {
   try {
-    const response = await apiUtility(`${CARRERS}${id}/experiences/`, 'GET');
+    const response = await apiUtility(`${CARRERS}/${id}/experiences/`, 'GET');
     return response;
   } catch (err) {
     return err;
@@ -345,9 +345,9 @@ const fetchCareerSkillslist = async (id) => {
  * @returns
  */
 
-const fetchCareersList = async () => {
+const fetchCareersList = async (dataToSend) => {
   try {
-    const response = await apiUtility(CARRERS, 'GET');
+    const response = await apiUtility(`${CARRERS}/${dataToSend?.id ? dataToSend?.id : ''}`, 'GET');
     return response;
   } catch (err) {
     return err;
@@ -363,7 +363,16 @@ const fetchCareersList = async () => {
 const fetchUpdateCareer = async (dataToSend) => {
   const { postData, id } = dataToSend;
   try {
-    const response = await apiUtility(`${CARRERS}${id}/`, 'PATCH', postData);
+    const response = await apiUtility(`${CARRERS}/${id}`, 'PATCH', postData);
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+const fetchDeleteCareer = async ({ id }) => {
+  try {
+    const response = await apiUtility(`${CARRERS}/${id}`, 'DELETE');
     return response;
   } catch (err) {
     return err;
@@ -395,4 +404,5 @@ export {
   fetchUpdateExperience,
   fetchExperienceSingle,
   fetchEducationSingle,
+  fetchDeleteCareer,
 };

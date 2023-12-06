@@ -107,7 +107,7 @@ export function InterestsTabContent() {
             multiple
             ref={ref}
             type="file"
-            // onChange={handleFileEvent}
+          // onChange={handleFileEvent}
           />
         </div>
       </div>
@@ -130,7 +130,7 @@ export function InterestsTabContent() {
             multiple
             ref={ref}
             type="file"
-            // onChange={handleFileEvent}
+          // onChange={handleFileEvent}
           />
         </div>
       </div>
@@ -200,7 +200,7 @@ export function InterestsTabContent() {
                 multiple
                 ref={ref}
                 type="file"
-                // onChange={handleFileEvent}
+              // onChange={handleFileEvent}
               />
             </div>
           </div>
@@ -223,7 +223,7 @@ export function InterestsTabContent() {
                 multiple
                 ref={ref}
                 type="file"
-                // onChange={handleFileEvent}
+              // onChange={handleFileEvent}
               />
             </div>
           </div>

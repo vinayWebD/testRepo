@@ -1,17 +1,22 @@
 import React, { useState } from 'react';
 
-function Checkbox() {
-  const [isChecked, setIsChecked] = useState(false);
+function Checkbox({
+  checked = false,
+  setChecked = () => { }
+}) {
+  const [isChecked, setIsChecked] = useState(checked);
 
   return (
     <label className="flex items-center space-x-3">
       <input
         type="checkbox"
-        className={`w-5 h-5 border rounded ${
-          isChecked ? 'bg-customColor border-customColor' : 'bg-white border-gray-400'
-        }`}
+        className={`w-5 h-5 border rounded ${isChecked ? 'bg-customColor border-customColor' : 'bg-white border-gray-400'
+          }`}
         checked={isChecked}
-        onChange={() => setIsChecked(!isChecked)}
+        onChange={() => {
+          setChecked(!isChecked)
+          setIsChecked(!isChecked)
+        }}
       />
     </label>
   );
