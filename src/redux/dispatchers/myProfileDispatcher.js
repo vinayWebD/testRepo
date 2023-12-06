@@ -1,9 +1,12 @@
+import { PAGE_SIZE } from '../../constants/constants';
 import {
   changePassword,
   contactAdmin,
   getPrivacySettings,
+  getSpecificUsersForPrivacySettings,
   sendOtpToUpdateEmail,
   updatePrivacySettings,
+  updateSpecificUsersForPrivacySettings,
   verifyNewEmail,
   verifyOldEmail,
 } from '../../services/myProfile';
@@ -84,6 +87,29 @@ const updatePrivacySettingsDispatcher =
     return { status, data };
   };
 
+const updateSpecificUsersForPrivacySettingsDispatcher =
+  (dataToSend = {}) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await updateSpecificUsersForPrivacySettings(dataToSend);
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const getSpecificUsersForPrivacySettingsDispatcher =
+  ({ search = '', page = 1, limit = PAGE_SIZE.PRIVACY_SETTING_SELECT_USERS, type = null }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await getSpecificUsersForPrivacySettings({
+      search,
+      page,
+      limit,
+      type,
+    });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   sendOtpToUpdateEmailDispatcher,
   changePasswordDispatcher,
@@ -92,4 +118,6 @@ export {
   verifyNewEmailDispatcher,
   getPrivacySettingsDispatcher,
   updatePrivacySettingsDispatcher,
+  updateSpecificUsersForPrivacySettingsDispatcher,
+  getSpecificUsersForPrivacySettingsDispatcher,
 };

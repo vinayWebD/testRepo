@@ -14,6 +14,8 @@ import {
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import RadioButtonsGroup from '../../components/common/RadioButtonsGroup';
+import Modal from '../../components/Modal';
+import SelectUsers from './SelectUsers';
 
 const { SETTINGS } = PATHS;
 
@@ -23,12 +25,21 @@ const PrivacySetting = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [settings, setSettings] = useState({});
+  const [isSpecificUsersSelectionModalOpen, setIsSpecificUsersSelectionModalOpen] = useState(false);
+  const [currentlySelectedSpecificUsersKey, setCurrentlySelectedSpecificUsersKey] = useState({});
 
   useEffect(() => {
     fetchPrivacySetting();
   }, []);
 
-  const handleSelect = (name, value) => {
+  const handleSelect = (name, value, hasValueChanged, title) => {
+    if (value?.includes('SpecificUsers') && hasValueChanged) {
+      setCurrentlySelectedSpecificUsersKey({ name, value, title });
+      setIsSpecificUsersSelectionModalOpen(true);
+    } else {
+      setCurrentlySelectedSpecificUsersKey({});
+    }
+
     setSettings((prevSettings) => ({
       ...prevSettings,
       [name]: value,
@@ -46,8 +57,6 @@ const PrivacySetting = () => {
       setSettings(data?.data?.[0]);
     }
   };
-
-  console.log(settings);
 
   const updateSettingsHandler = async () => {
     let settingsToPass = { ...settings };
@@ -89,7 +98,9 @@ const PrivacySetting = () => {
                     options={Object.values(form)?.[0]}
                     name={formKey}
                     defaultValue={settings[formKey]}
-                    onSelect={handleSelect}
+                    onSelect={(name, value, hasChanged) =>
+                      handleSelect(name, value, hasChanged, Object.values(form)?.[0]?.[0]?.title)
+                    }
                   />
                 </div>
               </Card>
@@ -102,6 +113,23 @@ const PrivacySetting = () => {
           <Button label="Save" showArrowIcon={false} onClick={updateSettingsHandler} />
         </div>
       </InnerSectionLayout>
+
+      <Modal
+        isOpen={isSpecificUsersSelectionModalOpen}
+        onClose={() => setIsSpecificUsersSelectionModalOpen(false)}
+        isTitle={true}
+        title={`${currentlySelectedSpecificUsersKey?.title} - Add specific users `}
+        childrenClassNames="overflow-y-auto"
+        padding="p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+      >
+        <SelectUsers
+          valueKey={currentlySelectedSpecificUsersKey?.value}
+          popupCloseHandler={() => setIsSpecificUsersSelectionModalOpen(false)}
+        />
+      </Modal>
     </SectionLayout>
   );
 };
