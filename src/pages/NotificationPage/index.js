@@ -54,6 +54,7 @@ const NotificationPage = () => {
   };
 
   useEffect(() => {
+    window.scroll(0, 0);
     fetchnotificationList();
   }, [currentPage]);
 
@@ -197,7 +198,7 @@ const NotificationPage = () => {
   };
   return (
     <SectionLayout activeTab={3}>
-      <InnerSectionLayout heading={'Notification'}>
+      <InnerSectionLayout heading={'Notifications'}>
         <div className="h-auto">
           {dataList?.length > 0 ? (
             dataList.map((item, i) => {
