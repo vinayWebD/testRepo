@@ -1,7 +1,9 @@
 import {
+  blockUser,
   followOtherUser,
   otherUserBasicData,
   otherUserNetworkingCount,
+  unblockUser,
   unfollowOtherUser,
 } from '../../services/otherUser';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
@@ -42,9 +44,29 @@ const unfollowOtherUserDispatcher =
     return { status, data };
   };
 
+const blockUserDispatcher =
+  ({ userId, showLoader = false }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(showLoader));
+    const { status, data } = await blockUser({ userId });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const unblockUserDispatcher =
+  ({ userId, showLoader = false }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(showLoader));
+    const { status, data } = await unblockUser({ userId });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   fetchOtherUserBasicInfo,
   fetchOtherUserNetworkingCount,
   followOtherUserDispatcher,
   unfollowOtherUserDispatcher,
+  blockUserDispatcher,
+  unblockUserDispatcher,
 };
