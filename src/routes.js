@@ -80,6 +80,22 @@ const signupRoutes = createBrowserRouter([
     element: <Navigate to={PATH_GENERAL_INFO} replace={true} />,
   },
   {
+    path: PATH_WORK,
+    element: <Work />,
+  },
+  {
+    path: PATH_INTERESTS,
+    element: <Interest />,
+  },
+  {
+    path: PATH_MYSELF,
+    element: <Myself />,
+  },
+  {
+    path: PATH_ADD_CAREER,
+    element: <AddCareer />,
+  },
+  {
     path: PATH_GENERAL_INFO,
     element: <GeneralInfo />,
   },

@@ -10,7 +10,6 @@ import Input from '../../components/common/Input';
 import Modal from '../../components/Modal';
 import InputProfilePicture from '../../components/InputProfilePicture';
 import { LANG } from '../../constants/lang';
-import { login } from '../../redux/slices/authSlice';
 import { getErrorMessage, successStatus } from '../../common';
 import { validationSchemaLocation } from '../../validations';
 import {
@@ -20,6 +19,7 @@ import {
 } from '../../services/signup';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import { getFileExtension } from '../../utils/helper';
+import { profileDispatcher } from '../../redux/dispatchers/authDispatcher';
 
 const { PATH_SIGNUP, PATH_WORK } = PATHS;
 const {
@@ -60,8 +60,9 @@ function GeneralInfo() {
     }
   };
 
-  const handleSkip = () => {
+  const handleSkip = async () => {
     secureLocalStorage.setItem('object', { data });
+    await dispatch(profileDispatcher());
     navigate(PATH_WORK, { replace: true });
   };
 
@@ -95,10 +96,10 @@ function GeneralInfo() {
     const response = await fetchProfileEdit(dataToSend);
     const { status, data } = response;
     const errormsg = getErrorMessage(data);
+
     if (successStatus(status)) {
       ToastNotifySuccess('General Info added Successfully', 'location-success');
-      dispatch(login(userData));
-      // navigate(HOME, { replace: true });
+      await dispatch(profileDispatcher());
       navigate(PATH_WORK);
     } else {
       if (errormsg) {
@@ -106,6 +107,7 @@ function GeneralInfo() {
       }
     }
   };
+
   const formik = useFormik({
     initialValues,
     validationSchema: validationSchemaLocation,

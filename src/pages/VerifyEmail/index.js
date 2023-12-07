@@ -17,6 +17,7 @@ import { MESSAGES, TOASTMESSAGES } from '../../constants/messages';
 import { REGEX, VERIFY_EMAIL_ORIGIN } from '../../constants/constants';
 import { useDispatch } from 'react-redux';
 import { updateSignup } from '../../redux/slices/authSlice';
+import { profileDispatcher } from '../../redux/dispatchers/authDispatcher';
 
 const { PATH_GENERAL_INFO, LOGIN, RESET_PASSWORD, PATH_SIGNUP } = PATHS;
 const { LANG_VERIFY_EMAIL, LANG_CODE_EMAIL, LANG_OTP_EMAIL, LANG_VER_CODE, LANG_RESEND, LANG_OTP } =
@@ -155,6 +156,7 @@ function VerifyEmail() {
           localStorage.setItem('token', data?.data?.token);
           secureLocalStorage.setItem('object', { data });
           await dispatch(updateSignup(true));
+          dispatch(profileDispatcher());
           navigate(PATH_GENERAL_INFO, {
             replace: true,
             state: {

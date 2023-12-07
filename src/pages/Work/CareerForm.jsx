@@ -38,6 +38,8 @@ import check from '../../assets/images/check.png';
 import cross from '../../assets/images/cross.png';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import { useDispatch } from 'react-redux';
+import { updateSignup } from '../../redux/slices/authSlice';
 
 export function CareerFrom({
   getCareerList = () => {},
@@ -47,6 +49,7 @@ export function CareerFrom({
   type = '',
 }) {
   const ref = useRef();
+  const dispatch = useDispatch();
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
   const [careerId, setCareerId] = useState(id);
@@ -58,7 +61,6 @@ export function CareerFrom({
   // const dispatch = useDispatch()
   const { HOME } = PATHS;
 
-  console.log('careerId', careerId);
   // localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
 
   const careerSubmit = async () => {
@@ -71,7 +73,7 @@ export function CareerFrom({
       };
       const response = await fetchCareerTitle(dataToSend);
       const { status, data } = response;
-      console.log('response', response);
+
       if (successStatus(status)) {
         updateCareerId(data?.data?.id);
         setCareerId(data?.data?.id);
@@ -200,7 +202,12 @@ export function CareerFrom({
     errors: { domain: err_name },
   } = formikSkills;
 
-  console.log('title', title, prevTitle);
+  const onSkipHandler = async () => {
+    await dispatch(updateSignup(false));
+    navigate(HOME, { replace: true });
+    window.location.reload();
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -341,11 +348,7 @@ export function CareerFrom({
           {!id && (
             <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
-                <OutlinedButton
-                  label="Skip"
-                  isSkip={true}
-                  onClick={() => navigate(HOME, { replace: true })}
-                />
+                <OutlinedButton label="Skip" isSkip={true} onClick={() => onSkipHandler()} />
               </div>
               <div>
                 <OutlinedButton

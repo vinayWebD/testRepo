@@ -5,8 +5,11 @@ import TextArea from '../../components/TextArea';
 // import { validationSchemaMyself } from '../../validations';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import { updateSignup } from '../../redux/slices/authSlice';
+import { useDispatch } from 'react-redux';
 export function MyselfTabContent() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { HOME } = PATHS;
   const initialWork = {
     myself: '',
@@ -21,6 +24,12 @@ export function MyselfTabContent() {
     console.log('dataToSend', dataToSend);
 
     // await fetchWorkMyself(dataToSend);
+  };
+
+  const onSkipHandler = async () => {
+    await dispatch(updateSignup(false));
+    navigate(HOME, { replace: true });
+    window.location.reload();
   };
 
   const formikmyself = useFormik({
@@ -63,11 +72,7 @@ export function MyselfTabContent() {
           <div className="flex gap-4 flex-wrap"></div>
           <div className="flex gap-4 flex-wrap items-center">
             <div>
-              <OutlinedButton
-                label="Skip"
-                isSkip={true}
-                onClick={() => navigate(HOME, { replace: true })}
-              />
+              <OutlinedButton label="Skip" isSkip={true} onClick={() => onSkipHandler()} />
             </div>
           </div>
         </div>
