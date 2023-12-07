@@ -18,6 +18,9 @@ import Settings from './pages/Settings';
 import ChangePassword from './pages/Settings/ChangePassword';
 import HelpCenter from './pages/Settings/HelpCenter';
 import PrivacySetting from './pages/Settings/PrivacySetting';
+import Interest from './pages/Interests';
+import Myself from './pages/Myself';
+import { AddCareer } from './pages/Work/AddNewCareer';
 
 const {
   LANDING,
@@ -38,6 +41,9 @@ const {
   SETTINGS_CHANGE_PASSWORD,
   SETTINGS_HELP_CENTER,
   SETTINGS_PRIVACY_SETTING,
+  PATH_INTERESTS,
+  PATH_MYSELF,
+  PATH_ADD_CAREER,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -62,10 +68,6 @@ const publicRoutes = createBrowserRouter([
     element: <VerifyEmail />,
   },
   {
-    path: PATH_GENERAL_INFO,
-    element: <GeneralInfo />,
-  },
-  {
     path: FORGOT_PASSWORD,
     element: <ForgotPassword />,
   },
@@ -73,13 +75,41 @@ const publicRoutes = createBrowserRouter([
     path: RESET_PASSWORD,
     element: <ResetPassword />,
   },
+]);
+
+// If the origin is signup, then we need to redirect the user to a signup page
+const signupRoutes = createBrowserRouter([
+  {
+    path: '*',
+    element: <Navigate to={PATH_GENERAL_INFO} replace={true} />,
+  },
   {
     path: PATH_WORK,
     element: <Work />,
   },
+  {
+    path: PATH_INTERESTS,
+    element: <Interest />,
+  },
+  {
+    path: PATH_MYSELF,
+    element: <Myself />,
+  },
+  {
+    path: PATH_ADD_CAREER,
+    element: <AddCareer />,
+  },
+  {
+    path: PATH_GENERAL_INFO,
+    element: <GeneralInfo />,
+  },
 ]);
 
 const privateRoutes = createBrowserRouter([
+  {
+    path: PATH_GENERAL_INFO,
+    element: <GeneralInfo />,
+  },
   {
     path: '*',
     element: <Navigate to={HOME} replace={true} />,
@@ -129,6 +159,22 @@ const privateRoutes = createBrowserRouter([
     path: SETTINGS_PRIVACY_SETTING,
     element: <PrivacySetting />,
   },
+  {
+    path: PATH_WORK,
+    element: <Work />,
+  },
+  {
+    path: PATH_INTERESTS,
+    element: <Interest />,
+  },
+  {
+    path: PATH_MYSELF,
+    element: <Myself />,
+  },
+  {
+    path: PATH_ADD_CAREER,
+    element: <AddCareer />,
+  },
 ]);
 
-export { publicRoutes, privateRoutes };
+export { publicRoutes, privateRoutes, signupRoutes };

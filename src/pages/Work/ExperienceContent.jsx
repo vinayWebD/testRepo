@@ -23,9 +23,11 @@ export function ExperienceContent({ careerId = null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [experienceList, setExperienceList] = useState([]);
   const [editId, setEditId] = useState(null);
-
+  const [currentCheck, setCurrentCheck] = useState(false);
+  const [volunteerCheck, setVolunteerCheck] = useState(false);
+  console.log('careerId--->', careerId);
   const getExperiences = async () => {
-    const response = await fetchExperienceSingle(editId);
+    const response = await fetchExperienceSingle(careerId);
     const { status, data = {} } = response;
     if (successStatus(status)) {
       console.log(data);
@@ -44,7 +46,7 @@ export function ExperienceContent({ careerId = null }) {
   };
 
   useEffect(() => {
-    // getExperiences();
+    getExperiences();
   }, [editId]);
 
   useEffect(() => {
@@ -52,13 +54,15 @@ export function ExperienceContent({ careerId = null }) {
   }, []);
 
   const experienceSubmit = async (values) => {
-    const { title, description, start_date, company } = values;
+    const { title, description, startDate, company, endDate } = values;
     let dataToSend = {
       data: {
         title: title,
         description: description,
-        start_date: start_date,
+        startDate: startDate,
+        endDate: endDate,
         company: company,
+        isVolunteerExperience: volunteerCheck,
       },
       id: editId ? editId : careerId,
     };
@@ -78,7 +82,8 @@ export function ExperienceContent({ careerId = null }) {
   const initialValues = {
     title: '',
     description: '',
-    start_date: '',
+    startDate: null,
+    endDate: null,
     company: '',
   };
 
@@ -91,22 +96,26 @@ export function ExperienceContent({ careerId = null }) {
   const {
     handleSubmit,
     handleChange,
-    initialValues: { title = '', description, company = '', start_date = '' } = {},
+    initialValues: { title = '', description, company = '', startDate = null, endDate = null } = {},
     touched: {
       title: tuc_title,
       description: tuc_description,
       company: tuc_company,
-      start_date: tuc_start_date,
+      startDate: tuc_start_date,
+      endDate: tuc_end_date,
     },
     errors: {
       title: err_title,
       description: err_description,
       company: err_company,
-      start_date: err_start_date,
+      startDate: err_start_date,
+      endDate: err_end_date,
     },
   } = formik;
 
   useEffect(() => {}, [experienceList]);
+
+  console.log('---->Formik', formik.values);
 
   const renderExperienceList = () => {
     if (experienceList.length) {
@@ -124,11 +133,11 @@ export function ExperienceContent({ careerId = null }) {
               </div>
               <div className="pb-[24px]">
                 <div className="detail-label">Start Date</div>
-                <div className="detail-heading">{moment(data?.start_date).format('ll')}</div>
+                <div className="detail-heading">{moment(data?.startDate).format('ll')}</div>
               </div>
               <div className="pb-[24px]">
                 <div className="detail-label"> End Date</div>
-                <div className="detail-heading">{moment(data?.end_date).format('ll')}</div>
+                <div className="detail-heading">{moment(data?.endDate).format('ll')}</div>
               </div>
               <span
                 className="absolute right-[0] top-[50%] cursor-pointer"
@@ -184,29 +193,46 @@ export function ExperienceContent({ careerId = null }) {
                 </div>
                 <div className="grid grid-cols-2 gap-4 pb-4">
                   <InputBox
-                    name="start_date"
+                    name="startDate"
                     type="date"
                     label="Start Date"
                     placeholder="Select Date"
-                    value={start_date}
+                    value={startDate}
                     onChange={handleChange}
                     error={tuc_start_date && err_start_date}
                     helperText={tuc_start_date && err_start_date}
                   />
                   <InputBox
-                    name=""
+                    name="endDate"
                     type="date"
                     label="End Date"
                     placeholder="Select Date"
-                    value={start_date}
-                    onChange={handleChange}
-                    error={tuc_start_date && err_start_date}
-                    helperText={tuc_start_date && err_start_date}
+                    value={endDate}
+                    onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
+                    error={tuc_end_date && err_end_date}
+                    helperText={tuc_end_date && err_end_date}
                   />
                 </div>
                 <div className="flex gap-[12px] items-center mb-6">
-                  <Checkbox />
+                  <Checkbox
+                    checked={currentCheck}
+                    setChecked={(value) => {
+                      setCurrentCheck(value);
+                      if (value === true) {
+                        formik.setFieldValue('endDate', startDate);
+                      } else {
+                        formik.setFieldValue('endDate', '');
+                      }
+                    }}
+                  />
                   <span className="para-checkbox">I am currently working on this role.</span>
+                </div>
+                <div className="flex gap-[12px] items-center mb-6">
+                  <Checkbox
+                    checked={volunteerCheck}
+                    setChecked={(value) => setVolunteerCheck(value)}
+                  />
+                  <span className="para-checkbox">This is a volunteer experience.</span>
                 </div>
                 <div className="mb-4">
                   <TextArea
@@ -282,18 +308,21 @@ export function ExperienceContent({ careerId = null }) {
             type="date"
             label="Start Date"
             placeholder="Select Date"
-            value={start_date}
-            onChange={(e) => formik.setFieldValue('start_date', e.target.value)}
+            value={startDate}
+            onChange={(e) => formik.setFieldValue('startDate', e.target.value)}
             error={tuc_start_date && err_start_date}
             helperText={tuc_start_date && err_start_date}
           />
           <InputBox
+            disabled={currentCheck}
             name={'endDate'}
             type="date"
             label="End Date"
             placeholder="Select Date"
-            value={start_date}
-            onChange={handleChange}
+            value={endDate}
+            onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
+            error={tuc_end_date && err_end_date}
+            helperText={tuc_end_date && err_end_date}
           />
         </div>
       </div>
@@ -310,8 +339,26 @@ export function ExperienceContent({ careerId = null }) {
         />
       </div>
       <div className="flex md:flex-row flex-col md:items-center items-end justify-between pb-[45px]">
-        <div className="flex md:gap-[24px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
-          <Checkbox /> <span>I am currently working on this role.</span>
+        <div className="flex">
+          <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
+            <Checkbox
+              checked={currentCheck}
+              setChecked={(value) => {
+                setCurrentCheck(value);
+                console.log('value', value);
+                if (value === true) {
+                  formik.setFieldValue('endDate', startDate);
+                } else {
+                  formik.setFieldValue('endDate', null);
+                }
+              }}
+            />{' '}
+            <span>I am currently working on this role.</span>
+          </div>
+          <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6 ml-6">
+            <Checkbox checked={volunteerCheck} setChecked={(value) => setVolunteerCheck(value)} />{' '}
+            <span>This is a volunteer experience.</span>
+          </div>
         </div>
         <OutlinedButton label="save" onClick={handleSubmit} type="button" />
       </div>

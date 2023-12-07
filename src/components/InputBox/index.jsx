@@ -24,6 +24,7 @@ function InputBox({
     setValue(props?.value || '');
   }, [props?.value]);
 
+  console.log('props?.value', props?.value, label);
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
