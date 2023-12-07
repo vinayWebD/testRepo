@@ -18,7 +18,7 @@ export function MyselfTabContent() {
       interest: '',
       myself: 'formikWork.values.myself',
     };
-    console.log('dataToSend', dataToSend)
+    console.log('dataToSend', dataToSend);
 
     // await fetchWorkMyself(dataToSend);
   };
@@ -60,8 +60,7 @@ export function MyselfTabContent() {
       <hr className="pb-8" style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
       <div>
         <div className="mt-[34px] flex justify-between flex-wrap">
-          <div className="flex gap-4 flex-wrap">
-          </div>
+          <div className="flex gap-4 flex-wrap"></div>
           <div className="flex gap-4 flex-wrap items-center">
             <div>
               <OutlinedButton

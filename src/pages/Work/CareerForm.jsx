@@ -40,10 +40,11 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 
 export function CareerFrom({
-  getCareerList = () => { },
-  id = null, data = {},
-  updateCareerId = () => { },
-  type = ''
+  getCareerList = () => {},
+  id = null,
+  data = {},
+  updateCareerId = () => {},
+  type = '',
 }) {
   const ref = useRef();
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
@@ -52,12 +53,12 @@ export function CareerFrom({
   const [linksList, setLinksList] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const navigate = useNavigate();
-  const [isEdit, setIsEdit] = useState(id ? true : false)
-  const [prevTitle, setPrevTitle] = useState(id ? data?.title : '')
+  const [isEdit, setIsEdit] = useState(id ? true : false);
+  const [prevTitle, setPrevTitle] = useState(id ? data?.title : '');
   // const dispatch = useDispatch()
   const { HOME } = PATHS;
 
-  console.log('careerId', careerId)
+  console.log('careerId', careerId);
   // localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
 
   const careerSubmit = async () => {
@@ -69,15 +70,12 @@ export function CareerFrom({
         title: title,
       };
       const response = await fetchCareerTitle(dataToSend);
-      const {
-        status,
-        data,
-      } = response;
-      console.log('response', response)
+      const { status, data } = response;
+      console.log('response', response);
       if (successStatus(status)) {
-        updateCareerId(data?.data?.id)
+        updateCareerId(data?.data?.id);
         setCareerId(data?.data?.id);
-        setIsEdit(true)
+        setIsEdit(true);
         getCareerList();
       }
     } else {
@@ -91,7 +89,7 @@ export function CareerFrom({
       const { status } = response;
       if (successStatus(status)) {
         getCareerList();
-        setIsEdit(true)
+        setIsEdit(true);
       }
     }
   };
@@ -113,7 +111,6 @@ export function CareerFrom({
     handleChange,
     handleSubmit,
   } = formik;
-
 
   const getLinksList = async () => {
     const response = await fetchCareerLinkslist(careerId);
@@ -203,14 +200,15 @@ export function CareerFrom({
     errors: { domain: err_name },
   } = formikSkills;
 
-  console.log('title', title, prevTitle)
+  console.log('title', title, prevTitle);
   return (
     <>
       <form onSubmit={handleSubmit}>
         <div className="md:flex block items-center mt-8 mb-5">
           <div
-            className={`w-[170px] form-title  ${tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
-              } `}
+            className={`w-[170px] form-title  ${
+              tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
+            } `}
           >
             Career Title
           </div>
@@ -222,38 +220,33 @@ export function CareerFrom({
                 placeholder="Enter Title"
                 value={title}
                 onChange={(e) => {
-                  formik.setFieldValue('title', e.target.value)
-                }
-                }
+                  formik.setFieldValue('title', e.target.value);
+                }}
                 disabled={isEdit}
                 error={tuc_title && err_title}
                 helperText={tuc_title && err_title}
               />
             </div>
-            {
-              !isEdit ? <>
+            {!isEdit ? (
+              <>
                 <button type="submit">
-                  <img
-                    src={check}
-                    alt="check"
-                    style={{ marginLeft: '20px', cursor: 'pointer' }}
-                  />
+                  <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} />
                 </button>
                 <img
                   src={cross}
                   alt="cross"
                   style={{ marginLeft: '20px', cursor: 'pointer' }}
                   onClick={() => {
-                    setIsEdit(true)
-                    formik.setFieldValue('title', prevTitle)
+                    setIsEdit(true);
+                    formik.setFieldValue('title', prevTitle);
                   }}
                 />
-              </> :
-                <span style={{ marginLeft: '20px' }} onClick={() => setIsEdit(false)}>
-                  <EditBlueIcon />
-                </span>
-            }
-
+              </>
+            ) : (
+              <span style={{ marginLeft: '20px' }} onClick={() => setIsEdit(false)}>
+                <EditBlueIcon />
+              </span>
+            )}
           </div>
         </div>
       </form>
@@ -345,8 +338,8 @@ export function CareerFrom({
               />
             </div>
           </div>
-          {
-            !id && <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
+          {!id && (
+            <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
                 <OutlinedButton
                   label="Skip"
@@ -362,9 +355,9 @@ export function CareerFrom({
                 {/* <Button type="submit" label="Save" showArrowIcon={false} /> */}
               </div>
             </div>
-          }
-          {
-            type === 'add' && <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
+          )}
+          {type === 'add' && (
+            <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
                 <OutlinedButton
                   label="Skip"
@@ -376,8 +369,7 @@ export function CareerFrom({
                 <Button type="submit" label="Save" showArrowIcon={false} />
               </div>
             </div>
-          }
-
+          )}
         </div>
       </div>
 

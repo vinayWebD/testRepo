@@ -9,7 +9,7 @@ import { PATHS } from '../../constants/urlPaths';
 import { WorkTabContent } from './WorkTabContent';
 
 function Interest() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <WorkNavbar />
@@ -27,7 +27,6 @@ function Interest() {
             icon: <HeartIcon />,
             blackicon: <HeartIcon fill="#333" />,
             redirect: () => navigate(PATHS.PATH_INTERESTS),
-
           },
           {
             label: 'Myself',

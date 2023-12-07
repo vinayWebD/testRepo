@@ -11,7 +11,7 @@ import { WorkTabContent } from '../Work/WorkTabContent';
 import { MyselfTabContent } from './MyselfTabContent';
 
 function Myself() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <WorkNavbar />

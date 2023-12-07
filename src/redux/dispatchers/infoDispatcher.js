@@ -6,13 +6,11 @@ import { globalTransparentLoadingPrivate } from '../slices/authSlice';
  */
 const deleteWorkDispatcher =
   ({ id }) =>
-    async (dispatch) => {
-      dispatch(globalTransparentLoadingPrivate(true));
-      const { status, data } = await fetchDeleteCareer({ id });
-      dispatch(globalTransparentLoadingPrivate(false));
-      return { status, data };
-    };
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await fetchDeleteCareer({ id });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
 
-export {
-  deleteWorkDispatcher,
-};
+export { deleteWorkDispatcher };

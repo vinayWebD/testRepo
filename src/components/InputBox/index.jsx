@@ -5,10 +5,10 @@ function InputBox({
   initialValue = '',
   placeholder = '',
   className = '',
-  onChange = () => { },
-  onBlur = () => { },
-  onFocus = () => { },
-  onKeyPress = () => { },
+  onChange = () => {},
+  onBlur = () => {},
+  onFocus = () => {},
+  onKeyPress = () => {},
   disabled = false,
   label = '',
   isRequired = false,
@@ -24,7 +24,7 @@ function InputBox({
     setValue(props?.value || '');
   }, [props?.value]);
 
-  console.log('props?.value', props?.value, label)
+  console.log('props?.value', props?.value, label);
   useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
@@ -45,8 +45,9 @@ function InputBox({
         name={name}
         value={value}
         placeholder={placeholder}
-        className={`${className} ${helperText ? 'haserror' : ''
-          } border border-large border-customGray w-full ${disabled ? 'cursor-not-allowed' : ''}`}
+        className={`${className} ${
+          helperText ? 'haserror' : ''
+        } border border-large border-customGray w-full ${disabled ? 'cursor-not-allowed' : ''}`}
         onChange={handleInputChange}
         onBlur={onBlur}
         onFocus={onFocus}

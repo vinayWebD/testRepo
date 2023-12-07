@@ -17,34 +17,28 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 import { useState } from 'react';
 
-export function CareerDetail({ data: item, }) {
+export function CareerDetail({ data: item }) {
   // const [careerId, setCareerId] = useState(id);
   // const [linksList, setLinksList] = useState([]);
   // const [skillsList, setSkillsList] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const navigate = useNavigate();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
-  console.log('item', item)
+  console.log('item', item);
   const deleteCareer = async () => {
     const response = await dispatch(deleteWorkDispatcher({ id: item?.id }));
-    const {
-      status,
-      data,
-    } = response;
-    console.log('response', response)
+    const { status, data } = response;
+    console.log('response', response);
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
         ToastNotifyError(errormsg);
       }
     } else {
-      await window.location.reload()
+      await window.location.reload();
     }
   };
-
-
-
 
   // const getLinksList = async () => {
   //   const response = await fetchCareerLinkslist(careerId);
@@ -68,11 +62,9 @@ export function CareerDetail({ data: item, }) {
   //   }
   // };
 
-
-
   return (
     <>
-      <div className='pb-5'>
+      <div className="pb-5">
         <div className="w-full text-left py-[17px] px-[24px] bg-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
@@ -117,7 +109,13 @@ export function CareerDetail({ data: item, }) {
             </div>
             <div>
               <div className="detail-label">Description</div>
-              <div className="detail-heading">I collaborated with cross-functional teams to conceptualize and create visual assets that aligned with the brand's aesthetic. I contributed to the design and refinement of user interfaces, ensuring an intuitive and seamless user experience. I assisted in the development of marketing materials, such as social media graphics and promotional banners, maintaining consistency in messaging and design elements.</div>
+              <div className="detail-heading">
+                I collaborated with cross-functional teams to conceptualize and create visual assets
+                that aligned with the brand's aesthetic. I contributed to the design and refinement
+                of user interfaces, ensuring an intuitive and seamless user experience. I assisted
+                in the development of marketing materials, such as social media graphics and
+                promotional banners, maintaining consistency in messaging and design elements.
+              </div>
             </div>
             <div className="pt-[24px]">
               <div className="bg-greymedium h-[1px] w-full" />
@@ -155,15 +153,13 @@ export function CareerDetail({ data: item, }) {
                 <div className="detail-heading">B.Tech</div>
               </div>
               <div className="pb-[24px]">
-                <div className="detail-label">Other (Activities, clubs, organizations and societies)</div>
+                <div className="detail-label">
+                  Other (Activities, clubs, organizations and societies)
+                </div>
                 <div className="detail-heading">Nil</div>
               </div>
-              <div className="pb-[24px]">
-
-              </div>
-              <div className="pb-[24px]">
-
-              </div>
+              <div className="pb-[24px]"></div>
+              <div className="pb-[24px]"></div>
             </div>
             <div className="pt-[24px]">
               <div className="bg-greymedium h-[1px] w-full" />
@@ -209,7 +205,9 @@ export function CareerDetail({ data: item, }) {
           <div className="flex gap-[24px] grow-0 mt-6 flex-wrap	">
             <div>
               <div className="detail-label">Faxquote</div>
-              <div className="text-[14px]" style={{ color: '#3366CC', fontWeight: '400' }}>http://www.faxquote.com</div>
+              <div className="text-[14px]" style={{ color: '#3366CC', fontWeight: '400' }}>
+                http://www.faxquote.com
+              </div>
             </div>
           </div>
         </div>
@@ -225,21 +223,13 @@ export function CareerDetail({ data: item, }) {
         </div>
 
         <div className="mt-[36px] flex justify-end md:justify-between flex-wrap">
-          <div className="flex gap-4 flex-wrap">
-          </div>
+          <div className="flex gap-4 flex-wrap"></div>
           <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
             <div>
-              <Button
-                label="Delete"
-                isDelete
-                onClick={() => setIsDeleteModalOpen(true)}
-              />
+              <Button label="Delete" isDelete onClick={() => setIsDeleteModalOpen(true)} />
             </div>
             <div>
-              <OutlinedButton
-                label="Edit"
-                style={{ paddingLeft: '25px', paddingRight: '25px' }}
-              />
+              <OutlinedButton label="Edit" style={{ paddingLeft: '25px', paddingRight: '25px' }} />
             </div>
           </div>
         </div>

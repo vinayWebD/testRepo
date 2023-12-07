@@ -8,16 +8,21 @@ export const Button = ({
   showArrowIcon = true,
   additionalClassNames = '',
   isLoading = false,
-  onClick = () => { },
-  isDelete
+  onClick = () => {},
+  isDelete,
 }) => {
   return (
     <button
       onClick={onClick}
       type={type}
       disabled={isDisabled}
-      className={`group flex justify-center items-center rounded-[40px] h-[40px]  py-[16px] text-white ${isDelete ? 'bg-[#DE0B0B]  px-[30px]' : isDisabled ? 'bg-greymedium  px-[50px]' : 'bg-gradient-button  px-[50px]'
-        } ${additionalClassNames}`}
+      className={`group flex justify-center items-center rounded-[40px] h-[40px]  py-[16px] text-white ${
+        isDelete
+          ? 'bg-[#DE0B0B]  px-[30px]'
+          : isDisabled
+          ? 'bg-greymedium  px-[50px]'
+          : 'bg-gradient-button  px-[50px]'
+      } ${additionalClassNames}`}
     >
       {isLoading && <SpinningLoader />}
       <span className="font-semibold">{label}</span>

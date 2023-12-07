@@ -25,7 +25,7 @@ export function ExperienceContent({ careerId = null }) {
   const [editId, setEditId] = useState(null);
   const [currentCheck, setCurrentCheck] = useState(false);
   const [volunteerCheck, setVolunteerCheck] = useState(false);
-  console.log('careerId--->', careerId)
+  console.log('careerId--->', careerId);
   const getExperiences = async () => {
     const response = await fetchExperienceSingle(careerId);
     const { status, data = {} } = response;
@@ -62,7 +62,7 @@ export function ExperienceContent({ careerId = null }) {
         startDate: startDate,
         endDate: endDate,
         company: company,
-        isVolunteerExperience: volunteerCheck
+        isVolunteerExperience: volunteerCheck,
       },
       id: editId ? editId : careerId,
     };
@@ -113,9 +113,9 @@ export function ExperienceContent({ careerId = null }) {
     },
   } = formik;
 
-  useEffect(() => { }, [experienceList]);
+  useEffect(() => {}, [experienceList]);
 
-  console.log('---->Formik', formik.values)
+  console.log('---->Formik', formik.values);
 
   const renderExperienceList = () => {
     if (experienceList.length) {
@@ -214,18 +214,24 @@ export function ExperienceContent({ careerId = null }) {
                   />
                 </div>
                 <div className="flex gap-[12px] items-center mb-6">
-                  <Checkbox checked={currentCheck} setChecked={(value) => {
-                    setCurrentCheck(value)
-                    if (value === true) {
-                      formik.setFieldValue('endDate', startDate)
-                    } else {
-                      formik.setFieldValue('endDate', '')
-                    }
-                  }} />
+                  <Checkbox
+                    checked={currentCheck}
+                    setChecked={(value) => {
+                      setCurrentCheck(value);
+                      if (value === true) {
+                        formik.setFieldValue('endDate', startDate);
+                      } else {
+                        formik.setFieldValue('endDate', '');
+                      }
+                    }}
+                  />
                   <span className="para-checkbox">I am currently working on this role.</span>
                 </div>
                 <div className="flex gap-[12px] items-center mb-6">
-                  <Checkbox checked={volunteerCheck} setChecked={(value) => setVolunteerCheck(value)} />
+                  <Checkbox
+                    checked={volunteerCheck}
+                    setChecked={(value) => setVolunteerCheck(value)}
+                  />
                   <span className="para-checkbox">This is a volunteer experience.</span>
                 </div>
                 <div className="mb-4">
@@ -333,20 +339,25 @@ export function ExperienceContent({ careerId = null }) {
         />
       </div>
       <div className="flex md:flex-row flex-col md:items-center items-end justify-between pb-[45px]">
-        <div className='flex'>
+        <div className="flex">
           <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
-            <Checkbox checked={currentCheck} setChecked={(value) => {
-              setCurrentCheck(value)
-              console.log('value', value)
-              if (value === true) {
-                formik.setFieldValue('endDate', startDate)
-              } else {
-                formik.setFieldValue('endDate', null)
-              }
-            }} /> <span>I am currently working on this role.</span>
+            <Checkbox
+              checked={currentCheck}
+              setChecked={(value) => {
+                setCurrentCheck(value);
+                console.log('value', value);
+                if (value === true) {
+                  formik.setFieldValue('endDate', startDate);
+                } else {
+                  formik.setFieldValue('endDate', null);
+                }
+              }}
+            />{' '}
+            <span>I am currently working on this role.</span>
           </div>
           <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6 ml-6">
-            <Checkbox checked={volunteerCheck} setChecked={(value) => setVolunteerCheck(value)} /> <span>This is a volunteer experience.</span>
+            <Checkbox checked={volunteerCheck} setChecked={(value) => setVolunteerCheck(value)} />{' '}
+            <span>This is a volunteer experience.</span>
           </div>
         </div>
         <OutlinedButton label="save" onClick={handleSubmit} type="button" />

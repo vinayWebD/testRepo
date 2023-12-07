@@ -172,8 +172,8 @@ function MyPosts({ other = true }) {
               <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                 No posts added yet.
               </h4>
-              {
-                !other && <>
+              {!other && (
+                <>
                   <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
                     It helps people quickly identify your many talents.
                   </h5>
@@ -186,8 +186,7 @@ function MyPosts({ other = true }) {
                     />
                   </div>
                 </>
-              }
-
+              )}
             </Card>
           )}
         </>
@@ -241,14 +240,14 @@ function MyPosts({ other = true }) {
             })}
             {isLoading
               ? ['', ''].map((i, _i) => (
-                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                  <span className="flex gap-2">
-                    <span className="flex gap-2 w-full justify-center items-center">
-                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                    <span className="flex gap-2">
+                      <span className="flex gap-2 w-full justify-center items-center">
+                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                      </span>
                     </span>
-                  </span>
-                </Card>
-              ))
+                  </Card>
+                ))
               : ''}
           </>
         )}
@@ -266,16 +265,18 @@ function MyPosts({ other = true }) {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-          } `}
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${!activePost?.postMedia?.length
+        height={` ${
+          !activePost?.postMedia?.length
             ? '!w-[100vw] md:!w-[50vw]'
             : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-          } `}
+        } `}
       >
         <PostDetails
           post={activePost}

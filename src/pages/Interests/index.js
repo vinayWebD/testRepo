@@ -9,7 +9,7 @@ import { PATHS } from '../../constants/urlPaths';
 import { InterestsTabContent } from './InterestsTabContent';
 
 function Interest() {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   return (
     <>
       <WorkNavbar />

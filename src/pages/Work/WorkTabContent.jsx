@@ -7,13 +7,8 @@ import { Button } from '../../components/common/Button';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import TextArea from '../../components/TextArea';
-import {
-  fetchCareersList,
-  fetchProfileEdit,
-} from '../../services/signup';
-import {
-  validationSchemaWorkIntrest,
-} from '../../validations';
+import { fetchCareersList, fetchProfileEdit } from '../../services/signup';
+import { validationSchemaWorkIntrest } from '../../validations';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import { CareerFrom } from './CareerForm';
 import Accordion from '../../components/Accordion';
@@ -24,7 +19,7 @@ import { CareerDetail } from './CareerDetail';
 export function WorkTabContent() {
   const [careerList, setCareerList] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const getCareerList = async () => {
     const response = await fetchCareersList();
@@ -32,13 +27,12 @@ export function WorkTabContent() {
       status,
       data: { data },
     } = response;
-    console.log('response', response)
+    console.log('response', response);
     if (successStatus(status)) {
       setCareerList(data);
-      setFieldValue('work', data?.work)
+      setFieldValue('work', data?.work);
     }
   };
-
 
   const initialWork = {
     work: careerList?.work || '',
@@ -53,7 +47,7 @@ export function WorkTabContent() {
       const { status, data } = response;
       const errormsg = getErrorMessage(data);
       if (successStatus(status)) {
-        getCareerList()
+        getCareerList();
         ToastNotifySuccess('Description added successfully', 'location-success');
       } else {
         if (errormsg) {
@@ -74,19 +68,17 @@ export function WorkTabContent() {
     values: { work },
     touched: { title: tuc_work },
     errors: { title: err_work },
-    handleSubmit: handleWork, setFieldValue
+    handleSubmit: handleWork,
+    setFieldValue,
   } = formikWork;
-
-
-
 
   useEffect(() => {
     getCareerList();
   }, []);
 
-  console.log('careerList', careerList)
+  console.log('careerList', careerList);
 
-  console.log('----', careerList?.Careers)
+  console.log('----', careerList?.Careers);
   return (
     <div className="py-[36px] lg:px-[70px] md:px-[40px] px-[20px] bg-bluebg">
       <form onSubmit={handleWork}>
@@ -108,12 +100,7 @@ export function WorkTabContent() {
           </div>
         </div>
         <div className="grid justify-items-end pb-8">
-          <Button
-            isDisabled={work === ''}
-            label="Save"
-            type="submit"
-            showArrowIcon={false}
-          />
+          <Button isDisabled={work === ''} label="Save" type="submit" showArrowIcon={false} />
         </div>
       </form>
       <hr className="pb-8" style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
@@ -129,37 +116,39 @@ export function WorkTabContent() {
           Icon={<AddBlueIcon />}
           IconDisabled={<AddBlueIcon fill="#D1D1D1" />}
           onClick={() => {
-            navigate(PATHS.PATH_ADD_CAREER)
+            navigate(PATHS.PATH_ADD_CAREER);
           }}
         />
       </div>
-      {
-        careerList?.Careers?.length > 0 ?
-          <Accordion
-            items={careerList?.Careers?.map((item) => {
-              return {
-                title: item?.title,
-                content: <CareerDetail data={item} />,
-              }
-            })}
-          /> : <CareerFrom getCareerList={getCareerList} />
-      }
+      {careerList?.Careers?.length > 0 ? (
+        <Accordion
+          items={careerList?.Careers?.map((item) => {
+            return {
+              title: item?.title,
+              content: <CareerDetail data={item} />,
+            };
+          })}
+        />
+      ) : (
+        <CareerFrom getCareerList={getCareerList} />
+      )}
 
-      {
-        careerList?.Careers?.length > 0 && <div className="mt-[36px] flex justify-end md:justify-between flex-wrap">
-          <div className="flex gap-4 flex-wrap">
-          </div>
+      {careerList?.Careers?.length > 0 && (
+        <div className="mt-[36px] flex justify-end md:justify-between flex-wrap">
+          <div className="flex gap-4 flex-wrap"></div>
           <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
-
             <div>
-              <Button label="Next" showArrowIcon={false} onClick={() => {
-                navigate(PATHS.PATH_INTERESTS)
-              }} />
+              <Button
+                label="Next"
+                showArrowIcon={false}
+                onClick={() => {
+                  navigate(PATHS.PATH_INTERESTS);
+                }}
+              />
             </div>
           </div>
         </div>
-      }
-
+      )}
     </div>
   );
 }
