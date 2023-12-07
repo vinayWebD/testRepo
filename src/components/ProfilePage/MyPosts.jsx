@@ -52,7 +52,7 @@ function MyPosts({ other = true }) {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: '0px', // Leaving no margin so that API does not get called before handedly
-      threshold: 1,
+      threshold: 0,
     });
     if (loaderRef.current) {
       observer.observe(loaderRef.current);
