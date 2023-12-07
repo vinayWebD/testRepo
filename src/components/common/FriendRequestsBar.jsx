@@ -59,7 +59,9 @@ function FriendRequestsBar({
       setAllPostsLoaded(false);
       setFriendRequestSearchValue('');
       setFocusOnSearch(false);
+      setRequests([]);
       incrementModalCounter();
+      setCurrentPage(1);
     }
 
     // Set overflow only once when first modal opens or when the last modal closes.
@@ -102,24 +104,25 @@ function FriendRequestsBar({
   const getFollowRequests = async (
     page = currentPage || 1,
     searchVal = friendRequestSearchValue,
+    reloadForcefully = false,
   ) => {
-    if (isLoading || allPostsLoaded || isLoadingAPI) {
+    if ((isLoading || allPostsLoaded || isLoadingAPI) && !reloadForcefully) {
       return;
     }
 
     setIsLoading(true);
     const { status, data } = await dispatch(
       fetchFollowRequestsDispatcher({
-        page: currentPage || page,
+        page: page || currentPage,
         search: searchVal,
       }),
     );
 
     if (successStatus(status)) {
-      if (data?.data?.page === currentPage) {
+      if (data?.data?.page === currentPage || reloadForcefully) {
         setAllPostsLoaded(data?.data?.FollowRequests?.length < PAGE_SIZE.FOLLOW_REQUESTS);
         setCount(data?.data?.count);
-        if (currentPage === 1) {
+        if (currentPage === 1 || data?.data?.page === 1) {
           // For the first time we just need to set the data as is
           setRequests(data?.data?.FollowRequests);
         } else if ((currentPage - 1) * PAGE_SIZE.FOLLOW_REQUESTS === requests.length) {
@@ -136,6 +139,12 @@ function FriendRequestsBar({
     }
     setIsLoading(false);
     isLoadingAPI = false;
+  };
+
+  const reloadData = async () => {
+    setAllPostsLoaded(false);
+    setFriendRequestSearchValue('');
+    await getFollowRequests(1, '', true);
   };
 
   if (!isOpen) return null;
@@ -183,8 +192,8 @@ function FriendRequestsBar({
               </div>
             ) : (
               <div
-                className={`pl-[10px] md:pl-[25px] pr-[26px] h-[67px] max-h-[67px] ${
-                  focusOnSearch ? '!pl-[25px] w-full' : ''
+                className={`pl-[10px] md:pl-[25px] pr-[26px] max-h-[67px] ${
+                  focusOnSearch ? '!pl-[25px] w-full h-[67px] ' : ''
                 }`}
               >
                 <SearchInput
@@ -207,34 +216,41 @@ function FriendRequestsBar({
             )}
           </div>
         }
+
         <div className="pl-[25px] pr-[26px] pb-[16px] pt-[0px] min-h-[85%] md:min-h-[90%] max-h-[85%] md:max-h-[90%] overflow-scroll mt-2">
-          <InfiniteScroll
-            threshold={10}
-            loadMore={getFollowRequests}
-            hasMore={!allPostsLoaded}
-            useWindow={false}
-            loader={
-              <div className="flex w-full h-full justify-center items-center">
-                <PostSkeleton showMedia={false} />
-              </div>
-            }
-          >
-            {requests?.map((item) => (
-              <UserCard
-                key={item?.id}
-                id={item?.id}
-                selectedTab={'selectedTab'}
-                userName={`${item?.User?.firstName} ${item?.User?.lastName}`}
-                location={item?.User?.location}
-                career={item?.User?.Careers?.[0]?.title}
-                userImage={item?.User?.profilePicture}
-                isApproved={item?.isApproved}
-                reloadData={getFollowRequests}
-                isRequestedByYou={!!item?.User?.Requested?.length}
-                isFriendRequest={true}
-              />
-            ))}
-          </InfiniteScroll>
+          {!isLoading && !requests?.length && allPostsLoaded ? (
+            <div className="text-center mt-5">
+              <h5 className="font-medium text-greydark text-[14px] mb-2">No pending requests</h5>
+            </div>
+          ) : (
+            <InfiniteScroll
+              threshold={10}
+              loadMore={() => getFollowRequests()}
+              hasMore={!allPostsLoaded}
+              useWindow={false}
+              loader={
+                <div className="flex w-full h-full justify-center items-center" key={0}>
+                  <PostSkeleton showMedia={false} />
+                </div>
+              }
+            >
+              {requests?.map((item) => (
+                <UserCard
+                  key={item?.id}
+                  id={item?.id}
+                  selectedTab={'selectedTab'}
+                  userName={`${item?.User?.firstName} ${item?.User?.lastName}`}
+                  location={item?.User?.location}
+                  career={item?.User?.Careers?.[0]?.title}
+                  userImage={item?.User?.profilePicture}
+                  isApproved={item?.isApproved}
+                  reloadData={reloadData}
+                  isRequestedByYou={!!item?.User?.Requested?.length}
+                  isFriendRequest={true}
+                />
+              ))}
+            </InfiniteScroll>
+          )}
         </div>
       </div>
     </div>

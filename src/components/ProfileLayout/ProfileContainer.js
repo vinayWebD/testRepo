@@ -27,9 +27,13 @@ const ProfileContainer = ({
   const dispatch = useDispatch();
 
   const followUnfollowHandler = async () => {
+    if (isLoadingFollowUnfollow) {
+      return;
+    }
+
     let response;
     setIsLoadingFollowUnfollow(true);
-    if (userData?.followStatus?.isApproved) {
+    if (userData?.followStatus?.isApproved || userData?.followStatus?.isApproved === false) {
       response = (await dispatch(unfollowOtherUserDispatcher({ id: userData?.id }))) || {};
     } else if (userData?.followStatus?.isApproved === undefined) {
       response = (await dispatch(followOtherUserDispatcher({ id: userData?.id }))) || {};
@@ -39,7 +43,10 @@ const ProfileContainer = ({
       const { status, data } = response;
 
       if (successStatus(status)) {
-        if (!data?.data?.isApproved) {
+        // Means that this request which was sent has been removed
+        if (userData?.followStatus?.isApproved === false) {
+          ToastNotifySuccess('Sent request has been cancelled');
+        } else if (!data?.data?.isApproved) {
           ToastNotifySuccess('A follow request has been sent');
         }
         await reloadAfterFollowUnfollow();

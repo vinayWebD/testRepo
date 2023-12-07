@@ -57,15 +57,19 @@ const fetchFollowRequestsDispatcher =
 
 const acceptFollowRequestDispatcher =
   ({ id }) =>
-  async () => {
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
     const { status, data } = await acceptFollowRequest({ id });
+    dispatch(globalTransparentLoadingPrivate(false));
     return { status, data };
   };
 
 const rejectFollowRequestDispatcher =
   ({ id }) =>
-  async () => {
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
     const { status, data } = await rejectFollowRequest({ id });
+    dispatch(globalTransparentLoadingPrivate(false));
     return { status, data };
   };
 

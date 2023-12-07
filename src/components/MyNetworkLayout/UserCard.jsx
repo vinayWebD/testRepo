@@ -50,6 +50,10 @@ const UserCard = ({
   };
 
   const followUnfollowHandler = async () => {
+    if (isLoadingFollowUnfollow) {
+      return;
+    }
+
     let response;
     setIsLoadingFollowUnfollow(true);
     // This means we have sent a request, and now we are cancelling it
@@ -102,6 +106,7 @@ const UserCard = ({
 
     if (successStatus(status)) {
       ToastNotifySuccess('Request has been rejected');
+
       await reloadData();
     } else {
       const errormsg = getErrorMessage(data);
@@ -154,7 +159,10 @@ const UserCard = ({
                 onClick={acceptRequestHandler}
               />
 
-              <span onClick={rejectRequestHandler} className="text-[#999999] text-sm font-medium">
+              <span
+                onClick={rejectRequestHandler}
+                className="text-[#999999] text-sm font-medium cursor-pointer hover:opacity-70"
+              >
                 {deviceType === 'mobile' ? 'Reject' : <CrossIcon />}
               </span>
             </>
