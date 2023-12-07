@@ -1,14 +1,35 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import Tabs from '../../components/common/Tabs';
 import MyNetworkTabSection from './MyNetworkTabSection';
 import { TABS_NAME } from '../../constants/lang';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
+import { useSearchParams } from 'react-router-dom';
 const { FOLLOWERS, FOLLOWING, CONNECTIONS } = TABS_NAME;
 
 const MyNetwork = () => {
   const [selectedTab, setSelectedTab] = useState(FOLLOWERS);
-  console.log(selectedTab);
+  const [searchParams, setSearchParams] = useSearchParams();
+  let tabValue = searchParams?.get('type');
+
+  const removeQueryParam = (paramKey) => {
+    const newSearchParams = new URLSearchParams(searchParams);
+    newSearchParams.delete(paramKey);
+    setSearchParams(newSearchParams);
+  };
+
+  const handleRemoveQueryParam = () => {
+    // We will remove type from the URL when the page is loaded
+    removeQueryParam('type');
+  };
+
+  useEffect(() => {
+    if (tabValue) {
+      setSelectedTab(tabValue);
+      handleRemoveQueryParam();
+    }
+  }, [tabValue]);
+
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
 
@@ -24,10 +45,10 @@ const MyNetwork = () => {
             <div>
               <Tabs
                 handleSetTab={handleSetTab}
-                selectedTab={selectedTab}
+                selectedTab={tabValue || selectedTab}
                 tabs={[FOLLOWERS, FOLLOWING, CONNECTIONS]}
               />
-              <MyNetworkTabSection selectedTab={selectedTab} />
+              <MyNetworkTabSection selectedTab={tabValue || selectedTab} />
             </div>
           </div>
         </div>

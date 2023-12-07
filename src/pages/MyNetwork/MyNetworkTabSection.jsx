@@ -64,7 +64,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
   );
 
   const getData = async (searchVal = '', page = currentPage || 1) => {
-    let response;
+    let response = {};
 
     switch (selectedTab) {
       case FOLLOWERS:
