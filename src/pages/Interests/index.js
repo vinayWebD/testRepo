@@ -6,7 +6,7 @@ import WorkNavbar from '../../components/Navbar.js/WorkNavbar';
 // import Tabs from '../../components/Tabs';
 import PersonalInfoTabs from '../../components/Tabs/PersonalInfoTab';
 import { PATHS } from '../../constants/urlPaths';
-import { WorkTabContent } from './WorkTabContent';
+import { InterestsTabContent } from './InterestsTabContent';
 
 function Interest() {
   const navigate = useNavigate();
@@ -20,13 +20,13 @@ function Interest() {
             icon: <WorkIcon />,
             blackicon: <WorkIcon fill="#333" />,
             redirect: () => navigate(PATHS.PATH_WORK),
-            activeTab: 'Work',
           },
           {
             label: 'Interests',
             icon: <HeartIcon />,
             blackicon: <HeartIcon fill="#333" />,
             redirect: () => navigate(PATHS.PATH_INTERESTS),
+            activeTab: 'Interests',
           },
           {
             label: 'Myself',
@@ -36,7 +36,7 @@ function Interest() {
           },
         ]}
       />
-      <WorkTabContent />
+      <InterestsTabContent />
     </>
   );
 }

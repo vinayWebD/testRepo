@@ -1,28 +1,16 @@
-import React, { useState } from 'react';
-
-const RadioButton = ({ label, name, value }) => {
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const handleChange = (event) => {
-    setSelectedValue(event.target.value);
-  };
-
+const RadioButton = ({ label, name, value, checked, onChange }) => {
   return (
-    <div className="flex gap-2 items-center">
+    <div className="flex gap-4 items-center">
       <input
         type="radio"
         id={value}
         name={name}
         value={value}
-        checked={selectedValue === value}
-        onChange={handleChange}
+        checked={checked}
+        onChange={onChange}
         className="w-[20px] h-[20px] checked:bg-blueprimary"
       />
-      <label
-        className="text-[14px] font-normal"
-        htmlFor={value}
-        onClick={() => setSelectedValue(value)}
-      >
+      <label className="text-[14px] font-normal cursor-pointer" htmlFor={value}>
         {label}
       </label>
     </div>

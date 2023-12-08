@@ -162,7 +162,7 @@ function SuggestedSearch({
                 <SuggestedUser
                   key={result?.email}
                   userFullName={`${result?.firstName} ${result?.lastName}`}
-                  userBio=" UiUx Designer | Media Composer | Founder of Lumina"
+                  userBio={result?.Careers?.[0]?.title || ''}
                   userImg={result?.profilePictureUrl}
                   userId={result?.id}
                   closePopupHandler={onClose}

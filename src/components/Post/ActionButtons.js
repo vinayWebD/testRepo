@@ -23,7 +23,8 @@ const ActionButtons = ({
   isCommentSectionOpenDefault = false,
   postId = '',
   reloadPostDetails = () => {},
-  completePostData = {},
+  completePostData = {}, // Using currently for reposting UI
+  reloadData = () => {},
 }) => {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(isCommentSectionOpenDefault);
   const [_isLikedByMe, _setIsLikedByMe] = useState(isLikedByMe);
@@ -192,7 +193,11 @@ const ActionButtons = ({
         titleParentClassNames="md:m-3 m-0"
         height="h-[100dvh] max-h-[100dvh] md:h-auto"
       >
-        <RepostLayout post={completePostData} />
+        <RepostLayout
+          post={completePostData}
+          closePopup={() => setIsRepostModalOpen(false)}
+          reloadData={reloadData}
+        />
       </Modal>
     </>
   );

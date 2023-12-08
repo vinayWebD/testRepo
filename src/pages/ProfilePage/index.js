@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import ProfileLayout from '../../components/ProfileLayout';
 import FollowerContainer from '../../components/ProfileLayout/FollowerContainer';
 import ProfileContainer from '../../components/ProfileLayout/ProfileContainer';
-// import Loader from '../../components/common/Loader';
 import Card from '../../components/common/Card';
 import backIcon from '../../assets/images/backIcon.svg';
 import noWork from '../../assets/images/noWork.svg';
@@ -18,10 +17,14 @@ import MyPosts from '../../components/ProfilePage/MyPosts';
 import { networkCount } from '../../services/myProfile';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { PATHS } from '../../constants/urlPaths';
+import { TABS_NAME } from '../../constants/lang';
+
+const { MYNETWORK } = PATHS;
+const { FOLLOWERS, FOLLOWING, CONNECTIONS } = TABS_NAME;
 
 const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
-  // const [isLoading, setIsLoading] = useState(false);
   const [tab, setTab] = useState('post');
   const [networkCounter, setNetworkCounter] = useState({});
   const navigate = useNavigate();
@@ -57,7 +60,13 @@ const ProfilePage = () => {
           My Profile
         </div>
         <ProfileContainer userData={userData} />
-        <FollowerContainer {...networkCounter} />
+
+        <FollowerContainer
+          {...networkCounter}
+          onFollowersClick={() => navigate(`${MYNETWORK}?type=${FOLLOWERS}`)}
+          onFollowingClick={() => navigate(`${MYNETWORK}?type=${FOLLOWING}`)}
+          onConnectionsClick={() => navigate(`${MYNETWORK}?type=${CONNECTIONS}`)}
+        />
       </div>
       <div className="col-span-10 xs:col-span-12 sm:col-span-12 lg:col-span-8 md:col-span-12 xl:col-span-9 overflow-y-auto py-[12px] lg:my-14">
         <div className="grid grid-cols-12 gap-3 feed-page">

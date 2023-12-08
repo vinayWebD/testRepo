@@ -11,6 +11,7 @@ const SearchInput = ({
   iconColor = '#ffffff',
   textColor = 'text-white',
   bottomBorderColorClass = 'border-white',
+  isAutoFocus = false,
 }) => {
   return (
     <div className="flex flex-col">
@@ -29,6 +30,7 @@ const SearchInput = ({
           onFocus={onFocus}
           className={` ${className} ${textColor} pl-2 search bg-[transparent] border-0 text-black text-[12px]`}
           disabled={disabled}
+          autoFocus={isAutoFocus}
         />
       </div>
     </div>

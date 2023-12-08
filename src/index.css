@@ -363,7 +363,8 @@ body {
 
 /* width of scrollbar in search */
 #suggested-search::-webkit-scrollbar,
-.textarea-with-emojie::-webkit-scrollbar {
+.textarea-with-emojie::-webkit-scrollbar,
+.show-no-scrollbar::-webkit-scrollbar {
   width: 0 !important;
   display: none;
 }

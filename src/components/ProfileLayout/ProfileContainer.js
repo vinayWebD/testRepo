@@ -11,11 +11,16 @@ import Modal from '../../components/Modal';
 import EditProfile from '../../components/ProfilePage/EditProfile';
 import { useDispatch } from 'react-redux';
 import {
+  blockUserDispatcher,
   followOtherUserDispatcher,
   unfollowOtherUserDispatcher,
 } from '../../redux/dispatchers/otherUserDispatcher';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
+
+const { HOME } = PATHS;
 
 const ProfileContainer = ({
   userData,
@@ -25,11 +30,16 @@ const ProfileContainer = ({
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const followUnfollowHandler = async () => {
+    if (isLoadingFollowUnfollow) {
+      return;
+    }
+
     let response;
     setIsLoadingFollowUnfollow(true);
-    if (userData?.followStatus?.isApproved) {
+    if (userData?.followStatus?.isApproved || userData?.followStatus?.isApproved === false) {
       response = (await dispatch(unfollowOtherUserDispatcher({ id: userData?.id }))) || {};
     } else if (userData?.followStatus?.isApproved === undefined) {
       response = (await dispatch(followOtherUserDispatcher({ id: userData?.id }))) || {};
@@ -39,7 +49,10 @@ const ProfileContainer = ({
       const { status, data } = response;
 
       if (successStatus(status)) {
-        if (!data?.data?.isApproved) {
+        // Means that this request which was sent has been removed
+        if (userData?.followStatus?.isApproved === false) {
+          ToastNotifySuccess('Sent request has been cancelled');
+        } else if (!data?.data?.isApproved) {
           ToastNotifySuccess('A follow request has been sent');
         }
         await reloadAfterFollowUnfollow();
@@ -74,6 +87,22 @@ const ProfileContainer = ({
     }
   };
 
+  const blockClickHandler = async () => {
+    const { status, data } = await dispatch(
+      blockUserDispatcher({ userId: userData?.id, showLoader: true }),
+    );
+
+    if (successStatus(status)) {
+      ToastNotifySuccess('The user has been blocked');
+      navigate(HOME, { replace: true });
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+  };
+
   return (
     <Card classNames="lg:block py-4 px-2 md:px-4 relative">
       <div className="block gap-4">
@@ -90,7 +119,7 @@ const ProfileContainer = ({
               IconComponent={ThreeDots}
               options={[
                 { name: 'Report', action: () => {} },
-                { name: 'Block', action: () => {} },
+                { name: 'Block', action: blockClickHandler },
               ]}
             />
           </div>
@@ -124,11 +153,11 @@ const ProfileContainer = ({
           </div>
           {isOtherUser && (
             <div className="flex gap-[7%] justify-center mt-2">
-              <OutlinedButton label={'Message'} additionalClassNames="!text-[16px]" />
+              <OutlinedButton label={'Message'} additionalClassNames="!text-[14px]" />
               <OutlinedButton
                 onClick={() => followUnfollowHandler()}
                 label={followUnfollowLabel()}
-                additionalClassNames="!bg-blueprimary text-white !text-[16px] w-[115px] !justify-center"
+                additionalClassNames="!bg-blueprimary text-white !text-[14px] w-[135px] !justify-center !px-1"
                 isLoading={isLoadingFollowUnfollow}
               />
             </div>

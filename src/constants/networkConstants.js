@@ -10,7 +10,7 @@ const NETWORK_CONSTANTS = {
   FORGOT_PASSWORD_VERIFY_OTP: '/v1/accounts/verify_otp/',
   FORGOT_PASSWORD_RESET_PWD: '/v1/accounts/reset-password/',
   CREATE_POST: '/v1/feeds/posts/',
-  CARRERS: '/v1/accounts/careers/',
+  CARRERS: '/v1/accounts/careers',
   ABOUT: '/v1/accounts/about/',
   EXPERIENCES: '/v1/accounts/experiences/',
   EDUCATION: '/v1/accounts/educations/',
@@ -40,6 +40,19 @@ const NETWORK_CONSTANTS = {
   MARK_READ_PATH: '/v1/notifications/mark-as-read',
   UPDATE_EMAIL_VERIFY_OLD_EMAIL: '/v1/accounts/verify-email/old',
   UPDATE_EMAIL_VERIFY_NEW_EMAIL: '/v1/accounts/verify-email/new',
+  MY_FOLLOWERS: '/v1/accounts/follow/followers',
+  MY_FOLLOWINGS: '/v1/accounts/follow/following',
+  MY_CONNECTIONS: '/v1/accounts/connections',
+  REPOST: '/v1/feeds/posts/share',
+  FETCH_FOLLOW_REQUEST: '/v1/accounts/follow/requests',
+  ACCEPT_FOLLOW_REQUEST: (id) => `/v1/accounts/follow/request/accept/${id}`,
+  REJECT_FOLLOW_REQUEST: (id) => `/v1/accounts/follow/request/reject/${id}`,
+  GET_PRIVACY_SETTINGS: '/v1/settings/privacy-setting',
+  UPDATE_PRIVACY_SETTINGS: '/v1/settings/privacy-setting/',
+  PRIVACY_SETTING_ADD_SPECIFIC_USERS: '/v1/settings/privacy-setting/specific-user',
+  PRIVACY_SETTING_GET_SPECIFIC_USERS: '/v1/accounts/follow/network/specific',
+  BLOCK_USER: (userId) => `/v1/accounts/block/user/${userId}`,
+  UNBLOCK_USER: (userId) => `/v1/accounts/unblock/user/${userId}`,
 };
 
 export default NETWORK_CONSTANTS;

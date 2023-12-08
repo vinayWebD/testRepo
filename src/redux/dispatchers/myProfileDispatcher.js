@@ -1,7 +1,12 @@
+import { PAGE_SIZE } from '../../constants/constants';
 import {
   changePassword,
   contactAdmin,
+  getPrivacySettings,
+  getSpecificUsersForPrivacySettings,
   sendOtpToUpdateEmail,
+  updatePrivacySettings,
+  updateSpecificUsersForPrivacySettings,
   verifyNewEmail,
   verifyOldEmail,
 } from '../../services/myProfile';
@@ -66,10 +71,53 @@ const verifyNewEmailDispatcher =
     return { status, data };
   };
 
+const getPrivacySettingsDispatcher = () => async (dispatch) => {
+  dispatch(globalTransparentLoadingPrivate(true));
+  const { status, data } = await getPrivacySettings();
+  dispatch(globalTransparentLoadingPrivate(false));
+  return { status, data };
+};
+
+const updatePrivacySettingsDispatcher =
+  (dataToSend = {}) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await updatePrivacySettings(dataToSend);
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const updateSpecificUsersForPrivacySettingsDispatcher =
+  (dataToSend = {}) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await updateSpecificUsersForPrivacySettings(dataToSend);
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const getSpecificUsersForPrivacySettingsDispatcher =
+  ({ search = '', page = 1, limit = PAGE_SIZE.PRIVACY_SETTING_SELECT_USERS, type = null }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await getSpecificUsersForPrivacySettings({
+      search,
+      page,
+      limit,
+      type,
+    });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   sendOtpToUpdateEmailDispatcher,
   changePasswordDispatcher,
   contactAdminDispatcher,
   verifyOldEmailDispatcher,
   verifyNewEmailDispatcher,
+  getPrivacySettingsDispatcher,
+  updatePrivacySettingsDispatcher,
+  updateSpecificUsersForPrivacySettingsDispatcher,
+  getSpecificUsersForPrivacySettingsDispatcher,
 };
