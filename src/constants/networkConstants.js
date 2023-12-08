@@ -53,6 +53,7 @@ const NETWORK_CONSTANTS = {
   PRIVACY_SETTING_GET_SPECIFIC_USERS: '/v1/accounts/follow/network/specific',
   BLOCK_USER: (userId) => `/v1/accounts/block/user/${userId}`,
   UNBLOCK_USER: (userId) => `/v1/accounts/unblock/user/${userId}`,
+  BLOCKED_USERS_LIST: 'v1/accounts/block/list',
 };
 
 export default NETWORK_CONSTANTS;

@@ -9,7 +9,12 @@ import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayou
 import { PATHS } from '../../constants/urlPaths';
 import { useNavigate } from 'react-router-dom';
 
-const { SETTINGS_CHANGE_PASSWORD, SETTINGS_HELP_CENTER, SETTINGS_PRIVACY_SETTING } = PATHS;
+const {
+  SETTINGS_CHANGE_PASSWORD,
+  SETTINGS_HELP_CENTER,
+  SETTINGS_PRIVACY_SETTING,
+  SETTINGS_BLOCKED_LIST,
+} = PATHS;
 
 const INNER_SECTION = [
   {
@@ -20,6 +25,7 @@ const INNER_SECTION = [
   {
     title: 'Blocked Users',
     iconSrc: BlockedImage,
+    path: SETTINGS_BLOCKED_LIST,
   },
   {
     title: 'Privacy Setting',

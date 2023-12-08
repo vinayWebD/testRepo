@@ -1,5 +1,7 @@
+import { PAGE_SIZE } from '../../constants/constants';
 import {
   blockUser,
+  fetchBlockedUsersList,
   followOtherUser,
   otherUserBasicData,
   otherUserNetworkingCount,
@@ -62,6 +64,15 @@ const unblockUserDispatcher =
     return { status, data };
   };
 
+const fetchBlockedUsersDispatcher =
+  ({ limit = PAGE_SIZE.BLOCKED_USERS_LIST, page = 1, search = '' }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await fetchBlockedUsersList({ limit, page, search });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   fetchOtherUserBasicInfo,
   fetchOtherUserNetworkingCount,
@@ -69,4 +80,5 @@ export {
   unfollowOtherUserDispatcher,
   blockUserDispatcher,
   unblockUserDispatcher,
+  fetchBlockedUsersDispatcher,
 };

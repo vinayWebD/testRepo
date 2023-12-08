@@ -21,6 +21,7 @@ import PrivacySetting from './pages/Settings/PrivacySetting';
 import Interest from './pages/Interests';
 import Myself from './pages/Myself';
 import { AddCareer } from './pages/Work/AddNewCareer';
+import BlockedUsers from './pages/Settings/BlockedUsers';
 
 const {
   LANDING,
@@ -44,6 +45,7 @@ const {
   PATH_INTERESTS,
   PATH_MYSELF,
   PATH_ADD_CAREER,
+  SETTINGS_BLOCKED_LIST,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -158,6 +160,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: SETTINGS_PRIVACY_SETTING,
     element: <PrivacySetting />,
+  },
+  {
+    path: SETTINGS_BLOCKED_LIST,
+    element: <BlockedUsers />,
   },
   {
     path: PATH_WORK,
