@@ -37,11 +37,13 @@ function MyPosts({ other = true }) {
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
   let isLoadingAPI = false;
   const loaderRef = useRef(null);
+
   let { id: idFromUrl } = useParams();
 
   useScrollToTop();
 
   useEffect(() => {
+    reloadPosts();
     if (idFromUrl && !otherPeople) {
       fetchSinglePostDetails({ postId: idFromUrl });
       setIsPreviewDetailsPostOpen(true);
