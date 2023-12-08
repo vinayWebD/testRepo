@@ -65,53 +65,61 @@ const BlockedUsers = () => {
         onClickSubSectionHandler={() => navigate(SETTINGS)}
       >
         <div className="flex flex-col gap-5">
-          {users?.map((user) => {
-            return (
-              <div
-                key={user?.id}
-                className={
-                  'overflow-hidden mb-3 flex justify-start min-[320px]:items-start sm:items-start gap-2 relative w-[100%]  shadow-card rounded-lg p-2 py-5 pr-6 md:!items-center'
-                }
-              >
-                <div className=" sm:flex sm:justify-start sm:items-start ">
-                  <Avatar
-                    name={`${user?.userBlocked?.firstName} ${user?.userBlocked?.lastName}`}
-                    image={user?.userBlocked?.profilePicture}
-                    classNames="h-[52px] w-[52px] "
-                  />
-                </div>
-                <div className="w-full flex md:justify-between md:flex-row sm:flex-col gap-3 relative min-[320px]:flex-col min-[320px]:gap-y-3 ">
-                  <div className="w-full md:w-[60%] md:max-w-[60%] lg:w-[65%] lg:max-w-[65%] gap-3 flex justify-between md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 md:items-center">
-                    <div className="w-full md:w-[70%] md:max-w-[70%] lg:w-[70%] lg:max-w-[70%]">
-                      <h3 className="text-base text-gray-950  font-medium">
-                        {`${user?.userBlocked?.firstName} ${user?.userBlocked?.lastName}`}
-                      </h3>
-                      {user?.userBlocked?.location ? (
-                        <div className="flex gap-1">
-                          <LocationIcon />
-                          <span className="text-xs font-normal">{user?.userBlocked?.location}</span>
-                        </div>
-                      ) : (
-                        ''
-                      )}
-                    </div>
-                    <div className="w-full md:w-[30%] md:max-w-[30%] lg:w-[35%] lg:max-w-[35%] font-medium relative text-greydark text-xs">
-                      <span>{user?.userBlocked?.Careers?.[0]?.title}</span>
-                    </div>
-                  </div>
-
-                  <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex justify-center items-center md:justify-end">
-                    <OutlinedButton
-                      isIcon={false}
-                      label={'Unblock'}
-                      additionalClassNames="sm:h-[37px] !text-[14px]"
-                      onClick={() => unblockUser(user?.userBlocked?.id)}
+          {!users?.length ? (
+            <div className="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
+              <h5 className="font-medium text-greydark text-[14px] mb-2">No blocked users yet.</h5>
+            </div>
+          ) : (
+            users?.map((user) => {
+              return (
+                <div
+                  key={user?.id}
+                  className={
+                    'overflow-hidden mb-3 flex justify-start min-[320px]:items-start sm:items-start gap-2 relative w-[100%]  shadow-card rounded-lg p-2 py-5 pr-6 md:!items-center'
+                  }
+                >
+                  <div className=" sm:flex sm:justify-start sm:items-start ">
+                    <Avatar
+                      name={`${user?.userBlocked?.firstName} ${user?.userBlocked?.lastName}`}
+                      image={user?.userBlocked?.profilePicture}
+                      classNames="h-[52px] w-[52px] "
                     />
                   </div>
+                  <div className="w-full flex md:justify-between md:flex-row sm:flex-col gap-3 relative min-[320px]:flex-col min-[320px]:gap-y-3 ">
+                    <div className="w-full md:w-[60%] md:max-w-[60%] lg:w-[65%] lg:max-w-[65%] gap-3 flex justify-between md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 md:items-center">
+                      <div className="w-full md:w-[70%] md:max-w-[70%] lg:w-[70%] lg:max-w-[70%]">
+                        <h3 className="text-base text-gray-950  font-medium">
+                          {`${user?.userBlocked?.firstName} ${user?.userBlocked?.lastName}`}
+                        </h3>
+                        {user?.userBlocked?.location ? (
+                          <div className="flex gap-1">
+                            <LocationIcon />
+                            <span className="text-xs font-normal">
+                              {user?.userBlocked?.location}
+                            </span>
+                          </div>
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                      <div className="w-full md:w-[30%] md:max-w-[30%] lg:w-[35%] lg:max-w-[35%] font-medium relative text-greydark text-xs">
+                        <span>{user?.userBlocked?.Careers?.[0]?.title}</span>
+                      </div>
+                    </div>
+
+                    <div className="w-full md:w-[40%] md:max-w-[40%] lg:w-[30%] lg:max-w-[30%] flex justify-center items-center md:justify-end">
+                      <OutlinedButton
+                        isIcon={false}
+                        label={'Unblock'}
+                        additionalClassNames="sm:h-[37px] !text-[14px]"
+                        onClick={() => unblockUser(user?.userBlocked?.id)}
+                      />
+                    </div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          )}
 
           <div className="py-4 flex items-center justify-end mt-auto">
             <Pagination
