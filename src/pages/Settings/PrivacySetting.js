@@ -98,7 +98,7 @@ const PrivacySetting = () => {
                     key={index}
                     options={Object.values(form)?.[0]}
                     name={formKey}
-                    defaultValue={settings[formKey]}
+                    defaultValue={settings?.[formKey]}
                     onSelect={(name, value, hasChanged) =>
                       handleSelect(name, value, hasChanged, Object.values(form)?.[0]?.[0]?.title)
                     }
