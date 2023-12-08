@@ -103,6 +103,7 @@ const chats = (props) => {
   const [data, setData] = useState('');
   const [imageSrc, setImageSrc] = useState('');
   const [videoSrc, setVideoSrc] = useState('');
+  // const [chatHistoryData, setChatHistoryData] = useState([]);
 
   useEffect(() => {
     if (props.fileData && props.fileData.length > 0) {
@@ -129,6 +130,7 @@ const chats = (props) => {
       }
       setOpenPopup(true);
     }
+    // setChatHistoryData(props.chatHistoryData);
   }, [props.fileData]);
   return (
     <div className="h-full">
@@ -164,7 +166,7 @@ const chats = (props) => {
         </div>
       ) : (
         <div>
-          {chatHistoryData.map((element) => {
+          {chatHistoryData?.map((element) => {
             switch (element.type) {
               case 'divider':
                 return <Timestamp element={element} />;

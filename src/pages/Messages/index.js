@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 import SearchIcon from '../../assets/images/searchIcon.svg';
 import cross from '../../assets/images/cross.svg';
@@ -13,85 +13,123 @@ import Dropdown from '../../components/common/Dropdown';
 import BackAvatar from '../../assets/images/Back-vector.svg';
 import InputTextarea from './InputTextarea';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
+import {
+  // addDoc,
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  getDocs,
+  where,
+  // serverTimestamp,
+} from 'firebase/firestore';
+import { db } from '../../firebase';
 
 const Messages = () => {
-  const contacts = [
+  const allFollowers = [
     {
-      name: 'Harry',
-      lastMessage: 'Lorem ipsum, dolor',
+      id: '01',
+      FollowingUserId: '41',
+      name: 'Guru',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '03',
+      FollowingUserId: '41',
+      name: 'Biswa',
+      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    },
+    {
+      id: '04',
+      FollowingUserId: '41',
+      name: 'Qwerty',
+      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    },
+    {
+      id: '05',
+      FollowingUserId: '41',
+      name: 'Hello',
+      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    },
+    {
+      id: '06',
+      FollowingUserId: '41',
+      name: 'Harry',
+      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+    },
+    {
+      id: '77',
+      FollowingUserId: '41',
       name: 'Rohit',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
       img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '08',
+      FollowingUserId: '41',
       name: 'Samay',
-      lastMessage: 'Lorem, ipsum dolor sit amet consectetur adip',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
   ];
   const followers = [
     {
+      id: '01',
+      FollowingUserId: '41',
       name: 'Guru',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
-      name: 'Rohit',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
+      id: '03',
+      FollowingUserId: '41',
       name: 'Biswa',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '04',
+      FollowingUserId: '41',
       name: 'Qwerty',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '05',
+      FollowingUserId: '41',
       name: 'Hello',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '06',
+      FollowingUserId: '41',
       name: 'Harry',
-      lastMessage: 'Lorem ipsum, dolor',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '77',
+      FollowingUserId: '41',
       name: 'Rohit',
-      lastMessage:
-        'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eaque nisi explicabo consectetur eius obcaecati quae.',
       img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
     {
+      id: '08',
+      FollowingUserId: '41',
       name: 'Samay',
-      lastMessage: 'Lorem, ipsum dolor sit amet consectetur adip',
       img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
     },
   ];
-
-  const [searchedContacts, setSearchedContacts] = useState(contacts);
+  const [contacts, setContacts] = useState([]);
+  const [searchedContacts, setSearchedContacts] = useState([]);
   const [searchedFollwers, setSearchedFollwers] = useState(followers);
+  const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [addContact, setAddContact] = useState(true);
   const [isActive, setIsActive] = useState(false);
-  const [readMessage, setReadMessage] = useState(Array(contacts.length).fill(false));
   const [fileData, setFileData] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+  const [fromId, setFromId] = useState('');
+  const [toId, setToId] = useState('');
+  const [newMessage, setNewMessage] = useState(false);
+  const [retrievedDocumentId, setRetrievedDocumentId] = useState('');
+  // const [mobileChat, setMobileChats] = useState(false);
 
   const handleFileInputChange = (selectedFile) => {
     setFileData(selectedFile);
@@ -112,20 +150,114 @@ const Messages = () => {
   };
   const clearSearch = () => {
     setSearchQuery('');
-    setSearchedContacts(contacts);
+    setSearchedContacts((prevContacts) => [...prevContacts]);
     setSearchedFollwers(followers);
   };
-  const handleSelected = (index) => {
-    setIsActive(index === isActive ? null : index);
-    if (!readMessage[index]) {
-      const newReadMessages = readMessage.map((value, i) => (i === index ? true : value));
-      setReadMessage(newReadMessages);
+  const handleSelected = (id) => {
+    setNewMessage(true);
+    console.log('selectedFollowerId:', id);
+    console.log('searchedFollower:', allFollowers);
+    setIsActive((prevId) => (prevId === id ? null : id));
+    setAddContact(true);
+    const selectedFollower = allFollowers.find((follower) => follower.id === id);
+    console.log('selectedFollower:', selectedFollower);
+    if (!addContact) {
+      const isAlreadyAdded = contacts.some((contact) => contact.id === selectedFollower.id);
+
+      if (!isAlreadyAdded) {
+        setContacts((prevContacts) => {
+          const updatedContacts = [...prevContacts, selectedFollower];
+          setIsActive(selectedFollower.id);
+          return updatedContacts;
+        });
+        setSearchedFollwers((prevFollowers) =>
+          prevFollowers.filter((follower) => follower.id !== selectedFollower.id),
+        );
+      }
+    }
+
+    if (selectedFollower && selectedFollower.id && selectedFollower.FollowingUserId) {
+      const { id, FollowingUserId } = selectedFollower;
+      setFromId(FollowingUserId);
+      setToId(id);
+      console.log('id:', id);
+      console.log('FollowingUserId:', FollowingUserId);
+
+      let collectionId;
+      if (id < FollowingUserId) {
+        collectionId = `${id}_${FollowingUserId}`;
+      } else {
+        collectionId = `${FollowingUserId}_${id}`;
+      }
+
+      setRetrievedDocumentId(collectionId);
     }
   };
+  console.log('messages: ', messages);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const q = query(
+          collection(db, 'test_messages'),
+          where('id', '==', retrievedDocumentId),
+          orderBy('timestamp'),
+        );
+        const querySnapshot = await getDocs(q);
+
+        let messagesData = [];
+        querySnapshot.forEach((doc) => {
+          messagesData.push({ ...doc.data(), id: doc.id });
+        });
+
+        setMessages(messagesData);
+      } catch (error) {
+        console.error('Error getting messages: ', error);
+      }
+    };
+
+    const unsubscribe = onSnapshot(
+      query(collection(db, 'test_messages'), orderBy('timestamp')),
+      (querySnapshot) => {
+        let messagesData = [];
+        querySnapshot.forEach((doc) => {
+          messagesData.push({ ...doc.data(), id: doc.id });
+        });
+        const updatedContacts = contacts.map((contact) => {
+          const lastMessageIdTo = messagesData.find(
+            (message) => message.lastMessage.idTo === contact.id,
+          );
+          if (lastMessageIdTo) {
+            return {
+              ...contact,
+              lastMessage: {
+                content: lastMessageIdTo.lastMessage.content,
+                idFrom: lastMessageIdTo.lastMessage.idFrom,
+                idTo: lastMessageIdTo.lastMessage.idTo,
+                read: lastMessageIdTo.lastMessage.read,
+                timestamp: lastMessageIdTo.timestamp,
+              },
+            };
+          }
+          return contact;
+        });
+
+        setContacts(updatedContacts);
+      },
+      (error) => {
+        console.error('Error getting real-time updates: ', error);
+      },
+    );
+
+    fetchData();
+
+    return () => {
+      unsubscribe();
+    };
+  }, [retrievedDocumentId]);
 
   return (
     <SectionLayout activeTab={2}>
-      <div className=" relative flex justify-between bg-white rounded-lg shadow-card lg:mt-6 h-[100vh] md:h-[calc(100vh-120px)] overflow-hidden ">
+      <div className="relative flex justify-between bg-white rounded-lg shadow-card lg:mt-4 h-[100vh] md:h-[calc(100vh-120px)] overflow-hidden ">
         <div className="border-r-2 border-lightgrey w-full md:w-4/12 overflow-y-auto scrollbar-custom">
           <div>
             <div className=" text-[20px] font-semibold flex justify-between m-4">
@@ -180,52 +312,62 @@ const Messages = () => {
               )}
             </div>
             <div className="items-center w-full mt-6 ">
-              {searchedContacts.length === 0 || searchedFollwers.length === 0 ? (
-                <p className="text-center text-darkgrey mt-4">No Results</p>
-              ) : (
-                (addContact ? searchedContacts : searchedFollwers).map((element, index) => (
-                  <div
-                    key={index}
-                    className={` p-2 py-3 pr-[5px] border-l-[6px] box-border border-white cursor-pointer flex items-center border-b border-b-lightgrey w-full ${
-                      isActive === index ? 'active-message-left-side-bar bg-lightbluebg' : ''
-                    }`}
-                    onClick={() => handleSelected(index)}
-                  >
+              {(addContact ? contacts : searchedFollwers).map((element, index) => (
+                <div
+                  key={index}
+                  className={` box-border border-l-[6px] border-white cursor-pointer  w-full ${
+                    isActive === element.id ? 'active-message-left-side-bar bg-lightbluebg' : ''
+                  }`}
+                  onClick={() => handleSelected(element.id)}
+                >
+                  <div className="border-b border-b-lightgrey w-[95%] flex items-center py-3 ml-[3px] ">
                     <div>
-                      <Avatar name={element.name} image={ludgi} classNames="w-[40px] h-[40px]" />
+                      <Avatar
+                        name={element.userDetails ? element.userDetails[1]?.name : element.name}
+                        image={ludgi}
+                        classNames="w-[40px] h-[40px]"
+                      />
                     </div>
                     {addContact ? (
                       <div className="ml-2 w-full mr-2">
                         <div className="flex justify-between">
-                          <h3 className="text-[16px] font-semibold">{element.name}</h3>
+                          <h3 className="text-[16px] font-semibold">
+                            {element.userDetails ? element.userDetails[1]?.name : element.name}
+                          </h3>
                           <p>5s</p>
                         </div>
                         <div className="flex justify-between">
-                          <p className="text-[14px] font-medium text-greydark">
-                            {element.lastMessage.length > 18
-                              ? `${element.lastMessage.substring(0, 18)}...`
-                              : element.lastMessage}
+                          <p
+                            className={`text-[14px] font-medium text-greydark ${
+                              newMessage ? 'font-medium' : 'font-normal'
+                            }`}
+                          >
+                            {element.lastMessage?.content
+                              ? element.lastMessage.content.length > 18
+                                ? `${element.lastMessage.content.substring(0, 10)}...`
+                                : element.lastMessage.content
+                              : ''}
                           </p>
-                          {/* {newMessage ? (
+                          {newMessage ? (
                             <span className="inline-flex items-center justify-center bg-gradient-to-r from-buttongradientfrom to-buttongradientto h-4 w-4 rounded-full">
                               <span className="text-white text-[12px]">2</span>
                             </span>
-                          ) : ( */}
-                          <TextSeen />
-                          {/* )} */}
+                          ) : (
+                            <TextSeen />
+                          )}
                         </div>
                       </div>
                     ) : (
                       <div className="ml-2 mr-2 w-full">
-                        <div className="flex justify-between">
+                        <div className="flex justify-between items-center">
                           <h3 className="text-[16px] font-semibold">{element.name}</h3>
-                          <img src={messageVector} alt="" />
+                          <img src={messageVector} alt="" className="w-[24px] h-[24px]" />
                         </div>
                       </div>
                     )}
                   </div>
-                ))
-              )}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -238,13 +380,12 @@ const Messages = () => {
                   <Avatar image={ludgi} classNames="w-[52px] h-[52px] ml-4 md:ml-0" />
                   <div className="ml-2">
                     <span className="text-[20px] font-semibold">
-                      {addContact
-                        ? isActive !== null && searchedContacts[isActive]
-                          ? searchedContacts[isActive].name
-                          : isActive !== null && searchedFollwers[isActive]
-                            ? searchedFollwers[isActive].name
-                            : 'Name'
-                        : searchedFollwers[isActive].name}
+                      {isActive !== null
+                        ? addContact
+                          ? contacts.find((contact) => contact.id === isActive)?.name || 'Name'
+                          : searchedFollwers.find((follower) => follower.id === isActive)?.name ||
+                            'Name'
+                        : 'Name'}
                     </span>
                     <div className="flex items-center">
                       <div className="w-[8px] h-[8px] rounded-full bg-blueprimary"></div>
@@ -269,15 +410,22 @@ const Messages = () => {
                 </div>
               </div>
               <div className=" overflow-auto scrollbar-custom h-full">
-                <Chats fileData={fileData} />
+                <Chats fileData={fileData} chatHistoryData={messages} />
               </div>
-              <InputTextarea onFileInputChange={handleFileInputChange} />
+              <InputTextarea
+                onFileInputChange={handleFileInputChange}
+                fromId={fromId}
+                toId={toId}
+                contacts={contacts}
+              />
             </div>
           ) : (
             <div className="flex items-center justify-center w-full h-full">
               <div className="w-fit text-center">
                 <img src={noMessage} alt="" className="m-auto" />
-                <span>Select a chat or start a new conversation</span>
+                <span className="text-base font-semibold text-greydark">
+                  Select a chat or start a new conversation
+                </span>
               </div>
             </div>
           )}
@@ -291,7 +439,9 @@ const Messages = () => {
           secondaryButtonTitle="Yes"
           // secondaryButtonAction={() => dispatch(logoutDispatcher())}
         >
-          Are you sure you want to delete chat?
+          <div className="w-[286px] mx-auto ">
+            <span className="text-[18px] font-medium">Are you sure you want to delete chat?</span>
+          </div>
         </ConfirmationModal>
         <ConfirmationModal
           title="Report User"
@@ -303,10 +453,12 @@ const Messages = () => {
           secondaryButtonAction={() => setIsReportModalOpen(false)}
         >
           <div>
-            <div>Are you sure you want to Report this user?</div>
+            <div className="text-[18px] tx-greydark font-medium">
+              Are you sure you want to Report this user?
+            </div>
             <div className="mt-6 flex flex-col">
               <label htmlFor="reportReason" className="flex">
-                Please type the reason*
+                Please type the reason<spna className="text-red">*</spna>
               </label>
               <textarea
                 id="reportReason"
@@ -324,15 +476,17 @@ const Messages = () => {
           secondaryButtonTitle="Yes"
           // secondaryButtonAction={() => dispatch(logoutDispatcher())}
         >
-          Are you sure you want to block “
-          {addContact
-            ? isActive !== null && searchedContacts[isActive]
-              ? searchedContacts[isActive]?.name || 'Name'
-              : isActive !== null && searchedFollwers[isActive]
-                ? searchedFollwers[isActive]?.name || 'Name'
-                : 'Name'
-            : searchedFollwers[isActive]?.name || 'Name'}
-          ”?
+          <div className="text-[18px] tx-greydark font-medium">
+            Are you sure you want to block “
+            {addContact
+              ? isActive !== null && searchedContacts[isActive]
+                ? searchedContacts[isActive]?.name || 'Name'
+                : isActive !== null && searchedFollwers[isActive]
+                  ? searchedFollwers[isActive]?.name || 'Name'
+                  : 'Name'
+              : searchedFollwers[isActive]?.name || 'Name'}
+            ”?
+          </div>
         </ConfirmationModal>
       </div>
     </SectionLayout>

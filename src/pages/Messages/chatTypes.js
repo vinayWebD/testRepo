@@ -144,7 +144,7 @@ const Timestamp = ({ element }) => {
   return (
     <div className="flex justify-center">
       <div className=" bg-greymedium w-[60px] h-[24px] rounded-[20px] flex items-center justify-center">
-        <div className="text-greydark text-[12px]">{element.text}</div>
+        <div className="text-greydark text-[12px] font-normal">{element.text}</div>
       </div>
     </div>
   );
@@ -153,7 +153,7 @@ const Divider = ({ element }) => {
   return (
     <div className="flex justify-center">
       <div className=" bg-whitelight w-full h-[34px] flex items-center justify-center">
-        <div className="text-greydark text-[12px]">{element.text}</div>
+        <div className="text-greydark text-[12px] font-medium">{element.text}</div>
       </div>
     </div>
   );
