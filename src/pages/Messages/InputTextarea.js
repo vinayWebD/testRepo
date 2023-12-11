@@ -9,6 +9,7 @@ import DocumentIcon from '../../components/Icons/DocumentIcon';
 import { POST_IMAGE_TYPES, POST_VIDEO_TYPES, POST_DOCUMENT_TYPES } from '../../constants/constants';
 import { collection, setDoc, doc } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { useSelector } from 'react-redux';
 
 const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
   const [emojiToggle, setEmojiToggle] = useState(false);
@@ -21,6 +22,7 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
   const emojieContainerRef = useRef(null);
   const attachmentContainerRef = useRef(null);
   const mediaInput = useRef(null);
+  const myProfile = useSelector((state) => state.auth.user);
   useEffect(() => {
     if (openFileBrowser) {
       mediaInput?.current?.click();
@@ -85,8 +87,6 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
 
   const onSend = async () => {
     console.log(collectionIds);
-    console.log('TextidTo', toId);
-    console.log('TextidFrom', fromId);
     let collectionId;
     if (toId < fromId) {
       collectionId = `${toId}_${fromId}`;
@@ -111,7 +111,7 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
       },
       timestamp: timestampInSeconds,
       userIds: [fromId, toId],
-      userDetails: ['myInfo', contacts.find((user) => user.id === toId) || 'wrong concept'],
+      userDetails: [myProfile, contacts.find((user) => user.id === toId) || 'wrong concept'],
     });
 
     const DocumentRef = collection(documentRef, collectionId);
@@ -189,12 +189,12 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
                   <li
                     className="flex p-4 cursor-pointer hover:bg-greylighter"
                     onClick={() => {
-                      handleFileBrowser(element.text);
+                      handleFileBrowser(element?.text);
                       setAttachmentToggle(false);
                     }}
                   >
-                    <div>{element.icon}</div>
-                    <div className="ml-2">{element.text}</div>
+                    <div>{element?.icon}</div>
+                    <div className="ml-2">{element?.text}</div>
                   </li>
                   <hr className="text-greylighter" />
                 </div>
@@ -217,8 +217,8 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
           mediaTypeToUpload === 'photo'
             ? POST_IMAGE_TYPES
             : mediaTypeToUpload === 'video'
-            ? POST_VIDEO_TYPES
-            : POST_DOCUMENT_TYPES
+              ? POST_VIDEO_TYPES
+              : POST_DOCUMENT_TYPES
         }
       />
     </>

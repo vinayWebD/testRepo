@@ -20,10 +20,11 @@ import {
   orderBy,
   query,
   getDocs,
-  where,
+  // where,
   // serverTimestamp,
 } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { AllUsers } from '../../services/messageService';
 
 const Messages = () => {
   const allFollowers = [
@@ -120,7 +121,7 @@ const Messages = () => {
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [addContact, setAddContact] = useState(true);
-  const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(null);
   const [fileData, setFileData] = useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
@@ -129,8 +130,26 @@ const Messages = () => {
   const [toId, setToId] = useState('');
   const [newMessage, setNewMessage] = useState(false);
   const [retrievedDocumentId, setRetrievedDocumentId] = useState('');
-  // const [mobileChat, setMobileChats] = useState(false);
+  const [mobileChat, setMobileChats] = useState(false);
 
+  const fetchFollowersList = async () => {
+    const { status, data } = await AllUsers();
+    if (status) {
+      console.log('FinalData', data.data.Networks);
+    } else {
+      console.log('error');
+    }
+  };
+
+  useEffect(() => {
+    fetchFollowersList();
+  }, []);
+  useEffect(() => {
+    if (isActive !== null) {
+      setMobileChats(true);
+    }
+  }, [isActive]);
+  console.log('isActive', isActive);
   const handleFileInputChange = (selectedFile) => {
     setFileData(selectedFile);
   };
@@ -154,13 +173,11 @@ const Messages = () => {
     setSearchedFollwers(followers);
   };
   const handleSelected = (id) => {
-    setNewMessage(true);
-    console.log('selectedFollowerId:', id);
-    console.log('searchedFollower:', allFollowers);
+    setNewMessage(false);
     setIsActive((prevId) => (prevId === id ? null : id));
     setAddContact(true);
+    fetchData();
     const selectedFollower = allFollowers.find((follower) => follower.id === id);
-    console.log('selectedFollower:', selectedFollower);
     if (!addContact) {
       const isAlreadyAdded = contacts.some((contact) => contact.id === selectedFollower.id);
 
@@ -180,8 +197,6 @@ const Messages = () => {
       const { id, FollowingUserId } = selectedFollower;
       setFromId(FollowingUserId);
       setToId(id);
-      console.log('id:', id);
-      console.log('FollowingUserId:', FollowingUserId);
 
       let collectionId;
       if (id < FollowingUserId) {
@@ -194,27 +209,23 @@ const Messages = () => {
     }
   };
   console.log('messages: ', messages);
+  const fetchData = async () => {
+    try {
+      const q = query(
+        collection(db, 'test_messages', retrievedDocumentId, retrievedDocumentId),
+        orderBy('timestamp'),
+      );
+      const querySnapshot = await getDocs(q);
+      let messagesData = [];
+      querySnapshot.forEach((doc) => {
+        messagesData.push({ ...doc.data(), id: doc.id });
+      });
+      setMessages(messagesData);
+    } catch (error) {
+      console.error('Error getting messages: ', error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const q = query(
-          collection(db, 'test_messages'),
-          where('id', '==', retrievedDocumentId),
-          orderBy('timestamp'),
-        );
-        const querySnapshot = await getDocs(q);
-
-        let messagesData = [];
-        querySnapshot.forEach((doc) => {
-          messagesData.push({ ...doc.data(), id: doc.id });
-        });
-
-        setMessages(messagesData);
-      } catch (error) {
-        console.error('Error getting messages: ', error);
-      }
-    };
-
     const unsubscribe = onSnapshot(
       query(collection(db, 'test_messages'), orderBy('timestamp')),
       (querySnapshot) => {
@@ -222,6 +233,12 @@ const Messages = () => {
         querySnapshot.forEach((doc) => {
           messagesData.push({ ...doc.data(), id: doc.id });
         });
+        // messagesData.forEach((element) => {
+        //   const exists = contacts.some((contact) => contact.id === element.id);
+        //   if (!exists) {
+        //     contacts.push(element);
+        //   }
+        // });
         const updatedContacts = contacts.map((contact) => {
           const lastMessageIdTo = messagesData.find(
             (message) => message.lastMessage.idTo === contact.id,
@@ -248,17 +265,18 @@ const Messages = () => {
       },
     );
 
-    fetchData();
-
     return () => {
       unsubscribe();
     };
   }, [retrievedDocumentId]);
-
   return (
     <SectionLayout activeTab={2}>
       <div className="relative flex justify-between bg-white rounded-lg shadow-card lg:mt-4 h-[100vh] md:h-[calc(100vh-120px)] overflow-hidden ">
-        <div className="border-r-2 border-lightgrey w-full md:w-4/12 overflow-y-auto scrollbar-custom">
+        <div
+          className={`border-r-2 border-lightgrey w-full md:w-4/12 overflow-y-auto scrollbar-custom md:block ${
+            mobileChat ? 'hidden' : 'block'
+          } `}
+        >
           <div>
             <div className=" text-[20px] font-semibold flex justify-between m-4">
               {addContact ? <span>Messages</span> : <span>New Chat</span>}
@@ -291,7 +309,7 @@ const Messages = () => {
                 )}
               </span>
             </div>
-            <div className=" mt-6 relative flex items-center border-b border-lightgrey m-4">
+            <div className=" md:mt-6 md:mb-4 relative flex items-center border-b border-lightgrey m-4 mb-2 mt-2">
               <img src={SearchIcon} alt="" />
               <input
                 type="text"
@@ -311,19 +329,19 @@ const Messages = () => {
                 </button>
               )}
             </div>
-            <div className="items-center w-full mt-6 ">
+            <div className="items-center w-full md:mt-6">
               {(addContact ? contacts : searchedFollwers).map((element, index) => (
                 <div
                   key={index}
                   className={` box-border border-l-[6px] border-white cursor-pointer  w-full ${
-                    isActive === element.id ? 'active-message-left-side-bar bg-lightbluebg' : ''
+                    isActive === element?.id ? 'active-message-left-side-bar bg-lightbluebg' : ''
                   }`}
-                  onClick={() => handleSelected(element.id)}
+                  onClick={() => handleSelected(element?.id)}
                 >
                   <div className="border-b border-b-lightgrey w-[95%] flex items-center py-3 ml-[3px] ">
                     <div>
                       <Avatar
-                        name={element.userDetails ? element.userDetails[1]?.name : element.name}
+                        name={element?.userDetails?.[1]?.name || element?.name}
                         image={ludgi}
                         classNames="w-[40px] h-[40px]"
                       />
@@ -332,7 +350,7 @@ const Messages = () => {
                       <div className="ml-2 w-full mr-2">
                         <div className="flex justify-between">
                           <h3 className="text-[16px] font-semibold">
-                            {element.userDetails ? element.userDetails[1]?.name : element.name}
+                            {element?.userDetails?.[1]?.name || element?.name}
                           </h3>
                           <p>5s</p>
                         </div>
@@ -342,10 +360,10 @@ const Messages = () => {
                               newMessage ? 'font-medium' : 'font-normal'
                             }`}
                           >
-                            {element.lastMessage?.content
-                              ? element.lastMessage.content.length > 18
-                                ? `${element.lastMessage.content.substring(0, 10)}...`
-                                : element.lastMessage.content
+                            {element?.lastMessage?.content
+                              ? element?.lastMessage.content.length > 18
+                                ? `${element?.lastMessage.content.substring(0, 10)}...`
+                                : element?.lastMessage.content
                               : ''}
                           </p>
                           {newMessage ? (
@@ -360,7 +378,7 @@ const Messages = () => {
                     ) : (
                       <div className="ml-2 mr-2 w-full">
                         <div className="flex justify-between items-center">
-                          <h3 className="text-[16px] font-semibold">{element.name}</h3>
+                          <h3 className="text-[16px] font-semibold">{element?.name}</h3>
                           <img src={messageVector} alt="" className="w-[24px] h-[24px]" />
                         </div>
                       </div>
@@ -371,12 +389,24 @@ const Messages = () => {
             </div>
           </div>
         </div>
-        <div className="relative md:w-8/12 overflow-hidden hidden md:block w-full">
+        <div
+          className={`relative md:w-8/12 overflow-hidden md:block w-full ${
+            mobileChat ? 'block' : 'hidden'
+          }`}
+        >
           {isActive !== null ? (
             <div className="flex flex-col justify-between h-full">
               <div className="flex justify-between items-center border-b-2 border-whitelight w-full h-fit p-4">
                 <div className="flex items-center">
-                  <img src={BackAvatar} alt="" className="block md:hidden" />
+                  <img
+                    src={BackAvatar}
+                    alt=""
+                    className="block md:hidden"
+                    onClick={() => {
+                      setMobileChats(false);
+                      setIsActive(null);
+                    }}
+                  />
                   <Avatar image={ludgi} classNames="w-[52px] h-[52px] ml-4 md:ml-0" />
                   <div className="ml-2">
                     <span className="text-[20px] font-semibold">

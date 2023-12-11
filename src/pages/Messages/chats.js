@@ -103,7 +103,6 @@ const chats = (props) => {
   const [data, setData] = useState('');
   const [imageSrc, setImageSrc] = useState('');
   const [videoSrc, setVideoSrc] = useState('');
-  // const [chatHistoryData, setChatHistoryData] = useState([]);
 
   useEffect(() => {
     if (props.fileData && props.fileData.length > 0) {
@@ -130,7 +129,6 @@ const chats = (props) => {
       }
       setOpenPopup(true);
     }
-    // setChatHistoryData(props.chatHistoryData);
   }, [props.fileData]);
   return (
     <div className="h-full">
@@ -191,7 +189,7 @@ const chats = (props) => {
                 break;
 
               default:
-                return <React.Fragment key={element.type}></React.Fragment>;
+                return <React.Fragment key={element?.type}></React.Fragment>;
             }
           })}
         </div>
