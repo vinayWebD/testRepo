@@ -6,7 +6,7 @@ const Textarea = ({ placeholder = '', maxLength = 100 }) => {
   return (
     <textarea
       value={text}
-      className="min-h-[130px] w-full pr-6"
+      className="min-h-[130px] w-full pr-6 outline-none"
       placeholder={placeholder}
       onChange={(e) => setText(e.target.value)}
       maxLength={maxLength}

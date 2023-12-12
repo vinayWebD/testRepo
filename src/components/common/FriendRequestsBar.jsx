@@ -238,6 +238,7 @@ function FriendRequestsBar({
                 <UserCard
                   key={item?.id}
                   id={item?.id}
+                  userId={item?.User?.id}
                   selectedTab={'selectedTab'}
                   userName={`${item?.User?.firstName} ${item?.User?.lastName}`}
                   location={item?.User?.location}
@@ -247,6 +248,7 @@ function FriendRequestsBar({
                   reloadData={reloadData}
                   isRequestedByYou={!!item?.User?.Requested?.length}
                   isFriendRequest={true}
+                  closePopupHandler={onClose}
                 />
               ))}
             </InfiniteScroll>
