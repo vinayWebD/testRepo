@@ -217,8 +217,8 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
           mediaTypeToUpload === 'photo'
             ? POST_IMAGE_TYPES
             : mediaTypeToUpload === 'video'
-              ? POST_VIDEO_TYPES
-              : POST_DOCUMENT_TYPES
+            ? POST_VIDEO_TYPES
+            : POST_DOCUMENT_TYPES
         }
       />
     </>
