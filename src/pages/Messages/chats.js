@@ -164,7 +164,7 @@ const chats = (props) => {
         </div>
       ) : (
         <div>
-          {chatHistoryData.map((element) => {
+          {chatHistoryData?.map((element) => {
             switch (element.type) {
               case 'divider':
                 return <Timestamp element={element} />;
@@ -189,7 +189,7 @@ const chats = (props) => {
                 break;
 
               default:
-                return <React.Fragment key={element.type}></React.Fragment>;
+                return <React.Fragment key={element?.type}></React.Fragment>;
             }
           })}
         </div>

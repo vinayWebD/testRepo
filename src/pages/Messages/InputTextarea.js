@@ -7,38 +7,38 @@ import PhotoIcon from '../../components/Icons/PhotoIcon';
 import VideoIcon from '../../components/Icons/VideoIcon';
 import DocumentIcon from '../../components/Icons/DocumentIcon';
 import { POST_IMAGE_TYPES, POST_VIDEO_TYPES, POST_DOCUMENT_TYPES } from '../../constants/constants';
+import { collection, setDoc, doc } from 'firebase/firestore';
+import { db } from '../../firebase';
+import { useSelector } from 'react-redux';
 
-const InputTextarea = ({ onFileInputChange }) => {
+const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
   const [emojiToggle, setEmojiToggle] = useState(false);
   const [attachmentToggle, setAttachmentToggle] = useState(false);
   const [mediaTypeToUpload, setMediaTypeToUpload] = useState('photo');
   const [openFileBrowser, setOpenFileBrowser] = useState(0);
-  const [text, setText] = useState('');
+  const [collectionIds, setCollectionIds] = useState('');
+  const [input, setInput] = useState('');
   const textareaRef = useRef(null);
   const emojieContainerRef = useRef(null);
   const attachmentContainerRef = useRef(null);
   const mediaInput = useRef(null);
+  const myProfile = useSelector((state) => state.auth.user);
   useEffect(() => {
     if (openFileBrowser) {
       mediaInput?.current?.click();
     }
   }, [openFileBrowser]);
-
   const autoExpand = () => {
-    /* Reset field height */
     const textarea = textareaRef.current;
     const textAreaActualHeight = parseInt(textarea.style.height);
 
     textarea.style.height = 'inherit';
-
-    /* Get the computed styles for the element */
     const computed = window.getComputedStyle(textarea);
-    /* Calculate the height */
     const height =
       parseInt(computed.getPropertyValue('padding-top'), 10) +
       textarea.scrollHeight +
       parseInt(computed.getPropertyValue('padding-bottom'), 10) -
-      14; // 14 as it is the height of the font (font size)
+      14;
 
     if (height < 180) {
       textarea.style.height = height + 'px';
@@ -47,7 +47,6 @@ const InputTextarea = ({ onFileInputChange }) => {
     }
   };
   const handleFileBrowser = (type) => {
-    // if (media?.length < POST_MAX_ALLOWED_MEDIA) {
     if (type === 'Photos') {
       setMediaTypeToUpload('photo');
     } else if (type === 'Video') {
@@ -56,21 +55,17 @@ const InputTextarea = ({ onFileInputChange }) => {
       setMediaTypeToUpload('document');
     }
     setOpenFileBrowser((prev) => prev + 1);
-    // }
   };
 
-  const handleChange = (newText) => {
-    setText(newText);
-  };
-  const onEmojiClick = (emojiObject) => {
-    handleChange((prevText) => {
-      if (prevText.length + emojiObject.emoji?.length) {
-        return prevText + emojiObject.emoji;
-      } else {
-        return prevText;
-      }
-    });
-  };
+  // const onEmojiClick = (emojiObject) => {
+  //   handleChange((prevText) => {
+  //     if (prevText.length + emojiObject.emoji?.length) {
+  //       return prevText + emojiObject.emoji;
+  //     } else {
+  //       return prevText;
+  //     }
+  //   });
+  // };
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (emojieContainerRef.current && !emojieContainerRef.current.contains(event.target)) {
@@ -89,6 +84,49 @@ const InputTextarea = ({ onFileInputChange }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+
+  const onSend = async () => {
+    console.log(collectionIds);
+    let collectionId;
+    if (toId < fromId) {
+      collectionId = `${toId}_${fromId}`;
+      setCollectionIds(collectionId);
+    } else {
+      collectionId = `${fromId}_${toId}`;
+      setCollectionIds(collectionId);
+    }
+
+    const testMessagesCollectionRef = collection(db, 'test_messages');
+    const documentRef = doc(testMessagesCollectionRef, collectionId);
+
+    const timestampInSeconds = Math.floor(Date.now() / 1000);
+    setDoc(documentRef, {
+      chatId: collectionId,
+      lastMessage: {
+        content: input,
+        idFrom: fromId,
+        idTo: toId,
+        read: true,
+        timestamp: timestampInSeconds,
+      },
+      timestamp: timestampInSeconds,
+      userIds: [fromId, toId],
+      userDetails: [myProfile, contacts.find((user) => user.id === toId) || 'wrong concept'],
+    });
+
+    const DocumentRef = collection(documentRef, collectionId);
+    const timestampDocumentRef = doc(DocumentRef, timestampInSeconds.toString());
+
+    setDoc(timestampDocumentRef, {
+      type: 'msg',
+      message: input,
+      idFrom: fromId,
+      idTo: toId,
+      read: true,
+      timestamp: timestampInSeconds,
+    });
+    setInput('');
+  };
   const data = [
     { icon: <PhotoIcon fill="#0071BC" />, text: 'Photos' },
     { icon: <VideoIcon fill="#0071BC" />, text: 'Video' },
@@ -106,7 +144,7 @@ const InputTextarea = ({ onFileInputChange }) => {
           </div>
         </div>
         <textarea
-          value={text}
+          value={input}
           placeholder="Type a message..."
           className=" p-[9px] outline-none w-full text-m border-none  placeholder:text-greylight"
           autoComplete={'true'}
@@ -115,9 +153,11 @@ const InputTextarea = ({ onFileInputChange }) => {
           ref={(el) => {
             textareaRef.current = el;
           }}
-          onChange={(e) => handleChange(e.target.value)}
+          onChange={(e) => {
+            setInput(e.target.value);
+          }}
         />
-        <div className="cursor-pointer">
+        <div className="cursor-pointer" onClick={() => onSend()}>
           <SendIcon />
         </div>
         {emojiToggle && (
@@ -128,7 +168,7 @@ const InputTextarea = ({ onFileInputChange }) => {
             <EmojiPicker
               width={'300px'}
               height={'350px'}
-              onEmojiClick={onEmojiClick}
+              // onEmojiClick={onEmojiClick}
               searchDisabled={true}
               skinTonesDisabled={true}
               previewConfig={{
@@ -149,12 +189,12 @@ const InputTextarea = ({ onFileInputChange }) => {
                   <li
                     className="flex p-4 cursor-pointer hover:bg-greylighter"
                     onClick={() => {
-                      handleFileBrowser(element.text);
+                      handleFileBrowser(element?.text);
                       setAttachmentToggle(false);
                     }}
                   >
-                    <div>{element.icon}</div>
-                    <div className="ml-2">{element.text}</div>
+                    <div>{element?.icon}</div>
+                    <div className="ml-2">{element?.text}</div>
                   </li>
                   <hr className="text-greylighter" />
                 </div>
@@ -177,8 +217,8 @@ const InputTextarea = ({ onFileInputChange }) => {
           mediaTypeToUpload === 'photo'
             ? POST_IMAGE_TYPES
             : mediaTypeToUpload === 'video'
-            ? POST_VIDEO_TYPES
-            : POST_DOCUMENT_TYPES
+              ? POST_VIDEO_TYPES
+              : POST_DOCUMENT_TYPES
         }
       />
     </>
