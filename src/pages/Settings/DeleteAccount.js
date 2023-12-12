@@ -16,7 +16,7 @@ import { deleteAccountDispatcher } from '../../redux/dispatchers/authDispatcher'
 import { updateSearch } from '../../redux/slices/appSearchSlice';
 import { logout } from '../../redux/slices/authSlice';
 
-const { SETTINGS } = PATHS;
+const { SETTINGS, LOGIN } = PATHS;
 
 const initialValues = {
   password: '',
@@ -45,6 +45,7 @@ const DeleteAccount = () => {
       dispatch(updateSearch({ searchValue: '' }));
       localStorage.removeItem('token');
       dispatch(logout());
+      navigate(LOGIN, { replace: true });
     }
   };
 
