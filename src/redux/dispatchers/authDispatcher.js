@@ -1,6 +1,18 @@
-import { loginUser, logoutUser, sendForgotPasswordOtp, userProfile } from '../../services/auth';
+import {
+  deleteAccount,
+  loginUser,
+  logoutUser,
+  sendForgotPasswordOtp,
+  userProfile,
+} from '../../services/auth';
 import { updateSearch } from '../slices/appSearchSlice';
-import { globalLoading, login, logout, profile } from '../slices/authSlice';
+import {
+  globalLoading,
+  globalTransparentLoadingPrivate,
+  login,
+  logout,
+  profile,
+} from '../slices/authSlice';
 
 /**
  * The dispatcher method to call the login API and do the necessary React related functionalities
@@ -61,4 +73,19 @@ const forgotPasswordOtpDispatcher =
     return { status, data };
   };
 
-export { loginDispatcher, logoutDispatcher, profileDispatcher, forgotPasswordOtpDispatcher };
+const deleteAccountDispatcher =
+  ({ password }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await deleteAccount({ password, dispatch });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+export {
+  loginDispatcher,
+  logoutDispatcher,
+  profileDispatcher,
+  forgotPasswordOtpDispatcher,
+  deleteAccountDispatcher,
+};

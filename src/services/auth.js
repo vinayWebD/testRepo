@@ -7,6 +7,7 @@ const {
   FORGOT_PASSWORD_OTP,
   FORGOT_PASSWORD_VERIFY_OTP,
   FORGOT_PASSWORD_RESET_PWD,
+  DELETE_ACCOUNT,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -118,6 +119,17 @@ const resetPassword = async ({ email = '', code, password = '', confirmPassword 
   }
 };
 
+const deleteAccount = async ({ password = '' }) => {
+  try {
+    const response = await apiUtility(DELETE_ACCOUNT, 'DELETE', {
+      password: password.trim(),
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   loginUser,
   logoutUser,
@@ -125,4 +137,5 @@ export {
   sendForgotPasswordOtp,
   forgotPasswordOtpValidation,
   resetPassword,
+  deleteAccount,
 };
