@@ -17,9 +17,7 @@ import { deleteAccountDispatcher, logoutDispatcher } from '../../redux/dispatche
 const { SETTINGS } = PATHS;
 
 const initialValues = {
-  oldPassword: '',
-  newPassword: '',
-  confirmPassword: '',
+  password: '',
 };
 
 const DeleteAccount = () => {
@@ -120,13 +118,13 @@ const DeleteAccount = () => {
                   label={'Yes'}
                   isIcon={false}
                   type="submit"
-                  additionalClassNames="!h-[50px] !text16 !w-[33%] !text-center justify-center"
+                  additionalClassNames="!h-[50px] !text16 !w-[43%] !text-center justify-center"
                 />
                 <Button
                   label={'No'}
                   onClick={() => setIsDeleteAccountPopupOpen(false)}
                   showArrowIcon={false}
-                  additionalClassNames="!h-[50px] !w-[33%] !px-[30px] !py-2 !text16"
+                  additionalClassNames="!h-[50px] !w-[43%] !px-[30px] !py-2 !text16"
                 />
               </div>
             </form>

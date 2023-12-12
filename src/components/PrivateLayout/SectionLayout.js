@@ -38,7 +38,7 @@ const SectionLayout = ({ children, activeTab }) => {
         </div>
       </div>
       {isGlobalTransparentLoadingPrivate ? (
-        <div className="fixed top-0 left-0 bg-[#b3b3b366] h-screen w-screen z-50 pointer-events-none">
+        <div className="fixed top-0 left-0 bg-[#b3b3b366] h-screen w-screen z-[510] pointer-events-none">
           <Loader />
         </div>
       ) : (
