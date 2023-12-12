@@ -93,7 +93,7 @@ export default [
       },
       {
         title: 'Myself: About Settings',
-        label: 'Only specific users can see the content relate to About in the Myself section.',
+        label: 'Only specific users can see the content related to About in the Myself section.',
         value: 'aboutSpecificUsers',
       },
     ],
@@ -120,7 +120,7 @@ export default [
       {
         title: 'Myself: Personality/Behavioral Assessments Settings',
         label:
-          'Only specific users can see the content relate to Assessments in the Myself section.',
+          'Only specific users can see the content related to Assessments in the Myself section.',
         value: 'personalitySpecificUsers',
       },
     ],
@@ -147,7 +147,7 @@ export default [
       {
         title: 'Myself: Soft skills/Personal skills Settings',
         label:
-          'Only specific users can see the content relate to Personal Skills in the Myself section.',
+          'Only specific users can see the content related to Personal Skills in the Myself section.',
         value: 'softskillsSpecificUsers',
       },
     ],
@@ -173,7 +173,7 @@ export default [
       },
       {
         title: 'Myself: Gender Settings',
-        label: 'Only specific users can see the content relate to Gender in the Myself section.',
+        label: 'Only specific users can see the content related to Gender in the Myself section.',
         value: 'genderSpecificUsers',
       },
     ],
@@ -199,7 +199,7 @@ export default [
       },
       {
         title: 'Myself: Pronouns Settings',
-        label: 'Only specific users can see the content relate to Pronoun in the Myself section.',
+        label: 'Only specific users can see the content related to Pronoun in the Myself section.',
         value: 'pronousSpecificUsers',
       },
     ],
@@ -225,7 +225,7 @@ export default [
       },
       {
         title: 'Myself: Language Settings',
-        label: 'Only specific users can see the content relate to Language in the Myself section.',
+        label: 'Only specific users can see the content related to Language in the Myself section.',
         value: 'languageSpecificUsers',
       },
     ],
@@ -251,7 +251,7 @@ export default [
       },
       {
         title: 'Myself: Location Settings',
-        label: 'Only specific users can see the content relate to Location in the Myself section.',
+        label: 'Only specific users can see the content related to Location in the Myself section.',
         value: 'locationSpecificUsers',
       },
     ],
