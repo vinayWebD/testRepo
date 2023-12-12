@@ -142,7 +142,7 @@ const PrivateHeader = () => {
         padding="p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height="max-h-[100vh] md:h-auto"
+        height="h-[100dvh] max-h-[100dvh] md:h-[90vh] md:max-h-[90vh]"
       ></FriendRequestsBar>
     </div>
   );

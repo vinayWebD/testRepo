@@ -36,7 +36,7 @@ const EditProfile = ({
   const dispatch = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [isVerifyEmailPopupOpen, setIsVerifyEmailPopupOpen] = useState(false);
-  const [isEmailVerified] = useState(false);
+  const [isEmailVerified, setIsEmailVerified] = useState(0);
 
   const initialValues = {
     firstName,
@@ -86,12 +86,15 @@ const EditProfile = ({
   const onSubmit = async (values) => {
     if (!isLoading) {
       setIsLoading(true);
+
       const { firstName = '', lastName = '', location = '', profilePicture = '' } = values;
+
       const response = await fetchProfileEdit({
-        firstName,
-        lastName,
-        location,
-        profilePicture,
+        firstName: firstName?.trim(),
+        lastName: lastName?.trim(),
+        location: location?.trim(),
+        profilePicture: profilePicture || '',
+        email: isEmailVerified === 2 ? values?.email?.trim() : email,
       });
       const { status, data } = response;
       const errormsg = getErrorMessage(data);
@@ -115,8 +118,15 @@ const EditProfile = ({
   });
 
   const onVerifyClickHandler = async () => {
-    console.log(formik.errors.email);
-    const response = await dispatch(sendOtpToUpdateEmailDispatcher({ email: formik.values.email }));
+    if (![0, 1].includes(isEmailVerified)) {
+      return;
+    }
+
+    const response = await dispatch(
+      sendOtpToUpdateEmailDispatcher({
+        email: formik.values.email?.trim(),
+      }),
+    );
     const { status, data } = response;
     if (!successStatus(status)) {
       const errormsg = getErrorMessage(data);
@@ -127,6 +137,7 @@ const EditProfile = ({
     } else {
       setIsVerifyEmailPopupOpen(true);
     }
+    setIsEmailVerified(0);
   };
 
   return (
@@ -159,7 +170,6 @@ const EditProfile = ({
             initialValue={formik?.values?.firstName}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
             helperText={formik.touched.firstName && formik.errors.firstName}
             isRequired
             className="w-full"
@@ -173,7 +183,6 @@ const EditProfile = ({
             initialValue={formik?.values?.lastName}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
             helperText={formik.touched.lastName && formik.errors.lastName}
             isRequired
             className="w-full"
@@ -189,26 +198,26 @@ const EditProfile = ({
             initialValue={formik?.values?.email}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.email && Boolean(formik.errors.email)}
             helperText={formik.touched.email && formik.errors.email}
             isRequired
+            disabled={isEmailVerified === 2}
             className="pr-13"
             parentClassName="w-full"
           />
-          <div className="absolute right-[30px] top-[40px] text-[12px] bg-white">
+          <div className="absolute right-[30px] top-[40px] text-[12px]">
             <span
               className={`text-center ${
                 formik?.values?.email?.trim() !== email?.trim()
                   ? 'text-blueprimary cursor-pointer font-semibold'
                   : 'text-greydark opacity-40 cursor-not-allowed'
-              } ${isEmailVerified ? '!cursor-default text-[#0FBC00]' : ''} `}
+              } ${isEmailVerified === 2 ? '!cursor-default !text-[#0FBC00]' : ''} `}
               onClick={() => {
-                if (!isEmailVerified && formik?.values?.email?.trim() !== email?.trim()) {
+                if (isEmailVerified !== 2 && formik?.values?.email?.trim() !== email?.trim()) {
                   onVerifyClickHandler();
                 }
               }}
             >
-              {isEmailVerified ? 'Verified' : 'Verify'}
+              {isEmailVerified === 2 ? 'Verified' : 'Verify'}
             </span>
           </div>
         </div>
@@ -221,7 +230,6 @@ const EditProfile = ({
             initialValue={formik?.values?.location}
             onChange={formik.handleChange}
             labelFontColor={'#333333'}
-            error={formik.touched.location && Boolean(formik.errors.location)}
             helperText={formik.touched.location && formik.errors.location}
             className="w-full"
           />
@@ -233,6 +241,7 @@ const EditProfile = ({
             additionalClassNames="capitalize"
             isLoading={isLoading}
             showArrowIcon={false}
+            onlyShowLoaderWhenLoading
             isDisabled={
               isLoading ||
               JSON.stringify(formik?.values) ===
@@ -243,13 +252,24 @@ const EditProfile = ({
       </form>
       <Modal
         isOpen={isVerifyEmailPopupOpen}
-        onClose={() => setIsVerifyEmailPopupOpen(false)}
+        onClose={() => {
+          setIsEmailVerified(0);
+          setIsVerifyEmailPopupOpen(false);
+        }}
         isTitle={true}
         title={'Verify Email'}
         titleClassNames=""
         padding="p-0"
       >
-        <UpdateEmail email={formik?.values?.email} />
+        <UpdateEmail
+          newEmail={formik?.values?.email}
+          verificationStep={isEmailVerified}
+          updateVerificationStep={setIsEmailVerified}
+          currentEmail={email}
+          closeHandler={() => {
+            setIsVerifyEmailPopupOpen(false);
+          }}
+        />
       </Modal>
     </>
   );

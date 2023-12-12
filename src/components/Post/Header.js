@@ -54,7 +54,12 @@ const Header = ({
         },
         {
           name: 'Copy link',
-          action: () => copyLink(`${window.location.origin}${PATHS.HOME}/${postDetails?.id}`),
+          action: () =>
+            copyLink(
+              `${window.location.origin}${PATHS.HOME}/${
+                postDetails?.parentPostId || postDetails?.id
+              }`,
+            ),
         },
       ]);
     } else {
@@ -110,6 +115,8 @@ const Header = ({
       if (successStatus(status)) {
         if (!data?.data?.isApproved) {
           ToastNotifySuccess('A follow request has been sent');
+        } else {
+          ToastNotifySuccess(`User ${isFollowed ? 'unfollowed' : 'followed'} successfully`);
         }
         await reloadPostDetails({ postId: postDetails?.id });
       } else {
@@ -127,7 +134,7 @@ const Header = ({
       <Avatar
         name={creatorName}
         image={creatorProfilePicUrl}
-        classNames="w-[50px] h-[50px] bg-greylight border border-greymedium"
+        classNames="w-[50px] h-[50px] bg-greylight border border-greymedium cursor-pointer"
         clickFun={() => {
           if (!isCreatedByMe) {
             navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`);
@@ -137,7 +144,18 @@ const Header = ({
         }}
       />
       <div>
-        <p className="font-semibold capitalize">{creatorName}</p>
+        <p
+          className="font-semibold capitalize cursor-pointer"
+          onClick={() => {
+            if (!isCreatedByMe) {
+              navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`);
+            } else {
+              navigate(`${PATHS.PROFILE}`);
+            }
+          }}
+        >
+          {creatorName}
+        </p>
         <p className="text-[12px] text-greylight">{timeSpan(createdAt, DATE_FORMAT.POST)}</p>
       </div>
 

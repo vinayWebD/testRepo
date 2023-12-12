@@ -27,7 +27,7 @@ function ConfirmationModal({
   isTitle = true,
   width = 'max-w-[95vw] md:max-w-[430px]',
   height = 'h-auto',
-  padding = 'px-6',
+  padding = 'px-5',
   childrenClassNames = 'md:max-h-5/6 max-h-[500px]',
   titleClassNames = 'pl-[18px]',
   titleParentClassNames = 'm-3',

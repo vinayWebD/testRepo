@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { fetchPostDetails, fetchPosts } from '../../services/feed';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../Toast/ToastNotify';
@@ -37,11 +37,13 @@ function MyPosts({ other = true }) {
   const { FEED: FEED_PAGE_SIZE } = PAGE_SIZE;
   let isLoadingAPI = false;
   const loaderRef = useRef(null);
+
   let { id: idFromUrl } = useParams();
 
   useScrollToTop();
 
   useEffect(() => {
+    reloadPosts();
     if (idFromUrl && !otherPeople) {
       fetchSinglePostDetails({ postId: idFromUrl });
       setIsPreviewDetailsPostOpen(true);
@@ -52,7 +54,7 @@ function MyPosts({ other = true }) {
     const observer = new IntersectionObserver(handleObserver, {
       root: null,
       rootMargin: '0px', // Leaving no margin so that API does not get called before handedly
-      threshold: 1,
+      threshold: 0,
     });
     if (loaderRef.current) {
       observer.observe(loaderRef.current);
@@ -77,6 +79,7 @@ function MyPosts({ other = true }) {
     window.scrollTo(0, 0);
     await fetchAllPostsAPI(0, true);
   };
+
   const fetchAllPostsAPI = async (page, reloadForcefully = false) => {
     if (!reloadForcefully && allPostsLoaded && !isLoadingAPI && page !== 0) return; // prevent fetching if all posts are loaded
 
@@ -152,6 +155,49 @@ function MyPosts({ other = true }) {
     setIsCreatePostModalOpen(true);
   };
 
+  const sharedPostParent = useCallback((post) => {
+    if (post?.id) {
+      return (
+        <div className="border border-greylighter rounded-lg px-3 py-4 mt-7">
+          <Header
+            createdAt={post?.createdAt}
+            creatorName={`${post?.User?.firstName} ${post?.User?.lastName}`}
+            creatorProfilePicUrl={post?.User?.profilePictureUrl}
+            isCreatedByMe={post?.UserId === userData?.id}
+            postId={post?.postId}
+            reloadData={reloadPosts}
+            reloadPostDetails={fetchSinglePostDetails}
+            postDetails={{
+              caption: post?.caption,
+              media: post?.media,
+              links: post?.links,
+              id: post?.id,
+              parentPostId: post?.parentPostId,
+            }}
+            userId={post?.UserId}
+            isFollowed={post?.isFollowed}
+            showThreeDots={false}
+          />
+          <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+          <div className="mt-3">
+            <MediaLayout
+              media={post?.postMedia}
+              allowOnlyView={true}
+              origin="feed"
+              onMediaClickHandler={(customIndex) => {
+                // navigate(`${PATHS.PROFILE}/${post?.id}`);
+                setIsPreviewDetailsPostOpen(true);
+                setActivePost({ ...post });
+                setActiveMediaIndex(customIndex);
+              }}
+            />
+          </div>
+        </div>
+      );
+    }
+    return null;
+  }, []);
+
   return (
     <div>
       {posts?.length === 0 && (
@@ -172,8 +218,8 @@ function MyPosts({ other = true }) {
               <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
                 No posts added yet.
               </h4>
-              {
-                !other && <>
+              {!other && (
+                <>
                   <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
                     It helps people quickly identify your many talents.
                   </h5>
@@ -186,8 +232,7 @@ function MyPosts({ other = true }) {
                     />
                   </div>
                 </>
-              }
-
+              )}
             </Card>
           )}
         </>
@@ -206,14 +251,20 @@ function MyPosts({ other = true }) {
                     postId={post?.postId}
                     reloadData={reloadPosts}
                     reloadPostDetails={fetchSinglePostDetails}
+                    userId={post?.UserId}
+                    isFollowed={post?.isFollowed}
                     postDetails={{
                       caption: post?.caption,
                       media: post?.media,
                       links: post?.links,
                       id: post?.id,
+                      parentPostId: post?.parentPostId,
                     }}
                   />
                   <CaptionLinkContainer caption={post?.caption} links={post?.links} />
+
+                  {post?.type === 'Shared' ? sharedPostParent(post?.parentPostDetails || {}) : ''}
+
                   <div className="mt-3">
                     <MediaLayout
                       media={post?.postMedia}
@@ -235,20 +286,22 @@ function MyPosts({ other = true }) {
                     postId={post?.id}
                     reloadPostDetails={fetchSinglePostDetails}
                     className="justify-between md:justify-start md:gap-[10%]"
+                    completePostData={post?.parentPostDetails || post}
+                    reloadData={reloadPosts}
                   />
                 </Card>
               );
             })}
             {isLoading
               ? ['', ''].map((i, _i) => (
-                <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
-                  <span className="flex gap-2">
-                    <span className="flex gap-2 w-full justify-center items-center">
-                      <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                  <Card classNames="p-4 mt-4" key={`${i}${_i}`}>
+                    <span className="flex gap-2">
+                      <span className="flex gap-2 w-full justify-center items-center">
+                        <PostSkeleton showCaption={_i === 1} showMedia={_i === 1} />
+                      </span>
                     </span>
-                  </span>
-                </Card>
-              ))
+                  </Card>
+                ))
               : ''}
           </>
         )}
@@ -266,22 +319,25 @@ function MyPosts({ other = true }) {
         isOpen={isPreviewDetailsPostOpen}
         onClose={() => setIsPreviewDetailsPostOpen(false)}
         isTitle={false}
-        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-          } `}
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${!activePost?.postMedia?.length
+        height={` ${
+          !activePost?.postMedia?.length
             ? '!w-[100vw] md:!w-[50vw]'
             : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-          } `}
+        } `}
       >
         <PostDetails
           post={activePost}
           reloadPostDetails={fetchSinglePostDetails}
           customActiveIndex={activeMediaIndex}
           onCloseHandler={() => setIsPreviewDetailsPostOpen(false)}
+          reloadPosts={reloadPosts}
         />
       </Modal>
       <Modal

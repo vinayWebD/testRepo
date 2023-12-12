@@ -61,18 +61,27 @@ const NotificationSection = () => {
   };
 
   const formatTimeDifference = (timestamp) => {
-    const notificationDate = new Date(timestamp);
-    const formattedDistance = formatDistanceToNow(notificationDate, {
-      addSuffix: true,
-    });
-    return formattedDistance;
+    if (timestamp) {
+      const notificationDate = new Date(timestamp);
+      const formattedDistance = formatDistanceToNow(notificationDate, {
+        addSuffix: true,
+      });
+      return formattedDistance;
+    }
+    return '';
   };
 
   const notificationData = (item, i, count = 0) => {
-    const userData = item?.notificationData;
+    let userData = item?.notificationData;
+    if (!userData) {
+      userData = item?.[0]?.notificationData;
+      item = item?.[0];
+    }
+
     if (!item?.markAsRead) {
       return (
         <div
+          key={item?.id}
           className="px-1 bg-[#F5FBFF] relative cursor-pointer"
           onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
         >
@@ -82,14 +91,15 @@ const NotificationSection = () => {
                 <span className="font-medium">
                   {userData?.firstName} {userData?.lastName}
                 </span>
-                {count > 1 && item?.notificationType === 'like'
+                {count > 1 && (item?.notificationType || item?.[0]?.notificationType) === 'like'
                   ? ` and ${count - 1} others liked your post`
-                  : count > 1 && item?.notificationType === 'comment'
+                  : count > 1 &&
+                    (item?.notificationType || item?.[0]?.notificationType) === 'comment'
                   ? ` and ${count - 1} others commented on your post`
-                  : item?.notificationType === 'like'
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'like'
                   ? `${' '}liked your post`
-                  : item?.notificationType === 'comment'
-                  ? `${' '}comment on your post`
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'comment'
+                  ? `${' '}commented on your post`
                   : `${' '}followed you`}
               </div>
               <div className="text-xs font-normal text-[#A1A0A0]">
@@ -103,6 +113,7 @@ const NotificationSection = () => {
     } else {
       return (
         <div
+          key={item?.id}
           className="px-1 cursor-pointer"
           onClick={() => handleClick(item?.PostId, item?.id, item?.markAsRead, userData?.id)}
         >
@@ -112,14 +123,15 @@ const NotificationSection = () => {
                 <span className="font-medium">
                   {userData?.firstName} {userData?.lastName}
                 </span>
-                {count > 1 && item?.notificationType === 'like'
+                {count > 1 && (item?.notificationType || item?.[0]?.notificationType) === 'like'
                   ? ` and ${count - 1} others liked your post`
-                  : count > 1 && item?.notificationType === 'comment'
+                  : count > 1 &&
+                    (item?.notificationType || item?.[0]?.notificationType) === 'comment'
                   ? ` and ${count - 1} others commented on your post`
-                  : item?.notificationType === 'like'
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'like'
                   ? `${' '}liked your post`
-                  : item?.notificationType === 'comment'
-                  ? `${' '}comment on your post`
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'comment'
+                  ? `${' '}commented on your post`
                   : `${' '}followed you`}
               </div>
               <div className="text-xs font-normal text-[#A1A0A0]">

@@ -33,7 +33,7 @@ const NotificationPage = () => {
   const [activePost, setActivePost] = useState({});
   const [activeMediaIndex, setActiveMediaIndex] = useState(0);
 
-  useScrollToTop()
+  useScrollToTop();
 
   const fetchnotificationList = async () => {
     const { status, data } = await dispatch(
@@ -54,6 +54,7 @@ const NotificationPage = () => {
   };
 
   useEffect(() => {
+    window.scroll(0, 0);
     fetchnotificationList();
   }, [currentPage]);
 
@@ -109,15 +110,23 @@ const NotificationPage = () => {
   };
 
   const formatTimeDifference = (timestamp) => {
-    const notificationDate = new Date(timestamp);
-    const formattedDistance = formatDistanceToNow(notificationDate, {
-      addSuffix: true,
-    });
-    return formattedDistance;
+    if (timestamp) {
+      const notificationDate = new Date(timestamp);
+      const formattedDistance = formatDistanceToNow(notificationDate, {
+        addSuffix: true,
+      });
+      return formattedDistance;
+    }
+    return '';
   };
 
   const notificationData = (item, i, count = 0) => {
-    const userData = item?.notificationData;
+    let userData = item?.notificationData;
+    if (!userData) {
+      userData = item?.[0]?.notificationData;
+      item = item?.[0];
+    }
+
     if (!item?.markAsRead) {
       return (
         <div
@@ -138,15 +147,16 @@ const NotificationPage = () => {
                 <span className="font-medium">
                   {userData?.firstName} {userData?.lastName}
                 </span>
-                {count > 1 && item?.notificationType === 'like'
+                {count > 1 && (item?.notificationType || item?.[0]?.notificationType) === 'like'
                   ? ` and ${count - 1} others liked your post`
-                  : count > 1 && item?.notificationType === 'comment'
-                    ? ` and ${count - 1} others commented on your post`
-                    : item?.notificationType === 'like'
-                      ? `${' '}liked your post`
-                      : item?.notificationType === 'comment'
-                        ? `${' '}comment on your post`
-                        : `${' '}followed you`}
+                  : count > 1 &&
+                    (item?.notificationType || item?.[0]?.notificationType) === 'comment'
+                  ? ` and ${count - 1} others commented on your post`
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'like'
+                  ? `${' '}liked your post`
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'comment'
+                  ? `${' '}commented on your post`
+                  : `${' '}followed you`}
               </div>
               <div className="text-[12px] font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -175,15 +185,16 @@ const NotificationPage = () => {
                 <span className="font-medium">
                   {userData?.firstName} {userData?.lastName}{' '}
                 </span>
-                {count > 1 && item?.notificationType === 'like'
+                {count > 1 && (item?.notificationType || item?.[0]?.notificationType) === 'like'
                   ? ` and ${count - 1} others liked your post`
-                  : count > 1 && item?.notificationType === 'comment'
-                    ? ` and ${count - 1} others commented on your post`
-                    : item?.notificationType === 'like'
-                      ? `${' '}liked your post`
-                      : item?.notificationType === 'comment'
-                        ? `${' '}comment on your post`
-                        : `${' '}followed you`}
+                  : count > 1 &&
+                    (item?.notificationType || item?.[0]?.notificationType) === 'comment'
+                  ? ` and ${count - 1} others commented on your post`
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'like'
+                  ? `${' '}liked your post`
+                  : (item?.notificationType || item?.[0]?.notificationType) === 'comment'
+                  ? `${' '}commented on your post`
+                  : `${' '}followed you`}
               </div>
               <div className="text-[12px] font-normal text-[#A1A0A0]">
                 {formatTimeDifference(item?.createdAt)}
@@ -197,7 +208,7 @@ const NotificationPage = () => {
   };
   return (
     <SectionLayout activeTab={3}>
-      <InnerSectionLayout heading={'Notification'}>
+      <InnerSectionLayout heading={'Notifications'}>
         <div className="h-auto">
           {dataList?.length > 0 ? (
             dataList.map((item, i) => {
@@ -238,16 +249,18 @@ const NotificationPage = () => {
           setIsPreviewDetailsPostOpen(false);
         }}
         isTitle={false}
-        width={` ${!activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
-          } `}
+        width={` ${
+          !activePost?.postMedia?.length ? '!w-[100vw] md:!w-[45vw]' : '!w-[100vw] md:!w-[75vw]'
+        } `}
         childrenClassNames=""
         padding="!p-0"
         titleClassNames=""
         titleParentClassNames="md:m-3 m-0"
-        height={` ${!activePost?.postMedia?.length
-          ? 'max-h-[100dvh] md:h-auto'
-          : 'h-[100dvh] max-h-[100dvh] md:h-auto'
-          } `}
+        height={` ${
+          !activePost?.postMedia?.length
+            ? 'max-h-[100dvh] md:h-auto'
+            : 'h-[100dvh] max-h-[100dvh] md:h-auto'
+        } `}
       >
         <PostDetails
           post={activePost}
@@ -258,6 +271,9 @@ const NotificationPage = () => {
             setActiveMediaIndex(0);
             fetchnotificationList();
             setIsPreviewDetailsPostOpen(false);
+          }}
+          reloadPosts={() => {
+            // Not required here as we dont have to reload the posts being on Notif page
           }}
         />
       </Modal>

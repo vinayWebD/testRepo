@@ -13,6 +13,7 @@ const {
   GET_COMMENTS,
   DELETE_COMMENT,
   EDIT_COMMENT,
+  REPOST,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -131,6 +132,18 @@ const editComment = async ({ id, description }) => {
   }
 };
 
+const repost = async ({ postId, caption = '' }) => {
+  try {
+    const response = await apiUtility(REPOST, 'POST', {
+      PostId: postId,
+      caption,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   createPost,
   fetchPosts,
@@ -142,4 +155,5 @@ export {
   getComments,
   deleteComment,
   editComment,
+  repost,
 };

@@ -11,6 +11,8 @@ import DownCaret from '../Icons/DownCaret';
 import CommentSkeleton from '../common/CommentSkeleton';
 import { PAGE_SIZE } from '../../constants/constants';
 import { ToastNotifyError } from '../Toast/ToastNotify';
+import Modal from '../Modal';
+import RepostLayout from '../CreatePost/RepostLayout';
 
 const ActionButtons = ({
   isLikedByMe = false,
@@ -21,6 +23,8 @@ const ActionButtons = ({
   isCommentSectionOpenDefault = false,
   postId = '',
   reloadPostDetails = () => {},
+  completePostData = {}, // Using currently for reposting UI
+  reloadData = () => {},
 }) => {
   const [isCommentSectionOpen, setIsCommentSectionOpen] = useState(isCommentSectionOpenDefault);
   const [_isLikedByMe, _setIsLikedByMe] = useState(isLikedByMe);
@@ -29,6 +33,7 @@ const ActionButtons = ({
   const [commentsPage, setCommentsPage] = useState(1);
   const [comments, setComments] = useState([]);
   const [isCommentLoading, setIsCommentLoading] = useState(false);
+  const [isRepostModalOpen, setIsRepostModalOpen] = useState(false);
 
   useEffect(() => {
     if (isAnimating) {
@@ -122,7 +127,10 @@ const ActionButtons = ({
           </p>
         </div>
 
-        <div className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70">
+        <div
+          className="flex gap-1 justify-center items-center cursor-pointer hover:opacity-70"
+          onClick={() => setIsRepostModalOpen(true)}
+        >
           <ShareIcon />
           <p className="text16 text-greylight">
             {shareCount || undefined} {shareCount <= 1 ? 'Share' : 'Shares'}
@@ -172,6 +180,25 @@ const ActionButtons = ({
       ) : (
         ''
       )}
+
+      <Modal
+        isOpen={isRepostModalOpen}
+        onClose={() => setIsRepostModalOpen(false)}
+        isTitle={true}
+        title="Repost"
+        width="!w-[100vw] md:max-w-[540px]"
+        childrenClassNames="overflow-y-auto"
+        padding="p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height="h-[100dvh] max-h-[100dvh] md:h-auto"
+      >
+        <RepostLayout
+          post={completePostData}
+          closePopup={() => setIsRepostModalOpen(false)}
+          reloadData={reloadData}
+        />
+      </Modal>
     </>
   );
 };

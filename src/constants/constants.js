@@ -30,12 +30,25 @@ export const POST_VIDEO_TYPES = [
   'video/quicktime',
 ];
 
+export const POST_DOCUMENT_TYPES = [
+  'application/pdf',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  'application/vnd.ms-powerpoint',
+  'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+  'text/plain',
+];
+
 export const POST_IMAGE_EXTENSIONS = ['png', 'jpeg', 'png', 'jpg'];
 export const POST_VIDEO_EXTENSIONS = ['mp4', 'mpeg', 'webm', 'x-matroska', 'quicktime'];
 
 export const PAGE_SIZE = {
   FEED: 20,
   COMMENT: 5,
+  FOLLOW_REQUESTS: 10,
+  PRIVACY_SETTING_SELECT_USERS: 20,
 };
 
 export const DATE_FORMAT = {
@@ -45,4 +58,19 @@ export const DATE_FORMAT = {
 
 export const FIREBASE_CONSTANT = {
   KEY: 'BNEr8fsavW_uQMUS_NnllNCekCYO1_MybA1Cizb5noGiko09Rj96yrbVayebnZ2EEEf3FkF8rIU7p9fug9XSJ-0',
+};
+
+export const RESPONSE_FOR_NETWORK = {
+  Following: {
+    type: 'Followings',
+    innerType: 'FollowingUser',
+  },
+  Followers: {
+    type: 'Followers',
+    innerType: 'User',
+  },
+  Connections: {
+    type: 'Connections',
+    innerType: 'User',
+  },
 };

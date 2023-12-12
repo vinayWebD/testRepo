@@ -18,6 +18,7 @@ const PostDetails = ({
   reloadPostDetails = () => {},
   customActiveIndex = 0,
   onCloseHandler = () => {},
+  reloadPosts = () => {},
 }) => {
   const [sliderRef, setSliderRef] = useState(null);
   const userData = useSelector((state) => state?.auth?.user) || {};
@@ -106,6 +107,7 @@ const PostDetails = ({
           media: post?.postMedia,
           links: post?.links,
           id: post?.id,
+          parentPostId: post?.parentPostId,
         }}
       />
     );
@@ -232,6 +234,8 @@ const PostDetails = ({
             isCommentSectionOpenDefault={true}
             postId={post?.id}
             reloadPostDetails={reloadPostDetails}
+            completePostData={post}
+            reloadData={reloadPosts}
           />
         </div>
       </div>

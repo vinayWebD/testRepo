@@ -10,6 +10,8 @@ const EmojiTextarea = ({
   maxLength = POST_CAPTION_MAX_LIMIT,
   value = '',
   handleChange = () => {},
+  textareaClassNames = '',
+  textareaHeightClass = 'min-h-[120px]',
 }) => {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const emojieContainerRef = useRef(null);
@@ -42,7 +44,7 @@ const EmojiTextarea = ({
     <div className="relative">
       <textarea
         value={value}
-        className="min-h-[120px] w-full pr-6 textarea-with-emojie"
+        className={`w-full pr-6 textarea-with-emojie outline-none ${textareaClassNames} ${textareaHeightClass}`}
         placeholder={placeholder}
         onChange={(e) => handleChange(e.target.value)}
         maxLength={maxLength}

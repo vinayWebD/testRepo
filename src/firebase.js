@@ -3,6 +3,7 @@ import { initializeApp } from 'firebase/app';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 import { FIREBASE_CONSTANT } from './constants/constants';
 import { config } from './firebaseKeys';
+import { getFirestore } from 'firebase/firestore';
 
 const app = initializeApp(config);
 const messaging = getMessaging(app);
@@ -38,4 +39,5 @@ export const onMessager = () =>
       resolve(payload);
     });
   });
+export const db = getFirestore(app);
 // export default firebase;

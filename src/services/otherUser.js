@@ -1,8 +1,14 @@
 import NETWORK_CONSTANTS from '../constants/networkConstants';
 import apiUtility from '../utils/network/apiUtility';
 
-const { OTHER_USER_PROFILE, OTHER_USER_NETWORKING_COUNT, OTHER_USER_FOLLOW, OTHER_USER_UNFOLLOW } =
-  NETWORK_CONSTANTS;
+const {
+  BLOCK_USER,
+  OTHER_USER_PROFILE,
+  OTHER_USER_NETWORKING_COUNT,
+  OTHER_USER_FOLLOW,
+  OTHER_USER_UNFOLLOW,
+  UNBLOCK_USER,
+} = NETWORK_CONSTANTS;
 
 const otherUserBasicData = async ({ id }) => {
   try {
@@ -40,4 +46,29 @@ const unfollowOtherUser = async ({ id }) => {
   }
 };
 
-export { otherUserBasicData, otherUserNetworkingCount, followOtherUser, unfollowOtherUser };
+const blockUser = async ({ userId }) => {
+  try {
+    const data = await apiUtility(BLOCK_USER(userId), 'POST');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const unblockUser = async ({ userId }) => {
+  try {
+    const data = await apiUtility(UNBLOCK_USER(userId), 'DELETE');
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export {
+  otherUserBasicData,
+  otherUserNetworkingCount,
+  followOtherUser,
+  unfollowOtherUser,
+  blockUser,
+  unblockUser,
+};
