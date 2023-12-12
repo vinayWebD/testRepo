@@ -12,7 +12,9 @@ import { PATHS } from '../../constants/urlPaths';
 import Input from '../../components/common/Input';
 import Modal from '../../components/Modal';
 import OutlinedButton from '../../components/common/OutlinedButton';
-import { deleteAccountDispatcher, logoutDispatcher } from '../../redux/dispatchers/authDispatcher';
+import { deleteAccountDispatcher } from '../../redux/dispatchers/authDispatcher';
+import { updateSearch } from '../../redux/slices/appSearchSlice';
+import { logout } from '../../redux/slices/authSlice';
 
 const { SETTINGS } = PATHS;
 
@@ -40,7 +42,9 @@ const DeleteAccount = () => {
         ToastNotifyError(errormsg);
       }
     } else {
-      await dispatch(logoutDispatcher());
+      dispatch(updateSearch({ searchValue: '' }));
+      localStorage.removeItem('token');
+      dispatch(logout());
     }
   };
 
