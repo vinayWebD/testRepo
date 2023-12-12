@@ -108,7 +108,7 @@ const InputTextarea = ({ onFileInputChange }) => {
         <textarea
           value={text}
           placeholder="Type a message..."
-          className=" p-[9px] outline-none w-full text-m border-none  placeholder:text-greylight"
+          className="outline-none p-[9px] outline-none w-full text-m border-none  placeholder:text-greylight"
           autoComplete={'true'}
           rows={1}
           onInput={autoExpand}

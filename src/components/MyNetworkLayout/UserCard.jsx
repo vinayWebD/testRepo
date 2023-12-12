@@ -19,6 +19,8 @@ import {
   rejectFollowRequestDispatcher,
 } from '../../redux/dispatchers/myNetworkDispatcher';
 import useDeviceType from '../../hooks/useDeviceType';
+import { useNavigate } from 'react-router-dom';
+import { PATHS } from '../../constants/urlPaths';
 
 const { BTNLBL_FOLLOW, BTNLBL_UNFOLLOW, BTNLBL_ACCEPT } = BUTTON_LABELS;
 const { FOLLOWERS } = TABS_NAME;
@@ -31,6 +33,7 @@ const { FOLLOWERS } = TABS_NAME;
 
 const UserCard = ({
   id,
+  userId,
   selectedTab,
   className = '',
   isFriendRequest, // If we are referring to a friend request, probably friend request section
@@ -40,13 +43,16 @@ const UserCard = ({
   career = '',
   reloadData = () => {},
   isRequestedByYou = false, // This means if the current user has requested
+  closePopupHandler = () => {}, // This is currently required to close the friend requests section popup
 }) => {
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
+  const navigate = useNavigate();
   const deviceType = useDeviceType();
   const dispatch = useDispatch();
 
   const handleRedirect = () => {
-    console.log('navigate user profile');
+    navigate(`${PATHS.OTHER_USER_PROFILE}${userId}`);
+    closePopupHandler();
   };
 
   const followUnfollowHandler = async () => {
@@ -71,7 +77,7 @@ const UserCard = ({
       const { status, data } = response;
 
       if (successStatus(status)) {
-        if (!data?.data?.isApproved) {
+        if (!data?.data?.isApproved && !isRequestedByYou) {
           ToastNotifySuccess('A follow request has been sent');
         }
         await reloadData();
@@ -120,16 +126,21 @@ const UserCard = ({
     <div
       className={`${className} overflow-hidden  mb-3 flex justify-start min-[320px]:items-start sm:items-start gap-2 relative w-[100%] border border-borderColor rounded-lg p-2 py-5 pr-6 md:!items-center`}
     >
-      <div className=" sm:flex sm:justify-start sm:items-start ">
-        <Avatar name={userName} image={userImage} classNames="h-[52px] w-[52px] " />
+      <div
+        className=" sm:flex sm:justify-start sm:items-start cursor-pointer"
+        onClick={handleRedirect}
+      >
+        <Avatar name={userName} image={userImage} classNames="h-[52px] w-[52px] cursor-pointer" />
       </div>
       <div className="w-full flex md:justify-between md:flex-row sm:flex-col gap-3 relative min-[320px]:flex-col min-[320px]:gap-y-3 ">
-        <div
-          className="w-full md:w-[60%] md:max-w-[60%] lg:w-[65%] lg:max-w-[65%] gap-3 flex justify-between cursor-pointer md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 md:items-center"
-          onClick={handleRedirect}
-        >
+        <div className="w-full md:w-[60%] md:max-w-[60%] lg:w-[65%] lg:max-w-[65%] gap-3 flex justify-between cursor-pointer md:flex-row sm:flex-col min-[320px]:flex-col min-[320px]:gap-y-2 md:items-center">
           <div className="w-full md:w-[70%] md:max-w-[70%] lg:w-[70%] lg:max-w-[70%]">
-            <h3 className="text-base text-gray-950  font-medium">{userName}</h3>
+            <h3
+              className="text-base text-gray-950 font-medium cursor-pointer"
+              onClick={handleRedirect}
+            >
+              {userName}
+            </h3>
             {location ? (
               <div className="flex gap-1">
                 <LocationIcon />

@@ -16,7 +16,7 @@ const TextArea = ({
       <textarea
         onChange={(e) => handleChange(e.target.value)}
         {...props}
-        className={`${className} border border-customGray rounded-[8px] px-[15px] py-[12px] text-area-input resize-none ${width} ${height} focus:border-blue-500 focus:outline-none${
+        className={`${className} outline-none border border-customGray rounded-[8px] px-[15px] py-[12px] text-area-input resize-none ${width} ${height} focus:border-blue-500 focus:outline-none${
           helperText ? 'haserror' : ''
         }`}
       />
