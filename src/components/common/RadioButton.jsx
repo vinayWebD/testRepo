@@ -10,7 +10,7 @@ const RadioButton = ({ label, name, value, checked, onChange }) => {
         onChange={onChange}
         className="w-[20px] h-[20px] checked:bg-blueprimary"
       />
-      <label className="text-[14px] font-normal cursor-pointer" htmlFor={value}>
+      <label className="text-[14px] font-medium cursor-pointer" htmlFor={value}>
         {label}
       </label>
     </div>
