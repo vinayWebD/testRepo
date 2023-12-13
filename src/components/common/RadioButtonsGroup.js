@@ -10,7 +10,11 @@ const RadioButtonsGroup = ({ options, name, defaultValue, onSelect }) => {
 
   const handleChange = (event) => {
     setSelectedValue(event.target.value);
-    onSelect(name, event.target.value, event.target.value !== defaultValue);
+    onSelect(
+      name,
+      event.target.value,
+      event?.type === 'click' ? true : event.target.value !== defaultValue,
+    );
   };
 
   return (
@@ -23,6 +27,7 @@ const RadioButtonsGroup = ({ options, name, defaultValue, onSelect }) => {
           value={option.value}
           checked={selectedValue === option.value}
           onChange={handleChange}
+          onClick={handleChange}
         />
       ))}
     </div>
