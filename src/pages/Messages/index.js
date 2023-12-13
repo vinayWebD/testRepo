@@ -25,6 +25,7 @@ import {
 } from 'firebase/firestore';
 import { db } from '../../firebase';
 import { AllUsers } from '../../services/messageService';
+import ReportUser from '../../components/Post/ReportUser';
 
 const Messages = () => {
   const allFollowers = [
@@ -473,30 +474,13 @@ const Messages = () => {
             <span className="text-[18px] font-medium">Are you sure you want to delete chat?</span>
           </div>
         </ConfirmationModal>
-        <ConfirmationModal
-          title="Report User"
+
+        <ReportUser
           isOpen={isReportModalOpen}
           onClose={() => setIsReportModalOpen(false)}
-          primaryButtonTitle="Report"
-          // primaryButtonAction={() => setIsReportModalOpen(false)}
-          secondaryButtonTitle="Cancel"
-          secondaryButtonAction={() => setIsReportModalOpen(false)}
-        >
-          <div>
-            <div className="text-[18px] tx-greydark font-medium">
-              Are you sure you want to Report this user?
-            </div>
-            <div className="mt-6 flex flex-col">
-              <label htmlFor="reportReason" className="flex">
-                Please type the reason<spna className="text-red">*</spna>
-              </label>
-              <textarea
-                id="reportReason"
-                placeholder="Please type the reason why you want to report the user."
-              />
-            </div>
-          </div>
-        </ConfirmationModal>
+          userId=""
+        />
+
         <ConfirmationModal
           title="Block User"
           isOpen={isBlockModalOpen}

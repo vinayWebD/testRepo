@@ -5,6 +5,7 @@ import {
   followOtherUser,
   otherUserBasicData,
   otherUserNetworkingCount,
+  reportUser,
   unblockUser,
   unfollowOtherUser,
 } from '../../services/otherUser';
@@ -73,6 +74,15 @@ const fetchBlockedUsersDispatcher =
     return { status, data };
   };
 
+const reportUserDispatcher =
+  ({ userId, reason = '', profileLink }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await reportUser({ userId, reason, profileLink });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   fetchOtherUserBasicInfo,
   fetchOtherUserNetworkingCount,
@@ -81,4 +91,5 @@ export {
   blockUserDispatcher,
   unblockUserDispatcher,
   fetchBlockedUsersDispatcher,
+  reportUserDispatcher,
 };
