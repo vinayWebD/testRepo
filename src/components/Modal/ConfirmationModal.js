@@ -35,6 +35,7 @@ function ConfirmationModal({
   secondaryButtonTitle = 'Cancel',
   primaryButtonAction = () => {},
   secondaryButtonAction = () => {},
+  isPrimaryButtonDisabled = false,
 }) {
   useEffect(() => {
     if (isOpen) {
@@ -97,6 +98,7 @@ function ConfirmationModal({
               onClick={primaryButtonAction}
               showArrowIcon={false}
               additionalClassNames="!h-[40px] !w-[33%] !px-[30px] !py-2 !text16"
+              isDisabled={isPrimaryButtonDisabled}
             />
           </div>
         </div>
