@@ -15,6 +15,7 @@ const {
   EDIT_COMMENT,
   REPOST,
   REPORT_COMMENT,
+  REPORT_POST,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -158,6 +159,19 @@ const reportComment = async ({ commentId = '', reason = '', postLink, profileLin
   }
 };
 
+const reportPost = async ({ postId = '', reason = '', postLink, profileLink }) => {
+  try {
+    const response = await apiUtility(REPORT_POST(postId), 'POST', {
+      reason,
+      postLink,
+      profileLink,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   createPost,
   fetchPosts,
@@ -171,4 +185,5 @@ export {
   editComment,
   repost,
   reportComment,
+  reportPost,
 };

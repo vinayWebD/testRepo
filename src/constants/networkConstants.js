@@ -57,6 +57,7 @@ const NETWORK_CONSTANTS = {
   DELETE_ACCOUNT: '/v1/accounts',
   BLOCKED_USERS_LIST: '/v1/accounts/block/list',
   REPORT_COMMENT: (commentId) => `/v1/report/comment/${commentId}`,
+  REPORT_POST: (postId) => `/v1/report/post/${postId}`,
 };
 
 export default NETWORK_CONSTANTS;

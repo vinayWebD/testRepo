@@ -19,6 +19,7 @@ import {
   followOtherUserDispatcher,
   unfollowOtherUserDispatcher,
 } from '../../redux/dispatchers/otherUserDispatcher';
+import ReportPost from './ReportPost';
 
 const { LANG_EDIT_POST } = LANG.PAGES.FEED;
 
@@ -39,6 +40,7 @@ const Header = ({
   const [options, setOptions] = useState([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isCreatePostModalOpen, setIsCreatePostModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -66,7 +68,7 @@ const Header = ({
       setOptions([
         {
           name: 'Report',
-          action: () => {},
+          action: () => setIsReportModalOpen(true),
         },
         {
           name: isFollowed ? 'Unfollow' : 'Follow',
@@ -206,6 +208,13 @@ const Header = ({
           postDetails={{ ...postDetails, postId }}
         />
       </Modal>
+
+      <ReportPost
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        postId={postDetails?.id}
+        creatorId={userId}
+      />
     </div>
   );
 };

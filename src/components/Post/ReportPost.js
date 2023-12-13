@@ -4,27 +4,21 @@ import { useDispatch } from 'react-redux';
 import TextArea from '../TextArea';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
-import { reportCommentDispatcher } from '../../redux/dispatchers/feedDispatcher';
+import { reportPostDispatcher } from '../../redux/dispatchers/feedDispatcher';
 import { PATHS } from '../../constants/urlPaths';
 
-const ReportComment = ({
-  isOpen = () => {},
-  onClose = () => {},
-  commentId,
-  postId,
-  commentorId,
-}) => {
+const ReportPost = ({ isOpen = () => {}, onClose = () => {}, postId, creatorId }) => {
   const dispatch = useDispatch();
   const [reason, setReason] = useState('');
 
-  const reportCommentHandler = async () => {
+  const reportPostHandler = async () => {
     if (reason?.trim()?.length) {
       const { status, data } = await dispatch(
-        reportCommentDispatcher({
-          commentId,
+        reportPostDispatcher({
+          postId,
           reason,
           postLink: `${window.location.origin}${PATHS.HOME}/${postId}`,
-          profileLink: `${window.location.origin}${PATHS.OTHER_USER_PROFILE}${commentorId}`,
+          profileLink: `${window.location.origin}${PATHS.OTHER_USER_PROFILE}${creatorId}`,
         }),
       );
 
@@ -34,25 +28,25 @@ const ReportComment = ({
           ToastNotifyError(errormsg);
         }
       } else {
-        ToastNotifySuccess('Comment reported successfully');
+        ToastNotifySuccess('Post reported successfully');
         onClose();
       }
     }
   };
   return (
     <ConfirmationModal
-      title="Report Comment"
+      title="Report Post"
       isOpen={isOpen}
       onClose={onClose}
       primaryButtonTitle="Report"
-      primaryButtonAction={reportCommentHandler}
+      primaryButtonAction={reportPostHandler}
       secondaryButtonTitle="Cancel"
       secondaryButtonAction={onClose}
       isPrimaryButtonDisabled={!reason?.trim()?.length}
     >
       <div>
         <div className="text-[18px] tx-greydark font-medium">
-          Are you sure you want to Report this comment?
+          Are you sure you want to Report this post?
         </div>
         <div className="mt-6 flex flex-col">
           <label htmlFor="reportReason" className="flex">
@@ -60,7 +54,7 @@ const ReportComment = ({
           </label>
 
           <TextArea
-            placeholder="Please type the reason why you want to report the comment."
+            placeholder="Please type the reason why you want to report the post."
             label=""
             height="min-h-[110px] mt-1"
             value={reason}
@@ -72,4 +66,4 @@ const ReportComment = ({
   );
 };
 
-export default ReportComment;
+export default ReportPost;

@@ -4,6 +4,7 @@ import {
   deletePost,
   editComment,
   reportComment,
+  reportPost,
   repost,
 } from '../../services/feed';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
@@ -65,6 +66,15 @@ const reportCommentDispatcher =
     return { status, data };
   };
 
+const reportPostDispatcher =
+  ({ postId, reason = '', postLink, profileLink }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await reportPost({ postId, reason, postLink, profileLink });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   deletePostDispatcher,
   createCommentDispatcher,
@@ -72,4 +82,5 @@ export {
   editCommentDispatcher,
   repostDispatcher,
   reportCommentDispatcher,
+  reportPostDispatcher,
 };
