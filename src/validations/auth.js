@@ -53,9 +53,18 @@ const validationChangePwdSchema = yup.object({
     .oneOf([yup.ref('newPassword'), null], CONFIRM_PASSWORD_MISMATCH),
 });
 
+const deleteAccountPwdSchema = yup.object({
+  password: yup
+    .string()
+    .trim()
+    .matches(PASSWORD_PATTERN, MSG_PASSWORD_TYPE)
+    .required(IS_REQUIRED('Password')),
+});
+
 export {
   validationLoginSchema,
   validationForgotPwdSchema,
   validationResetPwdSchema,
   validationChangePwdSchema,
+  deleteAccountPwdSchema,
 };
