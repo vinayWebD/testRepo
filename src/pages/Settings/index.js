@@ -14,6 +14,7 @@ const {
   SETTINGS_HELP_CENTER,
   SETTINGS_PRIVACY_SETTING,
   SETTINGS_DELETE_ACCOUNT,
+  SETTINGS_BLOCKED_LIST,
 } = PATHS;
 
 const INNER_SECTION = [
@@ -25,6 +26,7 @@ const INNER_SECTION = [
   {
     title: 'Blocked Users',
     iconSrc: BlockedImage,
+    path: SETTINGS_BLOCKED_LIST,
   },
   {
     title: 'Privacy Setting',

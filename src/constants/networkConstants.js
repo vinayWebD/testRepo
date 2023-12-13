@@ -55,6 +55,7 @@ const NETWORK_CONSTANTS = {
   UNBLOCK_USER: (userId) => `/v1/accounts/unblock/user/${userId}`,
   FETCH_ALL_FOLLOWERS_FOLLOWING_CONNECTION: '/V1/accounts/follow/network/specific/',
   DELETE_ACCOUNT: '/v1/accounts',
+  BLOCKED_USERS_LIST: 'v1/accounts/block/list',
 };
 
 export default NETWORK_CONSTANTS;

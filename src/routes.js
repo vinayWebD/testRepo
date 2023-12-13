@@ -22,6 +22,7 @@ import Interest from './pages/Interests';
 import Myself from './pages/Myself';
 import { AddCareer } from './pages/Work/AddNewCareer';
 import DeleteAccount from './pages/Settings/DeleteAccount';
+import BlockedUsers from './pages/Settings/BlockedUsers';
 
 const {
   LANDING,
@@ -46,6 +47,7 @@ const {
   PATH_MYSELF,
   PATH_ADD_CAREER,
   SETTINGS_DELETE_ACCOUNT,
+  SETTINGS_BLOCKED_LIST,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -164,6 +166,10 @@ const privateRoutes = createBrowserRouter([
   {
     path: SETTINGS_DELETE_ACCOUNT,
     element: <DeleteAccount />,
+  },
+  {
+    path: SETTINGS_BLOCKED_LIST,
+    element: <BlockedUsers />,
   },
   {
     path: PATH_WORK,
