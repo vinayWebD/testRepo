@@ -197,7 +197,7 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
 
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
-          label={'Add'}
+          label={'Save'}
           isDisabled={!selectedUsers?.length || isLoading}
           onClick={() => onAddHandler()}
           showArrowIcon={false}
