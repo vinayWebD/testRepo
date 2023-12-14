@@ -11,6 +11,7 @@ import { ToastNotifyError } from '../Toast/ToastNotify';
 import CommentInput from './CommentInput';
 import HtmlText from '../common/HtmlText';
 import { DATE_FORMAT } from '../../constants/constants';
+import ReportComment from './ReportComment';
 
 const CommentLayout = ({
   PostId,
@@ -24,6 +25,7 @@ const CommentLayout = ({
   const userData = useSelector((state) => state?.auth?.user) || {};
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const { globalTransparentLoadingPrivate } = useSelector((state) => state.auth || {});
 
   const deleteCommentHandler = async () => {
@@ -68,7 +70,7 @@ const CommentLayout = ({
                             { name: 'Edit', action: () => setIsEditing(true) },
                             { name: 'Delete', action: () => setIsDeleteModalOpen(true) },
                           ]
-                        : [{ name: 'Report', action: () => {} }]
+                        : [{ name: 'Report', action: () => setIsReportModalOpen(true) }]
                     }
                     IconComponent={() => <ThreeDots className="w-[4px] h-[20px] rotate-90" />}
                     optionsClassName="!top-0"
@@ -88,6 +90,14 @@ const CommentLayout = ({
             >
               Are you sure you want to delete this comment?
             </ConfirmationModal>
+
+            <ReportComment
+              isOpen={isReportModalOpen}
+              onClose={() => setIsReportModalOpen(false)}
+              commentId={id}
+              postId={PostId}
+              commentorId={User?.id}
+            />
 
             <div className="text-[13px] lg:text14 text-greydark">
               <HtmlText text={description} />

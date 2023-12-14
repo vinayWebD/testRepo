@@ -14,6 +14,8 @@ const {
   DELETE_COMMENT,
   EDIT_COMMENT,
   REPOST,
+  REPORT_COMMENT,
+  REPORT_POST,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -144,6 +146,32 @@ const repost = async ({ postId, caption = '' }) => {
   }
 };
 
+const reportComment = async ({ commentId = '', reason = '', postLink, profileLink }) => {
+  try {
+    const response = await apiUtility(REPORT_COMMENT(commentId), 'POST', {
+      reason,
+      postLink,
+      profileLink,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
+const reportPost = async ({ postId = '', reason = '', postLink, profileLink }) => {
+  try {
+    const response = await apiUtility(REPORT_POST(postId), 'POST', {
+      reason,
+      postLink,
+      profileLink,
+    });
+    return response;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   createPost,
   fetchPosts,
@@ -156,4 +184,6 @@ export {
   deleteComment,
   editComment,
   repost,
+  reportComment,
+  reportPost,
 };

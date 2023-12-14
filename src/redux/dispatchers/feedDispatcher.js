@@ -1,4 +1,12 @@
-import { createComment, deleteComment, deletePost, editComment, repost } from '../../services/feed';
+import {
+  createComment,
+  deleteComment,
+  deletePost,
+  editComment,
+  reportComment,
+  reportPost,
+  repost,
+} from '../../services/feed';
 import { globalTransparentLoadingPrivate } from '../slices/authSlice';
 
 /**
@@ -49,10 +57,30 @@ const repostDispatcher =
     return { status, data };
   };
 
+const reportCommentDispatcher =
+  ({ commentId, reason = '', postLink, profileLink }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await reportComment({ commentId, reason, postLink, profileLink });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
+const reportPostDispatcher =
+  ({ postId, reason = '', postLink, profileLink }) =>
+  async (dispatch) => {
+    dispatch(globalTransparentLoadingPrivate(true));
+    const { status, data } = await reportPost({ postId, reason, postLink, profileLink });
+    dispatch(globalTransparentLoadingPrivate(false));
+    return { status, data };
+  };
+
 export {
   deletePostDispatcher,
   createCommentDispatcher,
   deleteCommentDispatcher,
   editCommentDispatcher,
   repostDispatcher,
+  reportCommentDispatcher,
+  reportPostDispatcher,
 };

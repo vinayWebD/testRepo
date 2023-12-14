@@ -20,6 +20,7 @@ import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import ConfirmationModal from '../Modal/ConfirmationModal';
+import ReportUser from '../Post/ReportUser';
 
 const { HOME } = PATHS;
 
@@ -31,6 +32,7 @@ const ProfileContainer = ({
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -120,7 +122,7 @@ const ProfileContainer = ({
             <Dropdown
               IconComponent={ThreeDots}
               options={[
-                { name: 'Report', action: () => {} },
+                { name: 'Report', action: () => setIsReportModalOpen(true) },
                 { name: 'Block', action: () => setIsBlockModalOpen(true) },
               ]}
             />
@@ -195,6 +197,12 @@ const ProfileContainer = ({
           ”?
         </div>
       </ConfirmationModal>
+
+      <ReportUser
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        userId={userData?.id}
+      />
     </Card>
   );
 };
