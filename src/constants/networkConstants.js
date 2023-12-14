@@ -10,7 +10,7 @@ const NETWORK_CONSTANTS = {
   FORGOT_PASSWORD_VERIFY_OTP: '/v1/accounts/verify_otp/',
   FORGOT_PASSWORD_RESET_PWD: '/v1/accounts/reset-password/',
   CREATE_POST: '/v1/feeds/posts/',
-  CARRERS: '/v1/accounts/careers',
+  CAREERS: '/v1/accounts/careers',
   ABOUT: '/v1/accounts/about/',
   EXPERIENCES: '/v1/accounts/experiences/',
   EDUCATION: '/v1/accounts/educations/',

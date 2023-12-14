@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { getErrorMessage, successStatus } from '../../common';
@@ -10,7 +9,7 @@ import TextArea from '../../components/TextArea';
 import { fetchCareersList, fetchProfileEdit } from '../../services/signup';
 import { validationSchemaWorkIntrest } from '../../validations';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
-import { CareerFrom } from './CareerForm';
+import { CareerForm } from './CareerForm';
 import Accordion from '../../components/Accordion';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
@@ -27,7 +26,7 @@ export function WorkTabContent() {
       status,
       data: { data },
     } = response;
-    console.log('response', response);
+
     if (successStatus(status)) {
       setCareerList(data);
       setFieldValue('work', data?.work);
@@ -76,9 +75,6 @@ export function WorkTabContent() {
     getCareerList();
   }, []);
 
-  console.log('careerList', careerList);
-
-  console.log('----', careerList?.Careers);
   return (
     <div className="py-[36px] lg:px-[70px] md:px-[40px] px-[20px] bg-bluebg">
       <form onSubmit={handleWork}>
@@ -120,7 +116,7 @@ export function WorkTabContent() {
           }}
         />
       </div>
-      {careerList?.Careers?.length > 0 ? (
+      {careerList?.Careers?.length > 1 ? (
         <Accordion
           items={careerList?.Careers?.map((item) => {
             return {
@@ -130,7 +126,11 @@ export function WorkTabContent() {
           })}
         />
       ) : (
-        <CareerFrom getCareerList={getCareerList} />
+        <CareerForm
+          getCareerList={getCareerList}
+          data={careerList?.Careers?.[0] || {}}
+          id={careerList?.Careers?.[0]?.id}
+        />
       )}
 
       {careerList?.Careers?.length > 0 && (
