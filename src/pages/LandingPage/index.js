@@ -164,12 +164,9 @@ export default function LandingPage() {
                   My vision for PurDriven is to be a place where people feel comfortable being
                   authentic. People are accepted, respected, embraced, inspired, and empowered to be
                   themselves and use their uniqueness to contribute.
-                  <br /> There is a connection between potential, authenticity, and purpose. I see
-                  myself being aligned with my purpose only if I am authentic to my core beliefs and
-                  who I am and then naturally navigate towards my potential. I am grateful for
-                  creating a platform and a business that fully aligns with who I am. And I wish
-                  that to everybody. I feel the same way people feel when doing something they love:
-                  fulfillment and gratitude. <br />
+                  <br /> I am grateful for creating a platform and a business that fully aligns with
+                  who I am. And I wish that to everybody. I feel the same way people feel when doing
+                  something they love: fulfillment and gratitude. <br />
                   PurDriven was born out of the need to find an opportunity that matched who I truly
                   am. What I didn’t know was that quest would lead me to create PurDriven
                 </>
@@ -179,14 +176,11 @@ export default function LandingPage() {
                   My vision for PurDriven is to be a place where people feel comfortable being
                   authentic. People are accepted, respected, embraced, inspired, and empowered to be
                   themselves and use their uniqueness to contribute.
-                  <br /> There is a connection between potential, authenticity, and purpose. I see
-                  myself being aligned with my purpose only if I am authentic to my core beliefs and
-                  who I am and then naturally navigate towards my potential. I am grateful for
-                  creating a platform and a business that fully aligns with who I am. And I wish
-                  that to everybody. I feel the same way people feel when doing something they love:
-                  fulfillment and gratitude. PurDriven was born out of the need to find an
-                  opportunity that matched who I truly am. What I didn’t know was that quest would
-                  lead me to create PurDriven.
+                  <br /> I am grateful for creating a platform and a business that fully aligns with
+                  who I am. And I wish that to everybody. I feel the same way people feel when doing
+                  something they love: fulfillment and gratitude. PurDriven was born out of the need
+                  to find an opportunity that matched who I truly am. What I didn’t know was that
+                  quest would lead me to create PurDriven.
                   <br />
                   At a pivotal time, reaching my potential and making this life worth living became
                   a priority. My focal point was having a more meaningful life. I was considering a
