@@ -8,26 +8,27 @@ import VideoIcon from '../../components/Icons/VideoIcon';
 import DocumentIcon from '../../components/Icons/DocumentIcon';
 import { POST_IMAGE_TYPES, POST_VIDEO_TYPES, POST_DOCUMENT_TYPES } from '../../constants/constants';
 import { collection, setDoc, doc } from 'firebase/firestore';
-import { db } from '../../firebase';
+import db from '../../firebase';
 import { useSelector } from 'react-redux';
 
-const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
+const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId }) => {
   const [emojiToggle, setEmojiToggle] = useState(false);
   const [attachmentToggle, setAttachmentToggle] = useState(false);
   const [mediaTypeToUpload, setMediaTypeToUpload] = useState('photo');
   const [openFileBrowser, setOpenFileBrowser] = useState(0);
-  const [collectionIds, setCollectionIds] = useState('');
   const [input, setInput] = useState('');
   const textareaRef = useRef(null);
   const emojieContainerRef = useRef(null);
   const attachmentContainerRef = useRef(null);
   const mediaInput = useRef(null);
   const myProfile = useSelector((state) => state.auth.user);
+
   useEffect(() => {
     if (openFileBrowser) {
       mediaInput?.current?.click();
     }
   }, [openFileBrowser]);
+
   const autoExpand = () => {
     const textarea = textareaRef.current;
     const textAreaActualHeight = parseInt(textarea.style.height);
@@ -46,6 +47,7 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
       textarea.style.height = textAreaActualHeight + 'px';
     }
   };
+
   const handleFileBrowser = (type) => {
     if (type === 'Photos') {
       setMediaTypeToUpload('photo');
@@ -57,15 +59,18 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
     setOpenFileBrowser((prev) => prev + 1);
   };
 
-  // const onEmojiClick = (emojiObject) => {
-  //   handleChange((prevText) => {
-  //     if (prevText.length + emojiObject.emoji?.length) {
-  //       return prevText + emojiObject.emoji;
-  //     } else {
-  //       return prevText;
-  //     }
-  //   });
-  // };
+  const onEmojiClick = (emojiObject) => {
+    handleChange((prevText) => {
+      if (prevText.length + emojiObject.emoji?.length) {
+        return prevText + emojiObject.emoji;
+      } else {
+        return prevText;
+      }
+    });
+  };
+  const handleChange = (newText) => {
+    setInput(newText);
+  };
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (emojieContainerRef.current && !emojieContainerRef.current.contains(event.target)) {
@@ -84,16 +89,16 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
-
   const onSend = async () => {
-    console.log(collectionIds);
+    textareaRef.current.style.height = 'inherit';
     let collectionId;
-    if (toId < fromId) {
-      collectionId = `${toId}_${fromId}`;
-      setCollectionIds(collectionId);
+    const numericToId = parseInt(toId, 10);
+    const numericMyProfileId = parseInt(myProfile?.id, 10);
+
+    if (numericToId < numericMyProfileId) {
+      collectionId = `${numericToId}_${numericMyProfileId}`;
     } else {
-      collectionId = `${fromId}_${toId}`;
-      setCollectionIds(collectionId);
+      collectionId = `${numericMyProfileId}_${numericToId}`;
     }
 
     const testMessagesCollectionRef = collection(db, 'test_messages');
@@ -104,14 +109,15 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
       chatId: collectionId,
       lastMessage: {
         content: input,
-        idFrom: fromId,
+        idFrom: myProfile?.id,
         idTo: toId,
-        read: true,
+        read: false,
         timestamp: timestampInSeconds,
+        id: selectedId,
       },
       timestamp: timestampInSeconds,
-      userIds: [fromId, toId],
-      userDetails: [myProfile, contacts.find((user) => user.id === toId) || 'wrong concept'],
+      userIds: [myProfile?.id, toId],
+      userDetails: [myProfile, contacts.find((user) => user?.id === isActive)],
     });
 
     const DocumentRef = collection(documentRef, collectionId);
@@ -120,12 +126,22 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
     setDoc(timestampDocumentRef, {
       type: 'msg',
       message: input,
-      idFrom: fromId,
+      idFrom: myProfile?.id,
       idTo: toId,
-      read: true,
+      read: false,
       timestamp: timestampInSeconds,
     });
     setInput('');
+  };
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && !input.trim()) {
+      e.preventDefault();
+    }
+
+    if (e.key === 'Enter' && !e.shiftKey && input.trim()) {
+      e.preventDefault();
+      onSend();
+    }
   };
   const data = [
     { icon: <PhotoIcon fill="#0071BC" />, text: 'Photos' },
@@ -146,18 +162,24 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
         <textarea
           value={input}
           placeholder="Type a message..."
-          className="outline-none p-[9px] outline-none w-full text-m border-none  placeholder:text-greylight"
+          className=" p-[9px] min-h-10 outline-none w-full text-m border-none  placeholder:text-greylight"
           autoComplete={'true'}
           rows={1}
           onInput={autoExpand}
-          ref={(el) => {
-            textareaRef.current = el;
-          }}
           onChange={(e) => {
             setInput(e.target.value);
           }}
+          onKeyDown={handleKeyDown}
+          ref={textareaRef}
         />
-        <div className="cursor-pointer" onClick={() => onSend()}>
+        <div
+          className={`cursor-pointer ${!input.trim() ? 'opacity-60' : ''}`}
+          onClick={() => {
+            if (input.trim()) {
+              onSend();
+            }
+          }}
+        >
           <SendIcon />
         </div>
         {emojiToggle && (
@@ -168,7 +190,7 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
             <EmojiPicker
               width={'300px'}
               height={'350px'}
-              // onEmojiClick={onEmojiClick}
+              onEmojiClick={onEmojiClick}
               searchDisabled={true}
               skinTonesDisabled={true}
               previewConfig={{
@@ -210,15 +232,15 @@ const InputTextarea = ({ onFileInputChange, fromId, toId, contacts }) => {
         // onInput={() => uploadMedia()}
         onClick={(e) => {
           e.target.value = null;
-        }} // We are setting this to null because we want to be able to select the same file simultaneously
-        onInput={() => onFileInputChange(mediaInput.current.files)}
+        }}
+        onInput={() => onFileInputChange(mediaInput?.current?.files)}
         className="contents w-0 h-0 "
         accept={
           mediaTypeToUpload === 'photo'
             ? POST_IMAGE_TYPES
             : mediaTypeToUpload === 'video'
-            ? POST_VIDEO_TYPES
-            : POST_DOCUMENT_TYPES
+              ? POST_VIDEO_TYPES
+              : POST_DOCUMENT_TYPES
         }
       />
     </>

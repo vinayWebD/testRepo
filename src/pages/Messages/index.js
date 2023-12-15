@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 import SearchIcon from '../../assets/images/searchIcon.svg';
 import cross from '../../assets/images/cross.svg';
 import noMessage from '../../assets/images/No-Messages.svg';
 import messageVector from '../../assets/images/Message-vector.svg';
-import ludgi from '../../assets/images/ludgi.svg';
 import Avatar from '../../components/common/Avatar';
 import TextSeen from '../../components/Icons/TestSeen';
 import Chats from './chats';
@@ -14,112 +13,28 @@ import BackAvatar from '../../assets/images/Back-vector.svg';
 import InputTextarea from './InputTextarea';
 import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 import {
-  // addDoc,
   collection,
   onSnapshot,
   orderBy,
   query,
   getDocs,
-  // where,
-  // serverTimestamp,
+  limit,
+  doc,
+  updateDoc,
+  // doc,
+  // updateDoc,
 } from 'firebase/firestore';
-import { db } from '../../firebase';
+import db from '../../firebase';
 import { AllUsers } from '../../services/messageService';
 import ReportUser from '../../components/Post/ReportUser';
+import TimeAgo from './TimeAgo';
+import { useSelector } from 'react-redux';
 
 const Messages = () => {
-  const allFollowers = [
-    {
-      id: '01',
-      FollowingUserId: '41',
-      name: 'Guru',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '03',
-      FollowingUserId: '41',
-      name: 'Biswa',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '04',
-      FollowingUserId: '41',
-      name: 'Qwerty',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '05',
-      FollowingUserId: '41',
-      name: 'Hello',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '06',
-      FollowingUserId: '41',
-      name: 'Harry',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '77',
-      FollowingUserId: '41',
-      name: 'Rohit',
-      img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '08',
-      FollowingUserId: '41',
-      name: 'Samay',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-  ];
-  const followers = [
-    {
-      id: '01',
-      FollowingUserId: '41',
-      name: 'Guru',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '03',
-      FollowingUserId: '41',
-      name: 'Biswa',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '04',
-      FollowingUserId: '41',
-      name: 'Qwerty',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '05',
-      FollowingUserId: '41',
-      name: 'Hello',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '06',
-      FollowingUserId: '41',
-      name: 'Harry',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '77',
-      FollowingUserId: '41',
-      name: 'Rohit',
-      img: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=1528&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-    {
-      id: '08',
-      FollowingUserId: '41',
-      name: 'Samay',
-      img: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=1374&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-    },
-  ];
+  const [allFollowers, setAllFollowers] = useState([]);
   const [contacts, setContacts] = useState([]);
   const [searchedContacts, setSearchedContacts] = useState([]);
-  const [searchedFollwers, setSearchedFollwers] = useState(followers);
-  const [messages, setMessages] = useState([]);
+  const [searchedFollwers, setSearchedFollwers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [addContact, setAddContact] = useState(true);
   const [isActive, setIsActive] = useState(null);
@@ -127,142 +42,170 @@ const Messages = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
-  const [fromId, setFromId] = useState('');
   const [toId, setToId] = useState('');
   const [newMessage, setNewMessage] = useState(false);
   const [retrievedDocumentId, setRetrievedDocumentId] = useState('');
   const [mobileChat, setMobileChats] = useState(false);
+  const [selected, setSelected] = useState([]);
+  const [selectedId, setSelectedId] = useState('');
+  const [selectedElement, setSelectedElement] = useState('');
+  const myProfile = useSelector((state) => state.auth.user);
+  const chatContainerRef = useRef(null);
 
   const fetchFollowersList = async () => {
     const { status, data } = await AllUsers();
     if (status) {
-      console.log('FinalData', data.data.Networks);
-    } else {
-      console.log('error');
+      setAllFollowers(data.data.Networks);
+      const newFollowers = data.data.Networks.filter((newFollower) => {
+        const followerId = newFollower?.User?.username;
+        const isDuplicate = contacts.some((contact) => {
+          const contactUsername = contact?.User?.username || contact?.username;
+          return contactUsername === followerId;
+        });
+
+        return !isDuplicate;
+      });
+      setSearchedFollwers(newFollowers);
     }
   };
-
-  useEffect(() => {
-    fetchFollowersList();
-  }, []);
+  const scrollChatContainer = () => {
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+    }
+  };
   useEffect(() => {
     if (isActive !== null) {
       setMobileChats(true);
     }
   }, [isActive]);
-  console.log('isActive', isActive);
   const handleFileInputChange = (selectedFile) => {
     setFileData(selectedFile);
   };
   const handleSearch = (query) => {
     setSearchQuery(query);
     const filteredContacts = contacts.filter((element) =>
-      element.name.toLowerCase().includes(query.toLowerCase()),
+      element?.name?.toLowerCase()?.includes(query.toLowerCase()),
     );
     setSearchedContacts(filteredContacts);
   };
   const handleFollowersSearch = (query) => {
     setSearchQuery(query);
-    const filteredFollower = followers.filter((element) =>
-      element.name.toLowerCase().includes(query.toLowerCase()),
-    );
-    setSearchedFollwers(filteredFollower);
+    //   const filteredFollower = followers.filter((element) =>
+    //     element.name.toLowerCase().includes(query.toLowerCase()),
+    //   );
+    //   setSearchedFollwers(filteredFollower);
   };
   const clearSearch = () => {
-    setSearchQuery('');
-    setSearchedContacts((prevContacts) => [...prevContacts]);
-    setSearchedFollwers(followers);
+    //   setSearchQuery('');
+    //   setSearchedContacts((prevContacts) => [...prevContacts]);
+    //   setSearchedFollwers(followers);
   };
-  const handleSelected = (id) => {
+  const handleSelected = (id, element) => {
+    setSelectedElement(element);
+    setSelectedId(id);
     setNewMessage(false);
     setIsActive((prevId) => (prevId === id ? null : id));
     setAddContact(true);
-    fetchData();
-    const selectedFollower = allFollowers.find((follower) => follower.id === id);
+    const selectedFollower = allFollowers.find(
+      (follower) => follower?.id === id || follower?.User?.id === id,
+    );
+    setSelected(selectedFollower);
     if (!addContact) {
       const isAlreadyAdded = contacts.some((contact) => contact.id === selectedFollower.id);
-
       if (!isAlreadyAdded) {
         setContacts((prevContacts) => {
           const updatedContacts = [...prevContacts, selectedFollower];
-          setIsActive(selectedFollower.id);
+          setIsActive(selectedFollower?.id);
           return updatedContacts;
         });
         setSearchedFollwers((prevFollowers) =>
-          prevFollowers.filter((follower) => follower.id !== selectedFollower.id),
+          prevFollowers.filter((follower) => follower?.id !== selectedFollower?.id),
         );
       }
     }
 
-    if (selectedFollower && selectedFollower.id && selectedFollower.FollowingUserId) {
-      const { id, FollowingUserId } = selectedFollower;
-      setFromId(FollowingUserId);
-      setToId(id);
-
+    if (selectedFollower && selectedFollower?.id && selectedFollower?.FollowingUserId) {
+      const { UserId, FollowingUserId } = selectedFollower;
+      const newToId = myProfile?.id !== FollowingUserId ? FollowingUserId : UserId;
+      setToId(newToId);
       let collectionId;
-      if (id < FollowingUserId) {
-        collectionId = `${id}_${FollowingUserId}`;
+      const numericToId = parseInt(newToId, 10);
+      const numericMyProfileId = parseInt(myProfile?.id, 10);
+
+      if (numericToId < numericMyProfileId) {
+        collectionId = `${numericToId}_${numericMyProfileId}`;
       } else {
-        collectionId = `${FollowingUserId}_${id}`;
+        collectionId = `${numericMyProfileId}_${numericToId}`;
       }
 
       setRetrievedDocumentId(collectionId);
     }
   };
-  console.log('messages: ', messages);
-  const fetchData = async () => {
-    try {
-      const q = query(
-        collection(db, 'test_messages', retrievedDocumentId, retrievedDocumentId),
-        orderBy('timestamp'),
-      );
-      const querySnapshot = await getDocs(q);
-      let messagesData = [];
-      querySnapshot.forEach((doc) => {
-        messagesData.push({ ...doc.data(), id: doc.id });
-      });
-      setMessages(messagesData);
-    } catch (error) {
-      console.error('Error getting messages: ', error);
-    }
-  };
+
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(collection(db, 'test_messages'), orderBy('timestamp')),
       (querySnapshot) => {
         let messagesData = [];
         querySnapshot.forEach((doc) => {
-          messagesData.push({ ...doc.data(), id: doc.id });
+          messagesData.push({ ...doc.data() });
         });
-        // messagesData.forEach((element) => {
-        //   const exists = contacts.some((contact) => contact.id === element.id);
-        //   if (!exists) {
-        //     contacts.push(element);
-        //   }
-        // });
+
         const updatedContacts = contacts.map((contact) => {
           const lastMessageIdTo = messagesData.find(
-            (message) => message.lastMessage.idTo === contact.id,
+            (message) =>
+              message?.userDetails[0]?.id === contact?.id ||
+              message?.userDetails[0]?.id === contact?.User?.id ||
+              message?.userDetails[1]?.id === contact?.id ||
+              message?.userDetails[1]?.id === contact?.User?.id,
           );
           if (lastMessageIdTo) {
             return {
               ...contact,
               lastMessage: {
-                content: lastMessageIdTo.lastMessage.content,
-                idFrom: lastMessageIdTo.lastMessage.idFrom,
-                idTo: lastMessageIdTo.lastMessage.idTo,
-                read: lastMessageIdTo.lastMessage.read,
-                timestamp: lastMessageIdTo.timestamp,
+                content: lastMessageIdTo?.lastMessage?.content,
+                id: lastMessageIdTo?.lastMessage?.id,
+                idFrom: lastMessageIdTo?.lastMessage?.idFrom,
+                idTo: lastMessageIdTo?.lastMessage?.idTo,
+                read: lastMessageIdTo?.lastMessage?.read,
+                timestamp: lastMessageIdTo?.timestamp,
               },
             };
           }
           return contact;
         });
+        const sortedContacts = updatedContacts.sort((a, b) => {
+          const timestampA = a.lastMessage ? a.lastMessage.timestamp : 0;
+          const timestampB = b.lastMessage ? b.lastMessage.timestamp : 0;
+          return timestampB - timestampA;
+        });
+
+        setContacts(sortedContacts);
+        const filteredMessages = messagesData.filter((element) => {
+          return element?.userIds?.includes(myProfile.id);
+        });
+        filteredMessages.forEach((message) => {
+          const userIdIndex = message?.userIds?.findIndex((id) => id !== myProfile.id);
+          if (userIdIndex !== -1) {
+            const userDetails = message?.userDetails[userIdIndex];
+            let final = { ...userDetails, lastMessage: message?.lastMessage };
+            if (
+              !updatedContacts.some(
+                (contact) =>
+                  contact?.username === final?.username ||
+                  contact?.User ||
+                  contact?.User?.username === final?.username ||
+                  final?.User ||
+                  final?.User?.username === final?.username,
+              )
+            ) {
+              updatedContacts.unshift(final);
+            }
+          }
+        });
 
         setContacts(updatedContacts);
-      },
-      (error) => {
-        console.error('Error getting real-time updates: ', error);
+        fetchFollowersList();
       },
     );
 
@@ -270,6 +213,79 @@ const Messages = () => {
       unsubscribe();
     };
   }, [retrievedDocumentId]);
+
+  useEffect(() => {
+    const updateRead = async () => {
+      let Id1 = parseInt(selected?.UserId, 10);
+      let Id2 = parseInt(selected?.FollowingUserId, 10);
+
+      let collectionId = [];
+      if (Id1 < Id2) {
+        collectionId = `${Id1}_${Id2}`;
+      } else {
+        collectionId = `${Id2}_${Id1}`;
+      }
+      try {
+        const q = query(
+          collection(db, 'test_messages', collectionId, collectionId),
+          orderBy('timestamp', 'desc'),
+          limit(1),
+        );
+        const querySnapshot = await getDocs(q);
+        let latestMessageData = null;
+
+        querySnapshot.forEach((doc) => {
+          latestMessageData = doc?.id;
+        });
+
+        if (latestMessageData) {
+          const docRef = doc(
+            collection(db, 'test_messages', collectionId, collectionId),
+            latestMessageData,
+          );
+          await updateDoc(docRef, { read: true });
+        }
+      } catch (error) {
+        console.error('Error getting messages: ', error);
+      }
+    };
+    if (selectedElement?.lastMessage?.idFrom !== myProfile?.id) {
+      updateRead();
+    }
+  }, [selectedElement, myProfile.id]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const q = query(collection(db, 'test_messages'), orderBy('timestamp'));
+        const querySnapshot = await getDocs(q);
+        let messagesData = [];
+        querySnapshot.forEach((doc) => {
+          messagesData.push({ ...doc.data() });
+        });
+        const filteredMessages = messagesData.filter((element) => {
+          return element?.userIds?.includes(myProfile?.id);
+        });
+        filteredMessages.forEach((message) => {
+          const userIdIndex = message?.userIds?.findIndex((id) => id !== myProfile?.id);
+          const lastMessage = message?.lastMessage;
+          if (userIdIndex !== -1) {
+            const userDetails = message?.userDetails[userIdIndex];
+            let final = { ...userDetails, lastMessage };
+            if (!contacts.some((contact) => contact?.id === final.id)) {
+              contacts.unshift(final);
+            }
+          }
+        });
+      } catch (error) {
+        console.error('Error getting messages: ', error);
+      }
+    };
+
+    fetchData();
+    fetchFollowersList();
+  }, []);
+
   return (
     <SectionLayout activeTab={2}>
       <div className="relative flex justify-between bg-white rounded-lg shadow-card lg:mt-4 h-[100vh] md:h-[calc(100vh-120px)] overflow-hidden ">
@@ -331,62 +347,71 @@ const Messages = () => {
               )}
             </div>
             <div className="items-center w-full md:mt-6">
-              {(addContact ? contacts : searchedFollwers).map((element, index) => (
-                <div
-                  key={index}
-                  className={` box-border border-l-[6px] border-white cursor-pointer  w-full ${
-                    isActive === element?.id ? 'active-message-left-side-bar bg-lightbluebg' : ''
-                  }`}
-                  onClick={() => handleSelected(element?.id)}
-                >
-                  <div className="border-b border-b-lightgrey w-[95%] flex items-center py-3 ml-[3px] ">
-                    <div>
-                      <Avatar
-                        name={element?.userDetails?.[1]?.name || element?.name}
-                        image={ludgi}
-                        classNames="w-[40px] h-[40px]"
-                      />
+              {(addContact ? contacts : searchedFollwers).map((element, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={` box-border border-l-[6px] border-white cursor-pointer  w-full ${
+                      isActive === element?.id ? 'active-message-left-side-bar bg-lightbluebg' : ''
+                    }`}
+                    onClick={() => handleSelected(element?.id, element)}
+                  >
+                    <div className="border-b border-b-lightgrey w-[95%] flex items-center py-3 ml-[3px] ">
+                      <div>
+                        <Avatar
+                          name={element?.firstName || element?.User?.firstName}
+                          image={
+                            element?.profilePictureUrl ||
+                            element?.profilePicture ||
+                            element?.User?.profilePictureUrl ||
+                            element?.User?.profilePicture
+                          }
+                          classNames="w-[40px] h-[40px]"
+                        />
+                      </div>
+                      {addContact ? (
+                        <div className="ml-2 w-full mr-2">
+                          <div className="flex justify-between">
+                            <h3 className="text-[16px] font-semibold">
+                              {element?.firstName || element?.User?.firstName}
+                            </h3>
+                            <TimeAgo timestamp={element?.lastMessage?.timestamp} />
+                          </div>
+                          <div className="flex justify-between">
+                            <p
+                              className={`text-[14px] font-medium text-greydark ${
+                                newMessage ? 'font-medium' : 'font-normal'
+                              }`}
+                            >
+                              {element?.lastMessage?.content
+                                ? element?.lastMessage?.content?.length > 18
+                                  ? `${element?.lastMessage?.content.substring(0, 10)}...`
+                                  : element?.lastMessage?.content
+                                : ''}
+                            </p>
+                            {newMessage ? (
+                              <span className="inline-flex items-center justify-center bg-gradient-to-r from-buttongradientfrom to-buttongradientto h-4 w-4 rounded-full">
+                                <span className="text-white text-[12px]">2</span>
+                              </span>
+                            ) : (
+                              <TextSeen seen />
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="ml-2 mr-2 w-full">
+                          <div className="flex justify-between items-center">
+                            <h3 className="text-[16px] font-semibold">
+                              {element?.User?.firstName}
+                            </h3>
+                            <img src={messageVector} alt="" className="w-[24px] h-[24px]" />
+                          </div>
+                        </div>
+                      )}
                     </div>
-                    {addContact ? (
-                      <div className="ml-2 w-full mr-2">
-                        <div className="flex justify-between">
-                          <h3 className="text-[16px] font-semibold">
-                            {element?.userDetails?.[1]?.name || element?.name}
-                          </h3>
-                          <p>5s</p>
-                        </div>
-                        <div className="flex justify-between">
-                          <p
-                            className={`text-[14px] font-medium text-greydark ${
-                              newMessage ? 'font-medium' : 'font-normal'
-                            }`}
-                          >
-                            {element?.lastMessage?.content
-                              ? element?.lastMessage.content.length > 18
-                                ? `${element?.lastMessage.content.substring(0, 10)}...`
-                                : element?.lastMessage.content
-                              : ''}
-                          </p>
-                          {newMessage ? (
-                            <span className="inline-flex items-center justify-center bg-gradient-to-r from-buttongradientfrom to-buttongradientto h-4 w-4 rounded-full">
-                              <span className="text-white text-[12px]">2</span>
-                            </span>
-                          ) : (
-                            <TextSeen />
-                          )}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="ml-2 mr-2 w-full">
-                        <div className="flex justify-between items-center">
-                          <h3 className="text-[16px] font-semibold">{element?.name}</h3>
-                          <img src={messageVector} alt="" className="w-[24px] h-[24px]" />
-                        </div>
-                      </div>
-                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         </div>
@@ -408,14 +433,28 @@ const Messages = () => {
                       setIsActive(null);
                     }}
                   />
-                  <Avatar image={ludgi} classNames="w-[52px] h-[52px] ml-4 md:ml-0" />
+                  <Avatar
+                    name={
+                      contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
+                      contacts.find((contact) => contact?.id === isActive)?.firstName
+                    }
+                    image={
+                      contacts.find((contact) => contact?.id === isActive)?.User
+                        ?.profilePictureUrl ||
+                      contacts.find((contact) => contact?.id === isActive)?.User?.profilePicture ||
+                      contacts.find((contact) => contact?.id === isActive)?.profilePictureUrl ||
+                      contacts.find((contact) => contact?.id === isActive)?.profilePictureUrl
+                    }
+                    classNames="w-[52px] h-[52px] ml-4 md:ml-0"
+                  />
                   <div className="ml-2">
                     <span className="text-[20px] font-semibold">
                       {isActive !== null
                         ? addContact
-                          ? contacts.find((contact) => contact.id === isActive)?.name || 'Name'
-                          : searchedFollwers.find((follower) => follower.id === isActive)?.name ||
-                            'Name'
+                          ? contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
+                            contacts.find((contact) => contact?.id === isActive).firstName
+                          : searchedFollwers.find((follower) => follower?.id === isActive)?.User
+                              ?.firstName || 'Name'
                         : 'Name'}
                     </span>
                     <div className="flex items-center">
@@ -440,14 +479,20 @@ const Messages = () => {
                   />
                 </div>
               </div>
-              <div className=" overflow-auto scrollbar-custom h-full">
-                <Chats fileData={fileData} chatHistoryData={messages} />
+              <div className=" overflow-auto scrollbar-custom h-full" ref={chatContainerRef}>
+                <Chats
+                  fileData={fileData}
+                  retrievedDocumentId={retrievedDocumentId}
+                  scrollChatContainer={scrollChatContainer}
+                  selected={selected}
+                />
               </div>
               <InputTextarea
                 onFileInputChange={handleFileInputChange}
-                fromId={fromId}
                 toId={toId}
                 contacts={contacts}
+                isActive={isActive}
+                selectedId={selectedId}
               />
             </div>
           ) : (
@@ -496,8 +541,8 @@ const Messages = () => {
               ? isActive !== null && searchedContacts[isActive]
                 ? searchedContacts[isActive]?.name || 'Name'
                 : isActive !== null && searchedFollwers[isActive]
-                ? searchedFollwers[isActive]?.name || 'Name'
-                : 'Name'
+                  ? searchedFollwers[isActive]?.name || 'Name'
+                  : 'Name'
               : searchedFollwers[isActive]?.name || 'Name'}
             ”?
           </div>

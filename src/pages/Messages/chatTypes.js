@@ -4,7 +4,15 @@ import ludgi from '../../assets/images/ludgi.svg';
 import TestSeen from '../../components/Icons/TestSeen';
 import DocumentIcon from '../../components/Icons/DocumentIcon';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
+const formatTimestamp = (timestamp) => {
+  const date = new Date(timestamp * 1000);
+  const hours = date.getHours() % 12 || 12;
+  const minutes = ('0' + date.getMinutes()).slice(-2);
+  const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
+  return `${hours}:${minutes} ${ampm}`;
+};
 const MediaMsg = ({ element }) => {
   return (
     <div
@@ -97,31 +105,33 @@ const VideoMsg = ({ element }) => {
   );
 };
 
-const TextMsg = ({ element }) => {
+const TextMsg = ({ element, selected }) => {
+  const myProfile = useSelector((state) => state.auth.user);
+  const formattedTimestamp = formatTimestamp(element?.timestamp);
+  const sender = myProfile?.id === element?.idFrom;
+
   return (
     <div
       className={`flex items-center flex-row ml-2 mt-4 m-6 ${
-        !element?.incoming ? 'flex-row-reverse' : 'justify-start'
+        sender ? 'flex-row-reverse' : 'justify-start'
       }`}
     >
       <div>
-        <div
-          className={`flex items-end ${!element?.incoming ? 'flex-row-reverse' : 'justify-start'}`}
-        >
-          <Avatar image={ludgi} />
+        <div className={`flex items-end ${sender ? 'flex-row-reverse' : 'justify-start'}`}>
+          <Avatar
+            name={sender ? myProfile?.firstName : selected?.User?.firstName}
+            image={sender ? myProfile.profilePictureUrl : selected?.User?.profilePicture}
+          />
           <div className="ml-2 mr-2">
             <div
               className={`max-w-[340px] p-4 ${
-                element?.incoming === true
+                !sender
                   ? 'bg-whitemedium rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
                   : 'bg-blueprimary rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
               }`}
+              style={{ whiteSpace: 'pre-line' }}
             >
-              <div
-                className={`text-[14px] ${
-                  element?.incoming === true ? 'text-greydark' : 'text-white'
-                }`}
-              >
+              <div className={`text-[14px] ${!sender ? 'text-greydark' : 'text-white'}`}>
                 {element?.message}
               </div>
             </div>
@@ -129,11 +139,11 @@ const TextMsg = ({ element }) => {
         </div>
         <div
           className={`flex items-center ${
-            element?.incoming === true ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
+            !sender ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{!element?.incoming ? <TestSeen seen /> : ''}</div>
-          <div className="text-[12px] text-greydark ml-1">{element?.time}</div>
+          <div>{sender ? <TestSeen seen={element?.read} /> : ''}</div>
+          <div className="text-[12px] text-greydark ml-1">{formattedTimestamp}</div>
         </div>
       </div>
     </div>
