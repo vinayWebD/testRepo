@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { REGEX } from '../constants/constants';
+import { LIMITS, REGEX } from '../constants/constants';
 import { MESSAGES } from '../constants/messages';
 
 const { IS_REQUIRED, EMAIL_INVALID, MSG_PASSWORD_TYPE, MSG_FIELD_LENGTH } = MESSAGES;
@@ -31,6 +31,11 @@ const validationSchemaWorkIntrest = yup.object().shape({
 const validationSchemaInterest = yup.object().shape({
   interest: yup.string().max(6000).required(IS_REQUIRED('interest')),
 });
+
+const validationSchemaAboutWork = yup.object().shape({
+  work: yup.string().trim().required(IS_REQUIRED('work')).max(LIMITS.MAX_ABOUT_WORK_LENGTH),
+});
+
 const validationSchemaExperience = yup.object().shape({
   title: yup.string().required(IS_REQUIRED('Title')),
   description: yup.string(),
@@ -69,4 +74,5 @@ export {
   validationSchemaInterest,
   validationSchemaWorkSkills,
   validationSchemaWorkLinks,
+  validationSchemaAboutWork,
 };

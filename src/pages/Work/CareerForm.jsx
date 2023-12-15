@@ -40,6 +40,7 @@ import { useDispatch } from 'react-redux';
 import { updateSignup } from '../../redux/slices/authSlice';
 import { updateCareerTitleDispatcher } from '../../redux/dispatchers/signupDispatcher';
 import SpinningLoader from '../../components/common/SpinningLoader';
+import { LIMITS } from '../../constants/constants';
 
 const { HOME } = PATHS;
 
@@ -241,6 +242,7 @@ export function CareerForm({
               disabled={!isEdit}
               error={tuc_title && err_title}
               helperText={tuc_title && err_title}
+              maxLength={LIMITS.MAX_CAREER_TITLE_LENGTH}
             />
 
             {isEdit ? (

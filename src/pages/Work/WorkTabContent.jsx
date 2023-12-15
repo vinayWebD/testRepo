@@ -7,13 +7,14 @@ import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import TextArea from '../../components/TextArea';
 import { fetchCareersList, fetchProfileEdit } from '../../services/signup';
-import { validationSchemaWorkIntrest } from '../../validations';
+import { validationSchemaAboutWork } from '../../validations';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import { CareerForm } from './CareerForm';
 import Accordion from '../../components/Accordion';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import { CareerDetail } from './CareerDetail';
+import { LIMITS } from '../../constants/constants';
 
 export function WorkTabContent() {
   const [careerList, setCareerList] = useState({});
@@ -21,6 +22,7 @@ export function WorkTabContent() {
   const navigate = useNavigate();
 
   const getCareerList = async () => {
+    setIsLoading(true);
     const response = await fetchCareersList();
     const {
       status,
@@ -31,6 +33,8 @@ export function WorkTabContent() {
       setCareerList(data);
       setFieldValue('work', data?.work);
     }
+
+    setIsLoading(false);
   };
 
   const initialWork = {
@@ -38,7 +42,7 @@ export function WorkTabContent() {
   };
 
   const aboutWorkSubmitHandler = async () => {
-    if (!isLoading) {
+    if (!isLoading && work?.trim()?.length) {
       setIsLoading(true);
       const response = await fetchProfileEdit({
         work,
@@ -47,7 +51,7 @@ export function WorkTabContent() {
       const errormsg = getErrorMessage(data);
       if (successStatus(status)) {
         getCareerList();
-        ToastNotifySuccess('Description added successfully', 'location-success');
+        ToastNotifySuccess('Description saved successfully', 'location-success');
       } else {
         if (errormsg) {
           ToastNotifyError(errormsg, 'location-failed');
@@ -59,7 +63,7 @@ export function WorkTabContent() {
 
   const formikWork = useFormik({
     initialValues: initialWork,
-    validationSchema: validationSchemaWorkIntrest,
+    validationSchema: validationSchemaAboutWork,
     onSubmit: aboutWorkSubmitHandler,
   });
 
@@ -92,11 +96,23 @@ export function WorkTabContent() {
               onChange={(e) => formikWork.setFieldValue('work', e.target.value)}
               error={tuc_work && err_work}
               helperText={tuc_work && err_work}
+              maxLength={LIMITS.MAX_ABOUT_WORK_LENGTH}
             />
+
+            <div className="w-full text-right text-xs text-greylight">
+              {work?.trim().length}/{LIMITS.MAX_ABOUT_WORK_LENGTH}
+            </div>
           </div>
         </div>
         <div className="grid justify-items-end pb-8">
-          <Button isDisabled={work === ''} label="Save" type="submit" showArrowIcon={false} />
+          <Button
+            isDisabled={!work?.trim()?.length || careerList?.work === work}
+            label="Save"
+            type="submit"
+            showArrowIcon={false}
+            onlyShowLoaderWhenLoading={true}
+            isLoading={isLoading}
+          />
         </div>
       </form>
       <hr className="pb-8" style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
