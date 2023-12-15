@@ -7,6 +7,7 @@ import { getFirestore } from 'firebase/firestore';
 
 const app = initializeApp(config);
 const messaging = getMessaging(app);
+const db = getFirestore(app);
 
 export const Sendrequest = () => {
   if (typeof Notification === 'function') {
@@ -39,5 +40,5 @@ export const onMessager = () =>
       resolve(payload);
     });
   });
-export const db = getFirestore(app);
+export default db;
 // export default firebase;
