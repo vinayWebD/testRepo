@@ -59,6 +59,7 @@ const NETWORK_CONSTANTS = {
   REPORT_COMMENT: (commentId) => `/v1/report/comment/${commentId}`,
   REPORT_POST: (postId) => `/v1/report/post/${postId}`,
   REPORT_USER: (userId) => `/v1/report/user/${userId}`,
+  ADD_EXPERIENCE: (careerId) => `/v1/accounts/careers/${careerId}/experiences`,
 };
 
 export default NETWORK_CONSTANTS;

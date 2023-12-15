@@ -38,10 +38,11 @@ const validationSchemaAboutWork = yup.object().shape({
 
 const validationSchemaExperience = yup.object().shape({
   title: yup.string().required(IS_REQUIRED('Title')),
-  description: yup.string(),
-  start_date: yup.string().required(IS_REQUIRED('Start Date')),
+  startDate: yup.string().required(IS_REQUIRED('Start Date')),
   company: yup.string().required(IS_REQUIRED('Company Name')),
+  description: yup.string().max(LIMITS.MAX_EXPERIENCE_DESCRIPTION_LENGTH),
 });
+
 const validationSchemaEducation = yup.object().shape({
   school: yup.string().required(IS_REQUIRED('School Name')),
   degree: yup.string().required(IS_REQUIRED('Degree ')),

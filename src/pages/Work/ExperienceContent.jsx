@@ -8,40 +8,30 @@ import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { validationSchemaExperience } from '../../validations';
-import {
-  fetchCareerExperience,
-  fetchCareerExperienceList,
-  fetchExperienceSingle,
-  fetchUpdateExperience,
-} from '../../services/signup';
+import { fetchCareerExperienceList, fetchUpdateExperience } from '../../services/signup';
 import { successStatus } from '../../common';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import EditBlueIcon from '../../components/Icons/EditBlueIcon';
+import { useDispatch } from 'react-redux';
+import { addExperienceDispatcher } from '../../redux/dispatchers/signupDispatcher';
 
 export function ExperienceContent({ careerId = null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [experienceList, setExperienceList] = useState([]);
   const [editId, setEditId] = useState(null);
-  const [currentlyWorkingCheck, setCurrentlyWorkingCheck] = useState(false);
+  const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
   const [volunteerCheck, setVolunteerCheck] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
 
   const getExperiences = async () => {
-    const response = await fetchExperienceSingle(careerId);
+    setIsLoading(true);
+    const response = await fetchCareerExperienceList(careerId);
     const { status, data = {} } = response;
     if (successStatus(status)) {
-      console.log(data);
+      setExperienceList(data?.data);
     }
-  };
-
-  const getExperiencesList = async () => {
-    const response = await fetchCareerExperienceList(careerId);
-    const {
-      status,
-      data: { results = [] },
-    } = response;
-    if (successStatus(status)) {
-      setExperienceList(results);
-    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -57,11 +47,12 @@ export function ExperienceContent({ careerId = null }) {
     let dataToSend = {
       data: {
         title: title?.trim(),
-        description: description,
+        description,
         startDate,
         endDate,
         company,
         isVolunteerExperience: volunteerCheck,
+        isCurrentlyWorking,
       },
       id: editId ? editId : careerId,
     };
@@ -69,12 +60,13 @@ export function ExperienceContent({ careerId = null }) {
     if (editId) {
       response = await fetchUpdateExperience(careerId);
     } else {
-      response = await fetchCareerExperience(dataToSend);
+      response = await dispatch(addExperienceDispatcher({ ...dataToSend?.data, careerId }));
     }
     const { status } = response;
+
     if (successStatus(status)) {
       formik.resetForm();
-      getExperiencesList();
+      await getExperiences();
     }
   };
 
@@ -113,7 +105,7 @@ export function ExperienceContent({ careerId = null }) {
     },
   } = formik;
 
-  useEffect(() => {}, [experienceList]);
+  console.log(isLoading);
 
   const renderExperienceList = () => {
     if (experienceList.length) {
@@ -135,7 +127,9 @@ export function ExperienceContent({ careerId = null }) {
               </div>
               <div className="pb-[24px]">
                 <div className="detail-label"> End Date</div>
-                <div className="detail-heading">{moment(data?.endDate).format('ll')}</div>
+                <div className="detail-heading">
+                  {data?.endDate ? moment(data?.endDate).format('ll') : 'NA'}
+                </div>
               </div>
               <span
                 className="absolute right-[0] top-[50%] cursor-pointer"
@@ -148,10 +142,15 @@ export function ExperienceContent({ careerId = null }) {
               </span>
             </div>
 
-            <div>
-              <div className="detail-label">Description</div>
-              <div className="detail-heading">{data.description}</div>
-            </div>
+            {data.description ? (
+              <div>
+                <div className="detail-label">Description</div>
+                <div className="detail-heading">{data.description}</div>
+              </div>
+            ) : (
+              ''
+            )}
+
             <div className="py-[24px]">
               <div className="bg-greymedium h-[1px] w-full" />
             </div>
@@ -216,9 +215,9 @@ export function ExperienceContent({ careerId = null }) {
                 </div>
                 <div className="flex gap-[12px] items-center mb-6">
                   <Checkbox
-                    checked={currentlyWorkingCheck}
+                    checked={isCurrentlyWorking}
                     setChecked={(value) => {
-                      setCurrentlyWorkingCheck(value);
+                      setIsCurrentlyWorking(value);
                       if (value === true) {
                         formik.setFieldValue('endDate', startDate);
                       } else {
@@ -320,12 +319,12 @@ export function ExperienceContent({ careerId = null }) {
             className="h-[50px]"
           />
           <InputBox
-            disabled={currentlyWorkingCheck} // Disable the input box when currentCheck is true
+            disabled={isCurrentlyWorking} // Disable the input box when currentCheck is true
             name={'endDate'}
             type="date"
             label="End Date"
             placeholder="Select Date"
-            value={currentlyWorkingCheck ? '' : formik.values.endDate} // Show empty string if currentCheck is true
+            value={isCurrentlyWorking ? '' : formik.values.endDate} // Show empty string if currentCheck is true
             onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
             error={tuc_end_date && err_end_date}
             helperText={tuc_end_date && err_end_date}
@@ -350,9 +349,9 @@ export function ExperienceContent({ careerId = null }) {
         <div className="flex">
           <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
             <Checkbox
-              checked={currentlyWorkingCheck}
+              checked={isCurrentlyWorking}
               setChecked={(value) => {
-                setCurrentlyWorkingCheck(value);
+                setIsCurrentlyWorking(value);
                 if (value) {
                   formik.setFieldValue('endDate', null); // Set endDate to null
                 } else {
