@@ -98,7 +98,7 @@ const PrivacySetting = () => {
                     key={index}
                     options={Object.values(form)?.[0]}
                     name={formKey}
-                    defaultValue={settings[formKey]}
+                    defaultValue={settings?.[formKey]}
                     onSelect={(name, value, hasChanged) =>
                       handleSelect(name, value, hasChanged, Object.values(form)?.[0]?.[0]?.title)
                     }
@@ -110,7 +110,15 @@ const PrivacySetting = () => {
         </div>
 
         <div className="w-full flex justify-end items-center gap-5 mt-6">
-          <div className="cursor-pointer text-[16px] text-greydark">Cancel</div>
+          <div
+            className="cursor-pointer text-[16px] text-greydark"
+            onClick={() => {
+              fetchPrivacySetting();
+              window.scroll(0, 0);
+            }}
+          >
+            Cancel
+          </div>
           <Button label="Save" showArrowIcon={false} onClick={updateSettingsHandler} />
         </div>
       </InnerSectionLayout>

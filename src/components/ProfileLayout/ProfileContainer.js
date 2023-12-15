@@ -19,6 +19,8 @@ import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../Toast/ToastNotify';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import ConfirmationModal from '../Modal/ConfirmationModal';
+import ReportUser from '../Post/ReportUser';
 
 const { HOME } = PATHS;
 
@@ -29,6 +31,8 @@ const ProfileContainer = ({
 }) => {
   const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
   const [isLoadingFollowUnfollow, setIsLoadingFollowUnfollow] = useState(false);
+  const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -118,8 +122,8 @@ const ProfileContainer = ({
             <Dropdown
               IconComponent={ThreeDots}
               options={[
-                { name: 'Report', action: () => {} },
-                { name: 'Block', action: blockClickHandler },
+                { name: 'Report', action: () => setIsReportModalOpen(true) },
+                { name: 'Block', action: () => setIsBlockModalOpen(true) },
               ]}
             />
           </div>
@@ -178,6 +182,27 @@ const ProfileContainer = ({
       >
         <EditProfile {...userData} onClose={() => setIsEditingModalOpen(false)} />
       </Modal>
+
+      <ConfirmationModal
+        title="Block User"
+        isOpen={isBlockModalOpen}
+        onClose={() => setIsBlockModalOpen(false)}
+        primaryButtonTitle="No"
+        primaryButtonAction={() => setIsBlockModalOpen(false)}
+        secondaryButtonTitle="Yes"
+        secondaryButtonAction={() => blockClickHandler()}
+      >
+        <div className="text-[18px] tx-greydark font-medium">
+          Are you sure you want to block <br />“{userData?.firstName} {userData?.lastName}
+          ”?
+        </div>
+      </ConfirmationModal>
+
+      <ReportUser
+        isOpen={isReportModalOpen}
+        onClose={() => setIsReportModalOpen(false)}
+        userId={userData?.id}
+      />
     </Card>
   );
 };

@@ -8,6 +8,8 @@ const {
   OTHER_USER_FOLLOW,
   OTHER_USER_UNFOLLOW,
   UNBLOCK_USER,
+  BLOCKED_USERS_LIST,
+  REPORT_USER,
 } = NETWORK_CONSTANTS;
 
 const otherUserBasicData = async ({ id }) => {
@@ -64,6 +66,31 @@ const unblockUser = async ({ userId }) => {
   }
 };
 
+const fetchBlockedUsersList = async ({ limit = 10, page = 1, search = '' }) => {
+  try {
+    const data = await apiUtility(BLOCKED_USERS_LIST, 'GET', {
+      limit,
+      page,
+      search,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const reportUser = async ({ userId, reason = '', profileLink }) => {
+  try {
+    const data = await apiUtility(REPORT_USER(userId), 'POST', {
+      reason,
+      profileLink,
+    });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
 export {
   otherUserBasicData,
   otherUserNetworkingCount,
@@ -71,4 +98,6 @@ export {
   unfollowOtherUser,
   blockUser,
   unblockUser,
+  fetchBlockedUsersList,
+  reportUser,
 };

@@ -161,6 +161,7 @@ const MyNetworkTabSection = ({ selectedTab }) => {
               <UserCard
                 key={item?.id}
                 id={item?.[setResponse.innerType]?.id}
+                userId={item?.[setResponse.innerType]?.id}
                 selectedTab={selectedTab}
                 userName={`${item?.[setResponse.innerType]?.firstName} ${
                   item?.[setResponse.innerType]?.lastName

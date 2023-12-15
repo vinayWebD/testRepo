@@ -44,7 +44,7 @@ const EmojiTextarea = ({
     <div className="relative">
       <textarea
         value={value}
-        className={`w-full pr-6 textarea-with-emojie ${textareaClassNames} ${textareaHeightClass}`}
+        className={`w-full pr-6 textarea-with-emojie outline-none ${textareaClassNames} ${textareaHeightClass}`}
         placeholder={placeholder}
         onChange={(e) => handleChange(e.target.value)}
         maxLength={maxLength}

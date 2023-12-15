@@ -20,4 +20,6 @@ export const PATHS = {
   SETTINGS_CHANGE_PASSWORD: '/settings/change-password',
   SETTINGS_HELP_CENTER: '/settings/help-center',
   SETTINGS_PRIVACY_SETTING: '/settings/privacy-setting',
+  SETTINGS_DELETE_ACCOUNT: '/settings/delete-account',
+  SETTINGS_BLOCKED_LIST: '/settings/blocked-users',
 };

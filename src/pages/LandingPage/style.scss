@@ -410,73 +410,70 @@
         padding-top: 50px;
         font-size: 28px;
         line-height: 34px;
-
-        @media screen and (max-width: 600px) {
-          padding-top: 30px;
-        }
-      }
-      .content,
-      .card-content {
-        line-height: 17px;
-        font-size: 12px;
-        font-weight: 500;
+        padding-top: 30px;
       }
     }
-    .ourview-section,
-    .about-section {
-      .heading {
+    .content,
+    .card-content {
+      line-height: 17px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+  }
+  .ourview-section,
+  .about-section {
+    .heading {
+      font-size: 28px;
+      line-height: 34px;
+    }
+    .content {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  }
+}
+@media only screen and (min-width: 600px) and (max-width: 1024px) {
+  .join-section,
+  .ourview-section,
+  .work-section,
+  .weaim-section,
+  .landing-footer,
+  .about-section {
+    padding-left: 36px;
+    padding-right: 36px;
+  }
+  .landing-footer {
+    margin: 0 !important;
+  }
+  .footer-section {
+    padding-top: 1px;
+    .footer-logo {
+      padding: 0 36px;
+    }
+  }
+  .hero-section {
+    height: 420px;
+    .content-box {
+      padding-top: 96px;
+      padding-left: 36px;
+      .title {
         font-size: 28px;
         line-height: 34px;
+        .next-gen {
+          color: #fdc60b;
+        }
       }
-      .content {
-        font-size: 14px;
-        font-weight: 500;
+      .sub-content {
+        .sub-title {
+          font-size: 14px;
+          font-weight: 500;
+          line-height: 18px;
+          max-width: 250px;
+        }
       }
     }
   }
-  @media only screen and (min-width: 600px) and (max-width: 1024px) {
-    .join-section,
-    .ourview-section,
-    .work-section,
-    .weaim-section,
-    .landing-footer,
-    .about-section {
-      padding-left: 36px;
-      padding-right: 36px;
-    }
-    .landing-footer {
-      margin: 0 !important;
-    }
-    .footer-section {
-      padding-top: 1px;
-      .footer-logo {
-        padding: 0 36px;
-      }
-    }
-    .hero-section {
-      height: 420px;
-      .content-box {
-        padding-top: 96px;
-        padding-left: 36px;
-        .title {
-          font-size: 28px;
-          line-height: 34px;
-          .next-gen {
-            color: #fdc60b;
-          }
-        }
-        .sub-content {
-          .sub-title {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 18px;
-            max-width: 250px;
-          }
-        }
-      }
-    }
-    .work-section {
-      background-image: url('../../assets/images/expansion_depth_potential 1.svg');
-    }
+  .work-section {
+    background-image: url('../../assets/images/expansion_depth_potential 1.svg');
   }
 }

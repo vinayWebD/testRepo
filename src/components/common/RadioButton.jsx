@@ -1,4 +1,4 @@
-const RadioButton = ({ label, name, value, checked, onChange }) => {
+const RadioButton = ({ label, name, value, checked, onChange = () => {}, onClick = () => {} }) => {
   return (
     <div className="flex gap-4 items-center">
       <input
@@ -8,9 +8,10 @@ const RadioButton = ({ label, name, value, checked, onChange }) => {
         value={value}
         checked={checked}
         onChange={onChange}
+        onClick={onClick}
         className="w-[20px] h-[20px] checked:bg-blueprimary"
       />
-      <label className="text-[14px] font-normal cursor-pointer" htmlFor={value}>
+      <label className="text-[14px] font-medium cursor-pointer" htmlFor={value}>
         {label}
       </label>
     </div>

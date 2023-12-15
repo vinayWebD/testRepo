@@ -362,11 +362,7 @@ export function CareerFrom({
           {type === 'add' && (
             <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
-                <OutlinedButton
-                  label="Skip"
-                  isSkip={true}
-                  onClick={() => navigate(HOME, { replace: true })}
-                />
+                <OutlinedButton label="Skip" isSkip={true} onClick={() => onSkipHandler()} />
               </div>
               <div>
                 <Button type="submit" label="Save" showArrowIcon={false} />
