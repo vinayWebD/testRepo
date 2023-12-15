@@ -8,9 +8,10 @@ const {
   CAREERS,
   ABOUT,
   CERTIFICATE,
-  EXPERIENCES,
   EDUCATION,
   ADD_EXPERIENCE,
+  EDIT_EXPERIENCE,
+  EXPERIENCE_BY_ID,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -97,22 +98,6 @@ const fetchWorkInterest = async (dataTosend) => {
 const addCareerTitle = async (dataTosend) => {
   try {
     const response = await apiUtility(CAREERS, 'POST', dataTosend);
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
-
-/**
- * Function for API calling update experience
- * @param {*} param
- * @returns
- */
-
-const fetchUpdateExperience = async (dataToSend) => {
-  const { postData, id } = dataToSend;
-  try {
-    const response = await apiUtility(`${EXPERIENCES}${id}/`, 'PATCH', postData);
     return response;
   } catch (err) {
     return err;
@@ -359,7 +344,7 @@ const addExperience = async ({
 }) => {
   try {
     const response = await apiUtility(ADD_EXPERIENCE(careerId), 'POST', {
-      title,
+      title: title?.trim(),
       description,
       startDate,
       endDate,
@@ -367,6 +352,47 @@ const addExperience = async ({
       isVolunteerExperience,
       isCurrentlyWorking,
     });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling update experience
+ * @param {*} param
+ * @returns
+ */
+
+const updateExperience = async ({
+  experienceId,
+  title,
+  description,
+  startDate,
+  endDate,
+  company,
+  isVolunteerExperience,
+  isCurrentlyWorking,
+}) => {
+  try {
+    const response = await apiUtility(EDIT_EXPERIENCE(experienceId), 'PATCH', {
+      title: title?.trim(),
+      description,
+      startDate,
+      endDate,
+      company,
+      isVolunteerExperience,
+      isCurrentlyWorking,
+    });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+const fetchExperienceById = async ({ id }) => {
+  try {
+    const response = await apiUtility(EXPERIENCE_BY_ID(id), 'GET');
     return response;
   } catch (err) {
     return err;
@@ -394,8 +420,9 @@ export {
   updateCareerTitle,
   fetchUpdateCertificate,
   fetchCareerCertificateSingle,
-  fetchUpdateExperience,
+  updateExperience,
   fetchEducationSingle,
   fetchDeleteCareer,
   addExperience,
+  fetchExperienceById,
 };
