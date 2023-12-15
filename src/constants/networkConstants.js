@@ -62,6 +62,7 @@ const NETWORK_CONSTANTS = {
   ADD_EXPERIENCE: (careerId) => `/v1/accounts/careers/${careerId}/experiences`,
   EDIT_EXPERIENCE: (expId) => `/v1/accounts/experiences/${expId}`,
   EXPERIENCE_BY_ID: (expId) => `/v1/accounts/experiences/${expId}`,
+  DELETE_EXPERIENCE: (expId) => `/v1/accounts/experiences/${expId}`,
 };
 
 export default NETWORK_CONSTANTS;

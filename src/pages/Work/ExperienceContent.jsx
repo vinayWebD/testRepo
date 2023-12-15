@@ -9,6 +9,7 @@ import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { validationSchemaExperience } from '../../validations';
 import {
+  deleteExperience,
   fetchCareerExperienceList,
   fetchExperienceById,
   updateExperience,
@@ -173,7 +174,7 @@ export function ExperienceContent({ careerId = null }) {
       return experiences.map((data, idx) => (
         <Fragment key={idx}>
           <div>
-            <div className="pr-[64px] flex justify-between relative">
+            <div className="md:pr-[64px] flex flex-col md:flex-row justify-between relative">
               <div className="pb-[24px]">
                 <div className="detail-label">Title</div>
                 <div className="detail-heading">{data.title}</div>
@@ -218,6 +219,19 @@ export function ExperienceContent({ careerId = null }) {
           </div>
         </Fragment>
       ));
+    }
+  };
+
+  const handleDeleteExperience = async () => {
+    const { status } = await deleteExperience({
+      id: editId,
+    });
+
+    if (successStatus(status)) {
+      formik.resetForm();
+      setIsCurrentlyWorking(false);
+      await getExperiences();
+      setIsModalOpen(false);
     }
   };
 
@@ -336,7 +350,11 @@ export function ExperienceContent({ careerId = null }) {
             </div>
             <div className="bg-greymedium h-[1px] w-full" />
             <div className={`flex  pt-6 pb-5 px-6 ${editId ? 'justify-between' : 'justify-end'}`}>
-              {editId ? <OutlinedButton isDelete={true} label="Delete" /> : ''}
+              {editId ? (
+                <OutlinedButton isDelete={true} label="Delete" onClick={handleDeleteExperience} />
+              ) : (
+                ''
+              )}
 
               <Button
                 label="Save"

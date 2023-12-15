@@ -21,7 +21,6 @@ import {
   fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
-  addCareerTitle,
 } from '../../services/signup';
 import {
   validationSchemaTitle,
@@ -38,7 +37,10 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import { useDispatch } from 'react-redux';
 import { updateSignup } from '../../redux/slices/authSlice';
-import { updateCareerTitleDispatcher } from '../../redux/dispatchers/signupDispatcher';
+import {
+  addCareerTitleDispatcher,
+  updateCareerTitleDispatcher,
+} from '../../redux/dispatchers/signupDispatcher';
 import SpinningLoader from '../../components/common/SpinningLoader';
 import { LIMITS } from '../../constants/constants';
 
@@ -81,7 +83,7 @@ export function CareerForm({
         let dataToSend = {
           title: title,
         };
-        const response = await dispatch(addCareerTitle(dataToSend));
+        const response = await dispatch(addCareerTitleDispatcher(dataToSend));
         const { status, data } = response;
 
         if (successStatus(status)) {
@@ -103,7 +105,7 @@ export function CareerForm({
           setIsEdit(false);
         }
       }
-
+      console.log('dgdfhfhfg');
       setIsLoading({ ...isLoading, title: false });
     }
   };

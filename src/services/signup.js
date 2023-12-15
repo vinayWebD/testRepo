@@ -12,6 +12,7 @@ const {
   ADD_EXPERIENCE,
   EDIT_EXPERIENCE,
   EXPERIENCE_BY_ID,
+  DELETE_EXPERIENCE,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -399,6 +400,15 @@ const fetchExperienceById = async ({ id }) => {
   }
 };
 
+const deleteExperience = async ({ id }) => {
+  try {
+    const response = await apiUtility(DELETE_EXPERIENCE(id), 'DELETE');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   signupUser,
   verifyEmail,
@@ -425,4 +435,5 @@ export {
   fetchDeleteCareer,
   addExperience,
   fetchExperienceById,
+  deleteExperience,
 };
