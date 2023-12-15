@@ -108,7 +108,7 @@ const VideoMsg = ({ element }) => {
 const TextMsg = ({ element, selected }) => {
   const myProfile = useSelector((state) => state.auth.user);
   const formattedTimestamp = formatTimestamp(element?.timestamp);
-  const sender = myProfile.id === element.idFrom;
+  const sender = myProfile?.id === element?.idFrom;
 
   return (
     <div
@@ -125,7 +125,7 @@ const TextMsg = ({ element, selected }) => {
           <div className="ml-2 mr-2">
             <div
               className={`max-w-[340px] p-4 ${
-                !sender === true
+                !sender
                   ? 'bg-whitemedium rounded-tl-2xl rounded-tr-2xl rounded-br-2xl'
                   : 'bg-blueprimary rounded-tl-2xl rounded-tr-2xl rounded-bl-2xl'
               }`}
@@ -142,7 +142,7 @@ const TextMsg = ({ element, selected }) => {
             !sender ? 'justify-start ml-[40px] mt-1' : 'justify-end mr-[40px]'
           }`}
         >
-          <div>{sender ? <TestSeen seen={element.read} /> : ''}</div>
+          <div>{sender ? <TestSeen seen={element?.read} /> : ''}</div>
           <div className="text-[12px] text-greydark ml-1">{formattedTimestamp}</div>
         </div>
       </div>

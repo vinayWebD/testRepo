@@ -109,15 +109,15 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
       chatId: collectionId,
       lastMessage: {
         content: input,
-        idFrom: myProfile.id,
+        idFrom: myProfile?.id,
         idTo: toId,
         read: false,
         timestamp: timestampInSeconds,
         id: selectedId,
       },
       timestamp: timestampInSeconds,
-      userIds: [myProfile.id, toId],
-      userDetails: [myProfile, contacts.find((user) => user.id === isActive)],
+      userIds: [myProfile?.id, toId],
+      userDetails: [myProfile, contacts.find((user) => user?.id === isActive)],
     });
 
     const DocumentRef = collection(documentRef, collectionId);
@@ -126,7 +126,7 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
     setDoc(timestampDocumentRef, {
       type: 'msg',
       message: input,
-      idFrom: myProfile.id,
+      idFrom: myProfile?.id,
       idTo: toId,
       read: false,
       timestamp: timestampInSeconds,
@@ -233,7 +233,7 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
         onClick={(e) => {
           e.target.value = null;
         }}
-        onInput={() => onFileInputChange(mediaInput.current.files)}
+        onInput={() => onFileInputChange(mediaInput?.current?.files)}
         className="contents w-0 h-0 "
         accept={
           mediaTypeToUpload === 'photo'

@@ -108,13 +108,7 @@ const chats = (props) => {
                 await updateDoc(subcollectionDocRef, { read: true });
               }),
             );
-          } else {
-            console.log(
-              'The latestMessage subcollection documents do not have the expected structure or the latest document has read: false or is not present.',
-            );
           }
-        } else {
-          console.log('No documents found in the latestMessage subcollection.');
         }
       } catch (error) {
         console.error(error);
@@ -144,7 +138,7 @@ const chats = (props) => {
               {dataType === 3 ? (
                 <>
                   <img src={documentAttachment} alt="" />
-                  <div>{data[0].name}</div>
+                  <div>{data[0]?.name}</div>
                   <div>{Math.floor(data[0].size / 1024)} KB · PDF</div>
                 </>
               ) : dataType === 1 ? (
@@ -158,13 +152,13 @@ const chats = (props) => {
       ) : (
         <div>
           {messages?.map((element) => {
-            switch (element.type) {
+            switch (element?.type) {
               case 'divider':
                 return <Timestamp element={element} />;
               case 'unreadMessages':
                 return <Divider element={element} />;
               case 'msg':
-                switch (element.subType) {
+                switch (element?.subType) {
                   case 'img':
                     return <MediaMsg element={element} />;
                   case 'doc':
