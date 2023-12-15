@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Fragment, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -23,9 +22,9 @@ export function ExperienceContent({ careerId = null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [experienceList, setExperienceList] = useState([]);
   const [editId, setEditId] = useState(null);
-  const [currentCheck, setCurrentCheck] = useState(false);
+  const [currentlyWorkingCheck, setCurrentlyWorkingCheck] = useState(false);
   const [volunteerCheck, setVolunteerCheck] = useState(false);
-  console.log('careerId--->', careerId);
+
   const getExperiences = async () => {
     const response = await fetchExperienceSingle(careerId);
     const { status, data = {} } = response;
@@ -57,11 +56,11 @@ export function ExperienceContent({ careerId = null }) {
     const { title, description, startDate, company, endDate } = values;
     let dataToSend = {
       data: {
-        title: title,
+        title: title?.trim(),
         description: description,
-        startDate: startDate,
-        endDate: endDate,
-        company: company,
+        startDate,
+        endDate,
+        company,
         isVolunteerExperience: volunteerCheck,
       },
       id: editId ? editId : careerId,
@@ -91,6 +90,7 @@ export function ExperienceContent({ careerId = null }) {
     initialValues: initialValues,
     validationSchema: validationSchemaExperience,
     onSubmit: experienceSubmit,
+    enableReinitialize: true,
   });
 
   const {
@@ -114,8 +114,6 @@ export function ExperienceContent({ careerId = null }) {
   } = formik;
 
   useEffect(() => {}, [experienceList]);
-
-  console.log('---->Formik', formik.values);
 
   const renderExperienceList = () => {
     if (experienceList.length) {
@@ -160,7 +158,7 @@ export function ExperienceContent({ careerId = null }) {
           </div>
           <Modal
             isTitle={true}
-            title={editId ? 'Edit Experience' : 'Edit Experience'}
+            title={editId ? 'Edit Experience' : 'Add Experience'}
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             width="max-w-[472px]"
@@ -173,7 +171,7 @@ export function ExperienceContent({ careerId = null }) {
                     name="title"
                     label="Title"
                     placeholder="Enter Title"
-                    className
+                    className="h-[50px]"
                     value={title}
                     onChange={handleChange}
                     error={tuc_title && err_title}
@@ -189,6 +187,7 @@ export function ExperienceContent({ careerId = null }) {
                     onChange={handleChange}
                     error={tuc_company && err_company}
                     helperText={tuc_company && err_company}
+                    className="h-[50px]"
                   />
                 </div>
                 <div className="grid grid-cols-2 gap-4 pb-4">
@@ -201,6 +200,7 @@ export function ExperienceContent({ careerId = null }) {
                     onChange={handleChange}
                     error={tuc_start_date && err_start_date}
                     helperText={tuc_start_date && err_start_date}
+                    className="h-[50px]"
                   />
                   <InputBox
                     name="endDate"
@@ -211,13 +211,14 @@ export function ExperienceContent({ careerId = null }) {
                     onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
                     error={tuc_end_date && err_end_date}
                     helperText={tuc_end_date && err_end_date}
+                    className="h-[50px]"
                   />
                 </div>
                 <div className="flex gap-[12px] items-center mb-6">
                   <Checkbox
-                    checked={currentCheck}
+                    checked={currentlyWorkingCheck}
                     setChecked={(value) => {
-                      setCurrentCheck(value);
+                      setCurrentlyWorkingCheck(value);
                       if (value === true) {
                         formik.setFieldValue('endDate', startDate);
                       } else {
@@ -244,6 +245,7 @@ export function ExperienceContent({ careerId = null }) {
                     onChange={handleChange}
                     error={tuc_description && err_description}
                     helperText={tuc_description && err_description}
+                    className="h-[50px]"
                   />
                 </div>
               </div>
@@ -281,6 +283,7 @@ export function ExperienceContent({ careerId = null }) {
       </Fragment>
     );
   }
+
   return (
     <>
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
@@ -292,6 +295,7 @@ export function ExperienceContent({ careerId = null }) {
           onChange={handleChange}
           error={tuc_title && err_title}
           helperText={tuc_title && err_title}
+          className="h-[50px]"
         />
         <InputBox
           name="company"
@@ -301,6 +305,7 @@ export function ExperienceContent({ careerId = null }) {
           onChange={handleChange}
           error={tuc_company && err_company}
           helperText={tuc_company && err_company}
+          className="h-[50px]"
         />
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           <InputBox
@@ -312,17 +317,19 @@ export function ExperienceContent({ careerId = null }) {
             onChange={(e) => formik.setFieldValue('startDate', e.target.value)}
             error={tuc_start_date && err_start_date}
             helperText={tuc_start_date && err_start_date}
+            className="h-[50px]"
           />
           <InputBox
-            disabled={currentCheck}
+            disabled={currentlyWorkingCheck} // Disable the input box when currentCheck is true
             name={'endDate'}
             type="date"
             label="End Date"
             placeholder="Select Date"
-            value={endDate}
+            value={currentlyWorkingCheck ? '' : formik.values.endDate} // Show empty string if currentCheck is true
             onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
             error={tuc_end_date && err_end_date}
             helperText={tuc_end_date && err_end_date}
+            className="h-[50px]"
           />
         </div>
       </div>
@@ -336,20 +343,20 @@ export function ExperienceContent({ careerId = null }) {
           onChange={handleChange}
           error={tuc_description && err_description}
           helperText={tuc_description && err_description}
+          className="h-[50px]"
         />
       </div>
       <div className="flex md:flex-row flex-col md:items-center items-end justify-between pb-[45px]">
         <div className="flex">
           <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
             <Checkbox
-              checked={currentCheck}
+              checked={currentlyWorkingCheck}
               setChecked={(value) => {
-                setCurrentCheck(value);
-                console.log('value', value);
-                if (value === true) {
-                  formik.setFieldValue('endDate', startDate);
+                setCurrentlyWorkingCheck(value);
+                if (value) {
+                  formik.setFieldValue('endDate', null); // Set endDate to null
                 } else {
-                  formik.setFieldValue('endDate', null);
+                  formik.setFieldValue('endDate', ''); // Reset endDate
                 }
               }}
             />{' '}
@@ -360,7 +367,7 @@ export function ExperienceContent({ careerId = null }) {
             <span>This is a volunteer experience.</span>
           </div>
         </div>
-        <OutlinedButton label="save" onClick={handleSubmit} type="button" />
+        <OutlinedButton label="Save" onClick={handleSubmit} type="button" />
       </div>
     </>
   );

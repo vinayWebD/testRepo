@@ -93,7 +93,7 @@ const fetchWorkInterest = async (dataTosend) => {
  * @returns
  */
 
-const fetchCareerTitle = async (dataTosend) => {
+const addCareerTitle = async (dataTosend) => {
   try {
     const response = await apiUtility(CAREERS, 'POST', dataTosend);
     return response;
@@ -359,7 +359,7 @@ const fetchCareersList = async (dataToSend) => {
  * @returns
  */
 
-const fetchUpdateCareer = async (dataToSend) => {
+const updateCareerTitle = async (dataToSend) => {
   const { postData, id } = dataToSend;
   try {
     const response = await apiUtility(`${CAREERS}/${id}`, 'PATCH', postData);
@@ -384,7 +384,7 @@ export {
   fetchGenratePreSignedUrl,
   fetchFileUPloadAWS,
   fetchProfileEdit,
-  fetchCareerTitle,
+  addCareerTitle,
   fetchWorkInterest,
   fetchCareerExperience,
   fetchCareerEducation,
@@ -397,7 +397,7 @@ export {
   fetchCareerLinkslist,
   fetchCareerSkillslist,
   fetchCareersList,
-  fetchUpdateCareer,
+  updateCareerTitle,
   fetchUpdateCertificate,
   fetchCareerCertificateSingle,
   fetchUpdateExperience,

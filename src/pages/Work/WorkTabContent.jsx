@@ -37,11 +37,11 @@ export function WorkTabContent() {
     work: careerList?.work || '',
   };
 
-  const workSubmit = async () => {
+  const aboutWorkSubmitHandler = async () => {
     if (!isLoading) {
       setIsLoading(true);
       const response = await fetchProfileEdit({
-        work: work,
+        work,
       });
       const { status, data } = response;
       const errormsg = getErrorMessage(data);
@@ -60,7 +60,7 @@ export function WorkTabContent() {
   const formikWork = useFormik({
     initialValues: initialWork,
     validationSchema: validationSchemaWorkIntrest,
-    onSubmit: workSubmit,
+    onSubmit: aboutWorkSubmitHandler,
   });
 
   const {

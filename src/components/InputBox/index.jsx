@@ -16,6 +16,7 @@ function InputBox({
   helperText = false,
   maxLength = 100,
   parentClassName = '',
+  type = 'text',
   ...props
 }) {
   const [value, setValue] = useState(initialValue || '');
@@ -41,12 +42,14 @@ function InputBox({
       </div>
       <input
         {...props}
+        type={type}
         name={name}
         value={value}
         placeholder={placeholder}
         className={`${className} ${
           helperText ? 'haserror' : ''
-        } border border-large border-customGray w-full ${disabled ? 'cursor-not-allowed' : ''}`}
+        } border border-large border-customGray w-full ${disabled ? 'cursor-not-allowed' : ''}
+        ${type === 'date' && !value ? 'text-greylight font-thin' : ''}`}
         onChange={handleInputChange}
         onBlur={onBlur}
         onFocus={onFocus}

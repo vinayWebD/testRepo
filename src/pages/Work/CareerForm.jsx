@@ -21,8 +21,7 @@ import {
   fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
-  fetchCareerTitle,
-  fetchUpdateCareer,
+  addCareerTitle,
 } from '../../services/signup';
 import {
   validationSchemaTitle,
@@ -39,6 +38,8 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import { useDispatch } from 'react-redux';
 import { updateSignup } from '../../redux/slices/authSlice';
+import { updateCareerTitleDispatcher } from '../../redux/dispatchers/signupDispatcher';
+import SpinningLoader from '../../components/common/SpinningLoader';
 
 const { HOME } = PATHS;
 
@@ -58,44 +59,51 @@ export function CareerForm({
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(id ? false : true);
   const [prevTitle, setPrevTitle] = useState(id ? data?.title : '');
+  const [isLoading, setIsLoading] = useState({ title: false });
 
   useEffect(() => {
     if (id) {
       setPrevTitle(data?.title);
+      setIsEdit(false);
     } else {
       setIsEdit(true);
     }
   }, [id, data]);
 
-  const careerSubmit = async () => {
-    // we will call this api in case only when there is no career id
-    //  because of we are calling this function onblur
+  const careerTitleHandler = async () => {
+    if (!isLoading?.title) {
+      setIsLoading({ ...isLoading, title: true });
 
-    if (!id) {
-      let dataToSend = {
-        title: title,
-      };
-      const response = await fetchCareerTitle(dataToSend);
-      const { status, data } = response;
-
-      if (successStatus(status)) {
-        updateCareerId(data?.data?.id);
-        setIsEdit(false);
-        getCareerList();
-      }
-    } else {
-      let dataToUpdate = {
-        postData: {
+      if (!id) {
+        // we will call this api in case only when there is no career id
+        //  because of we are calling this function onblur
+        let dataToSend = {
           title: title,
-        },
-        id,
-      };
-      const response = await fetchUpdateCareer(dataToUpdate);
-      const { status } = response;
-      if (successStatus(status)) {
-        getCareerList();
-        setIsEdit(false);
+        };
+        const response = await dispatch(addCareerTitle(dataToSend));
+        const { status, data } = response;
+
+        if (successStatus(status)) {
+          updateCareerId(data?.data?.id);
+          setIsEdit(false);
+          getCareerList();
+        }
+      } else {
+        let dataToUpdate = {
+          postData: {
+            title: title,
+          },
+          id,
+        };
+        const response = await dispatch(updateCareerTitleDispatcher(dataToUpdate));
+        const { status } = response;
+        if (successStatus(status)) {
+          getCareerList();
+          setIsEdit(false);
+        }
       }
+
+      setIsLoading({ ...isLoading, title: false });
     }
   };
 
@@ -104,7 +112,7 @@ export function CareerForm({
       title: prevTitle,
     },
     validationSchema: validationSchemaTitle,
-    onSubmit: careerSubmit,
+    onSubmit: careerTitleHandler,
     enableReinitialize: true,
   });
 
@@ -219,11 +227,11 @@ export function CareerForm({
     <>
       <form onSubmit={handleSubmit}>
         <div className="md:flex gap-[5%] items-center mt-8">
-          <div className={'form-title mb-0 md:mb-[22px]'}>Career Title</div>
-          <div className={'grow des-title justify-between md:justify-normal'}>
+          <div className={'form-title mb-2 md:mb-[22px]'}>Career Title</div>
+          <div className={'grow des-title gap-4 md:justify-normal'}>
             <InputBox
               name="title"
-              parentClassName="w-full md:w-[400px]"
+              parentClassName="w-[245px] md:w-[400px]"
               placeholder="Enter Title"
               value={title}
               initialValue={title}
@@ -237,18 +245,24 @@ export function CareerForm({
 
             {isEdit ? (
               <div className="mb-[22px] flex">
-                <button type="submit">
-                  <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} />
-                </button>
-                <img
-                  src={cross}
-                  alt="cross"
-                  style={{ marginLeft: '20px', cursor: 'pointer' }}
-                  onClick={() => {
-                    setIsEdit(false);
-                    formik.setFieldValue('title', prevTitle);
-                  }}
-                />
+                {!isLoading?.title ? (
+                  <>
+                    <button type="submit">
+                      <img src={check} alt="check" className="ml-0 md:ml-[20px] cursor-pointer" />
+                    </button>
+                    <img
+                      src={cross}
+                      alt="cross"
+                      style={{ marginLeft: '20px', cursor: 'pointer' }}
+                      onClick={() => {
+                        setIsEdit(false);
+                        formik.setFieldValue('title', prevTitle);
+                      }}
+                    />
+                  </>
+                ) : (
+                  <SpinningLoader marginLeft="ml-0 md:ml-[20px]" />
+                )}
               </div>
             ) : (
               <span className="md:ml-[20px] mb-[22px]" onClick={() => setIsEdit(true)}>
