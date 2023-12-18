@@ -50,8 +50,8 @@ export function CareerForm({
   getCareerList = () => {},
   id = null,
   data = {},
-  updateCareerId = () => {},
   type = '',
+  fetchCareerDataById = () => {},
 }) {
   const ref = useRef();
   const dispatch = useDispatch();
@@ -81,13 +81,13 @@ export function CareerForm({
         // we will call this api in case only when there is no career id
         //  because of we are calling this function onblur
         let dataToSend = {
-          title: title,
+          title,
         };
         const response = await dispatch(addCareerTitleDispatcher(dataToSend));
         const { status, data } = response;
 
         if (successStatus(status)) {
-          updateCareerId(data?.data?.id);
+          fetchCareerDataById(data?.data?.id);
           setIsEdit(false);
           getCareerList();
         }
@@ -105,7 +105,6 @@ export function CareerForm({
           setIsEdit(false);
         }
       }
-      console.log('dgdfhfhfg');
       setIsLoading({ ...isLoading, title: false });
     }
   };
@@ -178,6 +177,7 @@ export function CareerForm({
       getLinksList();
     }
   };
+
   const formikLinks = useFormik({
     initialValues: initialLink,
     validationSchema: validationSchemaWorkLinks,
@@ -370,7 +370,7 @@ export function CareerForm({
               />
             </div>
           </div>
-          {!id && (
+          {!id && type !== 'add' && (
             <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
               <div>
                 <OutlinedButton label="Skip" isSkip={true} onClick={() => onSkipHandler()} />
@@ -381,16 +381,6 @@ export function CareerForm({
                   style={{ paddingLeft: '25px', paddingRight: '25px' }}
                 />
                 {/* <Button type="submit" label="Save" showArrowIcon={false} /> */}
-              </div>
-            </div>
-          )}
-          {type === 'add' && (
-            <div className="flex gap-4 flex-wrap items-center md:mt-[0px] mt-[36px]">
-              <div>
-                <OutlinedButton label="Skip" isSkip={true} onClick={() => onSkipHandler()} />
-              </div>
-              <div>
-                <Button type="submit" label="Save" showArrowIcon={false} />
               </div>
             </div>
           )}

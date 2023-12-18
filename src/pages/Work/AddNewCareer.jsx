@@ -1,37 +1,37 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { successStatus } from '../../common';
-import { fetchCareersList } from '../../services/signup';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CareerForm } from './CareerForm';
 import backIcon from '../../assets/images/backIcon.svg';
 import WorkNavbar from '../../components/Navbar.js/WorkNavbar';
-export function AddCareer() {
-  const [careerList, setCareerList] = useState(null);
-  const [id, setId] = useState('');
-  const navigate = useNavigate();
+import { fetchCareerById } from '../../services/signup';
+import { getErrorMessage, successStatus } from '../../common';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { PATHS } from '../../constants/urlPaths';
 
-  const getCareerList = async () => {
-    const response = await fetchCareersList(id);
-    const {
-      status,
-      data: { data },
-    } = response;
-    console.log('response', response);
+export function AddCareer() {
+  const [career, setCareer] = useState({});
+  const navigate = useNavigate();
+  const { id: editCareerId } = useParams();
+
+  useEffect(() => {
+    if (editCareerId) {
+      fetchCareerDataById(editCareerId);
+    }
+  }, [editCareerId]);
+
+  const fetchCareerDataById = async (i) => {
+    const { status, data } = await fetchCareerById(i);
+
     if (successStatus(status)) {
-      setCareerList(data);
+      setCareer(data?.data);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
     }
   };
 
-  useEffect(() => {
-    getCareerList();
-  }, []);
-
-  console.log('careerList', careerList);
-
-  const updateCareerId = (i) => {
-    setId(i);
-  };
   return (
     <>
       <WorkNavbar />
@@ -40,18 +40,18 @@ export function AddCareer() {
           <div
             className="flex text-[16px] md:text-[18px] lg:text-[24px] py-4 sticky h-fit cursor-pointer font-medium"
             onClick={() => {
-              navigate(-1);
+              navigate(PATHS.PATH_WORK);
             }}
           >
             <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />
-            Add Career
+            {editCareerId ? 'Edit' : 'Add'} Career
           </div>
         </div>
         <CareerForm
-          getCareerList={getCareerList}
-          id={careerList?.id}
-          updateCareerId={updateCareerId}
-          type={'add'}
+          id={career?.id}
+          type={editCareerId ? 'edit' : 'add'}
+          fetchCareerDataById={fetchCareerDataById}
+          data={career || {}}
         />
       </div>
     </>

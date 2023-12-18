@@ -16,6 +16,7 @@ const {
   EDIT_EDUCATION,
   GET_ALL_EDUCATIONS,
   EDUCATION_BY_ID,
+  CAREER_BY_ID,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -315,6 +316,15 @@ const fetchCareerSkillslist = async (id) => {
   }
 };
 
+const fetchCareerById = async (id) => {
+  try {
+    const response = await apiUtility(CAREER_BY_ID(id), 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 /**
  * Function for API calling get list of careers
  * @param {*} param
@@ -459,4 +469,5 @@ export {
   addExperience,
   fetchExperienceById,
   deleteExperience,
+  fetchCareerById,
 };

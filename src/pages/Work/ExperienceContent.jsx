@@ -16,12 +16,11 @@ import {
 } from '../../services/signup';
 import { getErrorMessage, successStatus } from '../../common';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
-import EditBlueIcon from '../../components/Icons/EditBlueIcon';
 import { useDispatch } from 'react-redux';
 import { addExperienceDispatcher } from '../../redux/dispatchers/signupDispatcher';
 import SpinningLoader from '../../components/common/SpinningLoader';
-import HtmlText from '../../components/common/HtmlText';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { ExperienceData } from '../../components/common/Work/ExperienceData';
 
 const initialValues = {
   title: '',
@@ -78,7 +77,7 @@ export function ExperienceContent({ careerId = null }) {
         experience = response?.data?.data;
       }
     }
-    setEditId(experience?.id);
+    setEditId(experience?.id || null);
 
     formik.setValues({
       title: experience?.title || '',
@@ -173,50 +172,7 @@ export function ExperienceContent({ careerId = null }) {
     if (experiences.length) {
       return experiences.map((data, idx) => (
         <Fragment key={idx}>
-          <div>
-            <div className="md:pr-[64px] flex flex-col md:flex-row relative gap-3 break-words">
-              <div className="pb-[24px] md:w-[35%] w-full">
-                <div className="detail-label">Title</div>
-                <div className="detail-heading">{data.title}</div>
-              </div>
-              <div className="pb-[24px] md:w-[35%] w-full">
-                <div className="detail-label">Company</div>
-                <div className="detail-heading">{data.company}</div>
-              </div>
-              <div className="pb-[24px] md:w-[15%] w-full">
-                <div className="detail-label">Start Date</div>
-                <div className="detail-heading">{moment(data?.startDate).format('ll')}</div>
-              </div>
-              <div className="pb-[24px] md:w-[15%] w-full">
-                <div className="detail-label"> End Date</div>
-                <div className="detail-heading">
-                  {data?.endDate ? moment(data?.endDate).format('ll') : 'NA'}
-                </div>
-              </div>
-              <span
-                className="absolute right-[0] top-[50%] cursor-pointer"
-                onClick={() => {
-                  openModal(data);
-                }}
-              >
-                <EditBlueIcon />
-              </span>
-            </div>
-
-            {data?.description ? (
-              <div className="md:pr-[64px]">
-                <div className="detail-label">Description</div>
-
-                <HtmlText text={data?.description} className="detail-heading" />
-              </div>
-            ) : (
-              ''
-            )}
-
-            <div className="py-[24px]">
-              <div className="bg-greymedium h-[1px] w-full" />
-            </div>
-          </div>
+          <ExperienceData data={data} openModalHandler={openModal} />
         </Fragment>
       ));
     }

@@ -137,7 +137,7 @@ export function WorkTabContent() {
           items={careerList?.Careers?.map((item) => {
             return {
               title: item?.title,
-              content: <CareerDetail data={item} />,
+              content: <CareerDetail data={item} getCareerList={getCareerList} />,
             };
           })}
         />
