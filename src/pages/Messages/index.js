@@ -18,22 +18,23 @@ import {
   orderBy,
   query,
   getDocs,
-  limit,
   doc,
   updateDoc,
-  // doc,
-  // updateDoc,
+  deleteDoc,
+  // deleteDoc,
 } from 'firebase/firestore';
 import db from '../../firebase';
 import { AllUsers } from '../../services/messageService';
 import ReportUser from '../../components/Post/ReportUser';
 import TimeAgo from './TimeAgo';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
+import { blockUserDispatcher } from '../../redux/dispatchers/otherUserDispatcher';
+import { getErrorMessage, successStatus } from '../../common';
 
 const Messages = () => {
   const [allFollowers, setAllFollowers] = useState([]);
   const [contacts, setContacts] = useState([]);
-  const [searchedContacts, setSearchedContacts] = useState([]);
   const [searchedFollwers, setSearchedFollwers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [addContact, setAddContact] = useState(true);
@@ -42,15 +43,19 @@ const Messages = () => {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+  const [originalSearchedFollowers, setOriginalSearchedFollowers] = useState([]);
   const [toId, setToId] = useState('');
   const [newMessage, setNewMessage] = useState(false);
   const [retrievedDocumentId, setRetrievedDocumentId] = useState('');
   const [mobileChat, setMobileChats] = useState(false);
   const [selected, setSelected] = useState([]);
+  const [originalContacts, setOriginalContacts] = useState([]);
   const [selectedId, setSelectedId] = useState('');
   const [selectedElement, setSelectedElement] = useState('');
+  const [userId, setUserId] = useState('');
   const myProfile = useSelector((state) => state.auth.user);
   const chatContainerRef = useRef(null);
+  const dispatch = useDispatch();
 
   const fetchFollowersList = async () => {
     const { status, data } = await AllUsers();
@@ -66,6 +71,7 @@ const Messages = () => {
         return !isDuplicate;
       });
       setSearchedFollwers(newFollowers);
+      setOriginalSearchedFollowers(newFollowers);
     }
   };
   const scrollChatContainer = () => {
@@ -82,23 +88,36 @@ const Messages = () => {
     setFileData(selectedFile);
   };
   const handleSearch = (query) => {
-    setSearchQuery(query);
-    const filteredContacts = contacts.filter((element) =>
-      element?.name?.toLowerCase()?.includes(query.toLowerCase()),
-    );
-    setSearchedContacts(filteredContacts);
+    setSearchQuery(query.trim());
+
+    if (query.trim() === '') {
+      setContacts([...originalContacts]);
+    } else {
+      const filteredContacts = contacts.filter((element) => {
+        const searchItem =
+          element?.User?.firstName.toLowerCase() || element?.firstName.toLowerCase();
+        return searchItem.includes(query.toLowerCase());
+      });
+      setContacts(filteredContacts);
+    }
   };
   const handleFollowersSearch = (query) => {
-    setSearchQuery(query);
-    //   const filteredFollower = followers.filter((element) =>
-    //     element.name.toLowerCase().includes(query.toLowerCase()),
-    //   );
-    //   setSearchedFollwers(filteredFollower);
+    setSearchQuery(query.trim());
+
+    if (query.trim() === '') {
+      setSearchedFollwers([...originalSearchedFollowers]);
+    } else {
+      const filteredFollowers = originalSearchedFollowers.filter((follower) =>
+        follower?.User?.firstName.toLowerCase().includes(query.toLowerCase()),
+      );
+      setSearchedFollwers(filteredFollowers);
+    }
   };
+
   const clearSearch = () => {
-    //   setSearchQuery('');
-    //   setSearchedContacts((prevContacts) => [...prevContacts]);
-    //   setSearchedFollwers(followers);
+    setSearchQuery('');
+    setContacts([...originalContacts]);
+    setSearchedFollwers([...originalSearchedFollowers]);
   };
   const handleSelected = (id, element) => {
     setSelectedElement(element);
@@ -138,7 +157,7 @@ const Messages = () => {
         collectionId = `${numericMyProfileId}_${numericToId}`;
       }
 
-      setRetrievedDocumentId(collectionId);
+      setRetrievedDocumentId((prevId) => (prevId !== collectionId ? collectionId : prevId));
     }
   };
 
@@ -151,6 +170,7 @@ const Messages = () => {
           messagesData.push({ ...doc.data() });
         });
 
+        console.log('mD :', messagesData);
         const updatedContacts = contacts.map((contact) => {
           const lastMessageIdTo = messagesData.find(
             (message) =>
@@ -213,7 +233,7 @@ const Messages = () => {
       unsubscribe();
     };
   }, [retrievedDocumentId]);
-
+  console.log('co', contacts);
   useEffect(() => {
     const updateRead = async () => {
       let Id1 = parseInt(selected?.UserId, 10);
@@ -225,34 +245,27 @@ const Messages = () => {
       } else {
         collectionId = `${Id2}_${Id1}`;
       }
-      try {
-        const q = query(
-          collection(db, 'test_messages', collectionId, collectionId),
-          orderBy('timestamp', 'desc'),
-          limit(1),
-        );
-        const querySnapshot = await getDocs(q);
-        let latestMessageData = null;
 
-        querySnapshot.forEach((doc) => {
-          latestMessageData = doc?.id;
+      try {
+        const subcollectionRef = collection(db, 'test_messages', collectionId, collectionId);
+        const allDocsQuerySnapshot = await getDocs(subcollectionRef);
+        const updatePromises = [];
+        allDocsQuerySnapshot.forEach((subcollectionDoc) => {
+          const subcollectionDocRef = doc(subcollectionRef, subcollectionDoc.id);
+          updatePromises.push(updateDoc(subcollectionDocRef, { read: true }));
         });
 
-        if (latestMessageData) {
-          const docRef = doc(
-            collection(db, 'test_messages', collectionId, collectionId),
-            latestMessageData,
-          );
-          await updateDoc(docRef, { read: true });
-        }
+        await Promise.all(updatePromises);
       } catch (error) {
-        console.error('Error getting messages: ', error);
+        console.error('Error updating read status for messages: ', error);
       }
     };
     if (selectedElement?.lastMessage?.idFrom !== myProfile?.id) {
       updateRead();
     }
   }, [selectedElement, myProfile.id]);
+  // console.log('selectedElement :', selectedElement);
+  // console.log('myProfile?.id :', myProfile?.id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -277,6 +290,7 @@ const Messages = () => {
             }
           }
         });
+        setOriginalContacts([...contacts]);
       } catch (error) {
         console.error('Error getting messages: ', error);
       }
@@ -285,6 +299,64 @@ const Messages = () => {
     fetchData();
     fetchFollowersList();
   }, []);
+
+  const DeleteChat = async () => {
+    const subcollectionRef = collection(
+      db,
+      'test_messages',
+      retrievedDocumentId,
+      retrievedDocumentId,
+    );
+    const documentRef = doc(db, 'test_messages', retrievedDocumentId);
+    try {
+      const allDocsQuerySnapshot = await getDocs(subcollectionRef);
+      await updateDoc(documentRef, {
+        lastMessage: { content: '', id: '', idFrom: '', idTo: '', read: '', timestamp: '' },
+      });
+      allDocsQuerySnapshot.forEach(async (doc) => {
+        deleteDoc(doc.ref)
+          .then(() => {
+            ToastNotifySuccess('The user has been blocked');
+            setIsDeleteModalOpen(false);
+          })
+          .catch((error) => {
+            console.error(`Error deleting document ${doc.id}: `, error);
+          });
+      });
+    } catch (error) {
+      console.error('Error getting documents from subcollection: ', error);
+    }
+  };
+  useEffect(() => {
+    console.log('retrievedDocumentId:', retrievedDocumentId);
+    console.log('myProfile.id:', myProfile?.id);
+    let ChatId = retrievedDocumentId.split('_');
+    let firstPart = ChatId[0];
+    let secondPart = ChatId[1];
+    let userId = '';
+    if (firstPart !== myProfile?.id) {
+      userId = firstPart;
+    } else if (secondPart !== myProfile?.id) {
+      userId = secondPart;
+    }
+    console.log('userId:', userId);
+    setUserId(userId);
+  }, [retrievedDocumentId]);
+
+  const blockClickHandler = async () => {
+    const { status, data } = await dispatch(
+      blockUserDispatcher({ userId: userId, showLoader: true }),
+    );
+
+    if (successStatus(status)) {
+      ToastNotifySuccess('The user has been blocked');
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
+  };
 
   return (
     <SectionLayout activeTab={2}>
@@ -439,11 +511,11 @@ const Messages = () => {
                       contacts.find((contact) => contact?.id === isActive)?.firstName
                     }
                     image={
-                      contacts.find((contact) => contact?.id === isActive)?.User
+                      contacts.find((contact) => contact?.id === isActive).User
                         ?.profilePictureUrl ||
-                      contacts.find((contact) => contact?.id === isActive)?.User?.profilePicture ||
-                      contacts.find((contact) => contact?.id === isActive)?.profilePictureUrl ||
-                      contacts.find((contact) => contact?.id === isActive)?.profilePictureUrl
+                      contacts.find((contact) => contact?.id === isActive).User?.profilePicture ||
+                      contacts.find((contact) => contact?.id === isActive).profilePictureUrl ||
+                      contacts.find((contact) => contact?.id === isActive).profilePictureUrl
                     }
                     classNames="w-[52px] h-[52px] ml-4 md:ml-0"
                   />
@@ -513,7 +585,9 @@ const Messages = () => {
           primaryButtonTitle="No"
           primaryButtonAction={() => setIsDeleteModalOpen(false)}
           secondaryButtonTitle="Yes"
-          // secondaryButtonAction={() => dispatch(logoutDispatcher())}
+          secondaryButtonAction={() => {
+            DeleteChat();
+          }}
         >
           <div className="w-[286px] mx-auto ">
             <span className="text-[18px] font-medium">Are you sure you want to delete chat?</span>
@@ -523,7 +597,7 @@ const Messages = () => {
         <ReportUser
           isOpen={isReportModalOpen}
           onClose={() => setIsReportModalOpen(false)}
-          userId=""
+          userId={userId}
         />
 
         <ConfirmationModal
@@ -533,17 +607,17 @@ const Messages = () => {
           primaryButtonTitle="No"
           primaryButtonAction={() => setIsBlockModalOpen(false)}
           secondaryButtonTitle="Yes"
-          // secondaryButtonAction={() => dispatch(logoutDispatcher())}
+          secondaryButtonAction={() => blockClickHandler()}
         >
           <div className="text-[18px] tx-greydark font-medium">
             Are you sure you want to block “
-            {addContact
-              ? isActive !== null && searchedContacts[isActive]
-                ? searchedContacts[isActive]?.name || 'Name'
-                : isActive !== null && searchedFollwers[isActive]
-                  ? searchedFollwers[isActive]?.name || 'Name'
-                  : 'Name'
-              : searchedFollwers[isActive]?.name || 'Name'}
+            {isActive !== null
+              ? addContact
+                ? contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
+                  contacts.find((contact) => contact?.id === isActive).firstName
+                : searchedFollwers.find((follower) => follower?.id === isActive)?.User?.firstName ||
+                  'Name'
+              : 'Name'}
             ”?
           </div>
         </ConfirmationModal>
