@@ -174,20 +174,20 @@ export function ExperienceContent({ careerId = null }) {
       return experiences.map((data, idx) => (
         <Fragment key={idx}>
           <div>
-            <div className="md:pr-[64px] flex flex-col md:flex-row justify-between relative">
-              <div className="pb-[24px]">
+            <div className="md:pr-[64px] flex flex-col md:flex-row relative gap-3 break-words">
+              <div className="pb-[24px] md:w-[35%] w-full">
                 <div className="detail-label">Title</div>
                 <div className="detail-heading">{data.title}</div>
               </div>
-              <div className="pb-[24px]">
+              <div className="pb-[24px] md:w-[35%] w-full">
                 <div className="detail-label">Company</div>
                 <div className="detail-heading">{data.company}</div>
               </div>
-              <div className="pb-[24px]">
+              <div className="pb-[24px] md:w-[15%] w-full">
                 <div className="detail-label">Start Date</div>
                 <div className="detail-heading">{moment(data?.startDate).format('ll')}</div>
               </div>
-              <div className="pb-[24px]">
+              <div className="pb-[24px] md:w-[15%] w-full">
                 <div className="detail-label"> End Date</div>
                 <div className="detail-heading">
                   {data?.endDate ? moment(data?.endDate).format('ll') : 'NA'}
@@ -204,7 +204,7 @@ export function ExperienceContent({ careerId = null }) {
             </div>
 
             {data?.description ? (
-              <div>
+              <div className="md:pr-[64px]">
                 <div className="detail-label">Description</div>
 
                 <HtmlText text={data?.description} className="detail-heading" />
@@ -249,6 +249,7 @@ export function ExperienceContent({ careerId = null }) {
           onClose={() => setIsModalOpen(false)}
           width="max-w-[472px]"
           padding={0}
+          titleClassNames="pl-0"
         >
           <div className="relative">
             {isLoading?.api ? (
@@ -338,13 +339,12 @@ export function ExperienceContent({ careerId = null }) {
                 <TextArea
                   name="description"
                   label="Description"
-                  height="h-[230px]"
+                  height="h-[100px] max:h-[230px]"
                   placeholder="Enter Description"
                   defaultValue={formik?.values?.description}
                   onChange={handleChange}
                   error={tuc_description && err_description}
                   helperText={tuc_description && err_description}
-                  className="h-[50px]"
                 />
               </div>
             </div>
