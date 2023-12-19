@@ -10,11 +10,10 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import Input from '../../components/common/Input';
-import Modal from '../../components/Modal';
-import OutlinedButton from '../../components/common/OutlinedButton';
 import { deleteAccountDispatcher } from '../../redux/dispatchers/authDispatcher';
 import { updateSearch } from '../../redux/slices/appSearchSlice';
 import { logout } from '../../redux/slices/authSlice';
+import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 
 const { SETTINGS, LOGIN } = PATHS;
 
@@ -74,7 +73,7 @@ const DeleteAccount = () => {
         </div>
 
         <div className="w-full flex justify-end items-center gap-5 mt-6">
-          <div className="cursor-pointer text-[16px] text-greydark">Cancel</div>
+          <div className="cursor-pointer text-[16px] text-greydark font-medium">Cancel</div>
           <Button
             label="Delete"
             showArrowIcon={false}
@@ -86,11 +85,14 @@ const DeleteAccount = () => {
           />
         </div>
 
-        <Modal
+        <ConfirmationModal
+          title={'Delete Account'}
+          primaryButtonTitle="No"
+          primaryButtonAction={() => setIsDeleteAccountPopupOpen(false)}
+          secondaryButtonTitle="Yes"
+          secondaryButtonAction={formik.handleSubmit}
           isOpen={isDeleteAccountPopupOpen}
           onClose={() => setIsDeleteAccountPopupOpen(false)}
-          title={'Delete Account'}
-          isTitle={true}
           childrenClassNames="overflow-y-auto"
           padding="p-0"
           titleClassNames=""
@@ -117,24 +119,9 @@ const DeleteAccount = () => {
                 className="w-full"
                 borderClasses="!border-r border border-large border-customGray"
               />
-
-              <div className="text-end flex flex-col-reverse md:flex-row gap-3 justify-center items-center md:justify-between mt-5">
-                <OutlinedButton
-                  label={'Yes'}
-                  isIcon={false}
-                  type="submit"
-                  additionalClassNames="!h-[50px] !text16 !w-[43%] !text-center justify-center"
-                />
-                <Button
-                  label={'No'}
-                  onClick={() => setIsDeleteAccountPopupOpen(false)}
-                  showArrowIcon={false}
-                  additionalClassNames="!h-[50px] !w-[43%] !px-[30px] !py-2 !text16"
-                />
-              </div>
             </form>
           </div>
-        </Modal>
+        </ConfirmationModal>
       </InnerSectionLayout>
     </SectionLayout>
   );

@@ -3,7 +3,7 @@ import SectionLayout from '../../components/PrivateLayout/SectionLayout';
 import InnerSectionLayout from '../../components/PrivateLayout/InnerSectionLayout';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
 import {
@@ -24,6 +24,9 @@ const BlockedUsers = () => {
   const [users, setUsers] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalCount, setTotalCount] = useState(0);
+  const isGlobalTransparentLoadingPrivate = useSelector(
+    (state) => state?.auth?.globalTransparentLoadingPrivate,
+  );
 
   useEffect(() => {
     fetchUsers();
@@ -43,6 +46,10 @@ const BlockedUsers = () => {
   };
 
   const unblockUser = async (id) => {
+    if (isGlobalTransparentLoadingPrivate) {
+      return;
+    }
+
     const { status, data } = await dispatch(
       unblockUserDispatcher({ userId: id, showLoader: true }),
     );
