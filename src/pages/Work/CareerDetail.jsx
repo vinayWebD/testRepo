@@ -35,6 +35,7 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
         ToastNotifyError(errormsg);
       }
     } else {
+      setIsDeleteModalOpen(false);
       await getCareerList();
     }
     setIsLoading(false);

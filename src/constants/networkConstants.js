@@ -68,6 +68,7 @@ const NETWORK_CONSTANTS = {
   EDIT_EDUCATION: (edId) => `/v1/accounts/educations/${edId}`,
   EDUCATION_BY_ID: (edId) => `/v1/accounts/educations/${edId}`,
   CAREER_BY_ID: (id) => `/v1/accounts/careers/${id}`,
+  DELETE_EDUCATION: (edId) => `/v1/accounts/educations/${edId}`,
 };
 
 export default NETWORK_CONSTANTS;

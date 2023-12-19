@@ -10,6 +10,7 @@ import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import {
   addEducation,
+  deleteEducation,
   editEducation,
   fetchCareerEducationList,
   fetchEducationById,
@@ -113,6 +114,18 @@ export function EducationContent({ careerId }) {
       setIsModalOpen(false);
     }
     setIsLoading({ ...isLoading, api: false });
+  };
+
+  const handleDeleteEducation = async () => {
+    const { status } = await deleteEducation({
+      id: editId,
+    });
+
+    if (successStatus(status)) {
+      formik.resetForm();
+      await getEducationsList();
+      setIsModalOpen(false);
+    }
   };
 
   const formik = useFormik({
@@ -328,11 +341,19 @@ export function EducationContent({ careerId }) {
                 </div>
               </div>
               <div className="bg-greymedium h-[1px] w-full" />
-              <div className="grid justify-items-end pt-6 pb-5 px-6">
+
+              <div className={`flex  pt-6 pb-5 px-6 ${editId ? 'justify-between' : 'justify-end'}`}>
+                {editId ? (
+                  <OutlinedButton isDelete={true} label="Delete" onClick={handleDeleteEducation} />
+                ) : (
+                  ''
+                )}
+
                 <Button
                   label="Save"
                   showArrowIcon={false}
                   onClick={handleSubmit}
+                  type="button"
                   isLoading={isLoading?.api}
                   onlyShowLoaderWhenLoading={true}
                 />

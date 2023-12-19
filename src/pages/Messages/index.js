@@ -541,8 +541,8 @@ const Messages = () => {
               ? isActive !== null && searchedContacts[isActive]
                 ? searchedContacts[isActive]?.name || 'Name'
                 : isActive !== null && searchedFollwers[isActive]
-                  ? searchedFollwers[isActive]?.name || 'Name'
-                  : 'Name'
+                ? searchedFollwers[isActive]?.name || 'Name'
+                : 'Name'
               : searchedFollwers[isActive]?.name || 'Name'}
             ”?
           </div>

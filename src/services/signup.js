@@ -17,6 +17,7 @@ const {
   GET_ALL_EDUCATIONS,
   EDUCATION_BY_ID,
   CAREER_BY_ID,
+  DELETE_EDUCATION,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -441,6 +442,15 @@ const deleteExperience = async ({ id }) => {
   }
 };
 
+const deleteEducation = async ({ id }) => {
+  try {
+    const response = await apiUtility(DELETE_EDUCATION(id), 'DELETE');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   signupUser,
   verifyEmail,
@@ -470,4 +480,5 @@ export {
   fetchExperienceById,
   deleteExperience,
   fetchCareerById,
+  deleteEducation,
 };
