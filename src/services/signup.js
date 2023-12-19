@@ -8,11 +8,15 @@ const {
   CAREERS,
   ABOUT,
   CERTIFICATE,
-  EDUCATION,
   ADD_EXPERIENCE,
   EDIT_EXPERIENCE,
   EXPERIENCE_BY_ID,
   DELETE_EXPERIENCE,
+  ADD_EDUCATION,
+  EDIT_EDUCATION,
+  GET_ALL_EDUCATIONS,
+  EDUCATION_BY_ID,
+  CAREER_BY_ID,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -111,13 +115,32 @@ const addCareerTitle = async (dataTosend) => {
  * @returns
  */
 
-const fetchCareerEducation = async (dataTosend) => {
+const addEducation = async (dataTosend) => {
   try {
-    const response = await apiUtility(
-      `${CAREERS}${dataTosend?.id}/educations/`,
-      'POST',
-      dataTosend.data,
-    );
+    const response = await apiUtility(ADD_EDUCATION(dataTosend?.id), 'POST', {
+      institute: dataTosend?.school,
+      degree: dataTosend?.degree,
+      filedOfStudy: dataTosend?.fieldOfStudy,
+      startDate: dataTosend?.startDate,
+      endDate: dataTosend?.endDate,
+      otherActivities: dataTosend?.other,
+    });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+const editEducation = async (dataTosend) => {
+  try {
+    const response = await apiUtility(EDIT_EDUCATION(dataTosend?.id), 'PATCH', {
+      institute: dataTosend?.school,
+      degree: dataTosend?.degree,
+      filedOfStudy: dataTosend?.fieldOfStudy,
+      startDate: dataTosend?.startDate,
+      endDate: dataTosend?.endDate,
+      otherActivities: dataTosend?.other,
+    });
     return response;
   } catch (err) {
     return err;
@@ -130,9 +153,9 @@ const fetchCareerEducation = async (dataTosend) => {
  * @returns
  */
 
-const fetchEducationSingle = async (id) => {
+const fetchEducationById = async (id) => {
   try {
-    const response = await apiUtility(`${EDUCATION}${id}/`, 'GET');
+    const response = await apiUtility(EDUCATION_BY_ID(id), 'GET');
     return response;
   } catch (err) {
     return err;
@@ -179,7 +202,7 @@ const fetchCareerExperienceList = async (id) => {
 
 const fetchCareerEducationList = async (id) => {
   try {
-    const response = await apiUtility(`${CAREERS}${id}/educations/`, 'GET');
+    const response = await apiUtility(GET_ALL_EDUCATIONS(id), 'GET');
     return response;
   } catch (err) {
     return err;
@@ -287,6 +310,15 @@ const fetchCareerLinkslist = async (id) => {
 const fetchCareerSkillslist = async (id) => {
   try {
     const response = await apiUtility(`${CAREERS}${id}/skills/`, 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+const fetchCareerById = async (id) => {
+  try {
+    const response = await apiUtility(CAREER_BY_ID(id), 'GET');
     return response;
   } catch (err) {
     return err;
@@ -417,7 +449,8 @@ export {
   fetchProfileEdit,
   addCareerTitle,
   fetchWorkInterest,
-  fetchCareerEducation,
+  addEducation,
+  editEducation,
   fetchCareerCertificate,
   fetchCareerExperienceList,
   fetchCareerEducationList,
@@ -431,9 +464,10 @@ export {
   fetchUpdateCertificate,
   fetchCareerCertificateSingle,
   updateExperience,
-  fetchEducationSingle,
+  fetchEducationById,
   fetchDeleteCareer,
   addExperience,
   fetchExperienceById,
   deleteExperience,
+  fetchCareerById,
 };
