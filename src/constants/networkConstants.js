@@ -69,6 +69,11 @@ const NETWORK_CONSTANTS = {
   EDUCATION_BY_ID: (edId) => `/v1/accounts/educations/${edId}`,
   CAREER_BY_ID: (id) => `/v1/accounts/careers/${id}`,
   DELETE_EDUCATION: (edId) => `/v1/accounts/educations/${edId}`,
+  ADD_CERTIFICATE: (careerId) => `/v1/accounts/careers/${careerId}/certificates`,
+  EDIT_CERTIFICATE: (certId) => `/v1/accounts/certificates/${certId}`,
+  GET_ALL_CERTIFICATES: (careerId) => `/v1/accounts/careers/${careerId}/certificates`,
+  DELETE_CERTIFICATE: (certId) => `/v1/accounts/certificates/${certId}`,
+  CERT_BY_ID: (certId) => `/v1/accounts/certificates/${certId}`,
 };
 
 export default NETWORK_CONSTANTS;

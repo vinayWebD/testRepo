@@ -21,7 +21,7 @@ import { LIMITS } from '../../constants/constants';
 import SpinningLoader from '../../components/common/SpinningLoader';
 
 const initialValues = {
-  school: '',
+  institute: '',
   degree: '',
   startDate: '',
   endDate: '',
@@ -73,7 +73,7 @@ export function EducationContent({ careerId }) {
     setEditId(education?.id);
 
     formik.setValues({
-      school: education?.institute || '',
+      institute: education?.institute || '',
       degree: education?.degree || '',
       startDate: education?.startDate ? moment(education?.startDate).format('YYYY-MM-DD') : null,
       endDate: education?.endDate ? moment(education?.endDate).format('YYYY-MM-DD') : null,
@@ -88,10 +88,10 @@ export function EducationContent({ careerId }) {
     }
 
     setIsLoading({ ...isLoading, api: true });
-    const { school, degree, startDate, endDate, fieldOfStudy, other } = values;
+    const { institute, degree, startDate, endDate, fieldOfStudy, other } = values;
 
     let dataToSend = {
-      school,
+      institute,
       degree,
       startDate,
       endDate,
@@ -139,7 +139,7 @@ export function EducationContent({ careerId }) {
     handleSubmit,
     handleChange,
     initialValues: {
-      school = '',
+      institute = '',
       degree = '',
       startDate = '',
       endDate = '',
@@ -147,7 +147,7 @@ export function EducationContent({ careerId }) {
       other = '',
     } = {},
     touched: {
-      school: tuc_school,
+      institute: tuc_institute,
       degree: tuc_degree,
       fieldOfStudy: tuc_fieldOfStudy,
       startDate: tuc_startDate,
@@ -155,7 +155,7 @@ export function EducationContent({ careerId }) {
       other: tuc_other,
     },
     errors: {
-      school: err_school,
+      institute: err_institute,
       degree: err_degree,
       fieldOfStudy: err_fieldOfStudy,
       startDate: err_startDate,
@@ -259,14 +259,14 @@ export function EducationContent({ careerId }) {
               <div className="px-6">
                 <div className="pb-6">
                   <InputBox
-                    name="school"
+                    name="institute"
                     label="School/College/University"
                     placeholder="Enter School Name"
-                    value={formik?.values?.school}
-                    initialValue={formik?.values?.school}
+                    value={formik?.values?.institute}
+                    initialValue={formik?.values?.institute}
                     onChange={handleChange}
-                    error={tuc_school && err_school}
-                    helperText={tuc_school && err_school}
+                    error={tuc_institute && err_institute}
+                    helperText={tuc_institute && err_institute}
                     className="h-[50px]"
                     maxLength={LIMITS.MAX_EDUCATION_STRINGS_LENGTH}
                   />
@@ -369,13 +369,13 @@ export function EducationContent({ careerId }) {
     <>
       <div className="grid md:grid-cols-3 grid-cols-1 gap-4">
         <InputBox
-          name="school"
+          name="institute"
           label="School/College/University"
           placeholder="Enter School Name"
-          value={school}
+          value={institute}
           onChange={handleChange}
-          error={tuc_school && err_school}
-          helperText={tuc_school && err_school}
+          error={tuc_institute && err_institute}
+          helperText={tuc_institute && err_institute}
           className="h-[50px]"
           maxLength={LIMITS.MAX_EDUCATION_STRINGS_LENGTH}
         />
@@ -443,6 +443,7 @@ export function EducationContent({ careerId }) {
           />
         </div>
       </div>
+      <div className="bg-greymedium h-[1px] w-full mt-4" />
       <div className="justify-end flex pb-6 pt-6">
         <OutlinedButton label="Save" onClick={handleSubmit} isLoading={isLoading?.api} />
       </div>

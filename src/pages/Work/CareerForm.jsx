@@ -305,7 +305,7 @@ export function CareerForm({
             {
               icon: <CertificateIcon />,
               title: 'Certifications',
-              content: <CertificateContent mediaRef={ref} careerId={id} />,
+              content: <CertificateContent careerId={id} />,
             },
           ]}
         />

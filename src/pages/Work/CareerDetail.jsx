@@ -16,6 +16,7 @@ import { ExperienceData } from '../../components/common/Work/ExperienceData';
 import EducationData from '../../components/common/Work/EducationData';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
+import CertificateData from '../../components/common/Work/CertificateData';
 
 export function CareerDetail({ data: item, getCareerList = () => {} }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -114,7 +115,7 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
 
         {item?.Experiences?.length ? (
           <div className="w-full text-left py-[17px] px-[24px] bg-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
                 <span className="form-title-blue">Experience</span>
               </div>
@@ -130,7 +131,7 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
 
         {item?.Education?.length ? (
           <div className="w-full text-left py-[17px] px-[24px] bg-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
                 <span className="form-title-blue">Education</span>
               </div>
@@ -146,34 +147,14 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
 
         {item?.Certificates?.length ? (
           <div className="w-full text-left py-[17px] px-[24px] bg-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
                 <span className="form-title-blue">Certifications</span>
               </div>
             </div>
-            <div>
-              <div className="pr-[64px] flex justify-between relative pt-4">
-                <div className="pb-[24px]">
-                  <div className="detail-label">Title</div>
-                  <div className="detail-heading">Design Thinking</div>
-                </div>
-                <div className="pb-[24px]">
-                  <div className="detail-label">Institution</div>
-                  <div className="detail-heading">Xebia</div>
-                </div>
-                <div className="pb-[24px]">
-                  <div className="detail-label">Year</div>
-                  <div className="detail-heading">2021</div>
-                </div>
-              </div>
-              <div>
-                <div className="detail-label">Media</div>
-                <div className="detail-heading">elements</div>
-              </div>
-              <div className="pt-[24px]">
-                <div className="bg-greymedium h-[1px] w-full" />
-              </div>
-            </div>
+            {item?.Certificates?.map((cert) => {
+              return <CertificateData data={cert} key={cert?.id} isEditable={false} />;
+            })}
           </div>
         ) : (
           ''
@@ -181,7 +162,7 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
 
         {item?.Links?.length ? (
           <div className="w-full text-left py-[17px] px-[24px] bg-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
                 <span className="form-title-blue">Links</span>
               </div>
@@ -201,7 +182,7 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
 
         {item?.Skills?.length ? (
           <div className="w-full text-left py-[17px] px-[24px] bg-white">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between mb-2">
               <div className="flex items-center">
                 <span className="form-title-blue">Skills</span>
               </div>

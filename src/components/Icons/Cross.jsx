@@ -1,10 +1,10 @@
 import React from 'react';
 
-function CrossIcon() {
+function CrossIcon({ fill = '#333' }) {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 20 20">
       <g
-        stroke="#333"
+        stroke={fill}
         strokeLinecap="round"
         strokeLinejoin="round"
         strokeWidth="2"

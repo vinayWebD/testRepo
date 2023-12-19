@@ -44,10 +44,10 @@ const validationSchemaExperience = yup.object().shape({
 });
 
 const validationSchemaEducation = yup.object().shape({
-  school: yup
+  institute: yup
     .string()
     .trim()
-    .required(IS_REQUIRED('School Name'))
+    .required(IS_REQUIRED('Institute Name'))
     .max(LIMITS.MAX_EDUCATION_STRINGS_LENGTH),
   degree: yup
     .string()
@@ -63,11 +63,17 @@ const validationSchemaEducation = yup.object().shape({
   endDate: yup.string().required(IS_REQUIRED('End date')),
   other: yup.string().max(LIMITS.MAX_EDUCATION_STRINGS_LENGTH),
 });
+
 const validationSchemaCertificate = yup.object().shape({
-  title: yup.string().required(IS_REQUIRED('Title')),
+  title: yup.string().trim().max(LIMITS.MAX_CAREER_STRINGS_LENGTH).required(IS_REQUIRED('Title')),
   year: yup.string().required(IS_REQUIRED('Year')),
-  institution: yup.string().required(IS_REQUIRED('Institution')),
+  institution: yup
+    .string()
+    .trim()
+    .max(LIMITS.MAX_CAREER_STRINGS_LENGTH)
+    .required(IS_REQUIRED('Institution')),
 });
+
 const validationSchemaWorkSkills = yup.object().shape({
   name: yup.string().required(IS_REQUIRED('Name')),
 });

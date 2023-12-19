@@ -7,7 +7,6 @@ const {
   PROFILE,
   CAREERS,
   ABOUT,
-  CERTIFICATE,
   ADD_EXPERIENCE,
   EDIT_EXPERIENCE,
   EXPERIENCE_BY_ID,
@@ -18,6 +17,11 @@ const {
   EDUCATION_BY_ID,
   CAREER_BY_ID,
   DELETE_EDUCATION,
+  ADD_CERTIFICATE,
+  EDIT_CERTIFICATE,
+  GET_ALL_CERTIFICATES,
+  DELETE_CERTIFICATE,
+  CERT_BY_ID,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -119,7 +123,7 @@ const addCareerTitle = async (dataTosend) => {
 const addEducation = async (dataTosend) => {
   try {
     const response = await apiUtility(ADD_EDUCATION(dataTosend?.id), 'POST', {
-      institute: dataTosend?.school,
+      institute: dataTosend?.institute,
       degree: dataTosend?.degree,
       filedOfStudy: dataTosend?.fieldOfStudy,
       startDate: dataTosend?.startDate,
@@ -135,7 +139,7 @@ const addEducation = async (dataTosend) => {
 const editEducation = async (dataTosend) => {
   try {
     const response = await apiUtility(EDIT_EDUCATION(dataTosend?.id), 'PATCH', {
-      institute: dataTosend?.school,
+      institute: dataTosend?.institute,
       degree: dataTosend?.degree,
       filedOfStudy: dataTosend?.fieldOfStudy,
       startDate: dataTosend?.startDate,
@@ -164,24 +168,6 @@ const fetchEducationById = async (id) => {
 };
 
 /**
- * Function for API calling of add Certificate
- * @param {*} param
- * @returns
- */
-
-const fetchCareerCertificate = async (dataTosend) => {
-  try {
-    const response = await apiUtility(
-      `${CAREERS}${dataTosend?.id}/certificates/`,
-      'POST',
-      dataTosend?.data,
-    );
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
-/**
  * Function for API calling of get Experience List
  * @param {*} param
  * @returns
@@ -204,54 +190,6 @@ const fetchCareerExperienceList = async (id) => {
 const fetchCareerEducationList = async (id) => {
   try {
     const response = await apiUtility(GET_ALL_EDUCATIONS(id), 'GET');
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
-/**
- * Function for API calling of get Certificate list
- * @param {*} param
- * @returns
- */
-
-const fetchCareerCertificateList = async (id) => {
-  try {
-    const response = await apiUtility(`${CAREERS}${id}/certificates/`, 'GET');
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
-
-/**
- * Function for API calling of add Certificate
- * @param {*} param
- * @returns
- */
-
-const fetchUpdateCertificate = async (dataTosend) => {
-  try {
-    const response = await apiUtility(
-      `${CERTIFICATE}${dataTosend?.id}/`,
-      'PATCH',
-      dataTosend?.data,
-    );
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
-
-/**
- * Function for API calling of get Certificate
- * @param {*} param
- * @returns
- */
-
-const fetchCareerCertificateSingle = async (id) => {
-  try {
-    const response = await apiUtility(`${CERTIFICATE}${id}/`, 'GET');
     return response;
   } catch (err) {
     return err;
@@ -451,6 +389,82 @@ const deleteEducation = async ({ id }) => {
   }
 };
 
+/**
+ * Function for API calling of add Certificate
+ * @param {*} param
+ * @returns
+ */
+const addCertificate = async ({ title, year, institution, path, id }) => {
+  try {
+    const response = await apiUtility(ADD_CERTIFICATE(id), 'POST', {
+      title,
+      year,
+      institution,
+      path,
+    });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling of editing Certificate
+ * @param {*} param
+ * @returns
+ */
+const updateCertificate = async ({ title, year, institution, path, id }) => {
+  try {
+    const response = await apiUtility(EDIT_CERTIFICATE(id), 'PATCH', {
+      title,
+      year,
+      institution,
+      path,
+    });
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling of get Certificate list
+ * @param {*} param
+ * @returns
+ */
+
+const fetchCareerCertificateList = async (id) => {
+  try {
+    const response = await apiUtility(GET_ALL_CERTIFICATES(id), 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+const deleteCertificate = async (id) => {
+  try {
+    const response = await apiUtility(DELETE_CERTIFICATE(id), 'DELETE');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+/**
+ * Function for API calling of getting 1 certificate
+ * @param {*} param
+ * @returns
+ */
+const fetchCertificateById = async (id) => {
+  try {
+    const response = await apiUtility(CERT_BY_ID(id), 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   signupUser,
   verifyEmail,
@@ -461,7 +475,6 @@ export {
   fetchWorkInterest,
   addEducation,
   editEducation,
-  fetchCareerCertificate,
   fetchCareerExperienceList,
   fetchCareerEducationList,
   fetchCareerCertificateList,
@@ -471,8 +484,6 @@ export {
   fetchCareerSkillslist,
   fetchCareersList,
   updateCareerTitle,
-  fetchUpdateCertificate,
-  fetchCareerCertificateSingle,
   updateExperience,
   fetchEducationById,
   fetchDeleteCareer,
@@ -481,4 +492,8 @@ export {
   deleteExperience,
   fetchCareerById,
   deleteEducation,
+  addCertificate,
+  updateCertificate,
+  deleteCertificate,
+  fetchCertificateById,
 };
