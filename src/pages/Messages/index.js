@@ -61,9 +61,8 @@ const Messages = () => {
     const { status, data } = await AllUsers();
     if (status) {
       let allowedContacts = [];
-      let allData = data.data.Networks;
+      let allData = data?.data?.Networks;
       allData.map((element) => {
-        console.log('fE', element?.User?.PrivacySettings[0]?.chatSetting);
         if (element?.User?.PrivacySettings[0]?.chatSetting === 'chatAnyone') {
           allowedContacts.push(element);
         } else if (
