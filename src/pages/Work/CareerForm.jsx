@@ -43,6 +43,7 @@ import {
 } from '../../redux/dispatchers/signupDispatcher';
 import SpinningLoader from '../../components/common/SpinningLoader';
 import { LIMITS } from '../../constants/constants';
+import LinkForm from './LinkForm';
 
 const { HOME } = PATHS;
 
@@ -57,7 +58,12 @@ export function CareerForm({
   const dispatch = useDispatch();
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
-  const [linksList, setLinksList] = useState([]);
+  const [links, setLinks] = useState([]);
+  const [linkInInput, setLinkInInput] = useState({
+    url: '',
+    domain: '',
+  });
+
   const [skillsList, setSkillsList] = useState([]);
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(id ? false : true);
@@ -133,12 +139,9 @@ export function CareerForm({
 
   const getLinksList = async () => {
     const response = await fetchCareerLinkslist(id);
-    const {
-      status,
-      data: { results = [] },
-    } = response;
+    const { status, data } = response;
     if (successStatus(status)) {
-      setLinksList(results);
+      setLinks(data?.data || []);
     }
   };
 
@@ -183,12 +186,6 @@ export function CareerForm({
     validationSchema: validationSchemaWorkLinks,
     onSubmit: linksSubmit,
   });
-
-  const {
-    values: { domain = '', url = '' },
-    touched: { domain: tuc_domain, url: tuc_url },
-    errors: { domain: err_domain, url: err_url },
-  } = formikLinks;
 
   const initialSkill = {
     name: '',
@@ -310,7 +307,7 @@ export function CareerForm({
           ]}
         />
 
-        {linksList.length > 0 && (
+        {links.length > 0 && (
           <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -324,7 +321,7 @@ export function CareerForm({
               </span>
             </div>
             <div className="flex gap-[24px] grow-0 mt-6 flex-wrap	">
-              {linksList.map((links, idx) => (
+              {links.map((links, idx) => (
                 <div key={idx}>
                   <div className="detail-label">{links.domain}</div>
                   <div className="detail-heading">{links.url}</div>
@@ -395,40 +392,15 @@ export function CareerForm({
         width="max-w-[472px]"
         padding={0}
       >
-        <>
-          <div className="px-6">
-            <div className="pb-6">
-              <InputBox
-                name="domain"
-                label="Domain"
-                placeholder="Enter Domain"
-                value={domain}
-                onChange={(e) => formikLinks.setFieldValue('domain', e.target.value)}
-                error={tuc_domain && err_domain}
-                helperText={tuc_domain && err_domain}
-              />
-            </div>
-            <div className="pb-4">
-              <InputBox
-                name="url"
-                label="URL"
-                placeholder="https://"
-                value={url}
-                onChange={(e) => formikLinks.setFieldValue('url', e.target.value)}
-                error={tuc_url && err_url}
-                helperText={tuc_url && err_url}
-              />
-            </div>
-            <div className="grid justify-items-end pb-4">
-              <OutlinedButton label="Add New" onClick={linksSubmit} showArrowIcon={false} />
-            </div>
-          </div>
-
-          <div className="bg-greymedium h-[1px] w-full" />
-          <div className="grid justify-items-end pt-6 pb-5 px-6">
-            <Button label="Save" showArrowIcon={false} onClick={linksSubmit} />
-          </div>
-        </>
+        <div className="px-6">
+          <LinkForm
+            links={links}
+            setLinks={setLinks}
+            linkInInput={linkInInput}
+            setLinkInInput={setLinkInInput}
+            isInputLinkOpen={true}
+          />
+        </div>
       </Modal>
 
       <Modal
