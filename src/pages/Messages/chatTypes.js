@@ -159,11 +159,11 @@ const Timestamp = ({ element }) => {
     </div>
   );
 };
-const Divider = ({ element }) => {
+const Divider = () => {
   return (
     <div className="flex justify-center">
       <div className=" bg-whitelight w-full h-[34px] flex items-center justify-center">
-        <div className="text-greydark text-[12px] font-medium">{element?.text}</div>
+        <div className="text-greydark text-[12px] font-medium">Unread Messages</div>
       </div>
     </div>
   );
