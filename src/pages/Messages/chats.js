@@ -119,17 +119,17 @@ const chats = (props) => {
           {messages?.map((element, index) => {
             switch (element?.type) {
               case 'divider':
-                return <Timestamp element={element} />;
+                return <Timestamp key={index} element={element} />;
               case 'msg':
                 switch (element?.subType) {
                   case 'img':
-                    return <MediaMsg element={element} />;
+                    return <MediaMsg key={element?.id} element={element} />;
                   case 'doc':
-                    return <Document element={element} />;
+                    return <Document key={element?.id} element={element} />;
                   case 'link':
-                    return <SharedLink element={element} />;
+                    return <SharedLink key={element?.id} element={element} />;
                   case 'video':
-                    return <VideoMsg element={element} />;
+                    return <VideoMsg key={element?.id} element={element} />;
                   case 'reply':
                     //reply
                     break;

@@ -302,7 +302,7 @@ const Messages = () => {
     fetchFollowersList();
   }, []);
 
-  const DeleteChat = async () => {
+  const deleteChat = async () => {
     const subcollectionRef = collection(
       db,
       'test_messages',
@@ -592,7 +592,7 @@ const Messages = () => {
           primaryButtonAction={() => setIsDeleteModalOpen(false)}
           secondaryButtonTitle="Yes"
           secondaryButtonAction={() => {
-            DeleteChat();
+            deleteChat();
           }}
         >
           <div className="w-[286px] mx-auto ">
