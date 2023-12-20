@@ -75,6 +75,7 @@ const NETWORK_CONSTANTS = {
   DELETE_CERTIFICATE: (certId) => `/v1/accounts/certificates/${certId}`,
   CERT_BY_ID: (certId) => `/v1/accounts/certificates/${certId}`,
   GET_ALL_CAREER_LINKS: (careerId) => `/v1/accounts/careers/${careerId}/links`,
+  ADD_CAREER_LINK: (careerId) => `/v1/accounts/careers/${careerId}/links`,
 };
 
 export default NETWORK_CONSTANTS;

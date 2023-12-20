@@ -1,6 +1,6 @@
 import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
-import { successStatus } from '../../common';
+import { getErrorMessage, successStatus } from '../../common';
 import Accordion from '../../components/Accordion';
 import { SkillsChips, SkillsChipsBlue } from '../../components/Chips';
 import { Button } from '../../components/common/Button';
@@ -10,23 +10,18 @@ import { BookIcon } from '../../components/Icons/BookIcon';
 import { CertificateIcon } from '../../components/Icons/CertificateIcon';
 import EditBlueIcon from '../../components/Icons/EditBlueIcon';
 import { ExperienceIcon } from '../../components/Icons/ExperienceIcon';
-import LinksIcon from '../../components/Icons/LinksIcon';
 import { MediaIcon } from '../../components/Icons/MediaIcon';
 import SkillsIcon from '../../components/Icons/SkillsIcon';
 import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
 
 import {
-  fetchCareerAddLinks,
+  addCareerLinks,
   fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
 } from '../../services/signup';
-import {
-  validationSchemaTitle,
-  validationSchemaWorkLinks,
-  validationSchemaWorkSkills,
-} from '../../validations';
+import { validationSchemaTitle, validationSchemaWorkSkills } from '../../validations';
 import { CertificateContent } from './CertificateContent';
 import { EducationContent } from './EducationContent';
 import { ExperienceContent } from './ExperienceContent';
@@ -42,10 +37,13 @@ import {
   updateCareerTitleDispatcher,
 } from '../../redux/dispatchers/signupDispatcher';
 import SpinningLoader from '../../components/common/SpinningLoader';
-import { LIMITS } from '../../constants/constants';
+import { LIMITS, REGEX } from '../../constants/constants';
 import LinkForm from './LinkForm';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { LinkData } from '../../components/common/Work/LinkData';
 
 const { HOME } = PATHS;
+const { LINK_PATTERN } = REGEX;
 
 export function CareerForm({
   getCareerList = () => {},
@@ -68,7 +66,7 @@ export function CareerForm({
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(id ? false : true);
   const [prevTitle, setPrevTitle] = useState(id ? data?.title : '');
-  const [isLoading, setIsLoading] = useState({ title: false });
+  const [isLoading, setIsLoading] = useState({ title: false, links: false });
 
   useEffect(() => {
     if (id) {
@@ -78,6 +76,11 @@ export function CareerForm({
       setIsEdit(true);
     }
   }, [id, data]);
+
+  const openLinksModalHandler = () => {
+    setLinkInInput({ url: '', domain: '' });
+    setIsLinksModalOpen(true);
+  };
 
   const careerTitleHandler = async () => {
     if (!isLoading?.title) {
@@ -161,31 +164,52 @@ export function CareerForm({
     getLinksList();
   }, [id]);
 
-  const initialLink = {
-    domain: '',
-    url: '',
-  };
-
   const linksSubmit = async () => {
-    let dataToSend = {
-      postData: {
-        domain: formikLinks.values.domain,
-        url: formikLinks.values.url,
-      },
-      id: id,
+    setIsLoading({ ...isLoading, links: true });
+
+    let link = {
+      url: linkInInput?.url?.trim(),
+      domain: linkInInput?.domain?.trim(),
     };
-    const response = await fetchCareerAddLinks(dataToSend);
+    let allLinks = [...links];
+
+    // If there is anything typed in the input box and the plus button is not clicked, so we need to check
+    // if there is some value in it and if it's valid
+    if (link?.url || link?.domain) {
+      if (!link?.url.startsWith('https://')) {
+        link['url'] = `https://${link?.url}`;
+      }
+
+      if (!LINK_PATTERN.test(link?.url)) {
+        ToastNotifyError('Invalid URL', '');
+        setIsLoading({ ...isLoading, links: false });
+        return false;
+      } else if (!link?.domain) {
+        ToastNotifyError('Domain is required', '');
+        setIsLoading({ ...isLoading, links: false });
+        return false;
+      } else {
+        allLinks = [link, ...allLinks];
+      }
+    }
+
+    const response = await addCareerLinks({
+      careerId: id,
+      links: allLinks,
+    });
     const { status } = response;
     if (successStatus(status)) {
       getLinksList();
+
+      setIsLoading({ ...isLoading, links: false });
+      setIsLinksModalOpen(false);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg, 'location-failed');
+      }
     }
   };
-
-  const formikLinks = useFormik({
-    initialValues: initialLink,
-    validationSchema: validationSchemaWorkLinks,
-    onSubmit: linksSubmit,
-  });
 
   const initialSkill = {
     name: '',
@@ -306,30 +330,10 @@ export function CareerForm({
             },
           ]}
         />
-
         {links.length > 0 && (
-          <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <span className="mr-4">
-                  <LinksIcon />
-                </span>
-                <span className="form-title-blue">Links</span>
-              </div>
-              <span onClick={() => setIsLinksModalOpen(true)}>
-                <EditBlueIcon />
-              </span>
-            </div>
-            <div className="flex gap-[24px] grow-0 mt-6 flex-wrap	">
-              {links.map((links, idx) => (
-                <div key={idx}>
-                  <div className="detail-label">{links.domain}</div>
-                  <div className="detail-heading">{links.url}</div>
-                </div>
-              ))}
-            </div>
-          </div>
+          <LinkData openModalHandler={openLinksModalHandler} data={links} isEditable={true} />
         )}
+
         {skillsList.length > 0 && (
           <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
             <div className="flex items-center justify-between">
@@ -349,14 +353,13 @@ export function CareerForm({
             </div>
           </div>
         )}
-
         <div className="mt-[36px] flex justify-end md:justify-between flex-wrap">
           <div className="flex gap-4 flex-wrap">
             <div>
               <OutlinedButton
                 label="Add Links"
                 Icon={<AddBlueIcon />}
-                onClick={() => setIsLinksModalOpen(true)}
+                onClick={openLinksModalHandler}
               />
             </div>
             <div>
@@ -400,6 +403,17 @@ export function CareerForm({
             setLinkInInput={setLinkInInput}
             isInputLinkOpen={true}
           />
+
+          <div className="grid justify-items-end pb-5">
+            <Button
+              disabled={isLoading?.links}
+              label="Save"
+              onClick={() => linksSubmit()}
+              showArrowIcon={false}
+              isLoading={isLoading?.links}
+              onlyShowLoaderWhenLoading={true}
+            />
+          </div>
         </div>
       </Modal>
 

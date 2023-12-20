@@ -5,45 +5,49 @@ import { REGEX } from '../../constants/constants';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { TOASTMESSAGES } from '../../constants/messages';
 import InputBox from '../../components/InputBox';
+import RemoveIcon from '../../components/Icons/RemoveIcon';
 
 const { LANG_HTTPS } = LANG.PAGES.CREATE_POST;
 const { LINK_PATTERN } = REGEX;
 const {
-  errorToast: { TST_INVALID_LINKS = '' },
   toastid: { TST_LINK_VALIDATION_FAILED_ID },
 } = TOASTMESSAGES;
 
 const LinkForm = ({
   links = [],
   setLinks,
-  linkInInput = '',
-  setLinkInInput = () => {},
-  isInputLinkOpen = false,
+  linkInInput: newLink = '',
+  setLinkInInput: setNewLink = () => {},
 }) => {
-  // Adding link, checking if the current link value is apt
   const addLink = () => {
-    let link = linkInInput?.url;
+    document.getElementsByClassName('modal-children')?.[0]?.scroll(0, 0);
+
+    let link = newLink.url.trim();
+    const domain = newLink.domain.trim();
 
     if (!link.startsWith('https://')) {
       link = `https://${link}`;
     }
 
     if (!LINK_PATTERN.test(link)) {
-      ToastNotifyError(TST_INVALID_LINKS, TST_LINK_VALIDATION_FAILED_ID);
+      ToastNotifyError('Invalid URL', TST_LINK_VALIDATION_FAILED_ID);
       return;
     }
 
-    let allLinks = [link, ...links];
+    if (!domain) {
+      ToastNotifyError('Domain is required', TST_LINK_VALIDATION_FAILED_ID);
+      return;
+    }
 
-    if (allLinks?.length === 5) {
+    const allLinks = [{ url: link, domain }, ...links];
+
+    if (allLinks.length >= 5) {
+      ToastNotifyError('You can only add up to 5 links.', TST_LINK_VALIDATION_FAILED_ID);
       return;
     }
 
     setLinks(allLinks);
-    setLinkInInput({
-      url: '',
-      domain: '',
-    });
+    setNewLink({ url: '', domain: '' });
   };
 
   /**
@@ -61,120 +65,132 @@ const LinkForm = ({
   };
 
   const handleRemoveLink = (currentIndex) => {
-    const updatedLinks = links.filter((item, _i) => item && _i !== currentIndex);
+    const updatedLinks = links.filter((item, i) => i !== currentIndex);
     setLinks(updatedLinks);
   };
 
-  return (
-    <>
-      <div className="flex flex-col mb-3">
-        <div className="flex flex-col gap-2 w-full">
-          <InputBox
-            name="domain"
-            label="Domain"
-            placeholder="Enter Domain"
-            value={''}
-            parentClassName="w-full"
-            className="h-[50px]"
-            // onChange={(e) => formikLinks.setFieldValue('domain', e.target.value)}
-            // error={tuc_domain && err_domain}
-            // helperText={tuc_domain && err_domain}
-          />
+  // Disable the "Add New" button when there are already 5 links (including the new link)
+  const isAddNewDisabled = links.length + (newLink.url.trim() ? 1 : 0) >= 5;
 
-          <div>
-            <label>URL</label>
-            <div className="flex rounded-md border border-greymedium w-full h-[50px]">
-              <span className="px-4 inline-flex items-center min-w-fit rounded-l-[7px] border-r-0 text-sm bg-whitelight">
-                <img src={InputLinkImage} />
-              </span>
-              <div className="relative w-full">
-                <input
-                  type="text"
-                  id="hs-inline-add-on"
-                  name="hs-inline-add-on"
-                  className="py-3 px-4 pl-[68px] h-[48px] block w-full border-gray-200 rounded-md text-sm"
-                  value={linkValueViewFormat(linkInInput?.url)}
-                  onChange={(e) => setLinkInInput({ ...linkInInput, url: e.target.value })}
-                />
-                <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
-                  <span className="text-sm text-gray-500">{LANG_HTTPS}</span>
-                </div>
+  return (
+    <div className="flex flex-col mb-3">
+      <div className="flex flex-col gap-2 w-full">
+        <InputBox
+          name="domain"
+          label="Domain"
+          placeholder="Enter Domain"
+          value={newLink.domain}
+          initialValue={newLink.domain}
+          parentClassName="w-full"
+          className="h-[50px]"
+          onChange={(e) => setNewLink({ ...newLink, domain: e.target.value })}
+        />
+
+        <div className="mt-[-13px]">
+          <label>URL</label>
+          <div className="flex rounded-md border border-greymedium w-full h-[50px]">
+            <span className="px-4 inline-flex items-center min-w-fit rounded-l-[7px] border-r-0 text-sm bg-whitelight">
+              <img src={InputLinkImage} alt="Input Link" />
+            </span>
+            <div className="relative w-full">
+              <input
+                type="text"
+                id="hs-inline-add-on"
+                name="hs-inline-add-on"
+                className="py-3 px-4 pl-[68px] h-[48px] block w-full border-gray-200 rounded-md text-sm"
+                value={linkValueViewFormat(newLink.url)}
+                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+              />
+              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
+                <span className="text-sm text-gray-500">{LANG_HTTPS}</span>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
+      {links?.length > 0 ? (
         <div className="py-[24px]">
           <div className="bg-greymedium h-[1px] w-full" />
         </div>
+      ) : (
+        ''
+      )}
 
-        {links?.map((link, _i) => {
-          return (
-            <React.Fragment key={_i}>
-              <div className="flex items-center w-full justify-between hover:bg-whitelighter">
-                <div className="flex flex-col gap-2 w-full">
-                  <InputBox
-                    name="domain"
-                    label="Domain"
-                    placeholder="Enter Domain"
-                    value={link?.domain}
-                    parentClassName="w-full"
-                    className="h-[50px]"
-                    // onChange={(e) => formikLinks.setFieldValue('domain', e.target.value)}
-                    // error={tuc_domain && err_domain}
-                    // helperText={tuc_domain && err_domain}
-                  />
+      {links?.map((link, index) => (
+        <div key={index}>
+          <div className="flex items-center w-full justify-between hover:bg-whitelighter">
+            <div className="flex flex-col gap-2 w-full">
+              <div className="flex gap-2 items-center">
+                <InputBox
+                  name="domain"
+                  label="Domain"
+                  placeholder="Enter Domain"
+                  value={link.domain}
+                  initialValue={link?.domain}
+                  parentClassName="w-full"
+                  className="h-[50px]"
+                  onChange={(e) => {
+                    const updatedLinks = [...links];
+                    updatedLinks[index].domain = e.target.value;
+                    setLinks(updatedLinks);
+                  }}
+                />
+                <div onClick={() => handleRemoveLink(index)} className="cursor-pointer">
+                  <RemoveIcon />
+                </div>
+              </div>
 
-                  <div>
-                    <label>URL</label>
-                    <div className="flex rounded-md border border-greymedium w-full h-[50px]">
-                      <span className="px-4 inline-flex items-center min-w-fit rounded-l-[7px] border-r-0 text-sm bg-whitelight">
-                        <img src={InputLinkImage} />
-                      </span>
-                      <div className="relative w-full">
-                        <input
-                          type="text"
-                          id="hs-inline-add-on"
-                          name="hs-inline-add-on"
-                          className="py-3 px-4 pl-[68px] h-[48px] block w-full border-gray-200 rounded-md text-sm"
-                          value={link?.url || linkValueViewFormat(linkInInput?.url)}
-                          onChange={(e) => setLinkInInput({ ...linkInInput, url: e.target.value })}
-                        />
-                        <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
-                          <span className="text-sm text-gray-500">{LANG_HTTPS}</span>
-                        </div>
-                      </div>
+              <div className="mt-[-13px]">
+                <label>URL</label>
+                <div className="flex rounded-md border border-greymedium w-full h-[50px]">
+                  <span className="px-4 inline-flex items-center min-w-fit rounded-l-[7px] border-r-0 text-sm bg-whitelight">
+                    <img src={InputLinkImage} alt="Input Link" />
+                  </span>
+                  <div className="relative w-full">
+                    <input
+                      type="text"
+                      id="hs-inline-add-on"
+                      name="hs-inline-add-on"
+                      className="py-3 px-4 pl-[68px] h-[48px] block w-full border-gray-200 rounded-md text-sm"
+                      value={linkValueViewFormat(link.url)}
+                      onChange={(e) => {
+                        const updatedLinks = [...links];
+                        updatedLinks[index].url = e.target.value;
+                        setLinks(updatedLinks);
+                      }}
+                    />
+                    <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
+                      <span className="text-sm text-gray-500">{LANG_HTTPS}</span>
                     </div>
                   </div>
                 </div>
-
-                {_i !== links?.length - 1 ? (
-                  <div onClick={() => handleRemoveLink(_i)} className="cursor-pointer">
-                    X
-                  </div>
-                ) : (
-                  ''
-                )}
               </div>
-              <div className="py-[24px]">
-                <div className="bg-greymedium h-[1px] w-full" />
-              </div>
-            </React.Fragment>
-          );
-        })}
+            </div>
+          </div>
 
+          {index !== links?.length - 1 ? (
+            <div className="py-[24px]">
+              <div className="bg-greymedium h-[1px] w-full" />
+            </div>
+          ) : (
+            ''
+          )}
+        </div>
+      ))}
+
+      <div className="py-[24px]">
         <div
           onClick={addLink}
           className={`w-full flex justify-end text-[14px] font-semibold ${
-            links.length === 5 || (isInputLinkOpen && links.length === 4)
-              ? 'opacity-50 cursor-not-allowed'
-              : 'text-blueprimary cursor-pointer'
+            isAddNewDisabled ? 'opacity-50 cursor-not-allowed' : 'text-blueprimary cursor-pointer'
           }`}
         >
           Add New
         </div>
+        <div className="bg-greymedium h-[1px] w-full mt-5" />
       </div>
-    </>
+    </div>
   );
 };
 

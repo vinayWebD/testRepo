@@ -72,7 +72,9 @@ function Modal({
             </div>
           </div>
         )}
-        <div className={`py-4 overflow-y-auto text-left ${padding} ${childrenClassNames}`}>
+        <div
+          className={`py-4 overflow-y-auto text-left modal-children ${padding} ${childrenClassNames}`}
+        >
           {children}
         </div>
       </div>
