@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { Fragment, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 import moment from 'moment';
@@ -10,93 +9,142 @@ import Modal from '../../components/Modal';
 import TextArea from '../../components/TextArea';
 import { validationSchemaExperience } from '../../validations';
 import {
-  fetchCareerExperience,
+  deleteExperience,
   fetchCareerExperienceList,
-  fetchExperienceSingle,
-  fetchUpdateExperience,
+  fetchExperienceById,
+  updateExperience,
 } from '../../services/signup';
-import { successStatus } from '../../common';
+import { getErrorMessage, successStatus } from '../../common';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import EditBlueIcon from '../../components/Icons/EditBlueIcon';
+import { useDispatch } from 'react-redux';
+import { addExperienceDispatcher } from '../../redux/dispatchers/signupDispatcher';
+import SpinningLoader from '../../components/common/SpinningLoader';
+import HtmlText from '../../components/common/HtmlText';
+import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+
+const initialValues = {
+  title: '',
+  description: '',
+  startDate: null,
+  endDate: null,
+  company: '',
+};
 
 export function ExperienceContent({ careerId = null }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [experienceList, setExperienceList] = useState([]);
+  const [experiences, setExperiences] = useState([]);
   const [editId, setEditId] = useState(null);
-  const [currentCheck, setCurrentCheck] = useState(false);
+  const [isCurrentlyWorking, setIsCurrentlyWorking] = useState(false);
   const [volunteerCheck, setVolunteerCheck] = useState(false);
-  console.log('careerId--->', careerId);
+  const [isLoading, setIsLoading] = useState({
+    global: true,
+    api: false,
+  });
+  const dispatch = useDispatch();
+
   const getExperiences = async () => {
-    const response = await fetchExperienceSingle(careerId);
+    setIsLoading({ ...isLoading, global: true });
+    const response = await fetchCareerExperienceList(careerId);
     const { status, data = {} } = response;
     if (successStatus(status)) {
-      console.log(data);
+      setExperiences(data?.data);
     }
-  };
-
-  const getExperiencesList = async () => {
-    const response = await fetchCareerExperienceList(careerId);
-    const {
-      status,
-      data: { results = [] },
-    } = response;
-    if (successStatus(status)) {
-      setExperienceList(results);
-    }
+    setIsLoading({ ...isLoading, global: false });
   };
 
   useEffect(() => {
+    setIsModalOpen(false);
+    setVolunteerCheck(false);
     getExperiences();
-  }, [editId]);
-
-  useEffect(() => {
-    // getExperiencesList();
   }, []);
 
-  const experienceSubmit = async (values) => {
-    const { title, description, startDate, company, endDate } = values;
-    let dataToSend = {
-      data: {
-        title: title,
-        description: description,
-        startDate: startDate,
-        endDate: endDate,
-        company: company,
-        isVolunteerExperience: volunteerCheck,
-      },
-      id: editId ? editId : careerId,
-    };
-    let response;
-    if (editId) {
-      response = await fetchUpdateExperience(careerId);
-    } else {
-      response = await fetchCareerExperience(dataToSend);
+  useEffect(() => {
+    if (isModalOpen && !editId) {
+      formik?.resetForm();
+      setIsCurrentlyWorking(false);
+      setVolunteerCheck(false);
     }
-    const { status } = response;
-    if (successStatus(status)) {
-      formik.resetForm();
-      getExperiencesList();
+  }, [isModalOpen]);
+
+  const openModal = async (experience = null) => {
+    setIsModalOpen(true);
+
+    if (experience?.id) {
+      setIsLoading({ ...isLoading, api: true });
+      const response = await fetchExperienceById({ id: experience?.id });
+      setIsLoading({ ...isLoading, api: false });
+      if (successStatus(response?.status)) {
+        experience = response?.data?.data;
+      }
     }
+    setEditId(experience?.id);
+
+    formik.setValues({
+      title: experience?.title || '',
+      description: experience?.description || '',
+      startDate: experience?.startDate ? moment(experience?.startDate).format('YYYY-MM-DD') : '',
+      endDate: experience?.endDate ? moment(experience?.endDate).format('YYYY-MM-DD') : '',
+      company: experience?.company || '',
+    });
+
+    setIsCurrentlyWorking(experience?.isCurrentlyWorking);
+    setVolunteerCheck(experience?.isVolunteerExperience);
   };
 
-  const initialValues = {
-    title: '',
-    description: '',
-    startDate: null,
-    endDate: null,
-    company: '',
+  const experienceSubmit = async (values) => {
+    if (isLoading?.api) {
+      return;
+    }
+    setIsLoading({ ...isLoading, api: true });
+    const { title, description, startDate, company, endDate } = values;
+
+    let dataToSend = {
+      title: title?.trim(),
+      description,
+      startDate,
+      endDate,
+      company,
+      isVolunteerExperience: volunteerCheck,
+      isCurrentlyWorking,
+    };
+
+    let response;
+    if (editId) {
+      response = await updateExperience({
+        experienceId: editId,
+        ...dataToSend,
+      });
+    } else {
+      response = await dispatch(addExperienceDispatcher({ ...dataToSend, careerId }));
+    }
+    const { status, data } = response;
+
+    setIsLoading({ ...isLoading, api: false });
+
+    if (successStatus(status)) {
+      formik.resetForm();
+      setIsCurrentlyWorking(false);
+      await getExperiences();
+      setIsModalOpen(false);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    }
   };
 
   const formik = useFormik({
-    initialValues: initialValues,
+    initialValues,
     validationSchema: validationSchemaExperience,
     onSubmit: experienceSubmit,
+    enableReinitialize: true,
   });
 
   const {
     handleSubmit,
     handleChange,
-    initialValues: { title = '', description, company = '', startDate = null, endDate = null } = {},
     touched: {
       title: tuc_title,
       description: tuc_description,
@@ -113,16 +161,20 @@ export function ExperienceContent({ careerId = null }) {
     },
   } = formik;
 
-  useEffect(() => {}, [experienceList]);
-
-  console.log('---->Formik', formik.values);
+  if (isLoading?.global) {
+    return (
+      <div className="flex items-center justify-center h-[100px]">
+        <SpinningLoader />
+      </div>
+    );
+  }
 
   const renderExperienceList = () => {
-    if (experienceList.length) {
-      return experienceList.map((data, idx) => (
+    if (experiences.length) {
+      return experiences.map((data, idx) => (
         <Fragment key={idx}>
           <div>
-            <div className="pr-[64px] flex justify-between relative">
+            <div className="md:pr-[64px] flex flex-col md:flex-row justify-between relative">
               <div className="pb-[24px]">
                 <div className="detail-label">Title</div>
                 <div className="detail-heading">{data.title}</div>
@@ -137,150 +189,188 @@ export function ExperienceContent({ careerId = null }) {
               </div>
               <div className="pb-[24px]">
                 <div className="detail-label"> End Date</div>
-                <div className="detail-heading">{moment(data?.endDate).format('ll')}</div>
+                <div className="detail-heading">
+                  {data?.endDate ? moment(data?.endDate).format('ll') : 'NA'}
+                </div>
               </div>
               <span
                 className="absolute right-[0] top-[50%] cursor-pointer"
                 onClick={() => {
-                  setIsModalOpen(true);
-                  setEditId(data?.experience_id);
+                  openModal(data);
                 }}
               >
                 <EditBlueIcon />
               </span>
             </div>
 
-            <div>
-              <div className="detail-label">Description</div>
-              <div className="detail-heading">{data.description}</div>
-            </div>
+            {data?.description ? (
+              <div>
+                <div className="detail-label">Description</div>
+
+                <HtmlText text={data?.description} className="detail-heading" />
+              </div>
+            ) : (
+              ''
+            )}
+
             <div className="py-[24px]">
               <div className="bg-greymedium h-[1px] w-full" />
             </div>
           </div>
-          <Modal
-            isTitle={true}
-            title={editId ? 'Edit Experience' : 'Edit Experience'}
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            width="max-w-[472px]"
-            padding={0}
-          >
-            <>
-              <div className="px-6">
-                <div className="pb-6">
-                  <InputBox
-                    name="title"
-                    label="Title"
-                    placeholder="Enter Title"
-                    className
-                    value={title}
-                    onChange={handleChange}
-                    error={tuc_title && err_title}
-                    helperText={tuc_title && err_title}
-                  />
-                </div>
-                <div className="pb-6">
-                  <InputBox
-                    name="company"
-                    label="Company Name"
-                    placeholder="Enter Company Name"
-                    value={company}
-                    onChange={handleChange}
-                    error={tuc_company && err_company}
-                    helperText={tuc_company && err_company}
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-4 pb-4">
-                  <InputBox
-                    name="startDate"
-                    type="date"
-                    label="Start Date"
-                    placeholder="Select Date"
-                    value={startDate}
-                    onChange={handleChange}
-                    error={tuc_start_date && err_start_date}
-                    helperText={tuc_start_date && err_start_date}
-                  />
-                  <InputBox
-                    name="endDate"
-                    type="date"
-                    label="End Date"
-                    placeholder="Select Date"
-                    value={endDate}
-                    onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
-                    error={tuc_end_date && err_end_date}
-                    helperText={tuc_end_date && err_end_date}
-                  />
-                </div>
-                <div className="flex gap-[12px] items-center mb-6">
-                  <Checkbox
-                    checked={currentCheck}
-                    setChecked={(value) => {
-                      setCurrentCheck(value);
-                      if (value === true) {
-                        formik.setFieldValue('endDate', startDate);
-                      } else {
-                        formik.setFieldValue('endDate', '');
-                      }
-                    }}
-                  />
-                  <span className="para-checkbox">I am currently working on this role.</span>
-                </div>
-                <div className="flex gap-[12px] items-center mb-6">
-                  <Checkbox
-                    checked={volunteerCheck}
-                    setChecked={(value) => setVolunteerCheck(value)}
-                  />
-                  <span className="para-checkbox">This is a volunteer experience.</span>
-                </div>
-                <div className="mb-4">
-                  <TextArea
-                    name="description"
-                    label="Description"
-                    height="h-[230px]"
-                    placeholder="Enter Description"
-                    defaultValue={description}
-                    onChange={handleChange}
-                    error={tuc_description && err_description}
-                    helperText={tuc_description && err_description}
-                  />
-                </div>
-              </div>
-              <div className="bg-greymedium h-[1px] w-full" />
-              <div className="flex justify-between pt-6 pb-5 px-6">
-                <OutlinedButton isDelete={true} label="Delete" />
-                <Button
-                  label="Save"
-                  showArrowIcon={false}
-                  onClick={() => {
-                    handleSubmit();
-                    setIsModalOpen(false);
-                  }}
-                  type="button"
-                />
-              </div>
-            </>
-          </Modal>
         </Fragment>
       ));
     }
   };
 
-  if (experienceList.length) {
+  const handleDeleteExperience = async () => {
+    const { status } = await deleteExperience({
+      id: editId,
+    });
+
+    if (successStatus(status)) {
+      formik.resetForm();
+      setIsCurrentlyWorking(false);
+      await getExperiences();
+      setIsModalOpen(false);
+    }
+  };
+
+  if (experiences.length) {
     return (
       <Fragment>
         {renderExperienceList()}
         <div className="justify-end flex pb-[24px]">
-          <OutlinedButton
-            Icon={<AddBlueIcon />}
-            label="Add Experience"
-            onClick={() => setIsModalOpen(true)}
-          />
+          <OutlinedButton Icon={<AddBlueIcon />} label="Add Experience" onClick={openModal} />
         </div>
+        <Modal
+          isTitle={true}
+          title={editId ? 'Edit Experience' : 'Add Experience'}
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          width="max-w-[472px]"
+          padding={0}
+        >
+          <div className="relative">
+            {isLoading?.api ? (
+              <div className="absolute top-0 left-0 flex items-center h-full w-full bg-[#ffffffa1] justify-center mt-[-95px]">
+                <SpinningLoader />
+              </div>
+            ) : (
+              ''
+            )}
+            <div className="px-6">
+              <div className="pb-6">
+                <InputBox
+                  name="title"
+                  label="Title"
+                  placeholder="Enter Title"
+                  className="h-[50px]"
+                  value={formik?.values?.title}
+                  initialValue={formik?.values?.title}
+                  onChange={handleChange}
+                  error={tuc_title && err_title}
+                  helperText={tuc_title && err_title}
+                />
+              </div>
+              <div className="pb-6">
+                <InputBox
+                  name="company"
+                  label="Company Name"
+                  placeholder="Enter Company Name"
+                  value={formik?.values?.company}
+                  initialValue={formik?.values?.company}
+                  onChange={handleChange}
+                  error={tuc_company && err_company}
+                  helperText={tuc_company && err_company}
+                  className="h-[50px]"
+                />
+              </div>
+              <div className="grid grid-cols-2 gap-4 pb-4">
+                <InputBox
+                  name="startDate"
+                  type="date"
+                  label="Start Date"
+                  placeholder="Select Date"
+                  value={formik?.values?.startDate}
+                  initialValue={formik?.values?.startDate}
+                  onChange={handleChange}
+                  error={tuc_start_date && err_start_date}
+                  helperText={tuc_start_date && err_start_date}
+                  className="h-[50px]"
+                />
+
+                <InputBox
+                  disabled={isCurrentlyWorking} // Disable the input box when currentCheck is true
+                  name={'endDate'}
+                  type="date"
+                  label="End Date"
+                  placeholder="Select Date"
+                  value={isCurrentlyWorking ? '' : formik?.values?.endDate} // Show empty string if currentCheck is true
+                  initialValue={isCurrentlyWorking ? '' : formik?.values?.endDate}
+                  onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
+                  error={tuc_end_date && err_end_date}
+                  helperText={tuc_end_date && err_end_date}
+                  className="h-[50px]"
+                />
+              </div>
+              <div className="flex gap-[12px] items-center mb-6">
+                <Checkbox
+                  checked={isCurrentlyWorking}
+                  setChecked={(value) => {
+                    setIsCurrentlyWorking(value);
+                    if (value) {
+                      formik.setFieldValue('endDate', null); // Set endDate to null
+                    } else {
+                      formik.setFieldValue('endDate', ''); // Reset endDate
+                    }
+                  }}
+                />
+                <span className="para-checkbox">I am currently working on this role.</span>
+              </div>
+              <div className="flex gap-[12px] items-center mb-6">
+                <Checkbox
+                  checked={volunteerCheck}
+                  setChecked={(value) => setVolunteerCheck(value)}
+                />
+                <span className="para-checkbox">This is a volunteer experience.</span>
+              </div>
+              <div className="mb-4">
+                <TextArea
+                  name="description"
+                  label="Description"
+                  height="h-[230px]"
+                  placeholder="Enter Description"
+                  defaultValue={formik?.values?.description}
+                  onChange={handleChange}
+                  error={tuc_description && err_description}
+                  helperText={tuc_description && err_description}
+                  className="h-[50px]"
+                />
+              </div>
+            </div>
+            <div className="bg-greymedium h-[1px] w-full" />
+            <div className={`flex  pt-6 pb-5 px-6 ${editId ? 'justify-between' : 'justify-end'}`}>
+              {editId ? (
+                <OutlinedButton isDelete={true} label="Delete" onClick={handleDeleteExperience} />
+              ) : (
+                ''
+              )}
+
+              <Button
+                label="Save"
+                showArrowIcon={false}
+                onClick={handleSubmit}
+                type="button"
+                isLoading={isLoading?.api}
+                onlyShowLoaderWhenLoading={true}
+              />
+            </div>
+          </div>
+        </Modal>
       </Fragment>
     );
   }
+
   return (
     <>
       <div className="grid lg:grid-cols-3 grid-cols-1 gap-4">
@@ -288,19 +378,21 @@ export function ExperienceContent({ careerId = null }) {
           name="title"
           label="Title"
           placeholder="Enter Title"
-          value={title}
+          value={formik?.values?.title}
           onChange={handleChange}
           error={tuc_title && err_title}
           helperText={tuc_title && err_title}
+          className="h-[50px]"
         />
         <InputBox
           name="company"
           label="Company Name"
           placeholder="Enter Company Name"
-          value={company}
+          value={formik?.values?.company}
           onChange={handleChange}
           error={tuc_company && err_company}
           helperText={tuc_company && err_company}
+          className="h-[50px]"
         />
         <div className="grid md:grid-cols-2 grid-cols-1 gap-4">
           <InputBox
@@ -308,21 +400,23 @@ export function ExperienceContent({ careerId = null }) {
             type="date"
             label="Start Date"
             placeholder="Select Date"
-            value={startDate}
+            value={formik?.values?.startDate}
             onChange={(e) => formik.setFieldValue('startDate', e.target.value)}
             error={tuc_start_date && err_start_date}
             helperText={tuc_start_date && err_start_date}
+            className="h-[50px]"
           />
           <InputBox
-            disabled={currentCheck}
+            disabled={isCurrentlyWorking} // Disable the input box when currentCheck is true
             name={'endDate'}
             type="date"
             label="End Date"
             placeholder="Select Date"
-            value={endDate}
+            value={isCurrentlyWorking ? '' : formik.values.endDate} // Show empty string if currentCheck is true
             onChange={(e) => formik.setFieldValue('endDate', e.target.value)}
             error={tuc_end_date && err_end_date}
             helperText={tuc_end_date && err_end_date}
+            className="h-[50px]"
           />
         </div>
       </div>
@@ -332,24 +426,24 @@ export function ExperienceContent({ careerId = null }) {
           label="Description"
           height="h-[50px]"
           placeholder="Enter Description"
-          defaultValue={description}
+          defaultValue={formik?.values?.description}
           onChange={handleChange}
           error={tuc_description && err_description}
           helperText={tuc_description && err_description}
+          className="h-[50px]"
         />
       </div>
       <div className="flex md:flex-row flex-col md:items-center items-end justify-between pb-[45px]">
         <div className="flex">
           <div className="flex md:gap-[10px] gap-[3px] text-[12px] md:text-[16px] md:pb-0 pb-6">
             <Checkbox
-              checked={currentCheck}
+              checked={isCurrentlyWorking}
               setChecked={(value) => {
-                setCurrentCheck(value);
-                console.log('value', value);
-                if (value === true) {
-                  formik.setFieldValue('endDate', startDate);
+                setIsCurrentlyWorking(value);
+                if (value) {
+                  formik.setFieldValue('endDate', null); // Set endDate to null
                 } else {
-                  formik.setFieldValue('endDate', null);
+                  formik.setFieldValue('endDate', ''); // Reset endDate
                 }
               }}
             />{' '}
@@ -360,7 +454,13 @@ export function ExperienceContent({ careerId = null }) {
             <span>This is a volunteer experience.</span>
           </div>
         </div>
-        <OutlinedButton label="save" onClick={handleSubmit} type="button" />
+        <OutlinedButton
+          label="Save"
+          onClick={handleSubmit}
+          type="button"
+          isLoading={isLoading?.api}
+          onlyShowLoaderWhenLoading={true}
+        />
       </div>
     </>
   );

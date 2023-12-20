@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useFormik } from 'formik';
 import { useEffect, useState } from 'react';
 import { getErrorMessage, successStatus } from '../../common';
@@ -8,13 +7,14 @@ import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
 import TextArea from '../../components/TextArea';
 import { fetchCareersList, fetchProfileEdit } from '../../services/signup';
-import { validationSchemaWorkIntrest } from '../../validations';
+import { validationSchemaAboutWork } from '../../validations';
 import { ToastNotifyError, ToastNotifySuccess } from '../../components/Toast/ToastNotify';
-import { CareerFrom } from './CareerForm';
+import { CareerForm } from './CareerForm';
 import Accordion from '../../components/Accordion';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import { CareerDetail } from './CareerDetail';
+import { LIMITS } from '../../constants/constants';
 
 export function WorkTabContent() {
   const [careerList, setCareerList] = useState({});
@@ -22,33 +22,36 @@ export function WorkTabContent() {
   const navigate = useNavigate();
 
   const getCareerList = async () => {
+    setIsLoading(true);
     const response = await fetchCareersList();
     const {
       status,
       data: { data },
     } = response;
-    console.log('response', response);
+
     if (successStatus(status)) {
       setCareerList(data);
       setFieldValue('work', data?.work);
     }
+
+    setIsLoading(false);
   };
 
   const initialWork = {
     work: careerList?.work || '',
   };
 
-  const workSubmit = async () => {
-    if (!isLoading) {
+  const aboutWorkSubmitHandler = async () => {
+    if (!isLoading && work?.trim()?.length) {
       setIsLoading(true);
       const response = await fetchProfileEdit({
-        work: work,
+        work,
       });
       const { status, data } = response;
       const errormsg = getErrorMessage(data);
       if (successStatus(status)) {
         getCareerList();
-        ToastNotifySuccess('Description added successfully', 'location-success');
+        ToastNotifySuccess('Description saved successfully', 'location-success');
       } else {
         if (errormsg) {
           ToastNotifyError(errormsg, 'location-failed');
@@ -60,8 +63,8 @@ export function WorkTabContent() {
 
   const formikWork = useFormik({
     initialValues: initialWork,
-    validationSchema: validationSchemaWorkIntrest,
-    onSubmit: workSubmit,
+    validationSchema: validationSchemaAboutWork,
+    onSubmit: aboutWorkSubmitHandler,
   });
 
   const {
@@ -76,9 +79,6 @@ export function WorkTabContent() {
     getCareerList();
   }, []);
 
-  console.log('careerList', careerList);
-
-  console.log('----', careerList?.Careers);
   return (
     <div className="py-[36px] lg:px-[70px] md:px-[40px] px-[20px] bg-bluebg">
       <form onSubmit={handleWork}>
@@ -96,11 +96,23 @@ export function WorkTabContent() {
               onChange={(e) => formikWork.setFieldValue('work', e.target.value)}
               error={tuc_work && err_work}
               helperText={tuc_work && err_work}
+              maxLength={LIMITS.MAX_ABOUT_WORK_LENGTH}
             />
+
+            <div className="w-full text-right text-xs text-greylight">
+              {work?.trim().length}/{LIMITS.MAX_ABOUT_WORK_LENGTH}
+            </div>
           </div>
         </div>
         <div className="grid justify-items-end pb-8">
-          <Button isDisabled={work === ''} label="Save" type="submit" showArrowIcon={false} />
+          <Button
+            isDisabled={!work?.trim()?.length || careerList?.work === work}
+            label="Save"
+            type="submit"
+            showArrowIcon={false}
+            onlyShowLoaderWhenLoading={true}
+            isLoading={isLoading}
+          />
         </div>
       </form>
       <hr className="pb-8" style={{ color: 'rgba(161, 160, 160, 0.50)' }} />
@@ -120,7 +132,7 @@ export function WorkTabContent() {
           }}
         />
       </div>
-      {careerList?.Careers?.length > 0 ? (
+      {careerList?.Careers?.length > 1 ? (
         <Accordion
           items={careerList?.Careers?.map((item) => {
             return {
@@ -130,7 +142,11 @@ export function WorkTabContent() {
           })}
         />
       ) : (
-        <CareerFrom getCareerList={getCareerList} />
+        <CareerForm
+          getCareerList={getCareerList}
+          data={careerList?.Careers?.[0] || {}}
+          id={careerList?.Careers?.[0]?.id}
+        />
       )}
 
       {careerList?.Careers?.length > 0 && (

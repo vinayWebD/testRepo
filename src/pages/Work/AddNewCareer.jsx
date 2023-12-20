@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { successStatus } from '../../common';
 import { fetchCareersList } from '../../services/signup';
-import { CareerFrom } from './CareerForm';
+import { CareerForm } from './CareerForm';
 import backIcon from '../../assets/images/backIcon.svg';
 import WorkNavbar from '../../components/Navbar.js/WorkNavbar';
 export function AddCareer() {
@@ -47,7 +47,7 @@ export function AddCareer() {
             Add Career
           </div>
         </div>
-        <CareerFrom
+        <CareerForm
           getCareerList={getCareerList}
           id={careerList?.id}
           updateCareerId={updateCareerId}

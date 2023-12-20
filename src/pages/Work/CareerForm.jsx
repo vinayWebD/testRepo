@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import { successStatus } from '../../common';
@@ -16,14 +15,12 @@ import { MediaIcon } from '../../components/Icons/MediaIcon';
 import SkillsIcon from '../../components/Icons/SkillsIcon';
 import InputBox from '../../components/InputBox';
 import Modal from '../../components/Modal';
-import TextArea from '../../components/TextArea';
+
 import {
   fetchCareerAddLinks,
   fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
-  fetchCareerTitle,
-  fetchUpdateCareer,
 } from '../../services/signup';
 import {
   validationSchemaTitle,
@@ -40,8 +37,16 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import { useDispatch } from 'react-redux';
 import { updateSignup } from '../../redux/slices/authSlice';
+import {
+  addCareerTitleDispatcher,
+  updateCareerTitleDispatcher,
+} from '../../redux/dispatchers/signupDispatcher';
+import SpinningLoader from '../../components/common/SpinningLoader';
+import { LIMITS } from '../../constants/constants';
 
-export function CareerFrom({
+const { HOME } = PATHS;
+
+export function CareerForm({
   getCareerList = () => {},
   id = null,
   data = {},
@@ -52,70 +57,83 @@ export function CareerFrom({
   const dispatch = useDispatch();
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
-  const [careerId, setCareerId] = useState(id);
   const [linksList, setLinksList] = useState([]);
   const [skillsList, setSkillsList] = useState([]);
   const navigate = useNavigate();
-  const [isEdit, setIsEdit] = useState(id ? true : false);
+  const [isEdit, setIsEdit] = useState(id ? false : true);
   const [prevTitle, setPrevTitle] = useState(id ? data?.title : '');
-  // const dispatch = useDispatch()
-  const { HOME } = PATHS;
+  const [isLoading, setIsLoading] = useState({ title: false });
 
-  // localStorage.setItem('token', 'Token 1eefa8172665f86fb7b36c6a4afd61876d8ce9ce');
-
-  const careerSubmit = async () => {
-    // we will call this api in case only when there is no career id
-    //  because of we are calling this function onblur
-
-    if (!careerId) {
-      let dataToSend = {
-        title: title,
-      };
-      const response = await fetchCareerTitle(dataToSend);
-      const { status, data } = response;
-
-      if (successStatus(status)) {
-        updateCareerId(data?.data?.id);
-        setCareerId(data?.data?.id);
-        setIsEdit(true);
-        getCareerList();
-      }
+  useEffect(() => {
+    if (id) {
+      setPrevTitle(data?.title);
+      setIsEdit(false);
     } else {
-      let dataToUpdate = {
-        postData: {
+      setIsEdit(true);
+    }
+  }, [id, data]);
+
+  const careerTitleHandler = async () => {
+    if (!isLoading?.title) {
+      setIsLoading({ ...isLoading, title: true });
+
+      if (!id) {
+        // we will call this api in case only when there is no career id
+        //  because of we are calling this function onblur
+        let dataToSend = {
           title: title,
-        },
-        id: careerId,
-      };
-      const response = await fetchUpdateCareer(dataToUpdate);
-      const { status } = response;
-      if (successStatus(status)) {
-        getCareerList();
-        setIsEdit(true);
+        };
+        const response = await dispatch(addCareerTitleDispatcher(dataToSend));
+        const { status, data } = response;
+
+        if (successStatus(status)) {
+          updateCareerId(data?.data?.id);
+          setIsEdit(false);
+          getCareerList();
+        }
+      } else {
+        let dataToUpdate = {
+          postData: {
+            title: title,
+          },
+          id,
+        };
+        const response = await dispatch(updateCareerTitleDispatcher(dataToUpdate));
+        const { status } = response;
+        if (successStatus(status)) {
+          getCareerList();
+          setIsEdit(false);
+        }
       }
+      console.log('dgdfhfhfg');
+      setIsLoading({ ...isLoading, title: false });
     }
   };
 
-  const initialCareer = {
-    title: data?.title || '',
-  };
-
   const formik = useFormik({
-    initialValues: initialCareer,
+    initialValues: {
+      title: prevTitle,
+    },
     validationSchema: validationSchemaTitle,
-    onSubmit: careerSubmit,
+    onSubmit: careerTitleHandler,
+    enableReinitialize: true,
   });
+
+  useEffect(() => {
+    if (!isEdit) {
+      formik?.resetForm();
+    }
+  }, [isEdit]);
 
   const {
     values: { title },
     touched: { title: tuc_title },
     errors: { title: err_title },
-    handleChange,
     handleSubmit,
   } = formik;
 
   const getLinksList = async () => {
-    const response = await fetchCareerLinkslist(careerId);
+    const response = await fetchCareerLinkslist(id);
     const {
       status,
       data: { results = [] },
@@ -126,7 +144,7 @@ export function CareerFrom({
   };
 
   const getSkillsList = async () => {
-    const response = await fetchCareerSkillslist(careerId);
+    const response = await fetchCareerSkillslist(id);
     const {
       status,
       data: { results = [] },
@@ -137,9 +155,9 @@ export function CareerFrom({
   };
 
   useEffect(() => {
-    // getSkillsList();
-    // getLinksList();
-  }, [careerId]);
+    getSkillsList();
+    getLinksList();
+  }, [id]);
 
   const initialLink = {
     domain: '',
@@ -152,7 +170,7 @@ export function CareerFrom({
         domain: formikLinks.values.domain,
         url: formikLinks.values.url,
       },
-      id: careerId,
+      id: id,
     };
     const response = await fetchCareerAddLinks(dataToSend);
     const { status } = response;
@@ -181,7 +199,7 @@ export function CareerFrom({
       postData: {
         name: formikSkills.values.name,
       },
-      id: careerId,
+      id,
     };
     const response = await fetchCareerAddSkills(dataToSend);
     const { status } = response;
@@ -211,55 +229,61 @@ export function CareerFrom({
   return (
     <>
       <form onSubmit={handleSubmit}>
-        <div className="md:flex block items-center mt-8 mb-5">
-          <div
-            className={`w-[170px] form-title  ${
-              tuc_title && err_title ? 'pb-2 md:pb-[25px]' : 'md:pb-0 pb-2'
-            } `}
-          >
-            Career Title
-          </div>
-          <div className={`grow ${tuc_title && err_title ? 'des-title-error' : 'des-title'} `}>
-            <div>
-              <TextArea
-                name="title"
-                width="w-full md:w-[500px]"
-                placeholder="Enter Title"
-                value={title}
-                onChange={(e) => {
-                  formik.setFieldValue('title', e.target.value);
-                }}
-                disabled={isEdit}
-                error={tuc_title && err_title}
-                helperText={tuc_title && err_title}
-              />
-            </div>
-            {!isEdit ? (
-              <>
-                <button type="submit">
-                  <img src={check} alt="check" style={{ marginLeft: '20px', cursor: 'pointer' }} />
-                </button>
-                <img
-                  src={cross}
-                  alt="cross"
-                  style={{ marginLeft: '20px', cursor: 'pointer' }}
-                  onClick={() => {
-                    setIsEdit(true);
-                    formik.setFieldValue('title', prevTitle);
-                  }}
-                />
-              </>
+        <div className="md:flex gap-[5%] items-center mt-8">
+          <div className={'form-title mb-2 md:mb-[22px]'}>Career Title</div>
+          <div className={'grow des-title gap-4 md:justify-normal'}>
+            <InputBox
+              name="title"
+              parentClassName="w-[245px] md:w-[400px]"
+              placeholder="Enter Title"
+              value={title}
+              initialValue={title}
+              onChange={(e) => {
+                formik.setFieldValue('title', e.target.value);
+              }}
+              disabled={!isEdit}
+              error={tuc_title && err_title}
+              helperText={tuc_title && err_title}
+              maxLength={LIMITS.MAX_CAREER_TITLE_LENGTH}
+            />
+
+            {isEdit ? (
+              <div className="mb-[22px] flex">
+                {!isLoading?.title ? (
+                  <>
+                    <button type="submit">
+                      <img src={check} alt="check" className="ml-0 md:ml-[20px] cursor-pointer" />
+                    </button>
+                    <img
+                      src={cross}
+                      alt="cross"
+                      style={{ marginLeft: '20px', cursor: 'pointer' }}
+                      onClick={() => {
+                        setIsEdit(false);
+                        formik.setFieldValue('title', prevTitle);
+                      }}
+                    />
+                  </>
+                ) : (
+                  <SpinningLoader marginLeft="ml-0 md:ml-[20px]" />
+                )}
+              </div>
             ) : (
-              <span style={{ marginLeft: '20px' }} onClick={() => setIsEdit(false)}>
+              <span className="md:ml-[20px] mb-[22px]" onClick={() => setIsEdit(true)}>
                 <EditBlueIcon />
               </span>
             )}
           </div>
         </div>
+        <p className="font-normal text-greydark mb-5 mt-2">
+          Your information will be grouped and displayed by career field. It helps people quickly
+          identify your many talents.
+        </p>
       </form>
       <div>
         <Accordion
-          // disabled={!careerId}
+          disabled={!id}
+          parentClassName={!id ? 'cursor-not-allowed opacity-60' : ''}
           items={[
             {
               icon: <MediaIcon />,
@@ -270,21 +294,22 @@ export function CareerFrom({
             {
               icon: <ExperienceIcon />,
               title: 'Experience',
-              content: <ExperienceContent careerId={careerId} />,
+              content: <ExperienceContent careerId={id} />,
             },
             {
               icon: <BookIcon />,
               title: 'Education',
-              content: <EducationContent careerId={careerId} />,
+              content: <EducationContent careerId={id} />,
             },
 
             {
               icon: <CertificateIcon />,
               title: 'Certifications',
-              content: <CertificateContent mediaRef={ref} careerId={careerId} />,
+              content: <CertificateContent mediaRef={ref} careerId={id} />,
             },
           ]}
         />
+
         {linksList.length > 0 && (
           <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
             <div className="flex items-center justify-between">

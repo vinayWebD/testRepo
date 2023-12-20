@@ -18,6 +18,9 @@ export const LIMITS = {
   POST_MAX_ALLOWED_MEDIA: 10,
   POST_READ_MORE_LIMIT: 200,
   COMMENT_MAX_LIMIT: 500,
+  MAX_ABOUT_WORK_LENGTH: 6000,
+  MAX_CAREER_TITLE_LENGTH: 100,
+  MAX_EXPERIENCE_DESCRIPTION_LENGTH: 500,
 };
 
 export const POST_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/png', 'image/jpg'];

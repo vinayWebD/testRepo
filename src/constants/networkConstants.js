@@ -10,7 +10,7 @@ const NETWORK_CONSTANTS = {
   FORGOT_PASSWORD_VERIFY_OTP: '/v1/accounts/verify_otp/',
   FORGOT_PASSWORD_RESET_PWD: '/v1/accounts/reset-password/',
   CREATE_POST: '/v1/feeds/posts/',
-  CARRERS: '/v1/accounts/careers',
+  CAREERS: '/v1/accounts/careers',
   ABOUT: '/v1/accounts/about/',
   EXPERIENCES: '/v1/accounts/experiences/',
   EDUCATION: '/v1/accounts/educations/',
@@ -59,6 +59,10 @@ const NETWORK_CONSTANTS = {
   REPORT_COMMENT: (commentId) => `/v1/report/comment/${commentId}`,
   REPORT_POST: (postId) => `/v1/report/post/${postId}`,
   REPORT_USER: (userId) => `/v1/report/user/${userId}`,
+  ADD_EXPERIENCE: (careerId) => `/v1/accounts/careers/${careerId}/experiences`,
+  EDIT_EXPERIENCE: (expId) => `/v1/accounts/experiences/${expId}`,
+  EXPERIENCE_BY_ID: (expId) => `/v1/accounts/experiences/${expId}`,
+  DELETE_EXPERIENCE: (expId) => `/v1/accounts/experiences/${expId}`,
 };
 
 export default NETWORK_CONSTANTS;
