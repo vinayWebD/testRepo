@@ -17,6 +17,7 @@ import EducationData from '../../components/common/Work/EducationData';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import CertificateData from '../../components/common/Work/CertificateData';
+import { LinkData } from '../../components/common/Work/LinkData';
 
 export function CareerDetail({ data: item, getCareerList = () => {} }) {
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -162,19 +163,12 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
 
         {item?.Links?.length ? (
           <div className="w-full text-left py-[17px] px-[24px] bg-white">
-            <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <span className="form-title-blue">Links</span>
               </div>
             </div>
-            <div className="flex gap-[24px] grow-0 mt-6 flex-wrap	">
-              <div>
-                <div className="detail-label">Faxquote</div>
-                <div className="text-[14px]" style={{ color: '#3366CC', fontWeight: '400' }}>
-                  http://www.faxquote.com
-                </div>
-              </div>
-            </div>
+            <LinkData openModalHandler={() => {}} data={item?.Links} isEditable={false} />
           </div>
         ) : (
           ''

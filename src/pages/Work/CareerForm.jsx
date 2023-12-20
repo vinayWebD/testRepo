@@ -41,6 +41,7 @@ import { LIMITS, REGEX } from '../../constants/constants';
 import LinkForm from './LinkForm';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { LinkData } from '../../components/common/Work/LinkData';
+import LinksIcon from '../../components/Icons/LinksIcon';
 
 const { HOME } = PATHS;
 const { LINK_PATTERN } = REGEX;
@@ -331,7 +332,20 @@ export function CareerForm({
           ]}
         />
         {links.length > 0 && (
-          <LinkData openModalHandler={openLinksModalHandler} data={links} isEditable={true} />
+          <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center">
+                <span className="mr-4">
+                  <LinksIcon />
+                </span>
+                <span className="form-title-blue">Links</span>
+              </div>
+              <span onClick={openLinksModalHandler} className="cursor-pointer">
+                <EditBlueIcon />
+              </span>
+            </div>
+            <LinkData openModalHandler={openLinksModalHandler} data={links} isEditable={true} />
+          </div>
         )}
 
         {skillsList.length > 0 && (

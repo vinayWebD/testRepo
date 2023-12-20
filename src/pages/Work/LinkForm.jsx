@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import InputLinkImage from '../../assets/images/link-input.svg';
 import { LANG } from '../../constants/lang';
 import { REGEX } from '../../constants/constants';
@@ -16,30 +16,37 @@ const {
 const LinkForm = ({
   links = [],
   setLinks,
-  linkInInput: newLink = '',
+  linkInInput: newLink = {},
   setLinkInInput: setNewLink = () => {},
 }) => {
+  const [showNewLink, setShowNewLink] = useState(false);
+
   const addLink = () => {
     document.getElementsByClassName('modal-children')?.[0]?.scroll(0, 0);
+    let allLinks = [...links];
 
-    let link = newLink.url.trim();
-    const domain = newLink.domain.trim();
+    // If the add new links fields class is there, means the add new link is already open
+    // then only we need to check the below
+    if (document?.getElementsByClassName('add-new-link-fields')?.[0]) {
+      let link = newLink?.url?.trim();
+      const domain = newLink?.domain?.trim();
 
-    if (!link.startsWith('https://')) {
-      link = `https://${link}`;
+      if (!link.startsWith('https://')) {
+        link = `https://${link}`;
+      }
+
+      if (!LINK_PATTERN.test(link)) {
+        ToastNotifyError('Invalid URL', TST_LINK_VALIDATION_FAILED_ID);
+        return;
+      }
+
+      if (!domain) {
+        ToastNotifyError('Domain is required', TST_LINK_VALIDATION_FAILED_ID);
+        return;
+      }
+
+      allLinks = [{ url: link, domain }, ...allLinks];
     }
-
-    if (!LINK_PATTERN.test(link)) {
-      ToastNotifyError('Invalid URL', TST_LINK_VALIDATION_FAILED_ID);
-      return;
-    }
-
-    if (!domain) {
-      ToastNotifyError('Domain is required', TST_LINK_VALIDATION_FAILED_ID);
-      return;
-    }
-
-    const allLinks = [{ url: link, domain }, ...links];
 
     if (allLinks.length >= 5) {
       ToastNotifyError('You can only add up to 5 links.', TST_LINK_VALIDATION_FAILED_ID);
@@ -48,6 +55,7 @@ const LinkForm = ({
 
     setLinks(allLinks);
     setNewLink({ url: '', domain: '' });
+    setShowNewLink(true);
   };
 
   /**
@@ -74,45 +82,50 @@ const LinkForm = ({
 
   return (
     <div className="flex flex-col mb-3">
-      <div className="flex flex-col gap-2 w-full">
-        <InputBox
-          name="domain"
-          label="Domain"
-          placeholder="Enter Domain"
-          value={newLink.domain}
-          initialValue={newLink.domain}
-          parentClassName="w-full"
-          className="h-[50px]"
-          onChange={(e) => setNewLink({ ...newLink, domain: e.target.value })}
-        />
+      {links?.length === 0 || showNewLink ? (
+        <>
+          <div className="flex flex-col gap-2 w-full add-new-link-fields">
+            <InputBox
+              name="domain"
+              label="Domain"
+              placeholder="Enter Domain"
+              value={newLink.domain}
+              initialValue={newLink.domain}
+              parentClassName="w-full"
+              className="h-[50px]"
+              onChange={(e) => setNewLink({ ...newLink, domain: e.target.value })}
+            />
 
-        <div className="mt-[-13px]">
-          <label>URL</label>
-          <div className="flex rounded-md border border-greymedium w-full h-[50px]">
-            <span className="px-4 inline-flex items-center min-w-fit rounded-l-[7px] border-r-0 text-sm bg-whitelight">
-              <img src={InputLinkImage} alt="Input Link" />
-            </span>
-            <div className="relative w-full">
-              <input
-                type="text"
-                id="hs-inline-add-on"
-                name="hs-inline-add-on"
-                className="py-3 px-4 pl-[68px] h-[48px] block w-full border-gray-200 rounded-md text-sm"
-                value={linkValueViewFormat(newLink.url)}
-                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-              />
-              <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
-                <span className="text-sm text-gray-500">{LANG_HTTPS}</span>
+            <div className="mt-[-13px]">
+              <label>URL</label>
+              <div className="flex rounded-md border border-greymedium w-full h-[50px]">
+                <span className="px-4 inline-flex items-center min-w-fit rounded-l-[7px] border-r-0 text-sm bg-whitelight">
+                  <img src={InputLinkImage} alt="Input Link" />
+                </span>
+                <div className="relative w-full">
+                  <input
+                    type="text"
+                    id="hs-inline-add-on"
+                    name="hs-inline-add-on"
+                    className="py-3 px-4 pl-[68px] h-[48px] block w-full border-gray-200 rounded-md text-sm"
+                    value={linkValueViewFormat(newLink.url)}
+                    onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+                  />
+                  <div className="absolute inset-y-0 left-0 flex items-center pointer-events-none z-20 pl-4 text-greylight">
+                    <span className="text-sm text-gray-500">{LANG_HTTPS}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      {links?.length > 0 ? (
-        <div className="py-[24px]">
-          <div className="bg-greymedium h-[1px] w-full" />
-        </div>
+          {links?.length > 0 ? (
+            <div className="py-[24px]">
+              <div className="bg-greymedium h-[1px] w-full" />
+            </div>
+          ) : (
+            ''
+          )}
+        </>
       ) : (
         ''
       )}
@@ -178,7 +191,6 @@ const LinkForm = ({
           )}
         </div>
       ))}
-
       <div className="py-[24px]">
         <div
           onClick={addLink}
