@@ -63,6 +63,12 @@ const NETWORK_CONSTANTS = {
   EDIT_EXPERIENCE: (expId) => `/v1/accounts/experiences/${expId}`,
   EXPERIENCE_BY_ID: (expId) => `/v1/accounts/experiences/${expId}`,
   DELETE_EXPERIENCE: (expId) => `/v1/accounts/experiences/${expId}`,
+  GET_ALL_EDUCATIONS: (careerId) => `/v1/accounts/careers/${careerId}/educations`,
+  ADD_EDUCATION: (careerId) => `/v1/accounts/careers/${careerId}/educations`,
+  EDIT_EDUCATION: (edId) => `/v1/accounts/educations/${edId}`,
+  EDUCATION_BY_ID: (edId) => `/v1/accounts/educations/${edId}`,
+  CAREER_BY_ID: (id) => `/v1/accounts/careers/${id}`,
+  DELETE_EDUCATION: (edId) => `/v1/accounts/educations/${edId}`,
 };
 
 export default NETWORK_CONSTANTS;

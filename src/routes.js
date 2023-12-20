@@ -104,6 +104,10 @@ const signupRoutes = createBrowserRouter([
     element: <AddCareer />,
   },
   {
+    path: `${PATH_ADD_CAREER}/:id`,
+    element: <AddCareer />,
+  },
+  {
     path: PATH_GENERAL_INFO,
     element: <GeneralInfo />,
   },
@@ -185,6 +189,10 @@ const privateRoutes = createBrowserRouter([
   },
   {
     path: PATH_ADD_CAREER,
+    element: <AddCareer />,
+  },
+  {
+    path: `${PATH_ADD_CAREER}/:id`,
     element: <AddCareer />,
   },
 ]);

@@ -21,6 +21,7 @@ export const LIMITS = {
   MAX_ABOUT_WORK_LENGTH: 6000,
   MAX_CAREER_TITLE_LENGTH: 100,
   MAX_EXPERIENCE_DESCRIPTION_LENGTH: 500,
+  MAX_EDUCATION_STRINGS_LENGTH: 100,
 };
 
 export const POST_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/png', 'image/jpg'];
