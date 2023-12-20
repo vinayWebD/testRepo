@@ -390,7 +390,6 @@ export function CareerForm({
       <Modal
         isTitle={true}
         title="Add Links"
-        // isOpen={careerId && isLinksModalOpen}
         isOpen={isLinksModalOpen}
         onClose={() => setIsLinksModalOpen(false)}
         width="max-w-[472px]"
@@ -431,6 +430,7 @@ export function CareerForm({
           </div>
         </>
       </Modal>
+
       <Modal
         isTitle={true}
         title="Add Skills"

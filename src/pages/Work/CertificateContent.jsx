@@ -210,7 +210,7 @@ export function CertificateContent({ careerId }) {
     if (isLoading?.media) {
       return (
         <div
-          className={`rounded-md h-[50px] ${
+          className={`rounded-md h-[55px] ${
             isFullWidth ? 'w-full' : 'w-[268.3px]'
           }  bg-whitelight p-3 flex items-center justify-center`}
         >
@@ -222,7 +222,7 @@ export function CertificateContent({ careerId }) {
     if (media) {
       return (
         <div
-          className={`rounded-md h-[50px] ${
+          className={`rounded-md h-[55px] ${
             isFullWidth ? 'w-full' : 'w-[268.3px]'
           } bg-whitelight p-3 flex items-center justify-between`}
           title={getFileName(media)}
