@@ -60,8 +60,21 @@ const Messages = () => {
   const fetchFollowersList = async () => {
     const { status, data } = await AllUsers();
     if (status) {
-      setAllFollowers(data.data.Networks);
-      const newFollowers = data.data.Networks.filter((newFollower) => {
+      let allowedContacts = [];
+      let allData = data.data.Networks;
+      allData.map((element) => {
+        console.log('fE', element?.User?.PrivacySettings[0]?.chatSetting);
+        if (element?.User?.PrivacySettings[0]?.chatSetting === 'chatAnyone') {
+          allowedContacts.push(element);
+        } else if (
+          element?.User?.PrivacySettings[0]?.chatSetting === 'chatConnection' &&
+          element?.User?.PrivacySettings[0]?.isConnection
+        ) {
+          allowedContacts.push(element);
+        }
+      });
+      setAllFollowers(allowedContacts);
+      const newFollowers = allowedContacts.filter((newFollower) => {
         const followerId = newFollower?.User?.username;
         const isDuplicate = contacts.some((contact) => {
           const contactUsername = contact?.User?.username || contact?.username;
@@ -169,15 +182,9 @@ const Messages = () => {
         querySnapshot.forEach((doc) => {
           messagesData.push({ ...doc.data() });
         });
-
-        console.log('mD :', messagesData);
         const updatedContacts = contacts.map((contact) => {
           const lastMessageIdTo = messagesData.find(
-            (message) =>
-              message?.userDetails[0]?.id === contact?.id ||
-              message?.userDetails[0]?.id === contact?.User?.id ||
-              message?.userDetails[1]?.id === contact?.id ||
-              message?.userDetails[1]?.id === contact?.User?.id,
+            (message) => message?.lastMessage.id === contact?.id,
           );
           if (lastMessageIdTo) {
             return {
@@ -223,7 +230,6 @@ const Messages = () => {
             }
           }
         });
-
         setContacts(updatedContacts);
         fetchFollowersList();
       },
@@ -233,7 +239,6 @@ const Messages = () => {
       unsubscribe();
     };
   }, [retrievedDocumentId]);
-  console.log('co', contacts);
   useEffect(() => {
     const updateRead = async () => {
       let Id1 = parseInt(selected?.UserId, 10);
@@ -264,8 +269,6 @@ const Messages = () => {
       updateRead();
     }
   }, [selectedElement, myProfile.id]);
-  // console.log('selectedElement :', selectedElement);
-  // console.log('myProfile?.id :', myProfile?.id);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -311,7 +314,14 @@ const Messages = () => {
     try {
       const allDocsQuerySnapshot = await getDocs(subcollectionRef);
       await updateDoc(documentRef, {
-        lastMessage: { content: '', id: '', idFrom: '', idTo: '', read: '', timestamp: '' },
+        lastMessage: {
+          content: '',
+          id: '',
+          idFrom: '',
+          idTo: '',
+          read: '',
+          timestamp: '',
+        },
       });
       allDocsQuerySnapshot.forEach(async (doc) => {
         deleteDoc(doc.ref)
@@ -328,8 +338,6 @@ const Messages = () => {
     }
   };
   useEffect(() => {
-    console.log('retrievedDocumentId:', retrievedDocumentId);
-    console.log('myProfile.id:', myProfile?.id);
     let ChatId = retrievedDocumentId.split('_');
     let firstPart = ChatId[0];
     let secondPart = ChatId[1];
@@ -339,7 +347,6 @@ const Messages = () => {
     } else if (secondPart !== myProfile?.id) {
       userId = secondPart;
     }
-    console.log('userId:', userId);
     setUserId(userId);
   }, [retrievedDocumentId]);
 
