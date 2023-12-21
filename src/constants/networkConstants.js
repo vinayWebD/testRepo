@@ -34,6 +34,8 @@ const NETWORK_CONSTANTS = {
   NETWORK_COUNT: '/v1/accounts/follow/network/counts',
   INVITE_PEOPLE: '/v1/accounts/invite/people',
   UPDATE_EMAIL_SEND_OTP: '/v1/accounts/update-email',
+  UPDATE_EMAIL_RESEND_OTP_OLD: '/v1/accounts/resend-otp/old',
+  UPDATE_EMAIL_RESEND_OTP_NEW: '/v1/accounts/resend-otp/new',
   NOTIFICATION_LIST: '/v1/notifications/',
   CHANGE_PASSWORD: '/v1/accounts/change-password',
   HELP_CENTER_CONTACT_ADMIN: '/v1/accounts/help-center/query',

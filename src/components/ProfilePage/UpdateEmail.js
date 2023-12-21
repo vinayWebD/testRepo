@@ -7,7 +7,8 @@ import { LANG } from '../../constants/lang';
 import { Button } from '../common/Button';
 import { useDispatch } from 'react-redux';
 import {
-  sendOtpToUpdateEmailDispatcher,
+  sendOtpToUpdateNewEmailDispatcher,
+  sendOtpToUpdateOldEmailDispatcher,
   verifyNewEmailDispatcher,
   verifyOldEmailDispatcher,
 } from '../../redux/dispatchers/myProfileDispatcher';
@@ -53,12 +54,22 @@ const UpdateEmail = ({
 
   const resendHandler = async () => {
     setCounter(59);
+    let response = {};
 
-    const response = await dispatch(
-      sendOtpToUpdateEmailDispatcher({
-        email: newEmail?.trim(),
-      }),
-    );
+    if (verificationStep === 0) {
+      response = await dispatch(
+        sendOtpToUpdateOldEmailDispatcher({
+          email: newEmail?.trim(),
+        }),
+      );
+    } else {
+      response = await dispatch(
+        sendOtpToUpdateNewEmailDispatcher({
+          email: newEmail?.trim(),
+        }),
+      );
+    }
+
     const { status, data } = response;
 
     const errormsg = getErrorMessage(data);
@@ -129,21 +140,17 @@ const UpdateEmail = ({
         />
         <span className="mt-1 error">{error && 'Verification Code is required'}</span>
 
-        {verificationStep === 0 ? (
-          <div
-            className={`flex gap-2 text-greydark items-center justify-center mt-4 ${
-              counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
-            }`}
-            onClick={() => (counter > 0 ? null : resendHandler())}
-          >
-            <span className="underline">
-              <strong>{LANG_RESEND}</strong>
-            </span>
-            {counter > 0 && <div>in {`0:${counter}`} sec</div>}
-          </div>
-        ) : (
-          ''
-        )}
+        <div
+          className={`flex gap-2 text-greydark items-center justify-center mt-4 ${
+            counter <= 0 ? 'cursor-pointer' : 'cursor-not-allowed'
+          }`}
+          onClick={() => (counter > 0 ? null : resendHandler())}
+        >
+          <span className="underline">
+            <strong>{LANG_RESEND}</strong>
+          </span>
+          {counter > 0 && <div>in {`0:${counter}`} sec</div>}
+        </div>
       </div>
       <div className="border-greymedium border-t w-full flex justify-end py-5 px-[18px]">
         <Button

@@ -5,6 +5,8 @@ import apiUtility from '../utils/network/apiUtility';
 const {
   NETWORK_COUNT,
   UPDATE_EMAIL_SEND_OTP,
+  UPDATE_EMAIL_RESEND_OTP_OLD,
+  UPDATE_EMAIL_RESEND_OTP_NEW,
   CHANGE_PASSWORD,
   HELP_CENTER_CONTACT_ADMIN,
   UPDATE_EMAIL_VERIFY_OLD_EMAIL,
@@ -27,6 +29,24 @@ const networkCount = async () => {
 const sendOtpToUpdateEmail = async ({ email }) => {
   try {
     const data = await apiUtility(UPDATE_EMAIL_SEND_OTP, 'PATCH', { email });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const sendOtpToUpdateOldEmail = async ({ email }) => {
+  try {
+    const data = await apiUtility(UPDATE_EMAIL_RESEND_OTP_OLD, 'POST', { email });
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+const sendOtpToUpdateNewEmail = async ({ email }) => {
+  try {
+    const data = await apiUtility(UPDATE_EMAIL_RESEND_OTP_NEW, 'POST', { email });
     return data;
   } catch (error) {
     return error;
@@ -129,6 +149,8 @@ const getSpecificUsersForPrivacySettings = async ({
 export {
   networkCount,
   sendOtpToUpdateEmail,
+  sendOtpToUpdateOldEmail,
+  sendOtpToUpdateNewEmail,
   changePassword,
   contactAdmin,
   verifyOldEmail,
