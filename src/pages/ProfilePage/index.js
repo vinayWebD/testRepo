@@ -81,18 +81,6 @@ const ProfilePage = () => {
               ) : tab === 'work' ? (
                 <>
                   <WorkDetail />
-                  <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
-                    <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
-                    <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
-                      No work added yet.
-                    </h4>
-                    <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
-                      It helps people quickly identify your many talents.
-                    </h5>
-                    <div className="text-center mx-auto flex mt-2">
-                      <OutlinedButton label={'Add'} showArrowIcon={false} add />
-                    </div>
-                  </Card>
                 </>
               ) : tab === 'interest' ? (
                 <>
