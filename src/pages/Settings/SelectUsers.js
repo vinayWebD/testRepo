@@ -92,6 +92,10 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
   };
 
   const onAddHandler = async () => {
+    if (!isLoading || !users?.length) {
+      return;
+    }
+
     setIsLoading(true);
     const { status, data } = await dispatch(
       updateSpecificUsersForPrivacySettingsDispatcher({
@@ -198,7 +202,7 @@ const SelectUsers = ({ valueKey, popupCloseHandler = () => {} }) => {
       <div className="flex justify-end px-[18px] border-greymedium border-t pt-5">
         <Button
           label={'Save'}
-          isDisabled={isLoading}
+          isDisabled={isLoading || !users?.length}
           onClick={() => onAddHandler()}
           showArrowIcon={false}
           isLoading={isLoading}
