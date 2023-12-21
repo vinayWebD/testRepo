@@ -217,7 +217,7 @@ export function EducationContent({ careerId }) {
               <div className="md:pb-[24px] md:w-[15%] w-full"></div>
               <div className="md:pb-[24px] md:w-[15%] w-full"></div>
             </div>
-            <div className="py-[24px]">
+            <div className="py-[18px]">
               <div className="bg-greymedium h-[1px] w-full" />
             </div>
           </div>

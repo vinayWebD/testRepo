@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import { useEffect, useRef, useState } from 'react';
 import { getErrorMessage, successStatus } from '../../common';
 import Accordion from '../../components/Accordion';
-import { SkillsChips, SkillsChipsBlue } from '../../components/Chips';
+import { SkillsChipsBlue } from '../../components/Chips';
 import { Button } from '../../components/common/Button';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import { AddBlueIcon } from '../../components/Icons/AddBlueIcon';
@@ -17,11 +17,11 @@ import Modal from '../../components/Modal';
 
 import {
   addCareerLinks,
-  fetchCareerAddSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
+  updateCareerSkills,
 } from '../../services/signup';
-import { validationSchemaTitle, validationSchemaWorkSkills } from '../../validations';
+import { validationSchemaTitle } from '../../validations';
 import { CertificateContent } from './CertificateContent';
 import { EducationContent } from './EducationContent';
 import { ExperienceContent } from './ExperienceContent';
@@ -42,6 +42,7 @@ import LinkForm from './LinkForm';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { LinkData } from '../../components/common/Work/LinkData';
 import LinksIcon from '../../components/Icons/LinksIcon';
+import SkillForm from './SkillForm';
 
 const { HOME } = PATHS;
 const { LINK_PATTERN } = REGEX;
@@ -64,10 +65,12 @@ export function CareerForm({
   });
 
   const [skillsList, setSkillsList] = useState([]);
+  const [skillsFromAPI, setSkillsFromAPI] = useState([]);
+
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(id ? false : true);
   const [prevTitle, setPrevTitle] = useState(id ? data?.title : '');
-  const [isLoading, setIsLoading] = useState({ title: false, links: false });
+  const [isLoading, setIsLoading] = useState({ title: false, links: false, skills: false });
 
   useEffect(() => {
     if (id) {
@@ -146,26 +149,38 @@ export function CareerForm({
     const { status, data } = response;
     if (successStatus(status)) {
       setLinks(data?.data || []);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg, '');
+      }
     }
   };
 
   const getSkillsList = async () => {
     const response = await fetchCareerSkillslist(id);
-    const {
-      status,
-      data: { results = [] },
-    } = response;
+    const { status, data } = response;
     if (successStatus(status)) {
-      setSkillsList(results);
+      let skills = data?.data?.map((skill) => skill?.skill);
+      setSkillsList(skills);
+      setSkillsFromAPI(skills);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg, '');
+      }
     }
   };
 
   useEffect(() => {
-    getSkillsList();
-    getLinksList();
+    if (id) {
+      getSkillsList();
+      getLinksList();
+    }
   }, [id]);
 
   const linksSubmit = async () => {
+    if (isLoading?.links) return;
     setIsLoading({ ...isLoading, links: true });
 
     let link = {
@@ -212,35 +227,23 @@ export function CareerForm({
     }
   };
 
-  const initialSkill = {
-    name: '',
-  };
-
   const skillsSubmit = async () => {
-    let dataToSend = {
-      postData: {
-        name: formikSkills.values.name,
-      },
-      id,
-    };
-    const response = await fetchCareerAddSkills(dataToSend);
+    if (isLoading?.skills) return;
+    setIsLoading({ ...isLoading, skills: true });
+
+    const response = await updateCareerSkills(skillsList || [], id);
     const { status } = response;
     if (successStatus(status)) {
       getSkillsList();
+      setIsSkillModalOpen(false);
+    } else {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg, 'location-failed');
+      }
     }
+    setIsLoading({ ...isLoading, skills: false });
   };
-
-  const formikSkills = useFormik({
-    initialValues: initialSkill,
-    validationSchema: validationSchemaWorkSkills,
-    onSubmit: skillsSubmit,
-  });
-
-  const {
-    values: { name = '' },
-    touched: { domain: tuc_name },
-    errors: { domain: err_name },
-  } = formikSkills;
 
   const onSkipHandler = async () => {
     await dispatch(updateSignup(false));
@@ -291,7 +294,10 @@ export function CareerForm({
                 )}
               </div>
             ) : (
-              <span className="md:ml-[20px] mb-[22px]" onClick={() => setIsEdit(true)}>
+              <span
+                className="md:ml-[20px] mb-[22px] cursor-pointer"
+                onClick={() => setIsEdit(true)}
+              >
                 <EditBlueIcon />
               </span>
             )}
@@ -344,11 +350,14 @@ export function CareerForm({
                 <EditBlueIcon />
               </span>
             </div>
+            <div className="text-[12px] font-medium mt-2 mb-3">
+              ({links.length}/5 Links Uploaded)
+            </div>
             <LinkData openModalHandler={openLinksModalHandler} data={links} isEditable={true} />
           </div>
         )}
 
-        {skillsList.length > 0 && (
+        {skillsFromAPI.length > 0 && (
           <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -357,13 +366,14 @@ export function CareerForm({
                 </span>
                 <span className="form-title-blue">Skills</span>
               </div>
-              <span onClick={() => setIsSkillModalOpen(true)}>
+              <span onClick={() => setIsSkillModalOpen(true)} className="cursor-pointer">
                 <EditBlueIcon />
               </span>
             </div>
             <div className="flex gap-[24px] grow-0 mt-6 flex-wrap">
-              {skillsList &&
-                skillsList.map(({ name }, idx) => <SkillsChipsBlue label={name} key={idx} />)}
+              {skillsFromAPI?.map((name, idx) => (
+                <SkillsChipsBlue label={name} key={idx} />
+              ))}
             </div>
           </div>
         )}
@@ -394,7 +404,6 @@ export function CareerForm({
                   label="Next"
                   style={{ paddingLeft: '25px', paddingRight: '25px' }}
                 />
-                {/* <Button type="submit" label="Save" showArrowIcon={false} /> */}
               </div>
             </div>
           )}
@@ -408,6 +417,7 @@ export function CareerForm({
         onClose={() => setIsLinksModalOpen(false)}
         width="max-w-[472px]"
         padding={0}
+        titleClassNames="pl-0"
       >
         <div className="px-6">
           <LinkForm
@@ -434,36 +444,14 @@ export function CareerForm({
       <Modal
         isTitle={true}
         title="Add Skills"
-        // isOpen={careerId && isSkillModalOpen}
         isOpen={isSkillModalOpen}
         onClose={() => setIsSkillModalOpen(false)}
         width="max-w-[472px]"
         padding={0}
+        titleClassNames="pl-0"
       >
         <>
-          <div className="px-6">
-            <div className="pb-6">
-              <InputBox
-                name="name"
-                label="Skill"
-                placeholder="Enter Skill"
-                value={name}
-                onChange={(e) => formikSkills.setFieldValue('name', e.target.value)}
-                error={tuc_name && err_name}
-                helperText={tuc_name && err_name}
-                onKeyPress={(event) => {
-                  if (event.key === 'Enter') {
-                    skillsSubmit();
-                  }
-                }}
-              />
-            </div>
-            <div className="flex gap-[12px] flex-wrap pb-[24px]">
-              {skillsList?.map((title, idx) => (
-                <SkillsChips key={idx} label={title.name} />
-              ))}
-            </div>
-          </div>
+          <SkillForm skillsList={skillsList} updateSkillsList={setSkillsList} />
 
           <div className="bg-greymedium h-[1px] w-full" />
           <div className="grid justify-items-end pt-6 pb-5 px-6">
@@ -472,6 +460,9 @@ export function CareerForm({
               label="Save"
               onClick={() => skillsSubmit()}
               showArrowIcon={false}
+              isLoading={isLoading?.skills}
+              isDisabled={isLoading?.skills}
+              onlyShowLoaderWhenLoading={true}
             />
           </div>
         </>

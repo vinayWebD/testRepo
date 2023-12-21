@@ -51,7 +51,7 @@ export const ExperienceData = ({ data, openModalHandler = () => {}, isEditable =
         ''
       )}
 
-      <div className="py-[24px]">
+      <div className="py-[18px]">
         <div className="bg-greymedium h-[1px] w-full" />
       </div>
     </div>

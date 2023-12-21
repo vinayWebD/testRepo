@@ -169,6 +169,10 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
               </div>
             </div>
             <LinkData openModalHandler={() => {}} data={item?.Links} isEditable={false} />
+
+            <div className="py-[18px] mt-6">
+              <div className="bg-greymedium h-[1px] w-full" />
+            </div>
           </div>
         ) : (
           ''
@@ -181,8 +185,11 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
                 <span className="form-title-blue">Skills</span>
               </div>
             </div>
+
             <div className="flex gap-[24px] grow-0 mt-6 flex-wrap">
-              <SkillsChipsBlue label={'Illustrator'} />
+              {item?.Skills?.map(({ skill }, idx) => (
+                <SkillsChipsBlue label={skill} key={idx} />
+              ))}
             </div>
           </div>
         ) : (
@@ -201,12 +208,14 @@ export function CareerDetail({ data: item, getCareerList = () => {} }) {
                 isLoading={isLoading}
                 isDisabled={isLoading}
                 onlyShowLoaderWhenLoading={true}
+                additionalClassNames="text-[14px]"
               />
             </div>
             <div>
               <OutlinedButton
                 label="Edit"
                 style={{ paddingLeft: '25px', paddingRight: '25px' }}
+                additionalClassNames="text-[14px]"
                 onClick={() => navigate(`${PATHS.PATH_ADD_CAREER}/${item?.id}`, { replace: true })}
               />
             </div>

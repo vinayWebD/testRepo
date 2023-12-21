@@ -7,7 +7,14 @@ export const LinkData = ({ data = [] }) => {
         {data.map((links, idx) => (
           <div key={idx}>
             <div className="detail-label">{links.domain}</div>
-            <div className="detail-heading">{links.url}</div>
+            <a
+              className="text-[16px] font-normal text-[#3366CC]"
+              href={links.url}
+              target="_blank"
+              rel="noreferrer"
+            >
+              {links.url}
+            </a>
           </div>
         ))}
       </div>

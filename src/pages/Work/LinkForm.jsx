@@ -119,7 +119,7 @@ const LinkForm = ({
             </div>
           </div>
           {links?.length > 0 ? (
-            <div className="py-[24px]">
+            <div className="py-[18px]">
               <div className="bg-greymedium h-[1px] w-full" />
             </div>
           ) : (
@@ -183,7 +183,7 @@ const LinkForm = ({
           </div>
 
           {index !== links?.length - 1 ? (
-            <div className="py-[24px]">
+            <div className="py-[18px]">
               <div className="bg-greymedium h-[1px] w-full" />
             </div>
           ) : (
@@ -191,7 +191,7 @@ const LinkForm = ({
           )}
         </div>
       ))}
-      <div className="py-[24px]">
+      <div className="py-[18px]">
         <div
           onClick={addLink}
           className={`w-full flex justify-end text-[14px] font-semibold ${

@@ -23,6 +23,8 @@ const {
   DELETE_CERTIFICATE,
   CERT_BY_ID,
   ADD_CAREER_LINK,
+  GET_ALL_CAREER_SKILLS,
+  UPDATE_CAREER_SKILLS,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -198,22 +200,6 @@ const fetchCareerEducationList = async (id) => {
 };
 
 /**
- * Function for API calling of add Skills
- * @param {*} param
- * @returns
- */
-
-const fetchCareerAddSkills = async (dataToSend) => {
-  const { postData, id } = dataToSend;
-  try {
-    const response = await apiUtility(`${CAREERS}${id}/skills/`, 'POST', postData);
-    return response;
-  } catch (err) {
-    return err;
-  }
-};
-
-/**
  * Function for API calling of list of links
  * @param {*} param
  * @returns
@@ -227,15 +213,16 @@ const fetchCareerLinkslist = async (id) => {
     return err;
   }
 };
+
 /**
- * Function for API calling of list of Links
+ * Function for API calling of list of skills
  * @param {*} param
  * @returns
  */
 
 const fetchCareerSkillslist = async (id) => {
   try {
-    const response = await apiUtility(`${CAREERS}${id}/skills/`, 'GET');
+    const response = await apiUtility(GET_ALL_CAREER_SKILLS(id), 'GET');
     return response;
   } catch (err) {
     return err;
@@ -473,6 +460,20 @@ const addCareerLinks = async ({ links = [], careerId }) => {
   }
 };
 
+/**
+ * Function for API calling of add Skills
+ * @param {*} param
+ * @returns
+ */
+const updateCareerSkills = async (data = [], careerId) => {
+  try {
+    const response = await apiUtility(UPDATE_CAREER_SKILLS(careerId), 'POST', data);
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
 export {
   signupUser,
   verifyEmail,
@@ -486,7 +487,7 @@ export {
   fetchCareerExperienceList,
   fetchCareerEducationList,
   fetchCareerCertificateList,
-  fetchCareerAddSkills,
+  updateCareerSkills,
   fetchCareerLinkslist,
   fetchCareerSkillslist,
   fetchCareersList,

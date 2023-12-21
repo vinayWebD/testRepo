@@ -76,6 +76,8 @@ const NETWORK_CONSTANTS = {
   CERT_BY_ID: (certId) => `/v1/accounts/certificates/${certId}`,
   GET_ALL_CAREER_LINKS: (careerId) => `/v1/accounts/careers/${careerId}/links`,
   ADD_CAREER_LINK: (careerId) => `/v1/accounts/careers/${careerId}/links`,
+  GET_ALL_CAREER_SKILLS: (careerId) => `/v1/accounts/careers/${careerId}/skills`,
+  UPDATE_CAREER_SKILLS: (careerId) => `/v1/accounts/careers/${careerId}/skills`,
 };
 
 export default NETWORK_CONSTANTS;
