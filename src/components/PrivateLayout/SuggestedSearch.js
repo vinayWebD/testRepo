@@ -130,7 +130,7 @@ function SuggestedSearch({
       className=" bg-white items-start content-start flex-wrap left-0 fixed md:absolute w-[100vw] h-[calc(100vh-60px)] top-[61px] md:top-[33px] md:w-full md:h-fit flex md:rounded-md z-50 shadow-lg"
       onClick={onCloseHandler}
     >
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-fit">
         <div className="flex flex-col gap-1 md:hidden w-full px-[5%]">
           <div
             className="flex text-[15px] md:text-[18px] lg:text-[24px] pt-4 pb-2 sticky cursor-pointer font-medium"
