@@ -100,6 +100,20 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
     } else {
       collectionId = `${numericMyProfileId}_${numericToId}`;
     }
+    let foundUser;
+    contacts.some((user) => {
+      if (!user?.lastMessage && user?.id === isActive) {
+        foundUser = user?.User;
+        return true;
+      } else if (user?.lastMessage?.id === isActive) {
+        const userIdIndex = user?.userIds?.findIndex((id) => id !== myProfile?.id);
+        if (userIdIndex !== -1) {
+          foundUser = user?.userDetails[userIdIndex];
+        }
+        return true;
+      }
+      return false;
+    });
 
     const testMessagesCollectionRef = collection(db, 'test_messages');
     const documentRef = doc(testMessagesCollectionRef, collectionId);
@@ -117,7 +131,7 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
       },
       timestamp: timestampInSeconds,
       userIds: [myProfile?.id, toId],
-      userDetails: [myProfile, contacts.find((user) => user?.id === isActive)],
+      userDetails: [myProfile, foundUser],
     });
 
     const DocumentRef = collection(documentRef, collectionId);
@@ -239,8 +253,8 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
           mediaTypeToUpload === 'photo'
             ? POST_IMAGE_TYPES
             : mediaTypeToUpload === 'video'
-            ? POST_VIDEO_TYPES
-            : POST_DOCUMENT_TYPES
+              ? POST_VIDEO_TYPES
+              : POST_DOCUMENT_TYPES
         }
       />
     </>
