@@ -5,6 +5,7 @@ export const REGEX = {
   STRING_PATTERN: /^(\S+$)/g,
   POST_PATTERN: /^(?!\s*$).+/,
   LINK_PATTERN: /^https:\/\/[a-zA-Z0-9\-\\.]+\.[a-zA-Z]{2,}(\/\S*)?$/,
+  SKILL_PATTERN: /^(?!\s*$).{1,100}$/,
 };
 
 export const VERIFY_EMAIL_ORIGIN = {
@@ -24,6 +25,7 @@ export const LIMITS = {
   MAX_EDUCATION_STRINGS_LENGTH: 100,
   MAX_CAREER_STRINGS_LENGTH: 100,
   POST_MAX_CERTIFICATION_SIZE_IN_BYTES: 10485760,
+  MAX_CAREER_SKILL_LENGTH: 100,
 };
 
 export const POST_IMAGE_TYPES = ['image/png', 'image/jpeg', 'image/png', 'image/jpg'];

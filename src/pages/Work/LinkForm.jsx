@@ -18,6 +18,7 @@ const LinkForm = ({
   setLinks,
   linkInInput: newLink = {},
   setLinkInInput: setNewLink = () => {},
+  updateDeletedLinks = () => {},
 }) => {
   const [showNewLink, setShowNewLink] = useState(false);
 
@@ -72,8 +73,12 @@ const LinkForm = ({
     return link;
   };
 
-  const handleRemoveLink = (currentIndex) => {
+  const handleRemoveLink = (link, currentIndex) => {
     const updatedLinks = links.filter((item, i) => i !== currentIndex);
+
+    if (link?.id) {
+      updateDeletedLinks((prev) => [...prev, { id: link?.id }]);
+    }
     setLinks(updatedLinks);
   };
 
@@ -149,7 +154,7 @@ const LinkForm = ({
                     setLinks(updatedLinks);
                   }}
                 />
-                <div onClick={() => handleRemoveLink(index)} className="cursor-pointer">
+                <div onClick={() => handleRemoveLink(link, index)} className="cursor-pointer">
                   <RemoveIcon />
                 </div>
               </div>

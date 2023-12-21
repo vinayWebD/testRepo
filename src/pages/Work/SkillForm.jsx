@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 import InputBox from '../../components/InputBox';
 import { SkillsChips } from '../../components/Chips';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
+import { LIMITS, REGEX } from '../../constants/constants';
+
+const { SKILL_PATTERN } = REGEX;
+const { MAX_CAREER_SKILL_LENGTH } = LIMITS;
 
 const SkillForm = ({ skillsList = [], updateSkillsList = () => {} }) => {
   const [inputSkillValue, setInputSkillValue] = useState('');
 
   const updateSkills = () => {
-    if (!inputSkillValue?.trim()?.length) {
-      ToastNotifyError('Enter a valid skill');
-      return false;
+    if (!SKILL_PATTERN.test(inputSkillValue)) {
+      ToastNotifyError(`Enter a valid skill of upto ${MAX_CAREER_SKILL_LENGTH} characters`);
+      return;
     }
 
     updateSkillsList([...skillsList, inputSkillValue?.trim()]);
@@ -29,6 +33,7 @@ const SkillForm = ({ skillsList = [], updateSkillsList = () => {} }) => {
           label="Skill"
           placeholder="Enter Skill"
           value={inputSkillValue}
+          maxLength={MAX_CAREER_SKILL_LENGTH}
           onChange={(e) => setInputSkillValue(e.target.value)}
           onKeyPress={(event) => {
             if (event.key === 'Enter') {

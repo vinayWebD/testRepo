@@ -58,14 +58,17 @@ export function CareerForm({
   const dispatch = useDispatch();
   const [isSkillModalOpen, setIsSkillModalOpen] = useState(false);
   const [isLinksModalOpen, setIsLinksModalOpen] = useState(false);
-  const [links, setLinks] = useState([]);
+
+  const [links, setLinks] = useState([]); // This is the local state which will get updated each time a link is added or edited
+  const [linksFromAPI, setLinksFromAPI] = useState([]); // Setting the links from API
+  const [deletedLinks, setDeletedLinks] = useState([]); // We need to pass {id: <DELETED LINK ID>} in the API to remove the links
   const [linkInInput, setLinkInInput] = useState({
     url: '',
     domain: '',
   });
 
-  const [skillsList, setSkillsList] = useState([]);
-  const [skillsFromAPI, setSkillsFromAPI] = useState([]);
+  const [skills, setSkills] = useState([]); // This is the local state which will get updated each time a link is added or edited
+  const [skillsFromAPI, setSkillsFromAPI] = useState([]); // Setting the skills from API
 
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(id ? false : true);
@@ -83,6 +86,7 @@ export function CareerForm({
 
   const openLinksModalHandler = () => {
     setLinkInInput({ url: '', domain: '' });
+    setDeletedLinks([]);
     setIsLinksModalOpen(true);
   };
 
@@ -149,6 +153,7 @@ export function CareerForm({
     const { status, data } = response;
     if (successStatus(status)) {
       setLinks(data?.data || []);
+      setLinksFromAPI(data?.data || []);
     } else {
       const errormsg = getErrorMessage(data);
       if (errormsg) {
@@ -160,9 +165,10 @@ export function CareerForm({
   const getSkillsList = async () => {
     const response = await fetchCareerSkillslist(id);
     const { status, data } = response;
+
     if (successStatus(status)) {
       let skills = data?.data?.map((skill) => skill?.skill);
-      setSkillsList(skills);
+      setSkills(skills);
       setSkillsFromAPI(skills);
     } else {
       const errormsg = getErrorMessage(data);
@@ -179,15 +185,16 @@ export function CareerForm({
     }
   }, [id]);
 
-  const linksSubmit = async () => {
+  const linksSubmitHandler = async () => {
     if (isLoading?.links) return;
+
     setIsLoading({ ...isLoading, links: true });
 
     let link = {
       url: linkInInput?.url?.trim(),
       domain: linkInInput?.domain?.trim(),
     };
-    let allLinks = [...links];
+    let allLinks = [...links, ...deletedLinks];
 
     // If there is anything typed in the input box and the plus button is not clicked, so we need to check
     // if there is some value in it and if it's valid
@@ -227,11 +234,12 @@ export function CareerForm({
     }
   };
 
-  const skillsSubmit = async () => {
+  const skillsSubmitHandler = async () => {
     if (isLoading?.skills) return;
+
     setIsLoading({ ...isLoading, skills: true });
 
-    const response = await updateCareerSkills(skillsList || [], id);
+    const response = await updateCareerSkills(skills || [], id);
     const { status } = response;
     if (successStatus(status)) {
       getSkillsList();
@@ -337,7 +345,7 @@ export function CareerForm({
             },
           ]}
         />
-        {links.length > 0 && (
+        {linksFromAPI.length > 0 && (
           <div className="w-full text-left py-[17px] px-[24px] bg-white mb-[16px]">
             <div className="flex items-center justify-between">
               <div className="flex items-center">
@@ -351,9 +359,13 @@ export function CareerForm({
               </span>
             </div>
             <div className="text-[12px] font-medium mt-2 mb-3">
-              ({links.length}/5 Links Uploaded)
+              ({linksFromAPI.length}/5 Links Uploaded)
             </div>
-            <LinkData openModalHandler={openLinksModalHandler} data={links} isEditable={true} />
+            <LinkData
+              openModalHandler={openLinksModalHandler}
+              data={linksFromAPI}
+              isEditable={true}
+            />
           </div>
         )}
 
@@ -426,13 +438,14 @@ export function CareerForm({
             linkInInput={linkInInput}
             setLinkInInput={setLinkInInput}
             isInputLinkOpen={true}
+            updateDeletedLinks={setDeletedLinks}
           />
 
           <div className="grid justify-items-end pb-5">
             <Button
               disabled={isLoading?.links}
               label="Save"
-              onClick={() => linksSubmit()}
+              onClick={() => linksSubmitHandler()}
               showArrowIcon={false}
               isLoading={isLoading?.links}
               onlyShowLoaderWhenLoading={true}
@@ -451,14 +464,14 @@ export function CareerForm({
         titleClassNames="pl-0"
       >
         <>
-          <SkillForm skillsList={skillsList} updateSkillsList={setSkillsList} />
+          <SkillForm skillsList={skills} updateSkillsList={setSkills} />
 
           <div className="bg-greymedium h-[1px] w-full" />
           <div className="grid justify-items-end pt-6 pb-5 px-6">
             <Button
               disabled={!title}
               label="Save"
-              onClick={() => skillsSubmit()}
+              onClick={() => skillsSubmitHandler()}
               showArrowIcon={false}
               isLoading={isLoading?.skills}
               isDisabled={isLoading?.skills}
