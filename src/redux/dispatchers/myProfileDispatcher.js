@@ -5,6 +5,8 @@ import {
   getPrivacySettings,
   getSpecificUsersForPrivacySettings,
   sendOtpToUpdateEmail,
+  sendOtpToUpdateNewEmail,
+  sendOtpToUpdateOldEmail,
   updatePrivacySettings,
   updateSpecificUsersForPrivacySettings,
   verifyNewEmail,
@@ -18,6 +20,28 @@ const sendOtpToUpdateEmailDispatcher =
     if (email) {
       dispatch(globalTransparentLoadingPrivate(true));
       const { status, data } = await sendOtpToUpdateEmail({ email });
+      dispatch(globalTransparentLoadingPrivate(false));
+      return { status, data };
+    }
+  };
+
+const sendOtpToUpdateOldEmailDispatcher =
+  ({ email = '' }) =>
+  async (dispatch) => {
+    if (email) {
+      dispatch(globalTransparentLoadingPrivate(true));
+      const { status, data } = await sendOtpToUpdateOldEmail({ email });
+      dispatch(globalTransparentLoadingPrivate(false));
+      return { status, data };
+    }
+  };
+
+const sendOtpToUpdateNewEmailDispatcher =
+  ({ email = '' }) =>
+  async (dispatch) => {
+    if (email) {
+      dispatch(globalTransparentLoadingPrivate(true));
+      const { status, data } = await sendOtpToUpdateNewEmail({ email });
       dispatch(globalTransparentLoadingPrivate(false));
       return { status, data };
     }
@@ -112,6 +136,8 @@ const getSpecificUsersForPrivacySettingsDispatcher =
 
 export {
   sendOtpToUpdateEmailDispatcher,
+  sendOtpToUpdateOldEmailDispatcher,
+  sendOtpToUpdateNewEmailDispatcher,
   changePasswordDispatcher,
   contactAdminDispatcher,
   verifyOldEmailDispatcher,

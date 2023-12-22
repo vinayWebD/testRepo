@@ -21,7 +21,6 @@ import {
   doc,
   updateDoc,
   deleteDoc,
-  // deleteDoc,
 } from 'firebase/firestore';
 import db from '../../firebase';
 import { AllUsers } from '../../services/messageService';
@@ -76,46 +75,56 @@ const Messages = () => {
       const newFollowers = allowedContacts.filter((newFollower) => {
         const followerId = newFollower?.User?.username;
         const isDuplicate = contacts.some((contact) => {
-          const contactUsername = contact?.User?.username || contact?.username;
+          let userIndex = contact?.userIds?.findIndex((user) => {
+            return user !== myProfile?.id;
+          });
+          const contactUsername =
+            contact?.User?.username || contact?.userDetails[userIndex]?.username;
           return contactUsername === followerId;
         });
-
         return !isDuplicate;
       });
       setSearchedFollwers(newFollowers);
       setOriginalSearchedFollowers(newFollowers);
     }
   };
+
   const scrollChatContainer = () => {
     if (chatContainerRef.current) {
       chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
   };
+
   useEffect(() => {
     if (isActive !== null) {
       setMobileChats(true);
     }
   }, [isActive]);
+
   const handleFileInputChange = (selectedFile) => {
     setFileData(selectedFile);
   };
+
   const handleSearch = (query) => {
     setSearchQuery(query.trim());
-
     if (query.trim() === '') {
       setContacts([...originalContacts]);
     } else {
       const filteredContacts = contacts.filter((element) => {
+        let UserIndex = element?.userIds?.findIndex((user) => {
+          return user !== myProfile?.id;
+        });
         const searchItem =
-          element?.User?.firstName.toLowerCase() || element?.firstName.toLowerCase();
+          element?.User?.firstName?.toLowerCase() ||
+          element?.userDetails[UserIndex]?.firstName?.toLowerCase();
         return searchItem.includes(query.toLowerCase());
       });
       setContacts(filteredContacts);
     }
   };
+
   const handleFollowersSearch = (query) => {
     setSearchQuery(query.trim());
-
     if (query.trim() === '') {
       setSearchedFollwers([...originalSearchedFollowers]);
     } else {
@@ -142,7 +151,7 @@ const Messages = () => {
     );
     setSelected(selectedFollower);
     if (!addContact) {
-      const isAlreadyAdded = contacts.some((contact) => contact.id === selectedFollower.id);
+      const isAlreadyAdded = contacts.some((contact) => contact?.id === selectedFollower?.id);
       if (!isAlreadyAdded) {
         setContacts((prevContacts) => {
           const updatedContacts = [...prevContacts, selectedFollower];
@@ -174,71 +183,6 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    const unsubscribe = onSnapshot(
-      query(collection(db, 'test_messages'), orderBy('timestamp')),
-      (querySnapshot) => {
-        let messagesData = [];
-        querySnapshot.forEach((doc) => {
-          messagesData.push({ ...doc.data() });
-        });
-        const updatedContacts = contacts.map((contact) => {
-          const lastMessageIdTo = messagesData.find(
-            (message) => message?.lastMessage.id === contact?.id,
-          );
-          if (lastMessageIdTo) {
-            return {
-              ...contact,
-              lastMessage: {
-                content: lastMessageIdTo?.lastMessage?.content,
-                id: lastMessageIdTo?.lastMessage?.id,
-                idFrom: lastMessageIdTo?.lastMessage?.idFrom,
-                idTo: lastMessageIdTo?.lastMessage?.idTo,
-                read: lastMessageIdTo?.lastMessage?.read,
-                timestamp: lastMessageIdTo?.timestamp,
-              },
-            };
-          }
-          return contact;
-        });
-        const sortedContacts = updatedContacts.sort((a, b) => {
-          const timestampA = a.lastMessage ? a.lastMessage.timestamp : 0;
-          const timestampB = b.lastMessage ? b.lastMessage.timestamp : 0;
-          return timestampB - timestampA;
-        });
-
-        setContacts(sortedContacts);
-        const filteredMessages = messagesData.filter((element) => {
-          return element?.userIds?.includes(myProfile.id);
-        });
-        filteredMessages.forEach((message) => {
-          const userIdIndex = message?.userIds?.findIndex((id) => id !== myProfile.id);
-          if (userIdIndex !== -1) {
-            const userDetails = message?.userDetails[userIdIndex];
-            let final = { ...userDetails, lastMessage: message?.lastMessage };
-            if (
-              !updatedContacts.some(
-                (contact) =>
-                  contact?.username === final?.username ||
-                  contact?.User ||
-                  contact?.User?.username === final?.username ||
-                  final?.User ||
-                  final?.User?.username === final?.username,
-              )
-            ) {
-              updatedContacts.unshift(final);
-            }
-          }
-        });
-        setContacts(updatedContacts);
-        fetchFollowersList();
-      },
-    );
-
-    return () => {
-      unsubscribe();
-    };
-  }, [retrievedDocumentId]);
-  useEffect(() => {
     const updateRead = async () => {
       let Id1 = parseInt(selected?.UserId, 10);
       let Id2 = parseInt(selected?.FollowingUserId, 10);
@@ -255,7 +199,7 @@ const Messages = () => {
         const allDocsQuerySnapshot = await getDocs(subcollectionRef);
         const updatePromises = [];
         allDocsQuerySnapshot.forEach((subcollectionDoc) => {
-          const subcollectionDocRef = doc(subcollectionRef, subcollectionDoc.id);
+          const subcollectionDocRef = doc(subcollectionRef, subcollectionDoc?.id);
           updatePromises.push(updateDoc(subcollectionDocRef, { read: true }));
         });
 
@@ -273,34 +217,37 @@ const Messages = () => {
     const fetchData = async () => {
       try {
         const q = query(collection(db, 'test_messages'), orderBy('timestamp'));
-        const querySnapshot = await getDocs(q);
-        let messagesData = [];
-        querySnapshot.forEach((doc) => {
-          messagesData.push({ ...doc.data() });
+
+        const unsubscribe = onSnapshot(q, (querySnapshot) => {
+          let messagesData = [];
+          querySnapshot.forEach((doc) => {
+            messagesData.push({ ...doc.data() });
+          });
+
+          const filteredMessages = messagesData.filter((element) => {
+            return element?.userIds?.includes(myProfile?.id);
+          });
+          const sortedContacts = filteredMessages.sort((a, b) => {
+            const timestampA = a.lastMessage ? a.lastMessage.timestamp : 0;
+            const timestampB = b.lastMessage ? b.lastMessage.timestamp : 0;
+            return timestampB - timestampA;
+          });
+          setContacts(sortedContacts);
+          setContacts([...filteredMessages]);
+          setOriginalContacts([...filteredMessages]);
         });
-        const filteredMessages = messagesData.filter((element) => {
-          return element?.userIds?.includes(myProfile?.id);
-        });
-        filteredMessages.forEach((message) => {
-          const userIdIndex = message?.userIds?.findIndex((id) => id !== myProfile?.id);
-          const lastMessage = message?.lastMessage;
-          if (userIdIndex !== -1) {
-            const userDetails = message?.userDetails[userIdIndex];
-            let final = { ...userDetails, lastMessage };
-            if (!contacts.some((contact) => contact?.id === final.id)) {
-              contacts.unshift(final);
-            }
-          }
-        });
-        setOriginalContacts([...contacts]);
+        return () => unsubscribe();
       } catch (error) {
         console.error('Error getting messages: ', error);
       }
     };
 
     fetchData();
-    fetchFollowersList();
   }, []);
+
+  useEffect(() => {
+    fetchFollowersList();
+  }, [contacts]);
 
   const deleteChat = async () => {
     const subcollectionRef = collection(
@@ -336,8 +283,9 @@ const Messages = () => {
       console.error('Error getting documents from subcollection: ', error);
     }
   };
+
   useEffect(() => {
-    let ChatId = retrievedDocumentId.split('_');
+    let ChatId = retrievedDocumentId?.split('_');
     let firstPart = ChatId[0];
     let secondPart = ChatId[1];
     let userId = '';
@@ -426,23 +374,32 @@ const Messages = () => {
             </div>
             <div className="items-center w-full md:mt-6">
               {(addContact ? contacts : searchedFollwers).map((element, index) => {
+                let elementId = element?.id || element?.lastMessage?.id;
+                let UserIndex = element?.userIds?.findIndex((user) => {
+                  return user !== myProfile?.id;
+                });
                 return (
                   <div
                     key={index}
                     className={` box-border border-l-[6px] border-white cursor-pointer  w-full ${
-                      isActive === element?.id ? 'active-message-left-side-bar bg-lightbluebg' : ''
+                      isActive === element?.id || isActive === element?.lastMessage?.id
+                        ? 'active-message-left-side-bar bg-lightbluebg'
+                        : ''
                     }`}
-                    onClick={() => handleSelected(element?.id, element)}
+                    onClick={() => handleSelected(elementId, element)}
                   >
                     <div className="border-b border-b-lightgrey w-[95%] flex items-center py-3 ml-[3px] ">
                       <div>
                         <Avatar
-                          name={element?.firstName || element?.User?.firstName}
+                          name={
+                            element?.User?.firstName || element?.userDetails[UserIndex]?.firstName
+                          }
                           image={
-                            element?.profilePictureUrl ||
-                            element?.profilePicture ||
-                            element?.User?.profilePictureUrl ||
-                            element?.User?.profilePicture
+                            element?.User?.profilePicture ||
+                            (element?.userDetails &&
+                              element?.userDetails[UserIndex]?.profilePictureUrl) ||
+                            (element?.userDetails &&
+                              element?.userDetails[UserIndex]?.profilePicture)
                           }
                           classNames="w-[40px] h-[40px]"
                         />
@@ -451,7 +408,8 @@ const Messages = () => {
                         <div className="ml-2 w-full mr-2">
                           <div className="flex justify-between">
                             <h3 className="text-[16px] font-semibold">
-                              {element?.firstName || element?.User?.firstName}
+                              {element?.User?.firstName ||
+                                element?.userDetails[UserIndex]?.firstName}
                             </h3>
                             <TimeAgo timestamp={element?.lastMessage?.timestamp} />
                           </div>
@@ -513,27 +471,58 @@ const Messages = () => {
                   />
                   <Avatar
                     name={
-                      contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
-                      contacts.find((contact) => contact?.id === isActive)?.firstName
+                      contacts
+                        .find((contact) => contact?.lastMessage?.id === isActive)
+                        ?.userIds.findIndex((user) => user !== myProfile?.id) !== -1
+                        ? contacts.find((contact) => contact?.lastMessage?.id === isActive)
+                            ?.userDetails?.[
+                            contacts
+                              .find((contact) => contact?.lastMessage?.id === isActive)
+                              ?.userIds.findIndex((user) => user !== myProfile?.id)
+                          ]?.firstName ||
+                          contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
+                          'DefaultName'
+                        : ''
                     }
                     image={
-                      contacts.find((contact) => contact?.id === isActive).User
-                        ?.profilePictureUrl ||
-                      contacts.find((contact) => contact?.id === isActive).User?.profilePicture ||
-                      contacts.find((contact) => contact?.id === isActive).profilePictureUrl ||
-                      contacts.find((contact) => contact?.id === isActive).profilePictureUrl
+                      contacts
+                        .find((contact) => contact?.lastMessage?.id === isActive)
+                        ?.userIds.findIndex((user) => user !== myProfile?.id) !== -1
+                        ? contacts.find((contact) => contact?.lastMessage?.id === isActive)
+                            ?.userDetails?.[
+                            contacts
+                              .find((contact) => contact?.lastMessage?.id === isActive)
+                              ?.userIds.findIndex((user) => user !== myProfile?.id)
+                          ]?.profilePictureUrl ||
+                          contacts.find((contact) => contact?.lastMessage?.id === isActive)
+                            ?.userDetails?.[
+                            contacts
+                              .find((contact) => contact?.lastMessage?.id === isActive)
+                              ?.userIds.findIndex((user) => user !== myProfile?.id)
+                          ]?.profilePicture ||
+                          contacts.find((contact) => contact?.id === isActive)?.User
+                            ?.profilePicture ||
+                          ''
+                        : ''
                     }
                     classNames="w-[52px] h-[52px] ml-4 md:ml-0"
                   />
                   <div className="ml-2">
                     <span className="text-[20px] font-semibold">
                       {isActive !== null
-                        ? addContact
-                          ? contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
-                            contacts.find((contact) => contact?.id === isActive).firstName
-                          : searchedFollwers.find((follower) => follower?.id === isActive)?.User
-                              ?.firstName || 'Name'
-                        : 'Name'}
+                        ? contacts
+                            .find((contact) => contact?.lastMessage?.id === isActive)
+                            ?.userIds.findIndex((user) => user !== myProfile?.id) !== -1
+                          ? contacts.find((contact) => contact?.lastMessage?.id === isActive)
+                              ?.userDetails?.[
+                              contacts
+                                .find((contact) => contact?.lastMessage?.id === isActive)
+                                ?.userIds.findIndex((user) => user !== myProfile?.id)
+                            ]?.firstName ||
+                            contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
+                            'DefaultName'
+                          : ''
+                        : ''}
                     </span>
                     <div className="flex items-center">
                       <div className="w-[8px] h-[8px] rounded-full bg-blueprimary"></div>
@@ -618,12 +607,18 @@ const Messages = () => {
           <div className="text-[18px] tx-greydark font-medium">
             Are you sure you want to block “
             {isActive !== null
-              ? addContact
-                ? contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
-                  contacts.find((contact) => contact?.id === isActive).firstName
-                : searchedFollwers.find((follower) => follower?.id === isActive)?.User?.firstName ||
-                  'Name'
-              : 'Name'}
+              ? contacts
+                  .find((contact) => contact?.lastMessage?.id === isActive)
+                  ?.userIds.findIndex((user) => user !== myProfile?.id) !== -1
+                ? contacts.find((contact) => contact?.lastMessage?.id === isActive)?.userDetails?.[
+                    contacts
+                      .find((contact) => contact?.lastMessage?.id === isActive)
+                      ?.userIds.findIndex((user) => user !== myProfile?.id)
+                  ]?.firstName ||
+                  contacts.find((contact) => contact?.id === isActive)?.User?.firstName ||
+                  'DefaultName'
+                : ''
+              : ''}
             ”?
           </div>
         </ConfirmationModal>
