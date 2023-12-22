@@ -23,6 +23,7 @@ import Myself from './pages/Myself';
 import { AddCareer } from './pages/Work/AddNewCareer';
 import DeleteAccount from './pages/Settings/DeleteAccount';
 import BlockedUsers from './pages/Settings/BlockedUsers';
+import { MyProfileAddCareer } from './pages/Work/MyProfileAddCareer';
 
 const {
   LANDING,
@@ -48,6 +49,7 @@ const {
   PATH_ADD_CAREER,
   SETTINGS_DELETE_ACCOUNT,
   SETTINGS_BLOCKED_LIST,
+  PROFILE_ADD_EDIT_CAREER,
 } = PATHS;
 
 const publicRoutes = createBrowserRouter([
@@ -130,6 +132,14 @@ const privateRoutes = createBrowserRouter([
   {
     path: PROFILE,
     element: <ProfilePage />,
+  },
+  {
+    path: PROFILE_ADD_EDIT_CAREER,
+    element: <MyProfileAddCareer />,
+  },
+  {
+    path: `${PROFILE_ADD_EDIT_CAREER}/:id`,
+    element: <MyProfileAddCareer />,
   },
   {
     path: MYNETWORK,

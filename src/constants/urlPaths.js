@@ -12,6 +12,7 @@ export const PATHS = {
   PATH_INTERESTS: '/interests',
   PATH_MYSELF: '/myself',
   PROFILE: '/my-profile',
+  PROFILE_ADD_EDIT_CAREER: '/my-profile/career',
   MYNETWORK: '/my-network',
   OTHER_USER_PROFILE: '/profile/',
   MESSAGES: '/messages',
