@@ -81,7 +81,7 @@ function WorkDetail() {
       );
     }
     return (
-      <p className="p-4 w-full md:w-[80%] text-[16px] font-semibold mt-8 text-greydark">
+      <p className="px-4 pt-4 w-full md:w-[80%] text-[16px] font-semibold mt-8 text-greydark">
         Your information will be grouped and displayed by career field. It helps people quickly
         identify your many talents.
       </p>
@@ -95,7 +95,7 @@ function WorkDetail() {
       </div>
     </Card>
   ) : !aboutWork && !careers?.length ? (
-    <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] h-full flex flex-col justify-center item-center m-auto text-center">
+    <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
       <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
       <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
         No work added yet.

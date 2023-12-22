@@ -1,8 +1,15 @@
 import React from 'react';
 
-const SeeMoreLessIcon = () => {
+const SeeMoreLessIcon = ({ className }) => {
   return (
-    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg
+      width="20"
+      height="20"
+      viewBox="0 0 20 20"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+    >
       <g clipPath="url(#clip0_1924_8642)">
         <path
           d="M14.168 14.168L10.0013 10.0013L5.83464 14.168"
