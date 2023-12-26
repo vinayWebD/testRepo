@@ -48,6 +48,8 @@ const apiUtility = async (
   } catch (error) {
     if (error?.response?.status === 401) {
       dispatch(logoutDispatcher());
+      localStorage.removeItem('token');
+      window.location.reload();
     } else {
       dispatch(globalLoading(false));
       return { data: error.response.data, status: error.response.status };

@@ -54,7 +54,7 @@ const logoutUser = async (dispatch) => {
  */
 const userProfile = async (dispatch) => {
   try {
-    const { data, status } = await apiUtility(PROFILE, 'GET', undefined, dispatch);
+    const { data, status } = await apiUtility(PROFILE, 'GET', undefined, undefined, dispatch);
 
     return { data, status };
   } catch (error) {
