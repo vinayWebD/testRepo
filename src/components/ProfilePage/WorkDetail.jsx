@@ -9,11 +9,14 @@ import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import SpinningLoader from '../common/SpinningLoader';
 import CareerView from './CareerView';
+import Modal from '../Modal';
+import AddAboutWork from './AddAboutWork';
 
 function WorkDetail() {
   const [isLoading, setIsLoading] = useState(false);
   const [careers, setCareers] = useState([]);
   const [aboutWork, setAboutWork] = useState('');
+  const [isOpenAboutWorkModal, setIsOpenAboutWorkModal] = useState(false);
   const navigate = useNavigate();
 
   const getCareerList = async () => {
@@ -38,17 +41,24 @@ function WorkDetail() {
     getCareerList();
   }, []);
 
+  const openAboutWorkModal = () => {
+    setIsOpenAboutWorkModal(true);
+  };
+
   const showWork = () => {
     if (aboutWork) {
       return (
         <div className="p-4 flex w-full justify-between">
           <div className="flex flex-col gap-2">
             <div className="text-blueprimary text-[16px] font-semibold">About work</div>
-            <div className="font-normal text-greydark text-[14px] my-3 ">{aboutWork}</div>
+            <div className="font-normal text-greydark text-[14px] my-3">{aboutWork}</div>
           </div>
 
           <div className="flex items-center justify-between">
-            <div className="bg-iconBackground p-1 rounded cursor-pointer">
+            <div
+              className="bg-iconBackground p-1 rounded cursor-pointer"
+              onClick={openAboutWorkModal}
+            >
               <img src={edit} alt="edit" />
             </div>
           </div>
@@ -63,7 +73,12 @@ function WorkDetail() {
           </p>
 
           <div className="text-center mt-4">
-            <OutlinedButton label={'Add About Work'} showArrowIcon={false} add />
+            <OutlinedButton
+              label={'Update About Work'}
+              showArrowIcon={false}
+              add
+              onClick={openAboutWorkModal}
+            />
           </div>
         </div>
       );
@@ -123,6 +138,25 @@ function WorkDetail() {
           onClick={() => navigate(PATHS.PROFILE_ADD_EDIT_CAREER)}
         />
       </div>
+      <Modal
+        isOpen={isOpenAboutWorkModal}
+        onClose={() => setIsOpenAboutWorkModal(false)}
+        isTitle={true}
+        title={'Update About work'}
+        childrenClassNames="overflow-y-auto"
+        padding="p-0"
+        titleClassNames=""
+        titleParentClassNames="md:m-3 m-0"
+        height=" max-h-[100dvh] md:h-auto"
+      >
+        <AddAboutWork
+          work={aboutWork}
+          onCloseHandler={() => {
+            setIsOpenAboutWorkModal(false);
+            getCareerList();
+          }}
+        />
+      </Modal>
     </Card>
   );
 }
