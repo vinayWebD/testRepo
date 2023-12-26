@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ConfirmationModal from '../Modal/ConfirmationModal';
 import { useDispatch } from 'react-redux';
 import TextArea from '../TextArea';
@@ -10,6 +10,10 @@ import { PATHS } from '../../constants/urlPaths';
 const ReportPost = ({ isOpen = () => {}, onClose = () => {}, postId, creatorId }) => {
   const dispatch = useDispatch();
   const [reason, setReason] = useState('');
+
+  useEffect(() => {
+    setReason('');
+  }, [isOpen]);
 
   const reportPostHandler = async () => {
     if (reason?.trim()?.length) {

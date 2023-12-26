@@ -15,6 +15,7 @@ import { PAGE_SIZE } from '../../constants/constants';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import Avatar from '../../components/common/Avatar';
 import LocationIcon from '../../components/Icons/LocationIcon';
+import ConfirmationModal from '../../components/Modal/ConfirmationModal';
 
 const { SETTINGS } = PATHS;
 
@@ -27,6 +28,7 @@ const BlockedUsers = () => {
   const isGlobalTransparentLoadingPrivate = useSelector(
     (state) => state?.auth?.globalTransparentLoadingPrivate,
   );
+  const [isUnBlockModalOpen, setIsUnBlockModalOpen] = useState(false);
 
   useEffect(() => {
     fetchUsers();
@@ -119,9 +121,25 @@ const BlockedUsers = () => {
                         isIcon={false}
                         label={'Unblock'}
                         additionalClassNames="sm:h-[37px] !text-[14px]"
-                        onClick={() => unblockUser(user?.userBlocked?.id)}
+                        onClick={() => setIsUnBlockModalOpen(true)}
                       />
                     </div>
+
+                    <ConfirmationModal
+                      title="Unblock User"
+                      isOpen={isUnBlockModalOpen}
+                      onClose={() => setIsUnBlockModalOpen(false)}
+                      secondaryButtonTitle="No"
+                      secondaryButtonAction={() => setIsUnBlockModalOpen(false)}
+                      primaryButtonTitle="Yes"
+                      primaryButtonAction={() => unblockUser(user?.userBlocked?.id)}
+                    >
+                      <div className="text-[18px] tx-greydark font-medium">
+                        Are you sure you want to unblock <br />“{user?.userBlocked?.firstName}{' '}
+                        {user?.userBlocked?.lastName}
+                        ”?
+                      </div>
+                    </ConfirmationModal>
                   </div>
                 </div>
               );
