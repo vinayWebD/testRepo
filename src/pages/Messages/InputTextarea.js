@@ -89,6 +89,7 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
       document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
+  console.log('idto :', toId);
   const onSend = async () => {
     textareaRef.current.style.height = 'inherit';
     let collectionId;
