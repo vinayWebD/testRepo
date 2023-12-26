@@ -50,7 +50,7 @@ const Messages = () => {
   const [selected, setSelected] = useState([]);
   const [originalContacts, setOriginalContacts] = useState([]);
   const [selectedId, setSelectedId] = useState('');
-  const [selectedElement, setSelectedElement] = useState('');
+  const [selectedElement, setSelectedElement] = useState(null);
   const [userId, setUserId] = useState('');
   const myProfile = useSelector((state) => state.auth.user);
   const chatContainerRef = useRef(null);
@@ -140,10 +140,10 @@ const Messages = () => {
     setContacts([...originalContacts]);
     setSearchedFollwers([...originalSearchedFollowers]);
   };
+
   const handleSelected = (id, element) => {
-    setSelectedElement(element);
     setSelectedId(id);
-    setNewMessage(false);
+    setSelectedElement(element);
     setIsActive((prevId) => (prevId === id ? null : id));
     setAddContact(true);
     const selectedFollower = allFollowers.find(
@@ -183,37 +183,6 @@ const Messages = () => {
   };
 
   useEffect(() => {
-    const updateRead = async () => {
-      let Id1 = parseInt(selected?.UserId, 10);
-      let Id2 = parseInt(selected?.FollowingUserId, 10);
-
-      let collectionId = [];
-      if (Id1 < Id2) {
-        collectionId = `${Id1}_${Id2}`;
-      } else {
-        collectionId = `${Id2}_${Id1}`;
-      }
-
-      try {
-        const subcollectionRef = collection(db, 'test_messages', collectionId, collectionId);
-        const allDocsQuerySnapshot = await getDocs(subcollectionRef);
-        const updatePromises = [];
-        allDocsQuerySnapshot.forEach((subcollectionDoc) => {
-          const subcollectionDocRef = doc(subcollectionRef, subcollectionDoc?.id);
-          updatePromises.push(updateDoc(subcollectionDocRef, { read: true }));
-        });
-
-        await Promise.all(updatePromises);
-      } catch (error) {
-        console.error('Error updating read status for messages: ', error);
-      }
-    };
-    if (selectedElement?.lastMessage?.idFrom !== myProfile?.id) {
-      updateRead();
-    }
-  }, [selectedElement, myProfile.id]);
-
-  useEffect(() => {
     const fetchData = async () => {
       try {
         const q = query(collection(db, 'test_messages'), orderBy('timestamp'));
@@ -232,6 +201,7 @@ const Messages = () => {
             const timestampB = b.lastMessage ? b.lastMessage.timestamp : 0;
             return timestampB - timestampA;
           });
+          setNewMessage(Math.random());
           setContacts(sortedContacts);
           setContacts([...filteredMessages]);
           setOriginalContacts([...filteredMessages]);
@@ -248,6 +218,64 @@ const Messages = () => {
   useEffect(() => {
     fetchFollowersList();
   }, [contacts]);
+
+  useEffect(() => {
+    if (isActive && contacts[0]?.lastMessage?.idFrom !== myProfile?.id) {
+      updateRead();
+    }
+  }, [selectedElement, newMessage]);
+  useEffect(() => {
+    unreadMessageCount();
+  }, [newMessage]);
+
+  const updateRead = async () => {
+    let selectedCollectionId = selectedElement?.chatId || contacts[0]?.chatId;
+    try {
+      const subcollectionRef = collection(
+        db,
+        'test_messages',
+        selectedCollectionId,
+        selectedCollectionId,
+      );
+      const allDocsQuerySnapshot = await getDocs(subcollectionRef);
+      const updatePromises = [];
+      allDocsQuerySnapshot.forEach((subcollectionDoc) => {
+        const subcollectionDocRef = doc(subcollectionRef, subcollectionDoc.id);
+        updatePromises.push(updateDoc(subcollectionDocRef, { read: true }));
+      });
+      const mainDocRef = doc(db, 'test_messages', selectedCollectionId);
+      updatePromises.push(updateDoc(mainDocRef, { read: true }));
+
+      await Promise.all(updatePromises);
+    } catch (error) {
+      console.error('Error updating read status for messages: ', error);
+    }
+  };
+  const unreadMessageCount = async () => {
+    let selectedCollectionId = selectedElement?.chatId || contacts[0]?.chatId;
+    try {
+      const subcollectionRef = collection(
+        db,
+        'test_messages',
+        selectedCollectionId,
+        selectedCollectionId,
+      );
+      let unreadCount = 0;
+      const allDocsQuerySnapshot = await getDocs(subcollectionRef);
+      allDocsQuerySnapshot.forEach((subcollectionDoc) => {
+        const isRead = subcollectionDoc.data().read || false;
+        if (!isRead) {
+          unreadCount++;
+        }
+      });
+      const mainDocRef = doc(db, 'test_messages', selectedCollectionId);
+      await updateDoc(mainDocRef, { unReadCount: unreadCount });
+
+      return unreadCount;
+    } catch (error) {
+      console.error('Error counting unread messages: ', error);
+    }
+  };
 
   const deleteChat = async () => {
     const subcollectionRef = collection(
@@ -336,6 +364,7 @@ const Messages = () => {
                     onClick={() => {
                       setAddContact(false);
                       setIsActive(null);
+                      setSelectedElement(null);
                     }}
                   >
                     +
@@ -347,6 +376,7 @@ const Messages = () => {
                     onClick={() => {
                       setAddContact(true);
                       setIsActive(null);
+                      setSelectedElement(null);
                     }}
                   />
                 )}
@@ -416,7 +446,7 @@ const Messages = () => {
                           <div className="flex justify-between">
                             <p
                               className={`text-[14px] font-medium text-greydark ${
-                                newMessage ? 'font-medium' : 'font-normal'
+                                element?.unReadCount > 0 ? 'font-medium' : 'font-normal'
                               }`}
                             >
                               {element?.lastMessage?.content
@@ -425,12 +455,18 @@ const Messages = () => {
                                   : element?.lastMessage?.content
                                 : ''}
                             </p>
-                            {newMessage ? (
-                              <span className="inline-flex items-center justify-center bg-gradient-to-r from-buttongradientfrom to-buttongradientto h-4 w-4 rounded-full">
-                                <span className="text-white text-[12px]">2</span>
-                              </span>
+                            {element?.unReadCount > 0 ? (
+                              element?.lastMessage?.idFrom !== myProfile?.id ? (
+                                <span className="inline-flex items-center justify-center bg-gradient-to-r from-buttongradientfrom to-buttongradientto h-4 w-4 rounded-full">
+                                  <span className="text-white text-[12px]">
+                                    {element?.unReadCount}
+                                  </span>
+                                </span>
+                              ) : (
+                                <TextSeen seen={element?.read} />
+                              )
                             ) : (
-                              <TextSeen seen />
+                              <TextSeen seen={element?.read} />
                             )}
                           </div>
                         </div>
@@ -467,6 +503,7 @@ const Messages = () => {
                     onClick={() => {
                       setMobileChats(false);
                       setIsActive(null);
+                      setSelectedElement(null);
                     }}
                   />
                   <Avatar

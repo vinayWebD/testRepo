@@ -129,9 +129,11 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
         timestamp: timestampInSeconds,
         id: selectedId,
       },
+      read: false,
       timestamp: timestampInSeconds,
       userIds: [myProfile?.id, toId],
       userDetails: [myProfile, foundUser],
+      unReadCount: 0,
     });
 
     const DocumentRef = collection(documentRef, collectionId);
@@ -253,8 +255,8 @@ const InputTextarea = ({ onFileInputChange, toId, contacts, isActive, selectedId
           mediaTypeToUpload === 'photo'
             ? POST_IMAGE_TYPES
             : mediaTypeToUpload === 'video'
-              ? POST_VIDEO_TYPES
-              : POST_DOCUMENT_TYPES
+            ? POST_VIDEO_TYPES
+            : POST_DOCUMENT_TYPES
         }
       />
     </>
