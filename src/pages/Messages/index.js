@@ -460,7 +460,6 @@ const Messages = () => {
                                 <span className="inline-flex items-center justify-center bg-gradient-to-r from-buttongradientfrom to-buttongradientto h-4 w-4 rounded-full">
                                   <span className="text-white text-[12px]">
                                     {element?.unReadCount}
-                                    {/* {setUnreadMsgCount(element.unReadCount)} */}
                                   </span>
                                 </span>
                               ) : (
