@@ -55,6 +55,7 @@ export function CareerForm({
   data = {},
   type = '',
   fetchCareerDataById = () => {},
+  origin = null, // This will be used for knowing if it is being called from my profile or elsewhere
 }) {
   const ref = useRef();
   const dispatch = useDispatch();
@@ -293,6 +294,11 @@ export function CareerForm({
       setLinksFromAPI([]);
       setDeletedLinks([]);
       await getCareerList();
+      await fetchCareerDataById();
+
+      if (origin === 'MY_PROFILE') {
+        navigate(`${PATHS.PROFILE}/work`, { replace: true });
+      }
     }
     setIsLoading({ ...isLoading, delete: false });
   };

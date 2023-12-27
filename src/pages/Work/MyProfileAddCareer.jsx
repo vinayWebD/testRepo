@@ -20,6 +20,12 @@ export function MyProfileAddCareer() {
   }, [editCareerId]);
 
   const fetchCareerDataById = async (i) => {
+    if (!i) {
+      // This shall be called after the career is deleted
+      setCareer({});
+      return;
+    }
+
     const { status, data } = await fetchCareerById(i);
 
     if (successStatus(status)) {
@@ -52,6 +58,7 @@ export function MyProfileAddCareer() {
             type={editCareerId ? 'edit' : 'add'}
             fetchCareerDataById={fetchCareerDataById}
             data={career || {}}
+            origin="MY_PROFILE"
           />
         </div>
       </div>
