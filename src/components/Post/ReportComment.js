@@ -16,13 +16,15 @@ const ReportComment = ({
 }) => {
   const dispatch = useDispatch();
   const [reason, setReason] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setReason('');
   }, [isOpen]);
 
   const reportCommentHandler = async () => {
-    if (reason?.trim()?.length) {
+    if (reason?.trim()?.length && !isLoading) {
+      setIsLoading(true);
       const { status, data } = await dispatch(
         reportCommentDispatcher({
           commentId,
@@ -41,6 +43,7 @@ const ReportComment = ({
         ToastNotifySuccess('Comment reported successfully');
         onClose();
       }
+      setIsLoading(false);
     }
   };
   return (
@@ -52,7 +55,7 @@ const ReportComment = ({
       primaryButtonAction={reportCommentHandler}
       secondaryButtonTitle="Cancel"
       secondaryButtonAction={onClose}
-      isPrimaryButtonDisabled={!reason?.trim()?.length}
+      isPrimaryButtonDisabled={!reason?.trim()?.length && !isLoading}
     >
       <div>
         <div className="text-[18px] tx-greydark font-medium">
