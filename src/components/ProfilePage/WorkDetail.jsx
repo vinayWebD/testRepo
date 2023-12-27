@@ -4,7 +4,6 @@ import edit from '../../assets/images/editIcon.svg';
 import OutlinedButton from '../common/OutlinedButton';
 import { fetchCareersList } from '../../services/signup';
 import { successStatus } from '../../common';
-import noWork from '../../assets/images/noWork.svg';
 import { useNavigate } from 'react-router-dom';
 import { PATHS } from '../../constants/urlPaths';
 import SpinningLoader from '../common/SpinningLoader';
@@ -72,9 +71,9 @@ function WorkDetail() {
               like to include.`}
           </p>
 
-          <div className="text-center mt-4">
+          <div className="text-center mt-4 hover:opacity-70">
             <OutlinedButton
-              label={'Update About Work'}
+              label={'Add About Work'}
               showArrowIcon={false}
               add
               onClick={openAboutWorkModal}
@@ -109,24 +108,6 @@ function WorkDetail() {
         <SpinningLoader width="w-8" height="h-8" />
       </div>
     </Card>
-  ) : !aboutWork && !careers?.length ? (
-    <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
-      <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
-      <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
-        No work added yet.
-      </h4>
-      <h5 className="font-medium text-greydark text-[10px] md:text-[14px] mb-2">
-        It helps people quickly identify your many talents.
-      </h5>
-      <div className="text-center mx-auto flex mt-2">
-        <OutlinedButton
-          label={'Add'}
-          showArrowIcon={false}
-          add
-          onClick={() => navigate(PATHS.PROFILE_ADD_EDIT_CAREER)}
-        />
-      </div>
-    </Card>
   ) : (
     <Card classNames="mt-4 min-h-[calc(100vh-275px)]">
       {showWork()} {showCareers()}
@@ -142,7 +123,7 @@ function WorkDetail() {
         isOpen={isOpenAboutWorkModal}
         onClose={() => setIsOpenAboutWorkModal(false)}
         isTitle={true}
-        title={'Update About work'}
+        title={`${aboutWork ? 'Update' : 'Add'} About work`}
         childrenClassNames="overflow-y-auto"
         padding="p-0"
         titleClassNames=""
