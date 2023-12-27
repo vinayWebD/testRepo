@@ -23,7 +23,6 @@ const LinkForm = ({
   const [showNewLink, setShowNewLink] = useState(false);
 
   const addLink = () => {
-    document.getElementsByClassName('modal-children')?.[0]?.scroll(0, 0);
     let allLinks = [...links];
 
     // If the add new links fields class is there, means the add new link is already open
@@ -53,6 +52,7 @@ const LinkForm = ({
       ToastNotifyError('You can only add up to 5 links.', TST_LINK_VALIDATION_FAILED_ID);
       return;
     }
+    document.getElementsByClassName('modal-children')?.[0]?.scroll(0, 0);
 
     setLinks(allLinks);
     setNewLink({ url: '', domain: '' });

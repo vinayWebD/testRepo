@@ -44,6 +44,12 @@ export function CertificateContent({ careerId }) {
     media: false,
   });
 
+  useEffect(() => {
+    if (!careerId) {
+      setCertificatesList([]);
+    }
+  }, [careerId]);
+
   const openModal = async (certificate = null) => {
     setIsModalOpen(true);
 
@@ -83,6 +89,7 @@ export function CertificateContent({ careerId }) {
     if (successStatus(status)) {
       setCertificatesList(data?.data);
     } else {
+      setCertificatesList([]);
       const errormsg = getErrorMessage(data);
       if (errormsg) {
         ToastNotifyError(errormsg);

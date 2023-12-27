@@ -38,12 +38,20 @@ export function EducationContent({ careerId }) {
     api: false,
   });
 
+  useEffect(() => {
+    if (!careerId) {
+      setEducations([]);
+    }
+  }, [careerId]);
+
   const getEducationsList = async () => {
     setIsLoading({ ...isLoading, global: true });
     const response = await fetchCareerEducationList(careerId);
     const { status, data } = response;
     if (successStatus(status)) {
       setEducations(data?.data);
+    } else {
+      setEducations([]);
     }
     setIsLoading({ ...isLoading, global: false });
   };

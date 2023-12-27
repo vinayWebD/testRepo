@@ -1,6 +1,7 @@
 import * as yup from 'yup';
 import { LIMITS, REGEX } from '../constants/constants';
 import { MESSAGES } from '../constants/messages';
+import moment from 'moment';
 
 const { IS_REQUIRED, EMAIL_INVALID, MSG_PASSWORD_TYPE, MSG_FIELD_LENGTH } = MESSAGES;
 const { EMAIL_PATTERN, PASSWORD_PATTERN } = REGEX;
@@ -60,7 +61,21 @@ const validationSchemaEducation = yup.object().shape({
     .required(IS_REQUIRED('Field Of Study'))
     .max(LIMITS.MAX_EDUCATION_STRINGS_LENGTH),
   startDate: yup.string().required(IS_REQUIRED('Start Date')),
-  endDate: yup.string().required(IS_REQUIRED('End date')),
+  endDate: yup
+    .string()
+    .required(IS_REQUIRED('End Date'))
+    .test(
+      'is-greater-than-start-date',
+      'End date must be greater than start date',
+      function (value, context) {
+        const { startDate } = context.parent;
+        if (!startDate || !value) {
+          // If either date is not provided, validation passes
+          return true;
+        }
+        return moment(value).isAfter(startDate);
+      },
+    ),
   other: yup.string().max(LIMITS.MAX_EDUCATION_STRINGS_LENGTH),
 });
 

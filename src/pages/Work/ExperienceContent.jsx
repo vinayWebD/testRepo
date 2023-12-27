@@ -21,6 +21,7 @@ import { addExperienceDispatcher } from '../../redux/dispatchers/signupDispatche
 import SpinningLoader from '../../components/common/SpinningLoader';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { ExperienceData } from '../../components/common/Work/ExperienceData';
+import { LIMITS } from '../../constants/constants';
 
 const initialValues = {
   title: '',
@@ -42,12 +43,20 @@ export function ExperienceContent({ careerId = null }) {
   });
   const dispatch = useDispatch();
 
+  useEffect(() => {
+    if (!careerId) {
+      setExperiences([]);
+    }
+  }, [careerId]);
+
   const getExperiences = async () => {
     setIsLoading({ ...isLoading, global: true });
     const response = await fetchCareerExperienceList(careerId);
     const { status, data = {} } = response;
     if (successStatus(status)) {
       setExperiences(data?.data);
+    } else {
+      setExperiences([]);
     }
     setIsLoading({ ...isLoading, global: false });
   };
@@ -95,6 +104,16 @@ export function ExperienceContent({ careerId = null }) {
     if (isLoading?.api) {
       return;
     }
+
+    // Check if endDate is required based on isCurrentlyWorking
+    if (!isCurrentlyWorking && !values.endDate) {
+      formik.setFieldError('endDate', 'End Date is required');
+      return;
+    } else if (moment(values?.endDate).isSameOrBefore(values?.startDate)) {
+      formik.setFieldError('endDate', 'End date must be greater than start date');
+      return;
+    }
+
     setIsLoading({ ...isLoading, api: true });
     const { title, description, startDate, company, endDate } = values;
 
@@ -301,6 +320,7 @@ export function ExperienceContent({ careerId = null }) {
                   onChange={handleChange}
                   error={tuc_description && err_description}
                   helperText={tuc_description && err_description}
+                  maxLength={LIMITS.MAX_EXPERIENCE_DESCRIPTION_LENGTH}
                 />
               </div>
             </div>
@@ -387,6 +407,7 @@ export function ExperienceContent({ careerId = null }) {
           error={tuc_description && err_description}
           helperText={tuc_description && err_description}
           className="h-[50px]"
+          maxLength={LIMITS.MAX_EXPERIENCE_DESCRIPTION_LENGTH}
         />
       </div>
       <div className="flex md:flex-row flex-col md:items-center items-end justify-between pb-[45px]">
