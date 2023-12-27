@@ -26,7 +26,11 @@ export const ExperienceData = ({ data, openModalHandler = () => {}, isEditable =
         <div className={`pb-[24px] w-full ${isEditable ? ' md:w-[15%] ' : ' md:w-[20%] '}`}>
           <div className="detail-label"> End Date</div>
           <div className="detail-heading">
-            {data?.endDate ? moment(data?.endDate).format('ll') : 'NA'}
+            {data?.isCurrentlyWorking
+              ? 'Present'
+              : data?.endDate
+              ? moment(data?.endDate).format('ll')
+              : 'NA'}
           </div>
         </div>
         {isEditable && (

@@ -43,6 +43,8 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { LinkData } from '../../components/common/Work/LinkData';
 import LinksIcon from '../../components/Icons/LinksIcon';
 import SkillForm from './SkillForm';
+import ConfirmationModal from '../../components/Modal/ConfirmationModal';
+import { deleteWorkDispatcher } from '../../redux/dispatchers/infoDispatcher';
 
 const { HOME } = PATHS;
 const { LINK_PATTERN } = REGEX;
@@ -73,7 +75,13 @@ export function CareerForm({
   const navigate = useNavigate();
   const [isEdit, setIsEdit] = useState(id ? false : true);
   const [prevTitle, setPrevTitle] = useState(id ? data?.title : '');
-  const [isLoading, setIsLoading] = useState({ title: false, links: false, skills: false });
+  const [isLoading, setIsLoading] = useState({
+    title: false,
+    links: false,
+    skills: false,
+    delete: false,
+  });
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 
   useEffect(() => {
     if (id) {
@@ -85,8 +93,12 @@ export function CareerForm({
   }, [id, data]);
 
   const openLinksModalHandler = () => {
+    if (!id) {
+      return;
+    }
     setLinkInInput({ url: '', domain: '' });
     setDeletedLinks([]);
+    setLinks(linksFromAPI || []);
     setIsLinksModalOpen(true);
   };
 
@@ -259,6 +271,32 @@ export function CareerForm({
     window.location.reload();
   };
 
+  const deleteCareer = async () => {
+    if (isLoading?.delete) return;
+
+    setIsLoading({ ...isLoading, delete: true });
+    const response = await dispatch(deleteWorkDispatcher({ id: id }));
+    const { status, data } = response;
+    if (!successStatus(status)) {
+      const errormsg = getErrorMessage(data);
+      if (errormsg) {
+        ToastNotifyError(errormsg);
+      }
+    } else {
+      setIsDeleteModalOpen(false);
+      formik?.resetForm();
+      formik.setFieldValue('title', '');
+      setLinkInInput('');
+      setLinks([]);
+      setSkills([]);
+      setSkillsFromAPI([]);
+      setLinksFromAPI([]);
+      setDeletedLinks([]);
+      await getCareerList();
+    }
+    setIsLoading({ ...isLoading, delete: false });
+  };
+
   return (
     <>
       <form onSubmit={handleSubmit}>
@@ -310,6 +348,22 @@ export function CareerForm({
               </span>
             )}
           </div>
+          {id ? (
+            <div className={'mb-2 md:mb-[22px]'}>
+              <Button
+                showArrowIcon={false}
+                label="Delete"
+                isDelete
+                onClick={() => setIsDeleteModalOpen(true)}
+                isLoading={isLoading?.delete}
+                isDisabled={isLoading?.delete}
+                onlyShowLoaderWhenLoading={true}
+                additionalClassNames="text-[14px]"
+              />
+            </div>
+          ) : (
+            ''
+          )}
         </div>
         <p className="font-normal text-greydark mb-5 mt-2">
           Your information will be grouped and displayed by career field. It helps people quickly
@@ -378,7 +432,15 @@ export function CareerForm({
                 </span>
                 <span className="form-title-blue">Skills</span>
               </div>
-              <span onClick={() => setIsSkillModalOpen(true)} className="cursor-pointer">
+              <span
+                onClick={() => {
+                  if (!id) {
+                    return;
+                  }
+                  setIsSkillModalOpen(true);
+                }}
+                className="cursor-pointer"
+              >
                 <EditBlueIcon />
               </span>
             </div>
@@ -393,6 +455,7 @@ export function CareerForm({
           <div className="flex gap-4 flex-wrap">
             <div>
               <OutlinedButton
+                disabled={!id}
                 label="Add Links"
                 Icon={<AddBlueIcon />}
                 onClick={openLinksModalHandler}
@@ -401,8 +464,14 @@ export function CareerForm({
             <div>
               <OutlinedButton
                 label="Add Skills"
+                disabled={!id}
                 Icon={<AddBlueIcon />}
-                onClick={() => setIsSkillModalOpen(true)}
+                onClick={() => {
+                  if (!id) {
+                    return;
+                  }
+                  setIsSkillModalOpen(true);
+                }}
               />
             </div>
           </div>
@@ -421,6 +490,19 @@ export function CareerForm({
           )}
         </div>
       </div>
+
+      <ConfirmationModal
+        title="Delete Career"
+        isOpen={isDeleteModalOpen}
+        onClose={() => setIsDeleteModalOpen(false)}
+        primaryButtonTitle="Delete"
+        primaryButtonAction={() => deleteCareer()}
+        secondaryButtonTitle="Cancel"
+        secondaryButtonAction={() => setIsDeleteModalOpen(false)}
+        isPrimaryButtonDisabled={isLoading?.delete}
+      >
+        Are you sure you want to delete this Career?
+      </ConfirmationModal>
 
       <Modal
         isTitle={true}
