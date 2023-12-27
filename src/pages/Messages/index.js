@@ -57,9 +57,9 @@ const Messages = () => {
   const dispatch = useDispatch();
 
   const fetchFollowersList = async () => {
+    let allowedContacts = [];
     const { status, data } = await AllUsers();
     if (status) {
-      let allowedContacts = [];
       let allData = data?.data?.Networks;
       allData.map((element) => {
         if (element?.User?.PrivacySettings[0]?.chatSetting === 'chatAnyone') {
@@ -71,6 +71,7 @@ const Messages = () => {
           allowedContacts.push(element);
         }
       });
+
       setAllFollowers(allowedContacts);
       const newFollowers = allowedContacts.filter((newFollower) => {
         const followerId = newFollower?.User?.username;
@@ -278,6 +279,7 @@ const Messages = () => {
   };
 
   const deleteChat = async () => {
+    setIsDeleteModalOpen(false);
     const subcollectionRef = collection(
       db,
       'test_messages',
@@ -286,22 +288,12 @@ const Messages = () => {
     );
     const documentRef = doc(db, 'test_messages', retrievedDocumentId);
     try {
+      await updateDoc(documentRef, { 'lastMessage.content': '', 'lastMessage.timestamp': '' });
       const allDocsQuerySnapshot = await getDocs(subcollectionRef);
-      await updateDoc(documentRef, {
-        lastMessage: {
-          content: '',
-          id: '',
-          idFrom: '',
-          idTo: '',
-          read: '',
-          timestamp: '',
-        },
-      });
       allDocsQuerySnapshot.forEach(async (doc) => {
         deleteDoc(doc.ref)
           .then(() => {
-            ToastNotifySuccess('The user has been blocked');
-            setIsDeleteModalOpen(false);
+            ToastNotifySuccess('All Messages are been deleted');
           })
           .catch((error) => {
             console.error(`Error deleting document ${doc.id}: `, error);
@@ -332,8 +324,10 @@ const Messages = () => {
 
     if (successStatus(status)) {
       ToastNotifySuccess('The user has been blocked');
+      setIsBlockModalOpen(false);
     } else {
       const errormsg = getErrorMessage(data);
+      setIsBlockModalOpen(false);
       if (errormsg) {
         ToastNotifyError(errormsg);
       }
