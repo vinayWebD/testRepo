@@ -60,11 +60,14 @@ const CareerView = ({ career = {}, isEditable = false }) => {
 
   return (
     <div className="flex flex-col">
+      {/* Adding the below for some margin in case when we are viewing for other users */}
+      {!isEditable ? <div className="p-4"></div> : ''}
+
       <div className="flex justify-between items-center">
         <div className="py-[10px] px-[20px] rounded-r-lg flex flex-col gap-2 blue-white-gradient p-3 text-white w-fit text-[14px] md:text-[18px] font-semibold break-words">
           {career?.title}
         </div>
-        {isEditable && (
+        {isEditable ? (
           <div className="p-4">
             <div
               className="bg-iconBackground p-1 rounded cursor-pointer"
@@ -78,8 +81,13 @@ const CareerView = ({ career = {}, isEditable = false }) => {
               <img src={edit} alt="edit" />
             </div>
           </div>
+        ) : (
+          <div className="p-4"></div>
         )}
       </div>
+
+      {/* Adding the below for some margin in case when we are viewing for other users */}
+      {!isEditable ? <div className="p-2"></div> : ''}
 
       {/* Experiences section */}
       {hasExperiences && (showSeeMore?.showWhichCategory === 'experience' || isShowMoreEnabled) && (

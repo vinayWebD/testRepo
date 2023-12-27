@@ -153,6 +153,10 @@ const privateRoutes = createBrowserRouter([
     element: <OtherUserProfile />,
   },
   {
+    path: `${OTHER_USER_PROFILE}:id/:type`,
+    element: <OtherUserProfile />,
+  },
+  {
     path: `${HOME}/:id`,
     element: <HomePage />,
   },
