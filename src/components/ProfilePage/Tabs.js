@@ -10,9 +10,9 @@ const Tabs = ({ tab = '', updateTab = () => {}, other = false }) => {
     <Card classNames="flex justify-around overflow-hidden text-center" bottomNotRound={true}>
       <div
         className={`w-[33.3%] p-4 cursor-pointer ${
-          tab === 'post' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+          tab === 'Posts' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
         }`}
-        onClick={() => updateTab('post')}
+        onClick={() => updateTab('Posts')}
         style={{ fontWeight: '500' }}
       >
         <span className="block md:hidden flex items-center justify-center">
@@ -22,9 +22,9 @@ const Tabs = ({ tab = '', updateTab = () => {}, other = false }) => {
       </div>
       <div
         className={`w-[33.3%] p-4 cursor-pointer ${
-          tab === 'work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+          tab === 'Work' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
         }`}
-        onClick={() => updateTab('work')}
+        onClick={() => updateTab('Work')}
         style={{ fontWeight: '500' }}
       >
         <span className="block md:hidden flex items-center justify-center">
@@ -34,9 +34,9 @@ const Tabs = ({ tab = '', updateTab = () => {}, other = false }) => {
       </div>
       <div
         className={`w-[33.3%] p-4 cursor-pointer ${
-          tab === 'interest' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+          tab === 'Interests' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
         }`}
-        onClick={() => updateTab('interest')}
+        onClick={() => updateTab('Interests')}
         style={{ fontWeight: '500' }}
       >
         <span className="block md:hidden flex items-center justify-center">
@@ -46,9 +46,9 @@ const Tabs = ({ tab = '', updateTab = () => {}, other = false }) => {
       </div>
       <div
         className={`w-[33.3%] p-4 cursor-pointer ${
-          tab === 'myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
+          tab === 'Myself' ? 'border-b-4 border-blueprimary text-blueprimary' : ''
         }`}
-        onClick={() => updateTab('myself')}
+        onClick={() => updateTab('Myself')}
         style={{ fontWeight: '500' }}
       >
         <span className="block md:hidden flex items-center justify-center">

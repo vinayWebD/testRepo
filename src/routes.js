@@ -128,9 +128,12 @@ const privateRoutes = createBrowserRouter([
     path: HOME,
     element: <HomePage />,
   },
-
   {
     path: PROFILE,
+    element: <ProfilePage />,
+  },
+  {
+    path: `${PROFILE}/:type`,
     element: <ProfilePage />,
   },
   {
