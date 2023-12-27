@@ -51,12 +51,9 @@ const logoutDispatcher = () => async (dispatch) => {
  */
 const profileDispatcher = () => async (dispatch) => {
   dispatch(globalLoading(true));
-  const {
-    status,
-    data: { data },
-  } = await userProfile(dispatch);
+  const { status, data } = await userProfile(dispatch);
   if (status === 200) {
-    dispatch(profile(data));
+    dispatch(profile(data?.data));
   }
 };
 
