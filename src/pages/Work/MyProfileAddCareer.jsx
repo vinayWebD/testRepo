@@ -40,7 +40,7 @@ export function MyProfileAddCareer() {
             <div
               className="flex text-[16px] md:text-[18px] lg:text-[24px] py-4 sticky h-fit cursor-pointer font-medium"
               onClick={() => {
-                navigate(PATHS.PROFILE);
+                navigate(`${PATHS.PROFILE}/work`);
               }}
             >
               <img src={backIcon} alt="backIcon" className="w-[20px] lg:w-[30px]" />

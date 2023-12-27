@@ -7,30 +7,44 @@ import Card from '../../components/common/Card';
 import backIcon from '../../assets/images/backIcon.svg';
 import noWork from '../../assets/images/noWork.svg';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import OutlinedButton from '../../components/common/OutlinedButton';
 import useScrollToTop from '../../hooks/useScrollToTop';
 import InterestDetail from '../../components/ProfilePage/InterestDetail';
 import WorkDetail from '../../components/ProfilePage/WorkDetail';
-import Tabs from '../../components/ProfilePage/Tabs';
 import MyPosts from '../../components/ProfilePage/MyPosts';
 import { networkCount } from '../../services/myProfile';
 import { getErrorMessage, successStatus } from '../../common';
 import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import { PATHS } from '../../constants/urlPaths';
 import { TABS_NAME } from '../../constants/lang';
+import Tabs from '../../components/ProfilePage/Tabs';
 
 const { MYNETWORK } = PATHS;
 const { FOLLOWERS, FOLLOWING, CONNECTIONS } = TABS_NAME;
 
 const ProfilePage = () => {
   const userData = useSelector((state) => state?.auth?.user) || {};
-  const [tab, setTab] = useState('post');
+  const [tab, setTab] = useState('Posts');
   const [networkCounter, setNetworkCounter] = useState({});
   const navigate = useNavigate();
+  const { type } = useParams();
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
+
+  useEffect(() => {
+    const typeToMatch = type?.toLowerCase();
+    if (typeToMatch === 'work') {
+      setTab('Work');
+    } else if (typeToMatch === 'interests') {
+      setTab('Interests');
+    } else if (typeToMatch === 'myself') {
+      setTab('Myself');
+    } else {
+      setTab('Posts');
+    }
+  }, [type]);
 
   const fetchNetworkCount = async () => {
     const { status, data } = await networkCount();
@@ -47,6 +61,12 @@ const ProfilePage = () => {
   useEffect(() => {
     fetchNetworkCount();
   }, []);
+
+  const handleUpdateTab = (value) => {
+    value = value?.toLowerCase();
+    setTab(value);
+    navigate(`${PATHS.PROFILE}/${value}`, { replace: true });
+  };
 
   return (
     <ProfileLayout>
@@ -72,17 +92,17 @@ const ProfilePage = () => {
         <div className="grid grid-cols-12 gap-3 feed-page">
           <div className="col-span-12">
             <div>
-              <Tabs tab={tab} updateTab={setTab} />
+              <Tabs tab={tab} updateTab={handleUpdateTab} />
 
-              {tab === 'post' ? (
+              {tab === 'Posts' ? (
                 <>
                   <MyPosts other={false} />
                 </>
-              ) : tab === 'work' ? (
+              ) : tab === 'Work' ? (
                 <>
                   <WorkDetail />
                 </>
-              ) : tab === 'interest' ? (
+              ) : tab === 'Interests' ? (
                 <>
                   <InterestDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
