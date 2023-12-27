@@ -22,7 +22,7 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import MyPosts from '../../components/ProfilePage/MyPosts';
 
 const OtherUserProfile = () => {
-  const [tab, setTab] = useState('post');
+  const [tab, setTab] = useState('Posts');
   const { id, type } = useParams();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
