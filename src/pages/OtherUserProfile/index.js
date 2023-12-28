@@ -22,12 +22,12 @@ import { ToastNotifyError } from '../../components/Toast/ToastNotify';
 import MyPosts from '../../components/ProfilePage/MyPosts';
 
 const OtherUserProfile = () => {
-  const [tab, setTab] = useState('post');
-  const navigate = useNavigate();
-  const { id } = useParams();
+  const [tab, setTab] = useState('Posts');
+  const { id, type } = useParams();
   const dispatch = useDispatch();
   const [userData, setUserData] = useState({});
   const [networkingCount, setNetworkingCount] = useState({});
+  const navigate = useNavigate();
 
   // Scrolling to top whenever user comes on this page for the first time
   useScrollToTop();
@@ -35,6 +35,19 @@ const OtherUserProfile = () => {
   useEffect(() => {
     fetchData();
   }, [id]);
+
+  useEffect(() => {
+    const typeToMatch = type?.toLowerCase();
+    if (typeToMatch === 'work') {
+      setTab('Work');
+    } else if (typeToMatch === 'interests') {
+      setTab('Interests');
+    } else if (typeToMatch === 'myself') {
+      setTab('Myself');
+    } else {
+      setTab('Posts');
+    }
+  }, [type]);
 
   const reloadAfterFollowUnfollow = async () => {
     await fetchData();
@@ -59,6 +72,12 @@ const OtherUserProfile = () => {
     }
   };
 
+  const handleUpdateTab = (value) => {
+    value = value?.toLowerCase();
+    setTab(value);
+    navigate(`${PATHS.OTHER_USER_PROFILE}${id}/${value}`, { replace: true });
+  };
+
   return (
     <ProfileLayout>
       <div className="col-span-10 md:col-span-12 xs:col-span-12 sm:col-span-12 lg:col-span-4 xl:col-span-3 lg:sticky top-[61px] z-40 lg:h-fit	">
@@ -81,23 +100,16 @@ const OtherUserProfile = () => {
         <div className="grid grid-cols-12 gap-3 feed-page">
           <div className="col-span-12">
             <div>
-              <Tabs tab={tab} updateTab={setTab} other={true} />
-
-              {tab === 'post' ? (
+              <Tabs tab={tab} updateTab={handleUpdateTab} other={true} />
+              {tab === 'Posts' ? (
                 <>
                   <MyPosts other={true} />
                 </>
-              ) : tab === 'work' ? (
+              ) : tab === 'Work' ? (
                 <>
-                  <WorkDetail />
-                  <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">
-                    <img src={noWork} alt="noWork" className="w-[20%] md:w-[10%] mx-auto " />
-                    <h4 className="font-semibold text-greydark text-[12px] md:text-[14px] my-2">
-                      No work added yet.
-                    </h4>
-                  </Card>
+                  <WorkDetail otherUserId={id} />
                 </>
-              ) : tab === 'interest' ? (
+              ) : tab === 'Interests' ? (
                 <>
                   <InterestDetail />
                   <Card classNames="p-4 mt-4 h-[calc(100vh-275px)] flex flex-col justify-center item-center m-auto text-center">

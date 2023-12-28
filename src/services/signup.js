@@ -25,6 +25,7 @@ const {
   ADD_CAREER_LINK,
   GET_ALL_CAREER_SKILLS,
   UPDATE_CAREER_SKILLS,
+  GET_OTHER_USER_CAREER,
 } = NETWORK_CONSTANTS;
 
 /**
@@ -246,7 +247,16 @@ const fetchCareerById = async (id) => {
 
 const fetchCareersList = async (dataToSend) => {
   try {
-    const response = await apiUtility(`${CAREERS}/${dataToSend?.id ? dataToSend?.id : ''}`, 'GET');
+    const response = await apiUtility(`${CAREERS}/${dataToSend?.id || ''}`, 'GET');
+    return response;
+  } catch (err) {
+    return err;
+  }
+};
+
+const fetchOtherUserCareer = async ({ userId }) => {
+  try {
+    const response = await apiUtility(GET_OTHER_USER_CAREER(userId), 'GET');
     return response;
   } catch (err) {
     return err;
@@ -505,4 +515,5 @@ export {
   deleteCertificate,
   fetchCertificateById,
   addCareerLinks,
+  fetchOtherUserCareer,
 };

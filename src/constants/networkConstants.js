@@ -80,6 +80,7 @@ const NETWORK_CONSTANTS = {
   ADD_CAREER_LINK: (careerId) => `/v1/accounts/careers/${careerId}/links`,
   GET_ALL_CAREER_SKILLS: (careerId) => `/v1/accounts/careers/${careerId}/skills`,
   UPDATE_CAREER_SKILLS: (careerId) => `/v1/accounts/careers/${careerId}/skills`,
+  GET_OTHER_USER_CAREER: (userId) => `/v1/accounts/careers/user/${userId}`,
 };
 
 export default NETWORK_CONSTANTS;
