@@ -27,9 +27,11 @@ const SuggestedUser = ({
 
   return (
     <div className="flex gap-2 p-3 hover:bg-greylighter cursor-pointer" onClick={onClickHandler}>
-      <div className="w-[80%] flex gap-2">
-        <SearchIcon color="black" />
-        <div className="flex flex-col gap-2">
+      <div className="w-[80%] flex">
+        <div className="w-[14%]">
+          <SearchIcon color="black" />
+        </div>
+        <div className="flex flex-col gap-2 w-[86%]">
           <h4 className="text-bold font-medium leading-4 ">{userFullName}</h4>
           <h6 className="text-xs leading-4 font-normal">{userBio}</h6>
         </div>
