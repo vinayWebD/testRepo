@@ -107,6 +107,15 @@ body {
   line-height: normal;
 }
 
+.content-style {
+  color: #000;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .image_preview {
   position: absolute;
   width: 86px;
@@ -229,6 +238,15 @@ body {
   font-size: 20px;
   font-style: normal;
   font-weight: 500;
+  line-height: normal;
+}
+
+.filter-heading {
+  color: #0071bc;
+  font-family: Montserrat;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
   line-height: normal;
 }
 

@@ -192,7 +192,10 @@ function SuggestedSearch({
             </div>
           )}
         </div>
-        <div className="md:shadow-lg absolute top-[85%] md:top-[91%] bg-white left-0 rounded-b-lg border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer">
+        <div
+          className="md:shadow-lg absolute top-[85%] md:top-[91%] bg-white left-0 rounded-b-lg border-t w-full font-medium border-[#DFDFDF] p-4 flex justify-center text-blueprimary cursor-pointer"
+          onClick={() => navigate('/search-page')}
+        >
           See All
         </div>
       </div>

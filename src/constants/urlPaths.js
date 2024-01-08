@@ -23,4 +23,5 @@ export const PATHS = {
   SETTINGS_PRIVACY_SETTING: '/settings/privacy-setting',
   SETTINGS_DELETE_ACCOUNT: '/settings/delete-account',
   SETTINGS_BLOCKED_LIST: '/settings/blocked-users',
+  SEARCH_PAGE: '/search-page',
 };
